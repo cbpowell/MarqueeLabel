@@ -30,12 +30,26 @@
 */
 
 
-/*
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    MarqueeLabel *newLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 100, self.view.frame.size.width - 20, 20)];
+    [self.view addSubview:newLabel];
+    [newLabel release];
+    
+    [newLabel setText:@"This is a test of the label. Look how long this label is! It's so long it stretches off the view!"];
+    
+    NSLog(@"Creating label");
+    UILabel *subLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 150, self.view.frame.size.width - 20, 20)];
+    subLabel.text = @"This is a test of the label";
+    [self.view addSubview:subLabel];
+    [subLabel release];
+    
+    [newLabel scrollLeft];
+
 }
-*/
 
 
 /*

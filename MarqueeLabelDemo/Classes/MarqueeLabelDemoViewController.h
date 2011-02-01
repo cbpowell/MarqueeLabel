@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MarqueeLabel.h"
 
 @interface MarqueeLabelDemoViewController : UIViewController {
 
