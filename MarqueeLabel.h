@@ -12,32 +12,16 @@
 @interface MarqueeLabel : UIView {
     
     UILabel *subLabel;
-    CGRect initialLabelFrame;
-    /*
-    BOOL adjustsFontSizeToFitWidth;
-    UIBaselineAdjustment baselineAdjustment;
-    BOOL enabled;
-    UIFont *font;
-    BOOL highlighted;
-    UIColor *highlightedTextColor;
-    UILineBreakMode lineBreakMode;
-    CGFloat minimumFontSize;
-    NSInteger numberOfLines;
-    UIColor *shadowColor;
-    CGSize shadowOffset;
-    NSString *text;
-    UITextAlignment textAlignment;
-    UIColor *textColor;
-    BOOL userInteractionEnabled;
-     */
+    CGRect baseLabelFrame;
     
+    BOOL loopLabel;
     
 }
 
 @property (nonatomic, retain) UILabel *subLabel;
-@property (nonatomic) CGRect initialLabelFrame;
+@property (nonatomic) CGRect baseLabelFrame;
 
-/*
+// UILabel properties
 @property(nonatomic) BOOL adjustsFontSizeToFitWidth;
 @property(nonatomic) UIBaselineAdjustment baselineAdjustment;
 @property(nonatomic, getter=isEnabled) BOOL enabled;
@@ -53,9 +37,20 @@
 @property(nonatomic) UITextAlignment textAlignment;
 @property(nonatomic, retain) UIColor *textColor;
 @property(nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
- */
 
+-(void) scrollWithLoop:(BOOL)loop andSpeed:(NSInteger)speed;
 -(void) scrollLeft;
 -(void) scrollRight;
 
 @end
+
+
+// Declare UILabel methods as extensions to be passed through with forwardInvocation
+@interface UILabel (MarqueeLabel)
+
+- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(NSInteger)numberOfLines;
+- (void)drawTextInRect:(CGRect)rect;
+
+@end
+
+

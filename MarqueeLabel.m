@@ -12,7 +12,13 @@
 @implementation MarqueeLabel
 
 @synthesize subLabel;
-@synthesize initialLabelFrame;
+@synthesize baseLabelFrame;
+
+@dynamic adjustsFontSizeToFitWidth, text, lineBreakMode, numberOfLines;
+
+// Pass through properties
+@dynamic baselineAdjustment, enabled, font, highlighted, highlightedTextColor, minimumFontSize;
+@dynamic shadowColor, shadowOffset, textAlignment, textColor, userInteractionEnabled;
 
 - (id)initWithFrame:(CGRect)frame {
     
@@ -25,19 +31,38 @@
         self.backgroundColor = [UIColor clearColor];
         
         // Create sublabel
-        initialLabelFrame = CGRectMake(0, 0, (self.bounds.size.width * 2), self.bounds.size.height);
+        initialLabelFrame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
         self.subLabel = [[UILabel alloc] initWithFrame:initialLabelFrame];
         [self addSubview:subLabel];
+        [subLabel release];
+        
     }
     return self;
 }
+
+- (void)scrollWithLoop:(BOOL)loop andSpeed:(NSInteger)speed {
+    
+    // Get the label size based on text
+    CGSize maximumLabelSize = CGSizeMake(1200, 9999);
+    CGSize expectedLabelSize = [subLabel.text sizeWithFont:subLabel.font
+                                         constrainedToSize:maximumLabelSize
+                                             lineBreakMode:subLabel.lineBreakMode];
+    
+    CGRect newLabelFrame = subLabel.frame;
+    newLabelFrame.size.width = expectedLabelSize.width;
+    subLabel.frame = newLabelFrame;
+    
+    [self scrollLeft];
+}
+    
+    
 
 - (void)scrollLeft {
     
     // Get the start frame
     CGRect startSubLabelFrame = subLabel.frame;
     // Calculate the final frame
-    startSubLabelFrame.origin.x = -subLabel.frame.size.width;
+    startSubLabelFrame.origin.x = self.frame.size.width - subLabel.frame.size.width;
     
     [UIView animateWithDuration:7.0
                           delay:0.1 
@@ -57,14 +82,13 @@
                           delay:0.1 
                         options:UIViewAnimationCurveEaseInOut 
                      animations:^{
-                         subLabel.frame = initialLabelFrame;
+                         subLabel.frame = baseLabelFrame;
                      }
                      completion:^(BOOL finished){
                          //NSLog(@"Finished animating right");
                          [self scrollLeft];
                      }];
 }
-    
     
 
 /*
@@ -91,6 +115,14 @@
         NSLog(@"MarqueeLabel does not recognize the selector");
         [super forwardInvocation:anInvocation];
     }
+}
+
+- (id)valueForUndefinedKey:(NSString *)key {
+    return [subLabel valueForKey:key];
+}
+
+- (void) setValue:(id)value forUndefinedKey:(NSString *)key {
+    [subLabel setValue:value forKey:key];
 }
 
 - (void)dealloc {

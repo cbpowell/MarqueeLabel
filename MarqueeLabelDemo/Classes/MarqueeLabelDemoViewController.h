@@ -10,8 +10,14 @@
 #import "MarqueeLabel.h"
 
 @interface MarqueeLabelDemoViewController : UIViewController {
+    
+    MarqueeLabel *artistLabel;
 
 }
+
+@property (nonatomic, retain) MarqueeLabel *artistLabel;
+
+-(void) addNewLabel;
 
 @end
 
