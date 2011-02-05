@@ -35,10 +35,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.artistLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 100, self.view.frame.size.width - 20, 20)];
+    self.artistLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 100, self.view.frame.size.width - 20, 20) andSpeed:7.0];
     [self.view addSubview:artistLabel];
     [artistLabel release];
-    /*
+    
     artistLabel.numberOfLines = 1;
     artistLabel.opaque = NO;
     artistLabel.enabled = YES;
@@ -47,21 +47,11 @@
     artistLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
     artistLabel.backgroundColor = [UIColor clearColor];
     artistLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
-    */
     
-    [artistLabel setText:@"This is a test of the label. Look how long this label is! It's so long it stretches off the view!"];
     
-    artistLabel.text = @"This is a test of the label! It's still very long and larger than the iPhone can display in a single line across the screen.";
+    artistLabel.text = @"This is a test of the label. Look how long this label is! It's so long it stretches off the view!";
     
-    NSLog(@"Creating label");
-    UILabel *subLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 150, self.view.frame.size.width - 20, 20)];
-    subLabel.text = @"This is a test of the label";
-    [self.view addSubview:subLabel];
-    [subLabel release];
-    
-    [artistLabel scrollWithLoop:YES andSpeed:7];
-    
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(addNewLabel) userInfo:nil repeats:NO];
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(addNewLabel) userInfo:nil repeats:NO];
     NSTimer *timer2 = [NSTimer scheduledTimerWithTimeInterval:20 target:self selector:@selector(addAnotherNewLabel) userInfo:nil repeats:NO];
     
     
@@ -74,13 +64,13 @@
     [self.view addSubview:testLabel];
     [testLabel release];
     
-    [artistLabel setText:@"Testing mid-animation label changes"];
+    artistLabel.text = @"Testing mid-animation change";
     
 }
 
 
 - (void)addAnotherNewLabel {
-    [artistLabel setText:@"a;lsdkjfa;lskdjfa;lsjdf;alsjkdf;lajksdf;lakjsdflajsdl;fja;lsdjfla;jsdlfkasl;dkfja"];
+    artistLabel.text = @"a;lsdkjfa;lskdjfa;lsjdf;alsjkdf;lajksdf;lakjsdflajsdl;fja;lsdjfla;jsdlfkasl;dkfja";
 }
     
     

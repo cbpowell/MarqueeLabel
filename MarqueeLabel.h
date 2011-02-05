@@ -11,36 +11,47 @@
 
 @interface MarqueeLabel : UIView {
     
+    @protected
     UILabel *subLabel;
+    NSTimeInterval scrollSpeed;
     CGRect baseLabelFrame;
+    CGFloat baseAlpha;
+    BOOL awayFromHome;
     
     BOOL loopLabel;
     
 }
 
 @property (nonatomic, retain) UILabel *subLabel;
+@property (nonatomic) NSTimeInterval scrollSpeed;
 @property (nonatomic) CGRect baseLabelFrame;
+@property (nonatomic) CGFloat baseAlpha;
+@property (nonatomic) BOOL awayFromHome;
+
+// UIView Override properties
+@property (nonatomic, copy) UIColor *backgroundColor;
 
 // UILabel properties
-@property(nonatomic) BOOL adjustsFontSizeToFitWidth;
-@property(nonatomic) UIBaselineAdjustment baselineAdjustment;
-@property(nonatomic, getter=isEnabled) BOOL enabled;
-@property(nonatomic, retain) UIFont *font;
-@property(nonatomic, getter=isHighlighted) BOOL highlighted;
-@property(nonatomic, retain) UIColor *highlightedTextColor;
-@property(nonatomic) UILineBreakMode lineBreakMode;
-@property(nonatomic) CGFloat minimumFontSize;
-@property(nonatomic) NSInteger numberOfLines;
-@property(nonatomic, retain) UIColor *shadowColor;
-@property(nonatomic) CGSize shadowOffset;
-@property(nonatomic, copy) NSString *text;
-@property(nonatomic) UITextAlignment textAlignment;
-@property(nonatomic, retain) UIColor *textColor;
-@property(nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
+@property (nonatomic) BOOL adjustsFontSizeToFitWidth;
+@property (nonatomic) UIBaselineAdjustment baselineAdjustment;
+@property (nonatomic, getter=isEnabled) BOOL enabled;
+@property (nonatomic, retain) UIFont *font;
+@property (nonatomic, getter=isHighlighted) BOOL highlighted;
+@property (nonatomic, retain) UIColor *highlightedTextColor;
+@property (nonatomic) UILineBreakMode lineBreakMode;
+@property (nonatomic) CGFloat minimumFontSize;
+@property (nonatomic) NSInteger numberOfLines;
+@property (nonatomic, retain) UIColor *shadowColor;
+@property (nonatomic) CGSize shadowOffset;
+@property (nonatomic, copy) NSString *text;
+@property (nonatomic) UITextAlignment textAlignment;
+@property (nonatomic, retain) UIColor *textColor;
+@property (nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
 
--(void) scrollWithLoop:(BOOL)loop andSpeed:(NSInteger)speed;
--(void) scrollLeft;
--(void) scrollRight;
+- (void)scrollLeftWithSpeed:(NSTimeInterval)speed;
+- (void)scrollRightWithSpeed:(NSTimeInterval)speed;
+- (void)fadeInLabel;
+- (void)fadeOutLabel;
 
 @end
 
