@@ -181,70 +181,100 @@
       
     if (newText != self.subLabel.text) {
         
-        CGSize maximumLabelSize = CGSizeMake(1200, 9999);
+        CGSize maximumLabelSize = CGSizeMake(1200, 1200);
         CGSize expectedLabelSize = [newText sizeWithFont:self.subLabel.font
                                        constrainedToSize:maximumLabelSize
                                            lineBreakMode:self.subLabel.lineBreakMode];
         CGRect homeLabelFrame = CGRectMake(baseLabelOrigin.x, baseLabelOrigin.y, expectedLabelSize.width, expectedLabelSize.height);
         
-        if (self.awayFromHome && !self.labelize) {
-            NSLog(@"Label not at home, and not labelized");
+        if (!self.labelize) {
             
-            // Store current alpha
-            self.baseAlpha = self.subLabel.alpha;
-            // Store the max label size
-            
-            // Fade out quickly
-            [UIView animateWithDuration:0.2
-                                  delay:0.0 
-                                options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction)
-                             animations:^{
-                                 self.subLabel.alpha = 0.0;
-                             }
-                             completion:^(BOOL finished){
-                                 NSLog(@"Faded out label");
-                                 // Animate move immediately
-                                 [self returnLabelToOrigin];
-                                 // Resize label frame
-                                 self.subLabel.frame = homeLabelFrame;
-                                 
-                                 NSLog(@"Moved label home and resized");
-                                 // Set text while invisible
-                                 self.subLabel.text = newText;
-                                 // Fade in quickly
-                                 [UIView animateWithDuration:0.2
-                                                       delay:0.0
-                                                     options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction)
-                                                  animations:^{
-                                                      self.subLabel.alpha = baseAlpha;
-                                                  }
-                                                  completion:^(BOOL finished){
-                                                      NSLog(@"Returned label to visibility");
-                                                      self.awayFromHome = NO;
-                                                      if (self.subLabel.frame.size.width > self.frame.size.width) {
-                                                          // Scroll
-                                                          NSLog(@"Label text too large, scrolling");
-                                                          [self scrollLeftWithSpeed:self.scrollSpeed];
-                                                      }
-                                                  }];
-                                    }];
-            //end of animation blocks
-            
-        } else {
-            NSLog(@"Label at home");
-            // Set text with no animation if already home
-            self.subLabel.frame = homeLabelFrame;
-            self.subLabel.text = newText;
-            
-            if (!self.labelize && (self.subLabel.frame.size.width > self.frame.size.width)) {
+            if (self.awayFromHome) {
+                NSLog(@"Label not at home, and not labelized");
                 
-                // Scroll
-                NSLog(@"Label text too large, scrolling");
-                [self scrollLeftWithSpeed:self.scrollSpeed];
+                // Store current alpha
+                self.baseAlpha = self.subLabel.alpha;
+                
+                // Fade out quickly
+                [UIView animateWithDuration:0.2
+                                      delay:0.0 
+                                    options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction)
+                                 animations:^{
+                                     self.subLabel.alpha = 0.0;
+                                 }
+                                 completion:^(BOOL finished){
+                                     
+                                     // Animate move immediately
+                                     [self returnLabelToOrigin];
+                                     
+                                     // Set text while invisible
+                                     self.subLabel.text = newText;
+                                     self.subLabel.frame = homeLabelFrame;
+                                     
+                                     // Fade in quickly
+                                     [UIView animateWithDuration:0.2
+                                                           delay:0.0
+                                                         options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction)
+                                                      animations:^{
+                                                          self.subLabel.alpha = baseAlpha;
+                                                      }
+                                                      completion:^(BOOL finished){
+                                                          self.awayFromHome = NO;
+                                                          
+                                                          if (self.subLabel.frame.size.width > self.frame.size.width) {
+                                                              // Scroll
+                                                              [self scrollLeftWithSpeed:self.scrollSpeed];
+                                                          }
+                                                      }];
+                                        }];
+                //end of animation blocks
                 
             } else {
-                NSLog(@"not scrolling");
+                NSLog(@"Label at home, not labelized");
+                // Label at home, animate text change
+                
+                // Store current alpha
+                self.baseAlpha = self.subLabel.alpha;
+                
+                // Fade out quickly
+                [UIView animateWithDuration:0.2
+                                      delay:0.0 
+                                    options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction)
+                                 animations:^{
+                                     self.subLabel.alpha = 0.0;
+                                 }
+                                 completion:^(BOOL finished){
+                                     
+                                     // Set text while invisible
+                                     self.subLabel.frame = homeLabelFrame;
+                                     NSLog(@"homeLabelFrame: %.0f, %.0f, %.0f, %.0f", homeLabelFrame.origin.x, homeLabelFrame.origin.y, homeLabelFrame.size.width, homeLabelFrame.size.height);
+                                     self.subLabel.text = newText;
+                                     NSLog(@"Setting new text");
+                                     // Fade in quickly
+                                     [UIView animateWithDuration:0.2
+                                                           delay:0.0
+                                                         options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction)
+                                                      animations:^{
+                                                          self.subLabel.alpha = 1.0;
+                                                      }
+                                                      completion:^(BOOL finished){
+                                                          self.awayFromHome = NO;
+                                                          NSLog(@"Finished setting text and animations, option to scroll");
+                                                          if (self.subLabel.frame.size.width > self.frame.size.width) {
+                                                              // Scroll
+                                                              NSLog(@"Scrolling");
+                                                              [self scrollLeftWithSpeed:self.scrollSpeed];
+                                                          }
+                                                      }];
+                                 }];
+                // end of animation block
             }
+                
+        } else {
+            // Currently labelized
+            NSLog(@"Currently labelized");
+            self.subLabel.frame = homeLabelFrame;
+            self.subLabel.text = newText;
             
         }
         
