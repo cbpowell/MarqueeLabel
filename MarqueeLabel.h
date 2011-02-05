@@ -15,18 +15,21 @@
     UILabel *subLabel;
     NSTimeInterval scrollSpeed;
     CGRect baseLabelFrame;
+    CGPoint baseLabelOrigin;
     CGFloat baseAlpha;
     BOOL awayFromHome;
     
-    BOOL loopLabel;
+    BOOL labelize;
     
 }
 
 @property (nonatomic, retain) UILabel *subLabel;
 @property (nonatomic) NSTimeInterval scrollSpeed;
 @property (nonatomic) CGRect baseLabelFrame;
+@property (nonatomic) CGPoint baseLabelOrigin;
 @property (nonatomic) CGFloat baseAlpha;
 @property (nonatomic) BOOL awayFromHome;
+@property (nonatomic) BOOL labelize;
 
 // UIView Override properties
 @property (nonatomic, copy) UIColor *backgroundColor;
@@ -48,8 +51,10 @@
 @property (nonatomic, retain) UIColor *textColor;
 @property (nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
 
+- (id)initWithFrame:(CGRect)frame andSpeed:(NSTimeInterval)speed;
 - (void)scrollLeftWithSpeed:(NSTimeInterval)speed;
 - (void)scrollRightWithSpeed:(NSTimeInterval)speed;
+- (void)returnLabelToOrigin;
 - (void)fadeInLabel;
 - (void)fadeOutLabel;
 
