@@ -17,6 +17,7 @@
     CGRect baseLabelFrame;
     CGPoint baseLabelOrigin;
     CGFloat baseAlpha;
+    CGFloat baseBuffer;
     BOOL awayFromHome;
     
     BOOL labelize;
@@ -28,6 +29,7 @@
 @property (nonatomic) CGRect baseLabelFrame;
 @property (nonatomic) CGPoint baseLabelOrigin;
 @property (nonatomic) CGFloat baseAlpha;
+@property (nonatomic) CGFloat baseBuffer;
 @property (nonatomic) BOOL awayFromHome;
 @property (nonatomic) BOOL labelize;
 
@@ -51,7 +53,7 @@
 @property (nonatomic, retain) UIColor *textColor;
 @property (nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
 
-- (id)initWithFrame:(CGRect)frame andSpeed:(NSTimeInterval)speed;
+- (id)initWithFrame:(CGRect)frame andSpeed:(NSTimeInterval)speed andBuffer:(CGFloat)buffer;
 - (void)scrollLeftWithSpeed:(NSTimeInterval)speed;
 - (void)scrollRightWithSpeed:(NSTimeInterval)speed;
 - (void)returnLabelToOrigin;

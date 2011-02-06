@@ -13,7 +13,7 @@
 
 @synthesize subLabel;
 @synthesize scrollSpeed;
-@synthesize baseLabelFrame, baseLabelOrigin, baseAlpha;
+@synthesize baseLabelFrame, baseLabelOrigin, baseAlpha, baseBuffer;
 @synthesize awayFromHome, labelize;
 
 // UILabel properties for pass through WITH modification
@@ -32,10 +32,10 @@
 #pragma mark Initialization
 
 - (id)initWithFrame:(CGRect)frame {
-    return [self initWithFrame:frame andSpeed:7.0];
+    return [self initWithFrame:frame andSpeed:7.0 andBuffer:0.0];
 }
 
-- (id)initWithFrame:(CGRect)frame andSpeed:(NSTimeInterval)speed {
+- (id)initWithFrame:(CGRect)frame andSpeed:(NSTimeInterval)speed andBuffer:(CGFloat)buffer {
     
     self = [super initWithFrame:frame];
     if (self) {
@@ -47,10 +47,10 @@
         self.scrollSpeed = speed;
         self.awayFromHome = NO;
         self.labelize = NO;
-        
+        self.baseBuffer = buffer;
         
         // Create sublabel
-        self.baseLabelOrigin = CGPointMake(0, 0);
+        self.baseLabelOrigin = CGPointMake(buffer, 0);
         self.baseLabelFrame = CGRectMake(baseLabelOrigin.x, baseLabelOrigin.y, self.bounds.size.width, self.bounds.size.height);
         UILabel *newLabel = [[UILabel alloc] initWithFrame:self.baseLabelFrame];
         self.subLabel = newLabel;
@@ -308,6 +308,15 @@
     
 }
 
+#pragma mark -
+#pragma mark Custom Mutators and Setters
+/*
+- (void)setScrollSpeed:(CGFloat)pxPerSec {
+    
+    
+    
+}
+*/
 #pragma mark -
 #pragma mark UILabel Message Forwarding
 
