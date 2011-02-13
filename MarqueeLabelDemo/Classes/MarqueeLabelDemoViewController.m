@@ -1,16 +1,38 @@
+/**
+ * Copyright (c) 2011 Charles Powell
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following
+ * conditions:
+ * 
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 //
 //  MarqueeLabelDemoViewController.m
 //  MarqueeLabelDemo
-//
-//  Created by Charles Powell on 1/31/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
 #import "MarqueeLabelDemoViewController.h"
 
 @implementation MarqueeLabelDemoViewController
 
-@synthesize artistLabel;
+@synthesize demoLabel;
 
 /*
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -35,42 +57,29 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.artistLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 100, self.view.frame.size.width - 20, 20) andSpeed:7.0];
-    [self.view addSubview:artistLabel];
-    [artistLabel release];
+    MarqueeLabel *newLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 100, self.view.frame.size.width-20, 20) andSpeed:8 andBuffer:6.0];
+    self.demoLabel = newLabel;
+    [newLabel release];
     
-    artistLabel.numberOfLines = 1;
-    artistLabel.opaque = NO;
-    artistLabel.enabled = YES;
-    artistLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    artistLabel.textAlignment = UITextAlignmentLeft;
-    artistLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
-    artistLabel.backgroundColor = [UIColor clearColor];
-    artistLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
+    [self.view addSubview:self.demoLabel];
     
-    
-    artistLabel.text = @"This is a test of the label. Look how long this label is! It's so long it stretches off the view!";
-    
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(addNewLabel) userInfo:nil repeats:NO];
-    NSTimer *timer2 = [NSTimer scheduledTimerWithTimeInterval:20 target:self selector:@selector(addAnotherNewLabel) userInfo:nil repeats:NO];
+    self.demoLabel.numberOfLines = 1;
+    self.demoLabel.opaque = NO;
+    self.demoLabel.enabled = YES;
+    self.demoLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    self.demoLabel.textAlignment = UITextAlignmentLeft;
+    self.demoLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
+    self.demoLabel.backgroundColor = [UIColor whiteColor];
+    self.demoLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
     
     
+    self.demoLabel.text = @"This is a test of the label. Look how long this label is! It's so long it stretches off the view!";
 
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(changeTheLabel) userInfo:nil repeats:NO];
 }
 
-- (void) addNewLabel {
-    UILabel *testLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 320, 20)];
-    testLabel.text = @"Adding a new label!";
-    [self.view addSubview:testLabel];
-    [testLabel release];
-    
-    artistLabel.text = @"Testing mid-animation change";
-    
-}
-
-
-- (void)addAnotherNewLabel {
-    artistLabel.text = @"a;lsdkjfa;lskdjfa;lsjdf;alsjkdf;lajksdf;lakjsdflajsdl;fja;lsdjfla;jsdlfkasl;dkfja";
+- (void)changeTheLabel {
+    self.demoLabel.text = @"This label is not as long.";
 }
     
     
@@ -98,6 +107,9 @@
 
 
 - (void)dealloc {
+    
+    self.demoLabel = nil;
+    
     [super dealloc];
 }
 
