@@ -1,10 +1,31 @@
+/**
+ * Copyright (c) 2011 Charles Powell
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following
+ * conditions:
+ * 
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 //
 //  MarqueeLabel.m
 //  
-//
-//  Created by Charles Powell on 1/31/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
 
 #import "MarqueeLabel.h"
 
@@ -13,7 +34,7 @@
 
 @synthesize subLabel;
 @synthesize scrollSpeed;
-@synthesize baseLabelFrame, baseLabelOrigin, baseAlpha, baseBuffer;
+@synthesize baseLabelFrame, baseLabelOrigin, baseAlpha, baseLeftBuffer, baseRightBuffer;
 @synthesize awayFromHome, labelize;
 
 // UILabel properties for pass through WITH modification
@@ -47,11 +68,12 @@
         self.scrollSpeed = speed;
         self.awayFromHome = NO;
         self.labelize = NO;
-        self.baseBuffer = buffer;
+        self.baseLeftBuffer = buffer;
+        self.baseRightBuffer = buffer;
         
         // Create sublabel
-        self.baseLabelOrigin = CGPointMake(buffer, 0);
-        self.baseLabelFrame = CGRectMake(baseLabelOrigin.x, baseLabelOrigin.y, self.bounds.size.width, self.bounds.size.height);
+        self.baseLabelOrigin = CGPointMake(self.baseLeftBuffer, 0);
+        self.baseLabelFrame = CGRectMake(baseLabelOrigin.x, baseLabelOrigin.y, (self.bounds.size.width - self.baseRightBuffer), self.bounds.size.height);
         UILabel *newLabel = [[UILabel alloc] initWithFrame:self.baseLabelFrame];
         self.subLabel = newLabel;
         [self addSubview:self.subLabel];
@@ -72,8 +94,8 @@
     // Calculate the final frame
     startSubLabelFrame.origin.x = self.frame.size.width - subLabel.frame.size.width;
     
-    NSLog(@"self.frame.size.width: %.0f, subLabel.frame.size.width: %.0f", self.frame.size.width, self.subLabel.frame.size.width);
-    NSLog(@"startSubLabelFrame origin: %.0f", startSubLabelFrame.origin.x);
+    //NSLog(@"self.frame.size.width: %.0f, subLabel.frame.size.width: %.0f", self.frame.size.width, self.subLabel.frame.size.width);
+    //NSLog(@"startSubLabelFrame origin: %.0f", startSubLabelFrame.origin.x);
     
     // Perform animation
     self.awayFromHome = TRUE;
@@ -96,10 +118,10 @@
                          self.subLabel.frame = baseLabelFrame;
                      }
                      completion:^(BOOL finished){
-                         NSLog(@"Finished animating right");
+                         //NSLog(@"Finished animating right");
                          self.awayFromHome = NO;
                          if (subLabel.frame.size.width > self.frame.size.width) {
-                             NSLog(@"subLabel larger, scrolling left again: %.0f, %.0f", subLabel.frame.size.width, self.frame.size.width);
+                             //NSLog(@"subLabel larger, scrolling left again: %.0f, %.0f", subLabel.frame.size.width, self.frame.size.width);
                              [self scrollLeftWithSpeed:speed];
                          }
                      }];
@@ -132,7 +154,7 @@
                          self.subLabel.alpha = 0.0;
                      }
                      completion:^(BOOL finished){
-                         NSLog(@"Faded out label");
+                         //NSLog(@"Faded out label");
                      }];
     
 }
@@ -146,17 +168,17 @@
                          self.subLabel.alpha = self.baseAlpha;
                      }
                      completion:^(BOOL finished){
-                         NSLog(@"Faded in label");
+                         //NSLog(@"Faded in label");
                      }];
     
 }
 
 // Custom labelize mutator to restart scrolling after changing labelize to NO
 - (void)setLabelize:(BOOL)function {
-    NSLog(@"Setting labelize");
+    //NSLog(@"Setting labelize");
     if (function) {
         
-        NSLog(@"Labelize = yes");
+        //NSLog(@"Labelize = yes");
         labelize = YES;
         if (self.subLabel) {
             [self returnLabelToOrigin];
@@ -164,7 +186,7 @@
         
     } else {
         
-        NSLog(@"Labelize = no");
+        //NSLog(@"Labelize = no");
         labelize = NO;
         if (self.subLabel && (self.subLabel.frame.size.width > self.frame.size.width)) {
             [self returnLabelToOrigin];
@@ -185,12 +207,12 @@
         CGSize expectedLabelSize = [newText sizeWithFont:self.subLabel.font
                                        constrainedToSize:maximumLabelSize
                                            lineBreakMode:self.subLabel.lineBreakMode];
-        CGRect homeLabelFrame = CGRectMake(baseLabelOrigin.x, baseLabelOrigin.y, expectedLabelSize.width, expectedLabelSize.height);
+        CGRect homeLabelFrame = CGRectMake(baseLabelOrigin.x, baseLabelOrigin.y, (expectedLabelSize.width + self.baseRightBuffer), expectedLabelSize.height);
         
         if (!self.labelize) {
             
             if (self.awayFromHome) {
-                NSLog(@"Label not at home, and not labelized");
+                //NSLog(@"Label not at home, and not labelized");
                 
                 // Store current alpha
                 self.baseAlpha = self.subLabel.alpha;
@@ -221,7 +243,7 @@
                                                       completion:^(BOOL finished){
                                                           self.awayFromHome = NO;
                                                           
-                                                          if (self.subLabel.frame.size.width > self.frame.size.width) {
+                                                          if ((self.subLabel.frame.size.width - self.baseRightBuffer) > self.frame.size.width) {
                                                               // Scroll
                                                               [self scrollLeftWithSpeed:self.scrollSpeed];
                                                           }
@@ -230,7 +252,7 @@
                 //end of animation blocks
                 
             } else {
-                NSLog(@"Label at home, not labelized");
+                //NSLog(@"Label at home, not labelized");
                 // Label at home, animate text change
                 
                 // Store current alpha
@@ -247,9 +269,9 @@
                                      
                                      // Set text while invisible
                                      self.subLabel.frame = homeLabelFrame;
-                                     NSLog(@"homeLabelFrame: %.0f, %.0f, %.0f, %.0f", homeLabelFrame.origin.x, homeLabelFrame.origin.y, homeLabelFrame.size.width, homeLabelFrame.size.height);
+                                     //NSLog(@"homeLabelFrame: %.0f, %.0f, %.0f, %.0f", homeLabelFrame.origin.x, homeLabelFrame.origin.y, homeLabelFrame.size.width, homeLabelFrame.size.height);
                                      self.subLabel.text = newText;
-                                     NSLog(@"Setting new text");
+                                     //NSLog(@"Setting new text");
                                      // Fade in quickly
                                      [UIView animateWithDuration:0.2
                                                            delay:0.0
@@ -259,10 +281,10 @@
                                                       }
                                                       completion:^(BOOL finished){
                                                           self.awayFromHome = NO;
-                                                          NSLog(@"Finished setting text and animations, option to scroll");
+                                                          //NSLog(@"Finished setting text and animations, option to scroll");
                                                           if (self.subLabel.frame.size.width > self.frame.size.width) {
                                                               // Scroll
-                                                              NSLog(@"Scrolling");
+                                                              //NSLog(@"Scrolling");
                                                               [self scrollLeftWithSpeed:self.scrollSpeed];
                                                           }
                                                       }];
@@ -272,7 +294,7 @@
                 
         } else {
             // Currently labelized
-            NSLog(@"Currently labelized");
+            //NSLog(@"Currently labelized");
             self.subLabel.frame = homeLabelFrame;
             self.subLabel.text = newText;
             
