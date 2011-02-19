@@ -35,7 +35,7 @@
 @synthesize subLabel;
 @synthesize scrollSpeed;
 @synthesize baseLabelFrame, baseLabelOrigin, baseAlpha, baseLeftBuffer, baseRightBuffer;
-@synthesize awayFromHome, labelize;
+@synthesize awayFromHome, labelize, animating;
 
 // UILabel properties for pass through WITH modification
 @synthesize text;
@@ -73,7 +73,7 @@
         
         // Create sublabel
         self.baseLabelOrigin = CGPointMake(self.baseLeftBuffer, 0);
-        self.baseLabelFrame = CGRectMake(baseLabelOrigin.x, baseLabelOrigin.y, (self.bounds.size.width - self.baseRightBuffer), self.bounds.size.height);
+        self.baseLabelFrame = CGRectMake(self.baseLabelOrigin.x, self.baseLabelOrigin.y, (self.bounds.size.width - self.baseRightBuffer), self.bounds.size.height);
         UILabel *newLabel = [[UILabel alloc] initWithFrame:self.baseLabelFrame];
         self.subLabel = newLabel;
         [self addSubview:self.subLabel];
@@ -89,44 +89,47 @@
 
 - (void)scrollLeftWithSpeed:(NSTimeInterval)speed {
     
-    // Get the start frame
+    // Calculate the destination frame
     CGRect startSubLabelFrame = subLabel.frame;
-    // Calculate the final frame
     startSubLabelFrame.origin.x = self.frame.size.width - subLabel.frame.size.width;
     
-    //NSLog(@"self.frame.size.width: %.0f, subLabel.frame.size.width: %.0f", self.frame.size.width, self.subLabel.frame.size.width);
-    //NSLog(@"startSubLabelFrame origin: %.0f", startSubLabelFrame.origin.x);
-    
     // Perform animation
-    self.awayFromHome = TRUE;
+    self.awayFromHome = YES;
     [UIView animateWithDuration:speed
                           delay:1.0 
-                        options:(UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat)
+                        options:(UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction)
                      animations:^{
                          self.subLabel.frame = startSubLabelFrame;
                      }
-                     completion:nil];
+                     completion:^(BOOL finished) {
+                         self.subLabel.frame = startSubLabelFrame;
+                         [self scrollRightWithSpeed:speed];
+                         
+                     }];
     
 }
 
 - (void)scrollRightWithSpeed:(NSTimeInterval)speed {
+    
+    // Calculate the destination frame
+    CGRect returnLabelFrame = CGRectMake(self.baseLabelOrigin.x, 0, self.subLabel.frame.size.width, self.subLabel.frame.size.height);
     // Perform animation
     [UIView animateWithDuration:speed
-                          delay:0.1 
+                          delay:0.2
                         options:(UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction)
                      animations:^{
-                         self.subLabel.frame = baseLabelFrame;
+                         self.subLabel.frame = returnLabelFrame;
                      }
                      completion:^(BOOL finished){
-                         //NSLog(@"Finished animating right");
+
                          self.awayFromHome = NO;
-                         if (subLabel.frame.size.width > self.frame.size.width) {
-                             //NSLog(@"subLabel larger, scrolling left again: %.0f, %.0f", subLabel.frame.size.width, self.frame.size.width);
+                         self.subLabel.frame = returnLabelFrame;
+                         if ((self.subLabel.frame.size.width - self.baseRightBuffer) > self.frame.size.width) {
+                             
                              [self scrollLeftWithSpeed:speed];
                          }
+                         
                      }];
-    // Acually commit change
-    self.subLabel.frame = baseLabelFrame;
 }
 
 - (void)returnLabelToOrigin {
@@ -141,44 +144,12 @@
     self.awayFromHome = NO;
     self.baseLabelFrame = homeLabelFrame;
 }
-    
-    
-- (void)fadeOutLabel {
-    
-    self.baseAlpha = self.subLabel.alpha;
-    
-    [UIView animateWithDuration:1 
-                          delay:0.1 
-                        options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
-                     animations:^{
-                         self.subLabel.alpha = 0.0;
-                     }
-                     completion:^(BOOL finished){
-                         //NSLog(@"Faded out label");
-                     }];
-    
-}
-
-- (void)fadeInLabel {
-    
-    [UIView animateWithDuration:1 
-                          delay:0.1 
-                        options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction)
-                     animations:^{
-                         self.subLabel.alpha = self.baseAlpha;
-                     }
-                     completion:^(BOOL finished){
-                         //NSLog(@"Faded in label");
-                     }];
-    
-}
 
 // Custom labelize mutator to restart scrolling after changing labelize to NO
 - (void)setLabelize:(BOOL)function {
-    //NSLog(@"Setting labelize");
+
     if (function) {
         
-        //NSLog(@"Labelize = yes");
         labelize = YES;
         if (self.subLabel) {
             [self returnLabelToOrigin];
@@ -186,7 +157,6 @@
         
     } else {
         
-        //NSLog(@"Labelize = no");
         labelize = NO;
         if (self.subLabel && (self.subLabel.frame.size.width > self.frame.size.width)) {
             [self returnLabelToOrigin];
@@ -210,8 +180,9 @@
         CGRect homeLabelFrame = CGRectMake(baseLabelOrigin.x, baseLabelOrigin.y, (expectedLabelSize.width + self.baseRightBuffer), expectedLabelSize.height);
         
         if (!self.labelize) {
-            
+            //NSLog(@"1. Not labelized");
             if (self.awayFromHome) {
+                //NSLog(@"2. Away from home");
                 //NSLog(@"Label not at home, and not labelized");
                 
                 // Store current alpha
@@ -221,9 +192,7 @@
                 [UIView animateWithDuration:0.2
                                       delay:0.0 
                                     options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction)
-                                 animations:^{
-                                     self.subLabel.alpha = 0.0;
-                                 }
+                                 animations:^{ self.subLabel.alpha = 0.0; }
                                  completion:^(BOOL finished){
                                      
                                      // Animate move immediately
@@ -237,9 +206,7 @@
                                      [UIView animateWithDuration:0.2
                                                            delay:0.0
                                                          options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction)
-                                                      animations:^{
-                                                          self.subLabel.alpha = baseAlpha;
-                                                      }
+                                                      animations:^{ self.subLabel.alpha = baseAlpha; }
                                                       completion:^(BOOL finished){
                                                           self.awayFromHome = NO;
                                                           
@@ -248,11 +215,12 @@
                                                               [self scrollLeftWithSpeed:self.scrollSpeed];
                                                           }
                                                       }];
-                                        }];
+                                 }];
+                      
                 //end of animation blocks
                 
             } else {
-                //NSLog(@"Label at home, not labelized");
+                //NSLog(@"2. At home");
                 // Label at home, animate text change
                 
                 // Store current alpha
@@ -302,7 +270,20 @@
         
         self.baseLabelFrame = homeLabelFrame;
         
+    } 
+    /*
+     else {
+        NSLog(@"1. Text is the same!");
+        
+        if (self.awayFromHome) {
+            NSLog(@"1.2 Away from home!");
+        } else {
+            NSLog(@"1.2 At home!");
+        }
+        
     }
+     */
+
     
 }
 

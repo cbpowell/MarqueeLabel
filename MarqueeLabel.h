@@ -43,6 +43,7 @@
     BOOL awayFromHome;
     
     BOOL labelize;
+    BOOL animating;
     
 }
 
@@ -55,6 +56,7 @@
 @property (nonatomic) CGFloat baseRightBuffer;
 @property (nonatomic) BOOL awayFromHome;
 @property (nonatomic) BOOL labelize;
+@property (nonatomic) BOOL animating;
 
 // UIView Override properties
 @property (nonatomic, copy) UIColor *backgroundColor;
@@ -80,8 +82,6 @@
 - (void)scrollLeftWithSpeed:(NSTimeInterval)speed;
 - (void)scrollRightWithSpeed:(NSTimeInterval)speed;
 - (void)returnLabelToOrigin;
-- (void)fadeInLabel;
-- (void)fadeOutLabel;
 
 @end
 
