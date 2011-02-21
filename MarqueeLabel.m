@@ -166,7 +166,7 @@
 - (void)setText:(NSString *)newText {
       
     if (newText != self.subLabel.text) {
-        NSLog(@"label text differs");
+        //NSLog(@"label text differs");
         CGSize maximumLabelSize = CGSizeMake(1200, 1200);
         CGSize expectedLabelSize = [newText sizeWithFont:self.subLabel.font
                                        constrainedToSize:maximumLabelSize
@@ -177,7 +177,7 @@
             
             if (self.awayFromHome | (self.subLabel.frame.origin.x != self.baseLabelOrigin.x)) {
 
-                NSLog(@"Label not at home");
+                //NSLog(@"Label not at home");
                 // Store current alpha
                 self.baseAlpha = self.subLabel.alpha;
                 
@@ -205,7 +205,7 @@
                                                           
                                                           if ((self.subLabel.frame.size.width - self.baseRightBuffer) > self.frame.size.width) {
                                                               // Scroll
-                                                              NSLog(@"Starting scroll");
+                                                              //NSLog(@"Starting scroll");
                                                               [self scrollLeftWithSpeed:self.scrollSpeed];
                                                           }
                                                       }];
@@ -214,7 +214,7 @@
                 //end of animation blocks
                 
             } else {
-                NSLog(@"2. At home");
+                //NSLog(@"2. At home");
                 // Label at home, animate text change
                 
                 // Store current alpha
@@ -262,15 +262,6 @@
         }
         
         self.baseLabelFrame = homeLabelFrame;
-        
-    } else {
-        NSLog(@"1. Text is the same!");
-        
-        if (self.awayFromHome) {
-            NSLog(@"1.2 Away from home!");
-        } else {
-            NSLog(@"1.2 At home!");
-        }
         
     }
 }
