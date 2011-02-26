@@ -34,6 +34,7 @@
     
     @protected
     UILabel *subLabel;
+    NSString *labelText;
     NSTimeInterval scrollSpeed;
     CGRect baseLabelFrame;
     CGPoint baseLabelOrigin;
@@ -48,6 +49,7 @@
 }
 
 @property (nonatomic, retain) UILabel *subLabel;
+@property (nonatomic, retain) NSString *labelText;
 @property (nonatomic) NSTimeInterval scrollSpeed;
 @property (nonatomic) CGRect baseLabelFrame;
 @property (nonatomic) CGPoint baseLabelOrigin;

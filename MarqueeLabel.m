@@ -32,7 +32,7 @@
 
 @implementation MarqueeLabel
 
-@synthesize subLabel;
+@synthesize subLabel, labelText;
 @synthesize scrollSpeed;
 @synthesize baseLabelFrame, baseLabelOrigin, baseAlpha, baseLeftBuffer, baseRightBuffer;
 @synthesize awayFromHome, labelize, animating;
@@ -70,6 +70,7 @@
         self.labelize = NO;
         self.baseLeftBuffer = buffer;
         self.baseRightBuffer = buffer;
+        self.labelText = nil;
         
         // Create sublabel
         self.baseLabelOrigin = CGPointMake(self.baseLeftBuffer, 0);
@@ -136,6 +137,7 @@
                      completion:^(BOOL finished){
                          self.awayFromHome = NO;
                          self.baseLabelFrame = homeLabelFrame;
+                         //NSLog(@"Returned label home");
                      }];
 }
 
@@ -164,11 +166,18 @@
 #pragma mark Modified UILabel Getters/Setters
 
 - (void)setText:(NSString *)newText {
-      
-    if (newText != self.subLabel.text) {
-        //NSLog(@"label text differs");
+    
+    if (newText != self.labelText) {
+
+        //NSLog(@"New label text: %@", newText);
+        //NSLog(@"Old label text: %@", self.labelText);
+        
+        // Set labelText to incoming newText
+        self.labelText = newText;
+        
+        // Calculate label size
         CGSize maximumLabelSize = CGSizeMake(1200, 1200);
-        CGSize expectedLabelSize = [newText sizeWithFont:self.subLabel.font
+        CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
                                        constrainedToSize:maximumLabelSize
                                            lineBreakMode:self.subLabel.lineBreakMode];
         CGRect homeLabelFrame = CGRectMake(self.baseLabelOrigin.x, self.baseLabelOrigin.y, (expectedLabelSize.width + self.baseRightBuffer), expectedLabelSize.height);
@@ -191,9 +200,11 @@
                                      // Animate move immediately
                                      [self returnLabelToOrigin];
                                      
-                                     // Set text while invisible
-                                     self.subLabel.frame = homeLabelFrame;
-                                     self.subLabel.text = newText;
+                                     // Set frame and text while invisible
+                                     //self.subLabel.frame = homeLabelFrame;
+                                     //self.baseLabelFrame = homeLabelFrame;
+                                     //self.awayFromHome = NO;
+                                     self.subLabel.text = self.labelText;
                                      
                                      // Fade in quickly
                                      [UIView animateWithDuration:0.1
@@ -201,7 +212,6 @@
                                                          options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState)
                                                       animations:^{ self.subLabel.alpha = self.baseAlpha; }
                                                       completion:^(BOOL finished){
-                                                          self.awayFromHome = NO;
                                                           
                                                           if ((self.subLabel.frame.size.width - self.baseRightBuffer) > self.frame.size.width) {
                                                               // Scroll
@@ -232,7 +242,7 @@
                                      // Set text while invisible
                                      self.subLabel.frame = homeLabelFrame;
                                      //NSLog(@"homeLabelFrame: %.0f, %.0f, %.0f, %.0f", homeLabelFrame.origin.x, homeLabelFrame.origin.y, homeLabelFrame.size.width, homeLabelFrame.size.height);
-                                     self.subLabel.text = newText;
+                                     self.subLabel.text = self.labelText;
                                      //NSLog(@"Setting new text");
                                      // Fade in quickly
                                      [UIView animateWithDuration:0.2
@@ -257,7 +267,7 @@
         } else {
             // Currently labelized
             self.subLabel.frame = homeLabelFrame;
-            self.subLabel.text = newText;
+            self.subLabel.text = self.labelText;
             
         }
         
@@ -268,7 +278,7 @@
 
 - (NSString *)text {
     
-    return self.subLabel.text;
+    return self.labelText;
     
 }
 
