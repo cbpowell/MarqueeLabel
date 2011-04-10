@@ -90,22 +90,28 @@
 
 - (void)scrollLeftWithSpeed:(NSTimeInterval)speed {
     
-    // Calculate the destination frame
-    CGRect startSubLabelFrame = subLabel.frame;
-    startSubLabelFrame.origin.x = self.frame.size.width - subLabel.frame.size.width;
-    
-    // Perform animation
-    NSLog(@"Scrolling left: %@", self.labelText);
-    self.awayFromHome = YES;
-    [UIView animateWithDuration:speed
-                          delay:1.0 
-                        options:(UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction)
-                     animations:^{self.subLabel.frame = startSubLabelFrame;}
-                     completion:^(BOOL finished) {
-                         NSLog(@"Done scrolling left: %@", self.labelText);
-                         [self scrollRightWithSpeed:speed];
-                         
-                     }];
+    // Determine if the label needs to scroll (if label frame is larger than enclosing frame)
+    if ((self.subLabel.frame.size.width - self.baseRightBuffer) > self.frame.size.width) {
+        
+        // Calculate the destination frame
+        CGRect finalSubLabelFrame = self.subLabel.frame;
+        finalSubLabelFrame.origin.x = self.frame.size.width - self.subLabel.frame.size.width;
+        
+        // Perform animation
+        NSLog(@"Scrolling left: %@", self.labelText);
+        self.awayFromHome = YES;
+        [UIView animateWithDuration:speed
+                              delay:1.0 
+                            options:(UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat)
+                         animations:^{self.subLabel.frame = finalSubLabelFrame;}
+                         completion:^(BOOL finished) {
+                             NSLog(@"Done scrolling left: %@", self.labelText);
+                             //[self scrollRightWithSpeed:speed];
+                             
+                         }];
+    } else {
+        DLog(@"Not scrolling (%f < %f)", (self.subLabel.frame.size.width - self.baseRightBuffer), self.frame.size.width);
+    }
     
 }
 
@@ -131,17 +137,16 @@
 }
 
 - (void)returnLabelToOrigin {
-    //CGRect homeLabelFrame = CGRectMake(self.baseLabelOrigin.x, self.baseLabelOrigin.y, self.subLabel.frame.size.width, self.subLabel.frame.size.height);
+    
     [UIView animateWithDuration:0
                           delay:0
-                        options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction) 
+                        options:(UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState) 
                      animations:^{
                          self.subLabel.frame = self.baseLabelFrame;
                      }
                      completion:^(BOOL finished){
                          self.awayFromHome = NO;
-                         //self.baseLabelFrame = homeLabelFrame;
-                         NSLog(@"Returned label home: %@", self.labelText);
+                         //NSLog(@"Returned label home: %@", self.labelText);
                      }];
 }
 
@@ -172,9 +177,6 @@
 - (void)setText:(NSString *)newText {
     
     if (newText != self.labelText) {
-
-        //NSLog(@"New label text: %@", newText);
-        //NSLog(@"Old label text: %@", self.labelText);
         
         // Set labelText to incoming newText
         self.labelText = newText;
@@ -184,8 +186,8 @@
         CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
                                        constrainedToSize:maximumLabelSize
                                            lineBreakMode:self.subLabel.lineBreakMode];
-        CGRect homeLabelFrame = CGRectMake(self.baseLabelOrigin.x, self.baseLabelOrigin.y, (expectedLabelSize.width + self.baseRightBuffer), expectedLabelSize.height);
-        self.baseLabelFrame = homeLabelFrame;
+        CGRect newBaseLabelFrame = CGRectMake(self.baseLabelOrigin.x, self.baseLabelOrigin.y, (expectedLabelSize.width + self.baseRightBuffer), expectedLabelSize.height);
+        self.baseLabelFrame = newBaseLabelFrame;
         
         if (!self.labelize) {
             
@@ -194,8 +196,8 @@
                 NSLog(@"Label not at home: %@", self.labelText);
                 // Store current alpha
                 self.baseAlpha = self.subLabel.alpha;
-                
-                // Fade out quickly
+
+                // 
                 [UIView animateWithDuration:0.1
                                       delay:0.0 
                                     options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState)
@@ -206,9 +208,7 @@
                                      [self returnLabelToOrigin];
                                      
                                      // Set frame and text while invisible
-                                     //self.subLabel.frame = homeLabelFrame;
-                                     //self.baseLabelFrame = homeLabelFrame;
-                                     //self.awayFromHome = NO;
+                                     self.subLabel.frame = newBaseLabelFrame;
                                      self.subLabel.text = self.labelText;
                                      
                                      // Fade in quickly
@@ -217,12 +217,8 @@
                                                          options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState)
                                                       animations:^{ self.subLabel.alpha = self.baseAlpha; }
                                                       completion:^(BOOL finished){
-                                                          
-                                                          if ((self.subLabel.frame.size.width - self.baseRightBuffer) > self.frame.size.width) {
-                                                              // Scroll
-                                                              NSLog(@"Starting scroll: %@", self.labelText);
-                                                              [self scrollLeftWithSpeed:self.scrollSpeed];
-                                                          }
+                                                          NSLog(@"Starting scroll: %@", self.labelText);
+                                                          [self scrollLeftWithSpeed:self.scrollSpeed];
                                                       }];
                                  }];
                       
@@ -245,7 +241,7 @@
                                  completion:^(BOOL finished){
                                      
                                      // Set text while invisible
-                                     self.subLabel.frame = homeLabelFrame;
+                                     self.subLabel.frame = newBaseLabelFrame;
                                      //NSLog(@"homeLabelFrame: %.0f, %.0f, %.0f, %.0f", homeLabelFrame.origin.x, homeLabelFrame.origin.y, homeLabelFrame.size.width, homeLabelFrame.size.height);
                                      self.subLabel.text = self.labelText;
                                      //NSLog(@"Setting new text");
@@ -271,7 +267,7 @@
         } else {
             
             // Currently labelized
-            self.subLabel.frame = homeLabelFrame;
+            self.subLabel.frame = newBaseLabelFrame;
             self.subLabel.text = self.labelText;
             
         }
