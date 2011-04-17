@@ -35,7 +35,7 @@
 @synthesize subLabel, labelText;
 @synthesize scrollSpeed;
 @synthesize baseLabelFrame, baseLabelOrigin, baseAlpha, baseLeftBuffer, baseRightBuffer;
-@synthesize awayFromHome, labelize, animating;
+@synthesize awayFromHome, labelize, animating, rateSpeed;
 
 // UILabel properties for pass through WITH modification
 @synthesize text;
@@ -56,7 +56,15 @@
     return [self initWithFrame:frame andSpeed:7.0 andBuffer:0.0];
 }
 
+- (id)initWithFrame:(CGRect)frame andPixelsPerSecond:(float)pixelsPerSec andBufer:(CGFloat)buffer {
+    return [self initWithFrame:frame andSpeed:(NSTimeInterval)((float)frame.size.width / pixelsPerSec) isRate:YES andBuffer:buffer];
+}
+
 - (id)initWithFrame:(CGRect)frame andSpeed:(NSTimeInterval)speed andBuffer:(CGFloat)buffer {
+    return [self initWithFrame:frame andSpeed:(NSTimeInterval)speed isRate:NO andBuffer:buffer];
+}
+
+- (id)initWithFrame:(CGRect)frame andSpeed:(NSTimeInterval)speed isRate:(BOOL)speedIsRate andBuffer:(CGFloat)buffer {
     
     self = [super initWithFrame:frame];
     if (self) {
@@ -65,9 +73,10 @@
         // Set the containing MarqueeLabel view to clip it's interior, and have a clear background
         [self setClipsToBounds:YES];
         self.backgroundColor = [UIColor redColor];
-        self.scrollSpeed = speed;
+        self.scrollSpeed = (NSTimeInterval)speed;
         self.awayFromHome = NO;
         self.labelize = NO;
+        self.rateSpeed = speedIsRate;
         self.baseLeftBuffer = buffer;
         self.baseRightBuffer = buffer;
         self.labelText = nil;
@@ -98,19 +107,19 @@
         finalSubLabelFrame.origin.x = self.frame.size.width - self.subLabel.frame.size.width;
         
         // Perform animation
-        NSLog(@"Scrolling left: %@", self.labelText);
+        //NSLog(@"Scrolling left: %@", self.labelText);
         self.awayFromHome = YES;
         [UIView animateWithDuration:speed
                               delay:1.0 
                             options:(UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat)
                          animations:^{self.subLabel.frame = finalSubLabelFrame;}
                          completion:^(BOOL finished) {
-                             NSLog(@"Done scrolling left: %@", self.labelText);
+                             //NSLog(@"Done scrolling left: %@", self.labelText);
                              //[self scrollRightWithSpeed:speed];
                              
                          }];
     } else {
-        DLog(@"Not scrolling (%f < %f)", (self.subLabel.frame.size.width - self.baseRightBuffer), self.frame.size.width);
+        //NSLog(@"Not scrolling (%f < %f)", (self.subLabel.frame.size.width - self.baseRightBuffer), self.frame.size.width);
     }
     
 }
@@ -120,13 +129,13 @@
     // Calculate the destination frame
     CGRect returnLabelFrame = CGRectMake(self.baseLabelOrigin.x, 0, self.subLabel.frame.size.width, self.subLabel.frame.size.height);
     // Perform animation
-    NSLog(@"Scrolling right");
+    //NSLog(@"Scrolling right");
     [UIView animateWithDuration:speed
                           delay:0.2
                         options:(UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction)
                      animations:^{self.subLabel.frame = returnLabelFrame;}
                      completion:^(BOOL finished){
-                         NSLog(@"Done scrolling right: %@", self.labelText);
+                         //NSLog(@"Done scrolling right: %@", self.labelText);
                          self.awayFromHome = NO;
                          if ((self.subLabel.frame.size.width - self.baseRightBuffer) > self.frame.size.width) {
                              
@@ -193,7 +202,7 @@
             
             if (self.awayFromHome | (self.subLabel.frame.origin.x != self.baseLabelOrigin.x)) {
 
-                NSLog(@"Label not at home: %@", self.labelText);
+                //NSLog(@"Label not at home: %@", self.labelText);
                 // Store current alpha
                 self.baseAlpha = self.subLabel.alpha;
 
@@ -217,7 +226,7 @@
                                                          options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState)
                                                       animations:^{ self.subLabel.alpha = self.baseAlpha; }
                                                       completion:^(BOOL finished){
-                                                          NSLog(@"Starting scroll: %@", self.labelText);
+                                                          //NSLog(@"Starting scroll: %@", self.labelText);
                                                           [self scrollLeftWithSpeed:self.scrollSpeed];
                                                       }];
                                  }];
@@ -225,7 +234,7 @@
                 //end of animation blocks
                 
             } else {
-                NSLog(@"2. At home: %@", self.labelText);
+                //NSLog(@"2. At home: %@", self.labelText);
                 // Label at home, animate text change
                 
                 // Store current alpha
@@ -257,7 +266,7 @@
                                                           //NSLog(@"Finished setting text and animations, option to scroll");
                                                           if (self.subLabel.frame.size.width > self.frame.size.width) {
                                                               // Scroll
-                                                              NSLog(@"Starting scroll: %@", self.labelText);
+                                                              //NSLog(@"Starting scroll: %@", self.labelText);
                                                               [self scrollLeftWithSpeed:self.scrollSpeed];
                                                           }
                                                       }];
@@ -299,14 +308,9 @@
 }
 
 #pragma mark -
-#pragma mark Custom Mutators and Setters
-/*
-- (void)setScrollSpeed:(CGFloat)pxPerSec {
-    
-    
-    
-}
-*/
+#pragma mark Custom Getters and Setters
+
+
 #pragma mark -
 #pragma mark UILabel Message Forwarding
 

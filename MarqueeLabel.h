@@ -45,6 +45,7 @@
     
     BOOL labelize;
     BOOL animating;
+    BOOL rateSpeed;
     
 }
 
@@ -59,6 +60,7 @@
 @property (nonatomic) BOOL awayFromHome;
 @property (nonatomic) BOOL labelize;
 @property (nonatomic) BOOL animating;
+@property (nonatomic) BOOL rateSpeed;
 
 // UIView Override properties
 @property (nonatomic, copy) UIColor *backgroundColor;
@@ -80,6 +82,7 @@
 @property (nonatomic, retain) UIColor *textColor;
 @property (nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
 
+- (id)initWithFrame:(CGRect)frame andSpeed:(NSTimeInterval)speed isRate:(BOOL)speedIsRate andBuffer:(CGFloat)buffer;
 - (id)initWithFrame:(CGRect)frame andSpeed:(NSTimeInterval)speed andBuffer:(CGFloat)buffer;
 - (void)scrollLeftWithSpeed:(NSTimeInterval)speed;
 - (void)scrollRightWithSpeed:(NSTimeInterval)speed;
