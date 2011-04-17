@@ -1,0 +1,1 @@
+MarqueeLabel is a functional equivalent to UILabel that adds a scrolling marquee effect when the text of the label is set to something larger (for the given font size).

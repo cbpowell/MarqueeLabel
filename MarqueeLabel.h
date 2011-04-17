@@ -49,22 +49,9 @@
     
 }
 
-@property (nonatomic, retain) UILabel *subLabel;
-@property (nonatomic, retain) NSString *labelText;
-@property (nonatomic) NSTimeInterval scrollSpeed;
-@property (nonatomic) float rate;
-@property (nonatomic) NSUInteger animationOptions;
-@property (nonatomic) CGRect baseLabelFrame;
-@property (nonatomic) CGPoint baseLabelOrigin;
-@property (nonatomic) CGFloat baseAlpha;
-@property (nonatomic) CGFloat baseLeftBuffer;
-@property (nonatomic) CGFloat baseRightBuffer;
-@property (nonatomic) BOOL awayFromHome;
-@property (nonatomic) BOOL labelize;
-@property (nonatomic) BOOL animating;
-
 // UIView Override properties
 @property (nonatomic, copy) UIColor *backgroundColor;
+@property (nonatomic, copy) NSString *text;
 
 // UILabel properties
 @property (nonatomic) BOOL adjustsFontSizeToFitWidth;
@@ -78,16 +65,12 @@
 @property (nonatomic) NSInteger numberOfLines;
 @property (nonatomic, retain) UIColor *shadowColor;
 @property (nonatomic) CGSize shadowOffset;
-@property (nonatomic, copy) NSString *text;
 @property (nonatomic) UITextAlignment textAlignment;
 @property (nonatomic, retain) UIColor *textColor;
 @property (nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
 
 - (id)initWithFrame:(CGRect)frame andSpeed:(NSTimeInterval)lengthOfScroll andBuffer:(CGFloat)buffer;
 - (id)initWithFrame:(CGRect)frame andRate:(float)pixelsPerSec andBufer:(CGFloat)buffer;
-- (void)scrollLeftWithSpeed:(NSTimeInterval)speed;
-- (void)scrollRightWithSpeed:(NSTimeInterval)speed;
-- (void)returnLabelToOrigin;
 
 @end
 

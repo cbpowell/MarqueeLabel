@@ -29,6 +29,28 @@
 
 #import "MarqueeLabel.h"
 
+@interface MarqueeLabel()
+
+@property (nonatomic, retain) UILabel *subLabel;
+@property (nonatomic, retain) NSString *labelText;
+@property (nonatomic) NSTimeInterval scrollSpeed;
+@property (nonatomic) float rate;
+@property (nonatomic) NSUInteger animationOptions;
+@property (nonatomic) CGRect baseLabelFrame;
+@property (nonatomic) CGPoint baseLabelOrigin;
+@property (nonatomic) CGFloat baseAlpha;
+@property (nonatomic) CGFloat baseLeftBuffer;
+@property (nonatomic) CGFloat baseRightBuffer;
+@property (nonatomic) BOOL awayFromHome;
+@property (nonatomic) BOOL labelize;
+@property (nonatomic) BOOL animating;
+
+- (void)scrollLeftWithSpeed:(NSTimeInterval)speed;
+- (void)scrollRightWithSpeed:(NSTimeInterval)speed;
+- (void)returnLabelToOrigin;   
+
+@end
+
 
 @implementation MarqueeLabel
 
