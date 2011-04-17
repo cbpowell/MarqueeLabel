@@ -84,7 +84,7 @@
     rateLabelOne.shadowOffset = CGSizeMake(0.0, -1.0);
     rateLabelOne.textAlignment = UITextAlignmentLeft;
     rateLabelOne.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
-    rateLabelOne.backgroundColor = [UIColor whiteColor];
+    rateLabelOne.backgroundColor = [UIColor clearColor];
     rateLabelOne.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
     rateLabelOne.text = @"This is another long label that scrolls at a specific rate, rather than scrolling its length in a specific time window!";
     
@@ -98,7 +98,7 @@
     rateLabelTwo.shadowOffset = CGSizeMake(0.0, -1.0);
     rateLabelTwo.textAlignment = UITextAlignmentLeft;
     rateLabelTwo.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
-    rateLabelTwo.backgroundColor = [UIColor whiteColor];
+    rateLabelTwo.backgroundColor = [UIColor clearColor];
     rateLabelTwo.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
     rateLabelTwo.text = @"This text is not as long, but still long enough to scroll, and scrolls the same speed!";
     
