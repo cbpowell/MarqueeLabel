@@ -49,6 +49,11 @@
     
 }
 
+// External MarqueeLabel properties
+@property (nonatomic) BOOL awayFromHome;
+@property (nonatomic) BOOL labelize;
+@property (nonatomic) BOOL animating;
+
 // UIView Override properties
 @property (nonatomic, copy) UIColor *backgroundColor;
 @property (nonatomic, copy) NSString *text;

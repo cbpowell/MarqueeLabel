@@ -41,9 +41,6 @@
 @property (nonatomic) CGFloat baseAlpha;
 @property (nonatomic) CGFloat baseLeftBuffer;
 @property (nonatomic) CGFloat baseRightBuffer;
-@property (nonatomic) BOOL awayFromHome;
-@property (nonatomic) BOOL labelize;
-@property (nonatomic) BOOL animating;
 
 - (void)scrollLeftWithSpeed:(NSTimeInterval)speed;
 - (void)scrollRightWithSpeed:(NSTimeInterval)speed;
