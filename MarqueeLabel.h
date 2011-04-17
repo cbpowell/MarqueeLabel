@@ -36,22 +36,24 @@
     UILabel *subLabel;
     NSString *labelText;
     NSTimeInterval scrollSpeed;
+    float rate;
+    NSUInteger animationOptions;
     CGRect baseLabelFrame;
     CGPoint baseLabelOrigin;
     CGFloat baseAlpha;
     CGFloat baseLeftBuffer;
     CGFloat baseRightBuffer;
     BOOL awayFromHome;
-    
     BOOL labelize;
     BOOL animating;
-    BOOL rateSpeed;
     
 }
 
 @property (nonatomic, retain) UILabel *subLabel;
 @property (nonatomic, retain) NSString *labelText;
 @property (nonatomic) NSTimeInterval scrollSpeed;
+@property (nonatomic) float rate;
+@property (nonatomic) NSUInteger animationOptions;
 @property (nonatomic) CGRect baseLabelFrame;
 @property (nonatomic) CGPoint baseLabelOrigin;
 @property (nonatomic) CGFloat baseAlpha;
@@ -60,7 +62,6 @@
 @property (nonatomic) BOOL awayFromHome;
 @property (nonatomic) BOOL labelize;
 @property (nonatomic) BOOL animating;
-@property (nonatomic) BOOL rateSpeed;
 
 // UIView Override properties
 @property (nonatomic, copy) UIColor *backgroundColor;
@@ -82,8 +83,8 @@
 @property (nonatomic, retain) UIColor *textColor;
 @property (nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
 
-- (id)initWithFrame:(CGRect)frame andSpeed:(NSTimeInterval)speed isRate:(BOOL)speedIsRate andBuffer:(CGFloat)buffer;
-- (id)initWithFrame:(CGRect)frame andSpeed:(NSTimeInterval)speed andBuffer:(CGFloat)buffer;
+- (id)initWithFrame:(CGRect)frame andSpeed:(NSTimeInterval)lengthOfScroll andBuffer:(CGFloat)buffer;
+- (id)initWithFrame:(CGRect)frame andRate:(float)pixelsPerSec andBufer:(CGFloat)buffer;
 - (void)scrollLeftWithSpeed:(NSTimeInterval)speed;
 - (void)scrollRightWithSpeed:(NSTimeInterval)speed;
 - (void)returnLabelToOrigin;

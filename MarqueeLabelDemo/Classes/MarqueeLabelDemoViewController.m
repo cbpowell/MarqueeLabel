@@ -72,10 +72,39 @@
     self.demoLabel.backgroundColor = [UIColor whiteColor];
     self.demoLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
     
-    
     self.demoLabel.text = @"This is a test of the label. Look how long this label is! It's so long it stretches off the view!";
 
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(changeTheLabel) userInfo:nil repeats:NO];
+    [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(changeTheLabel) userInfo:nil repeats:NO];
+    
+    // Rate-speed label example
+    MarqueeLabel *rateLabelOne = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 200, self.view.frame.size.width-20, 20) andRate:50 andBufer:6.0];
+    rateLabelOne.numberOfLines = 1;
+    rateLabelOne.opaque = NO;
+    rateLabelOne.enabled = YES;
+    rateLabelOne.shadowOffset = CGSizeMake(0.0, -1.0);
+    rateLabelOne.textAlignment = UITextAlignmentLeft;
+    rateLabelOne.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
+    rateLabelOne.backgroundColor = [UIColor whiteColor];
+    rateLabelOne.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
+    rateLabelOne.text = @"This is another long label that scrolls at a specific rate, rather than scrolling its length in a specific time window!";
+    
+    [self.view addSubview:rateLabelOne];
+    [rateLabelOne release];
+    
+    MarqueeLabel *rateLabelTwo = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 230, self.view.frame.size.width-20, 20) andRate:50 andBufer:6.0];
+    rateLabelTwo.numberOfLines = 1;
+    rateLabelTwo.opaque = NO;
+    rateLabelTwo.enabled = YES;
+    rateLabelTwo.shadowOffset = CGSizeMake(0.0, -1.0);
+    rateLabelTwo.textAlignment = UITextAlignmentLeft;
+    rateLabelTwo.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
+    rateLabelTwo.backgroundColor = [UIColor whiteColor];
+    rateLabelTwo.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
+    rateLabelTwo.text = @"This text is not as long, but still long enough to scroll, and scrolls the same speed!";
+    
+    [self.view addSubview:rateLabelTwo];
+    [rateLabelTwo release];
+    
 }
 
 - (void)changeTheLabel {

@@ -33,9 +33,9 @@
 @implementation MarqueeLabel
 
 @synthesize subLabel, labelText;
-@synthesize scrollSpeed;
-@synthesize baseLabelFrame, baseLabelOrigin, baseAlpha, baseLeftBuffer, baseRightBuffer;
-@synthesize awayFromHome, labelize, animating, rateSpeed;
+@synthesize scrollSpeed, rate;
+@synthesize animationOptions, baseLabelFrame, baseLabelOrigin, baseAlpha, baseLeftBuffer, baseRightBuffer;
+@synthesize awayFromHome, labelize, animating;
 
 // UILabel properties for pass through WITH modification
 @synthesize text;
@@ -44,7 +44,7 @@
 // UIView override properties
 @synthesize backgroundColor;
 
-// Pass through properties
+// Pass through properties (no modification)
 @dynamic baselineAdjustment, enabled, font, highlighted, highlightedTextColor, minimumFontSize;
 @dynamic shadowColor, shadowOffset, textAlignment, textColor, userInteractionEnabled;
 
@@ -56,15 +56,36 @@
     return [self initWithFrame:frame andSpeed:7.0 andBuffer:0.0];
 }
 
-- (id)initWithFrame:(CGRect)frame andPixelsPerSecond:(float)pixelsPerSec andBufer:(CGFloat)buffer {
-    return [self initWithFrame:frame andSpeed:(NSTimeInterval)((float)frame.size.width / pixelsPerSec) isRate:YES andBuffer:buffer];
+- (id)initWithFrame:(CGRect)frame andRate:(float)pixelsPerSec andBufer:(CGFloat)buffer {
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization code.
+        
+        // Set the containing MarqueeLabel view to clip it's interior, and have a clear background
+        [self setClipsToBounds:YES];
+        self.backgroundColor = [UIColor redColor];
+        self.scrollSpeed = 0;
+        self.rate = pixelsPerSec;
+        self.animationOptions = (UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat);
+        self.awayFromHome = NO;
+        self.labelize = NO;
+        self.baseLeftBuffer = buffer;
+        self.baseRightBuffer = buffer;
+        self.labelText = nil;
+        
+        // Create sublabel
+        self.baseLabelOrigin = CGPointMake(self.baseLeftBuffer, 0);
+        self.baseLabelFrame = CGRectMake(self.baseLabelOrigin.x, self.baseLabelOrigin.y, (self.bounds.size.width - self.baseRightBuffer), self.bounds.size.height);
+        UILabel *newLabel = [[UILabel alloc] initWithFrame:self.baseLabelFrame];
+        self.subLabel = newLabel;
+        [self addSubview:self.subLabel];
+        [newLabel release];
+        
+    }
+    return self;
 }
 
-- (id)initWithFrame:(CGRect)frame andSpeed:(NSTimeInterval)speed andBuffer:(CGFloat)buffer {
-    return [self initWithFrame:frame andSpeed:(NSTimeInterval)speed isRate:NO andBuffer:buffer];
-}
-
-- (id)initWithFrame:(CGRect)frame andSpeed:(NSTimeInterval)speed isRate:(BOOL)speedIsRate andBuffer:(CGFloat)buffer {
+- (id)initWithFrame:(CGRect)frame andSpeed:(NSTimeInterval)lengthOfScroll andBuffer:(CGFloat)buffer {
     
     self = [super initWithFrame:frame];
     if (self) {
@@ -73,10 +94,11 @@
         // Set the containing MarqueeLabel view to clip it's interior, and have a clear background
         [self setClipsToBounds:YES];
         self.backgroundColor = [UIColor redColor];
-        self.scrollSpeed = (NSTimeInterval)speed;
+        self.scrollSpeed = (NSTimeInterval)lengthOfScroll;
+        self.rate = 0.0;
+        self.animationOptions = (UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat);
         self.awayFromHome = NO;
         self.labelize = NO;
-        self.rateSpeed = speedIsRate;
         self.baseLeftBuffer = buffer;
         self.baseRightBuffer = buffer;
         self.labelText = nil;
@@ -106,12 +128,15 @@
         CGRect finalSubLabelFrame = self.subLabel.frame;
         finalSubLabelFrame.origin.x = self.frame.size.width - self.subLabel.frame.size.width;
         
+        // Calculate duration
+        NSTimeInterval animationDuration = (self.rate > 0.0 ? (fabs(finalSubLabelFrame.origin.x) / self.rate) : self.scrollSpeed);
+        
         // Perform animation
         //NSLog(@"Scrolling left: %@", self.labelText);
         self.awayFromHome = YES;
-        [UIView animateWithDuration:speed
+        [UIView animateWithDuration:animationDuration
                               delay:1.0 
-                            options:(UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat)
+                            options:self.animationOptions
                          animations:^{self.subLabel.frame = finalSubLabelFrame;}
                          completion:^(BOOL finished) {
                              //NSLog(@"Done scrolling left: %@", self.labelText);
