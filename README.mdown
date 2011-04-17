@@ -21,7 +21,7 @@ and adds 6.0 pixel buffer at the end (which improves readability at the end of t
 If you'd rather have a label that scrolls at a specific rate (pixels per second), instead of
 completing the scroll in a specific time frame, you can use this:
 
-	MarqueeLabel *scrollyLabel = [[MarqueeLabel alloc] initWithFrame:labelCGRectFrame andRate:50 andBufer:6.0];
+	MarqueeLabel *scrollyLabel = [[MarqueeLabel alloc] initWithFrame:labelCGRectFrame andRate:50 andBuffer:6.0];
 
 
 See the included MarqueeLabelDemo project for further example usage.
