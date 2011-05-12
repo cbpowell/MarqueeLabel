@@ -382,7 +382,8 @@
 #pragma mark -
 
 - (void)dealloc {
-    [self.subLabel release];
+    [labelText release];
+    [subLabel release];
     [super dealloc];
 }
 
