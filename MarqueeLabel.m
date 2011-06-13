@@ -235,7 +235,7 @@
         self.labelText = newText;
         
         // Calculate label size
-        CGSize maximumLabelSize = CGSizeMake(1200, 1200);
+        CGSize maximumLabelSize = CGSizeMake(9999, self.frame.size.height);
         CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
                                        constrainedToSize:maximumLabelSize
                                            lineBreakMode:self.subLabel.lineBreakMode];
