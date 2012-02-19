@@ -28,6 +28,7 @@
 //  
 
 #import "MarqueeLabel.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface MarqueeLabel()
 
@@ -44,7 +45,8 @@
 
 - (void)scrollLeftWithSpeed:(NSTimeInterval)speed;
 - (void)scrollRightWithSpeed:(NSTimeInterval)speed;
-- (void)returnLabelToOrigin;   
+- (void)returnLabelToOriginImmediately:(BOOL)immediate;
+- (void)restartLabel;
 
 @end
 
@@ -78,14 +80,13 @@
 - (id)initWithFrame:(CGRect)frame andRate:(float)pixelsPerSec andBufer:(CGFloat)buffer {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code.
         
         // Set the containing MarqueeLabel view to clip it's interior, and have a clear background
         [self setClipsToBounds:YES];
         self.backgroundColor = [UIColor redColor];
         self.scrollSpeed = 0;
         self.rate = pixelsPerSec;
-        self.animationOptions = (UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat);
+        self.animationOptions = (UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat);
         self.awayFromHome = NO;
         self.labelize = NO;
         self.baseLeftBuffer = buffer;
@@ -99,6 +100,12 @@
         self.subLabel = newLabel;
         [self addSubview:self.subLabel];
         [newLabel release];
+        
+        // Add notification observers
+        if(&UIApplicationWillEnterForegroundNotification != nil)
+        {
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartLabel) name:UIApplicationWillEnterForegroundNotification object:nil];
+        }
         
     }
     return self;
@@ -130,6 +137,11 @@
         [self addSubview:self.subLabel];
         [newLabel release];
         
+        // Add notification observers
+        if(&UIApplicationWillEnterForegroundNotification != nil)
+        {
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartLabel) name:UIApplicationWillEnterForegroundNotification object:nil];
+        }
     }
     return self;
 }
@@ -189,7 +201,12 @@
                      }];
 }
 
-- (void)returnLabelToOrigin {
+- (void)returnLabelToOriginImmediately:(BOOL)immediate {
+    
+    if (immediate) {
+        self.subLabel.frame = self.baseLabelFrame;
+        return;
+    }
     
     [UIView animateWithDuration:0
                           delay:0
@@ -203,6 +220,12 @@
                      }];
 }
 
+- (void)restartLabel {
+    [self returnLabelToOriginImmediately:YES];
+    [self setLabelize:NO];
+    
+}
+
 // Custom labelize mutator to restart scrolling after changing labelize to NO
 - (void)setLabelize:(BOOL)function {
 
@@ -210,14 +233,14 @@
         
         labelize = YES;
         if (self.subLabel) {
-            [self returnLabelToOrigin];
+            [self returnLabelToOriginImmediately:NO];
         }
         
     } else {
         
         labelize = NO;
         if (self.subLabel && (self.subLabel.frame.size.width > self.frame.size.width)) {
-            [self returnLabelToOrigin];
+            [self returnLabelToOriginImmediately:NO];
             [self scrollLeftWithSpeed:self.scrollSpeed];
         }
         
@@ -258,7 +281,7 @@
                                  completion:^(BOOL finished){
                                      
                                      // Animate move immediately
-                                     [self returnLabelToOrigin];
+                                     [self returnLabelToOriginImmediately:YES];
                                      
                                      // Set frame and text while invisible
                                      self.subLabel.frame = newBaseLabelFrame;
@@ -382,6 +405,7 @@
 #pragma mark -
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [labelText release];
     [subLabel release];
     [super dealloc];
