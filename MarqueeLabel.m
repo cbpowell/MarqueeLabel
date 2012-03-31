@@ -32,21 +32,27 @@
 
 @interface MarqueeLabel()
 
+@property (nonatomic, readwrite) BOOL awayFromHome;
+
 @property (nonatomic, retain) UILabel *subLabel;
 @property (nonatomic, retain) NSString *labelText;
-@property (nonatomic) NSTimeInterval scrollSpeed;
-@property (nonatomic) float rate;
 @property (nonatomic) NSUInteger animationOptions;
-@property (nonatomic) CGRect baseLabelFrame;
-@property (nonatomic) CGPoint baseLabelOrigin;
-@property (nonatomic) CGFloat baseAlpha;
-@property (nonatomic) CGFloat baseLeftBuffer;
-@property (nonatomic) CGFloat baseRightBuffer;
 
-- (void)scrollLeftWithSpeed:(NSTimeInterval)speed;
-- (void)scrollRightWithSpeed:(NSTimeInterval)speed;
-- (void)returnLabelToOriginImmediately:(BOOL)immediate;
+@property (nonatomic) NSTimeInterval animationDuration;
+@property (nonatomic) NSTimeInterval lengthOfScroll;
+@property (nonatomic) CGFloat rate;
+@property (nonatomic, readonly) BOOL labelShouldScroll;
+
+@property (nonatomic) CGRect homeLabelFrame;
+@property (nonatomic) CGRect awayLabelFrame;
+
+@property (nonatomic) CGFloat baseAlpha;
+
+- (void)scrollLeftWithInterval:(NSTimeInterval)interval;
+- (void)scrollRightWithInterval:(NSTimeInterval)interval;
+- (void)returnLabelToOriginImmediately;
 - (void)restartLabel;
+- (void)setupLabel;
 
 @end
 
@@ -54,9 +60,10 @@
 @implementation MarqueeLabel
 
 @synthesize subLabel, labelText;
-@synthesize scrollSpeed, rate;
-@synthesize animationOptions, baseLabelFrame, baseLabelOrigin, baseAlpha, baseLeftBuffer, baseRightBuffer;
-@synthesize awayFromHome, labelize, animating;
+@synthesize animationDuration, lengthOfScroll, rate, labelShouldScroll;
+@synthesize animationOptions, homeLabelFrame, awayLabelFrame, baseAlpha;
+@synthesize awayFromHome;
+@synthesize animationCurve, labelize, fadeLength;
 
 // UILabel properties for pass through WITH modification
 @synthesize text;
@@ -74,176 +81,161 @@
 #pragma mark Initialization
 
 - (id)initWithFrame:(CGRect)frame {
-    return [self initWithFrame:frame andSpeed:7.0 andBuffer:0.0];
+    return [self initWithFrame:frame duration:7.0 andFadeLength:0.0];
 }
 
-- (id)initWithFrame:(CGRect)frame andRate:(float)pixelsPerSec andBufer:(CGFloat)buffer {
+- (id)initWithFrame:(CGRect)frame duration:(NSTimeInterval)aLengthOfScroll andFadeLength:(float)aFadeLength {
     self = [super initWithFrame:frame];
     if (self) {
+        [self setupLabel];
         
-        // Set the containing MarqueeLabel view to clip it's interior, and have a clear background
-        [self setClipsToBounds:YES];
-        self.backgroundColor = [UIColor redColor];
-        self.scrollSpeed = 0;
+        self.lengthOfScroll = aLengthOfScroll;
+        self.fadeLength = MIN(aFadeLength, frame.size.width/2);
+    }
+    return self;
+}
+
+- (id)initWithFrame:(CGRect)frame rate:(float)pixelsPerSec andFadeLength:(float)aFadeLength {
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self setupLabel];
+        
         self.rate = pixelsPerSec;
-        self.animationOptions = (UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat);
-        self.awayFromHome = NO;
-        self.labelize = NO;
-        self.baseLeftBuffer = buffer;
-        self.baseRightBuffer = buffer;
-        self.labelText = nil;
-        
-        // Create sublabel
-        self.baseLabelOrigin = CGPointMake(self.baseLeftBuffer, 0);
-        self.baseLabelFrame = CGRectMake(self.baseLabelOrigin.x, self.baseLabelOrigin.y, (self.bounds.size.width - self.baseRightBuffer), self.bounds.size.height);
-        UILabel *newLabel = [[UILabel alloc] initWithFrame:self.baseLabelFrame];
-        self.subLabel = newLabel;
-        [self addSubview:self.subLabel];
-        [newLabel release];
-        
-        // Add notification observers
-        if(&UIApplicationWillEnterForegroundNotification != nil)
-        {
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartLabel) name:UIApplicationWillEnterForegroundNotification object:nil];
-        }
-        
+        self.fadeLength = MIN(aFadeLength, frame.size.width/2);
     }
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame andSpeed:(NSTimeInterval)lengthOfScroll andBuffer:(CGFloat)buffer {
+- (void)setupLabel {
     
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code.
-        
-        // Set the containing MarqueeLabel view to clip it's interior, and have a clear background
-        [self setClipsToBounds:YES];
-        self.backgroundColor = [UIColor redColor];
-        self.scrollSpeed = (NSTimeInterval)lengthOfScroll;
-        self.rate = 0.0;
-        self.animationOptions = (UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionAutoreverse | UIViewAnimationOptionRepeat);
-        self.awayFromHome = NO;
-        self.labelize = NO;
-        self.baseLeftBuffer = buffer;
-        self.baseRightBuffer = buffer;
-        self.labelText = nil;
-        
-        // Create sublabel
-        self.baseLabelOrigin = CGPointMake(self.baseLeftBuffer, 0);
-        self.baseLabelFrame = CGRectMake(self.baseLabelOrigin.x, self.baseLabelOrigin.y, (self.bounds.size.width - self.baseRightBuffer), self.bounds.size.height);
-        UILabel *newLabel = [[UILabel alloc] initWithFrame:self.baseLabelFrame];
-        self.subLabel = newLabel;
-        [self addSubview:self.subLabel];
-        [newLabel release];
-        
-        // Add notification observers
-        if(&UIApplicationWillEnterForegroundNotification != nil)
-        {
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartLabel) name:UIApplicationWillEnterForegroundNotification object:nil];
-        }
-    }
-    return self;
+    [self setClipsToBounds:YES];
+    self.backgroundColor = [UIColor clearColor];
+    self.animationOptions = (UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction);
+    self.awayFromHome = NO;
+    self.labelize = NO;
+    self.labelText = nil;
+    
+    // Create sublabel
+    UILabel *newLabel = [[UILabel alloc] initWithFrame:self.bounds];
+    self.subLabel = newLabel;
+    [self addSubview:self.subLabel];
+    [newLabel release];
+    
+    // Add notification observers
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartLabel) name:UIApplicationWillEnterForegroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartLabel) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shutdownLabel) name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shutdownLabel) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
+- (void)applyGradientMask {
+    [self returnLabelToOriginImmediately];
+    if (self.fadeLength != 0.0f) {
+        CAGradientLayer* gradientMask = [CAGradientLayer layer];
+        gradientMask.bounds = self.layer.bounds;
+        gradientMask.position = CGPointMake([self bounds].size.width / 2, [self bounds].size.height / 2);
+        NSObject *transparent = (NSObject*) [[UIColor clearColor] CGColor];
+        NSObject *opaque = (NSObject*) [[UIColor blackColor] CGColor];
+        gradientMask.startPoint = CGPointMake(0.0, CGRectGetMidY(self.frame));
+        gradientMask.endPoint = CGPointMake(1.0, CGRectGetMidY(self.frame));
+        float fadePoint = (float)self.fadeLength/self.frame.size.width;
+        [gradientMask setColors: [NSArray arrayWithObjects: transparent, opaque, opaque, transparent, nil]];
+        [gradientMask setLocations: [NSArray arrayWithObjects:
+                                     [NSNumber numberWithFloat: 0.0],
+                                     [NSNumber numberWithFloat: fadePoint],
+                                     [NSNumber numberWithFloat: 1 - fadePoint],
+                                     [NSNumber numberWithFloat: 1.0],
+                                     nil]];
+        self.layer.mask = gradientMask;
+    } else {
+        self.layer.mask = nil;
+    }
+    
+    if (self.labelShouldScroll) {
+        [self scrollLeftWithInterval:self.animationDuration];
+    }
+}
 
 #pragma mark -
 #pragma mark Animation Handlers 
 
-- (void)scrollLeftWithSpeed:(NSTimeInterval)speed {
+- (void)scrollLeftWithInterval:(NSTimeInterval)interval {
     
-    // Determine if the label needs to scroll (if label frame is larger than enclosing frame)
-    if ((self.subLabel.frame.size.width - self.baseRightBuffer) > self.frame.size.width) {
-        
-        // Calculate the destination frame
-        CGRect finalSubLabelFrame = self.subLabel.frame;
-        finalSubLabelFrame.origin.x = self.frame.size.width - self.subLabel.frame.size.width;
-        
-        // Calculate duration
-        NSTimeInterval animationDuration = (self.rate > 0.0 ? (fabs(finalSubLabelFrame.origin.x) / self.rate) : self.scrollSpeed);
-        
-        // Perform animation
-        //NSLog(@"Scrolling left: %@", self.labelText);
-        self.awayFromHome = YES;
-        [UIView animateWithDuration:animationDuration
-                              delay:1.0 
-                            options:self.animationOptions
-                         animations:^{self.subLabel.frame = finalSubLabelFrame;}
-                         completion:^(BOOL finished) {
-                             //NSLog(@"Done scrolling left: %@", self.labelText);
-                             //[self scrollRightWithSpeed:speed];
-                             
-                         }];
-    } else {
-        //NSLog(@"Not scrolling (%f < %f)", (self.subLabel.frame.size.width - self.baseRightBuffer), self.frame.size.width);
-    }
-    
-}
-
-- (void)scrollRightWithSpeed:(NSTimeInterval)speed {
-    
-    // Calculate the destination frame
-    CGRect returnLabelFrame = CGRectMake(self.baseLabelOrigin.x, 0, self.subLabel.frame.size.width, self.subLabel.frame.size.height);
     // Perform animation
-    //NSLog(@"Scrolling right");
-    [UIView animateWithDuration:speed
-                          delay:0.2
-                        options:(UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction)
-                     animations:^{self.subLabel.frame = returnLabelFrame;}
-                     completion:^(BOOL finished){
-                         //NSLog(@"Done scrolling right: %@", self.labelText);
-                         self.awayFromHome = NO;
-                         if ((self.subLabel.frame.size.width - self.baseRightBuffer) > self.frame.size.width) {
-                             
-                             [self scrollLeftWithSpeed:speed];
+    self.awayFromHome = YES;
+    [UIView animateWithDuration:interval
+                          delay:1.0 
+                        options:self.animationOptions
+                     animations:^{
+                         self.subLabel.frame = self.awayLabelFrame;
+                     }
+                     completion:^(BOOL finished) {
+                         if (finished) {
+                             [self scrollRightWithInterval:interval];
                          }
-                         
                      }];
 }
 
-- (void)returnLabelToOriginImmediately:(BOOL)immediate {
+- (void)scrollRightWithInterval:(NSTimeInterval)interval {
     
-    if (immediate) {
-        self.subLabel.frame = self.baseLabelFrame;
-        return;
-    }
-    
-    [UIView animateWithDuration:0
-                          delay:0
-                        options:(UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState) 
+    // Perform animation
+    [UIView animateWithDuration:animationDuration
+                          delay:0.3
+                        options:self.animationOptions
                      animations:^{
-                         self.subLabel.frame = self.baseLabelFrame;
+                         self.subLabel.frame = self.homeLabelFrame;
                      }
                      completion:^(BOOL finished){
-                         self.awayFromHome = NO;
-                         //NSLog(@"Returned label home: %@", self.labelText);
+                         if (finished) {
+                             // Set awayFromHome
+                             self.awayFromHome = NO;
+                             [self scrollLeftWithInterval:interval];
+                         }
                      }];
+}
+
+- (void)returnLabelToOriginImmediately {
+    
+    if (!CGRectEqualToRect(self.subLabel.frame, self.homeLabelFrame)) {
+        [UIView animateWithDuration:0
+                              delay:0
+                            options:(UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState) 
+                         animations:^{
+                             self.subLabel.frame = self.homeLabelFrame;
+                         }
+                         completion:^(BOOL finished){
+                             if (finished) {
+                                 self.awayFromHome = NO;
+                             }
+                         }];
+    }
 }
 
 - (void)restartLabel {
-    [self returnLabelToOriginImmediately:YES];
-    [self setLabelize:NO];
+    [self returnLabelToOriginImmediately];
     
+    if (self.labelShouldScroll) {
+        [self scrollLeftWithInterval:self.animationDuration];
+    }
+}
+
+- (void)shutdownLabel {
+    [self.layer removeAllAnimations];
+    
+    [self returnLabelToOriginImmediately];
 }
 
 // Custom labelize mutator to restart scrolling after changing labelize to NO
-- (void)setLabelize:(BOOL)function {
+- (void)setLabelize:(BOOL)labelization {
 
-    if (function) {
-        
+    if (labelization) {
         labelize = YES;
         if (self.subLabel) {
-            [self returnLabelToOriginImmediately:NO];
+            [self returnLabelToOriginImmediately];
         }
-        
     } else {
-        
         labelize = NO;
-        if (self.subLabel && (self.subLabel.frame.size.width > self.frame.size.width)) {
-            [self returnLabelToOriginImmediately:NO];
-            [self scrollLeftWithSpeed:self.scrollSpeed];
-        }
-        
+        [self restartLabel];
     }
 }
 
@@ -252,7 +244,7 @@
 
 - (void)setText:(NSString *)newText {
     
-    if (newText != self.labelText) {
+    if (![newText isEqualToString:self.labelText]) {
         
         // Set labelText to incoming newText
         self.labelText = newText;
@@ -262,88 +254,52 @@
         CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
                                        constrainedToSize:maximumLabelSize
                                            lineBreakMode:self.subLabel.lineBreakMode];
-        CGRect newBaseLabelFrame = CGRectMake(self.baseLabelOrigin.x, self.baseLabelOrigin.y, (expectedLabelSize.width + self.baseRightBuffer), expectedLabelSize.height);
-        self.baseLabelFrame = newBaseLabelFrame;
+        // Create home label frame
+        self.homeLabelFrame = CGRectMake(self.fadeLength, 0, (expectedLabelSize.width + self.fadeLength), self.bounds.size.height);
+        self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, -expectedLabelSize.width + (self.bounds.size.width - self.fadeLength * 2), 0.0);
         
         if (!self.labelize) {
+            // Label is not set to be static
             
-            if (self.awayFromHome | (self.subLabel.frame.origin.x != self.baseLabelOrigin.x)) {
-
-                //NSLog(@"Label not at home: %@", self.labelText);
-                // Store current alpha
-                self.baseAlpha = self.subLabel.alpha;
-
-                // 
-                [UIView animateWithDuration:0.1
-                                      delay:0.0 
-                                    options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState)
-                                 animations:^{self.subLabel.alpha = 0.0;}
-                                 completion:^(BOOL finished){
-                                     
-                                     // Animate move immediately
-                                     [self returnLabelToOriginImmediately:YES];
-                                     
-                                     // Set frame and text while invisible
-                                     self.subLabel.frame = newBaseLabelFrame;
-                                     self.subLabel.text = self.labelText;
-                                     
-                                     // Fade in quickly
-                                     [UIView animateWithDuration:0.1
-                                                           delay:0.0
-                                                         options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState)
-                                                      animations:^{ self.subLabel.alpha = self.baseAlpha; }
-                                                      completion:^(BOOL finished){
-                                                          //NSLog(@"Starting scroll: %@", self.labelText);
-                                                          [self scrollLeftWithSpeed:self.scrollSpeed];
-                                                      }];
-                                 }];
-                      
-                //end of animation blocks
-                
-            } else {
-                //NSLog(@"2. At home: %@", self.labelText);
-                // Label at home, animate text change
-                
-                // Store current alpha
-                self.baseAlpha = self.subLabel.alpha;
-                
-                // Fade out quickly
-                [UIView animateWithDuration:0.2
-                                      delay:0.0 
-                                    options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState)
-                                 animations:^{
-                                     self.subLabel.alpha = 0.0;
-                                 }
-                                 completion:^(BOOL finished){
-                                     
-                                     // Set text while invisible
-                                     self.subLabel.frame = newBaseLabelFrame;
-                                     //NSLog(@"homeLabelFrame: %.0f, %.0f, %.0f, %.0f", homeLabelFrame.origin.x, homeLabelFrame.origin.y, homeLabelFrame.size.width, homeLabelFrame.size.height);
-                                     self.subLabel.text = self.labelText;
-                                     //NSLog(@"Setting new text");
-                                     // Fade in quickly
-                                     [UIView animateWithDuration:0.2
-                                                           delay:0.0
-                                                         options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState)
-                                                      animations:^{
-                                                          self.subLabel.alpha = 1.0;
+            // Calculate animation duration
+            self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(self.awayLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
+            
+            // Store current alpha
+            self.baseAlpha = self.subLabel.alpha;
+            
+            // Fade out quickly
+            [UIView animateWithDuration:0.1
+                                  delay:0.0 
+                                options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState)
+                             animations:^{
+                                 self.subLabel.alpha = 0.0;
+                             }
+                             completion:^(BOOL finished){
+                                 
+                                 // Animate move immediately
+                                 [self returnLabelToOriginImmediately];
+                                 
+                                 // Set frame and text while invisible
+                                 self.subLabel.frame = self.homeLabelFrame;
+                                 self.subLabel.text = self.labelText;
+                                 
+                                 // Fade in quickly
+                                 [UIView animateWithDuration:0.1
+                                                       delay:0.0
+                                                     options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState)
+                                                  animations:^{
+                                                      self.subLabel.alpha = self.baseAlpha;
+                                                  }
+                                                  completion:^(BOOL finished) {
+                                                      if (self.labelShouldScroll) {
+                                                          [self scrollLeftWithInterval:self.animationDuration];
                                                       }
-                                                      completion:^(BOOL finished){
-                                                          self.awayFromHome = NO;
-                                                          //NSLog(@"Finished setting text and animations, option to scroll");
-                                                          if (self.subLabel.frame.size.width > self.frame.size.width) {
-                                                              // Scroll
-                                                              //NSLog(@"Starting scroll: %@", self.labelText);
-                                                              [self scrollLeftWithSpeed:self.scrollSpeed];
-                                                          }
-                                                      }];
-                                 }]; // end of animation block
-            }
-                
-        } else {
+                                                  }];
+                             }];
             
-            // Currently labelized
-            self.subLabel.frame = newBaseLabelFrame;
+        } else {
+            // Currently labelized, act like a UILabel
+            self.subLabel.frame = self.homeLabelFrame;
             self.subLabel.text = self.labelText;
             
         }
@@ -351,9 +307,7 @@
 }
 
 - (NSString *)text {
-    
     return self.labelText;
-    
 }
 
 #pragma mark -
@@ -361,7 +315,7 @@
 
 - (void)setBackgroundColor:(UIColor *)newColor {
     
-    if (newColor != self.subLabel.backgroundColor) {
+    if (![newColor isEqual:self.subLabel.backgroundColor]) {
         
         self.subLabel.backgroundColor = newColor;
     }
@@ -376,7 +330,23 @@
 
 #pragma mark -
 #pragma mark Custom Getters and Setters
+- (void)setAnimationCurve:(UIViewAnimationOptions)anAnimationCurve {
+    NSUInteger allowableOptions = UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionCurveLinear;
+    if ((allowableOptions & animationCurve) == anAnimationCurve) {
+        self.animationOptions = (anAnimationCurve | UIViewAnimationOptionAllowUserInteraction);
+    }
+}
 
+- (void)setFadeLength:(CGFloat)aFadeLength {
+    if (fadeLength != aFadeLength) {
+        fadeLength = aFadeLength;
+        [self applyGradientMask];
+    }
+}
+
+- (BOOL)labelShouldScroll {
+    return ((self.labelText != nil) && !CGRectContainsRect(self.bounds, self.homeLabelFrame));
+}
 
 #pragma mark -
 #pragma mark UILabel Message Forwarding

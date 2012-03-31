@@ -57,7 +57,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    MarqueeLabel *newLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 100, self.view.frame.size.width-20, 20) andSpeed:8 andBuffer:6.0];
+    MarqueeLabel *newLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 100, self.view.frame.size.width-20, 20) duration:8.0 andFadeLength:10.0f];
     self.demoLabel = newLabel;
     [newLabel release];
     
@@ -69,7 +69,7 @@
     self.demoLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     self.demoLabel.textAlignment = UITextAlignmentLeft;
     self.demoLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
-    self.demoLabel.backgroundColor = [UIColor whiteColor];
+    self.demoLabel.backgroundColor = [UIColor clearColor];
     self.demoLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
     
     self.demoLabel.text = @"This is a test of the label. Look how long this label is! It's so long it stretches off the view!";
@@ -77,7 +77,7 @@
     [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(changeTheLabel) userInfo:nil repeats:NO];
     
     // Rate-speed label example
-    MarqueeLabel *rateLabelOne = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 200, self.view.frame.size.width-20, 20) andRate:50 andBufer:6.0];
+    MarqueeLabel *rateLabelOne = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 200, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
     rateLabelOne.numberOfLines = 1;
     rateLabelOne.opaque = NO;
     rateLabelOne.enabled = YES;
@@ -91,7 +91,7 @@
     [self.view addSubview:rateLabelOne];
     [rateLabelOne release];
     
-    MarqueeLabel *rateLabelTwo = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 230, self.view.frame.size.width-20, 20) andRate:50 andBufer:6.0];
+    MarqueeLabel *rateLabelTwo = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 230, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
     rateLabelTwo.numberOfLines = 1;
     rateLabelTwo.opaque = NO;
     rateLabelTwo.enabled = YES;

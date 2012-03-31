@@ -32,27 +32,62 @@
 
 @interface MarqueeLabel : UIView {
     
-    @protected
-    UILabel *subLabel;
-    NSString *labelText;
-    NSTimeInterval scrollSpeed;
-    float rate;
-    NSUInteger animationOptions;
-    CGRect baseLabelFrame;
-    CGPoint baseLabelOrigin;
-    CGFloat baseAlpha;
-    CGFloat baseLeftBuffer;
-    CGFloat baseRightBuffer;
-    BOOL awayFromHome;
-    BOOL labelize;
-    BOOL animating;
-    
 }
 
-// External MarqueeLabel properties
-@property (nonatomic) BOOL awayFromHome;
+// MarqueeLabel-specific properties
+
+/* animationCurve:
+ * The animation curve used in the motion of the labels. Allowable options:
+ * UIViewAnimationOptionCurveEaseInOut, UIViewAnimationOptionCurveEaseIn,
+ * UIViewAnimationOptionCurveEaseOut, UIViewAnimationOptionCurveLinear
+ * Default is UIViewAnimationOptionCurveEaseInOut.
+ */
+@property (nonatomic) UIViewAnimationOptions animationCurve;
+
+
+/* awayFromHome:
+ * Returns if the label is away from "home", the location where it would be if
+ * it were a normal UILabel (although it does take into account the fade lengths,
+ * in that "home" is offset by those in order for the edge of the labels not to be
+ * faded when at the home location.
+ */
+@property (nonatomic, readonly) BOOL awayFromHome;
+
+
+/* labelize:
+ * When set to YES, the MarqueeLabel will not move and behave like a normal UILabel
+ * Defaults to NO.
+ */
 @property (nonatomic) BOOL labelize;
-@property (nonatomic) BOOL animating;
+
+
+/* fadeLength:
+ * Sets the length of fade (from alpha 1.0 to alpha 0.0) at the edges of the
+ * MarqueeLabel. Cannot be larger than 1/2 of the frame width (will be santized).
+ */
+@property (nonatomic) CGFloat fadeLength;
+
+- (id)initWithFrame:(CGRect)frame rate:(float)pixelsPerSec andFadeLength:(float)fadeLength;
+- (id)initWithFrame:(CGRect)frame duration:(NSTimeInterval)lengthOfScroll andFadeLength:(float)fadeLength;
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**********************************************
+ * These properties silence and/or override
+ * the standard UILabel properties, in order
+ * to silence compiler warnings. You shouldn't
+ * need to mess with these!
+ **********************************************/
 
 // UIView Override properties
 @property (nonatomic, copy) UIColor *backgroundColor;
@@ -74,11 +109,7 @@
 @property (nonatomic, retain) UIColor *textColor;
 @property (nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
 
-- (id)initWithFrame:(CGRect)frame andSpeed:(NSTimeInterval)lengthOfScroll andBuffer:(CGFloat)buffer;
-- (id)initWithFrame:(CGRect)frame andRate:(float)pixelsPerSec andBufer:(CGFloat)buffer;
-
 @end
-
 
 // Declare UILabel methods as extensions to be passed through with forwardInvocation
 @interface UILabel (MarqueeLabel)

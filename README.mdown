@@ -1,10 +1,11 @@
 MarqueeLabel
 ============
-MarqueeLabel is a functional equivalent to UILabel that adds a scrolling marquee effect when the
-text of the label outgrows the available width (for the given font size). All standard UILabel
-properties are available in MarqueeLabel and it behaves just like a UILabel.
 
-### Using MarqueeLabel:
+## Description
+MarqueeLabel is a functional equivalent to UILabel that adds a scrolling marquee effect when the text of the label outgrows the available width (for the given font size). All standard UILabel properties are available in MarqueeLabel and it behaves just like a UILabel.
+
+### Usage
+MarqueeLabel supports moving the label at either a defined rate (points per second) or duration (seconds). The animation curve can also be defined, and defaults to `UIViewAnimationOptionCurveEaseInOut`. It also features a variable-length fade at the left and right side view borders, in order to fade the label text into the background rather than simply being chopped off.
 
 Import MarqueeLabel.h and replace your UILabels with MarqueeLabels.
 
@@ -14,14 +15,23 @@ Replace:
 		
 With:
 
-	MarqueeLabel *scrollyLabel = [[MarqueeLabel alloc] initWithFrame:labelCGRectFrame andSpeed:7.0 andBuffer:6.0];
+	MarqueeLabel *scrollyLabel = [[MarqueeLabel alloc] initWithFrame:labelCGRectFrame duration:8.0 andFadeLength:10.0f];
 
-This creates a MarqueeLabel that will scroll across its content in 7.0 seconds,
-and adds 6.0 pixel buffer at the end (which improves readability at the end of the scroll).
-If you'd rather have a label that scrolls at a specific rate (pixels per second), instead of
-completing the scroll in a specific time frame, you can use this:
+This creates a MarqueeLabel that will scroll across its content in 8.0 seconds, and adds 10.0 point long fade at the left and right boundaries.
 
-	MarqueeLabel *scrollyLabel = [[MarqueeLabel alloc] initWithFrame:labelCGRectFrame andRate:50 andBuffer:6.0];
+If you'd rather have a label that scrolls at a specific rate (points per second), instead of completing the scroll in a specific time frame, you can use this:
 
+	MarqueeLabel *scrollyLabel = [[MarqueeLabel alloc] initWithFrame:labelCGRectFrame rate:50.0 andFadeLength:10.0f];
 
 See the included MarqueeLabelDemo project for further example usage.
+
+## Todo
+- Add an option to have the label loop around, rather than return to the original position by scrolling back to the right.
+
+## About
+
+Charles Powell
+- [GitHub](http://github.com/cbpowell)
+- [Twitter](http://twitter.com/seventhcolumn)
+
+Give me a shout if you're using this in your project!
