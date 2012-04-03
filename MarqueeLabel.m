@@ -30,6 +30,34 @@
 #import "MarqueeLabel.h"
 #import <QuartzCore/QuartzCore.h>
 
+
+// Thanks to Phil M
+// http://stackoverflow.com/questions/1340434/get-to-uiviewcontroller-from-uiview-on-iphone
+
+@interface UIView (FindUIViewController)
+- (UIViewController *) firstAvailableUIViewController;
+- (id) traverseResponderChainForUIViewController;
+@end
+
+@implementation UIView (FindUIViewController)
+- (UIViewController *) firstAvailableUIViewController {
+    // convenience function for casting and to "mask" the recursive function
+    return (UIViewController *)[self traverseResponderChainForUIViewController];
+}
+
+- (id) traverseResponderChainForUIViewController {
+    id nextResponder = [self nextResponder];
+    if ([nextResponder isKindOfClass:[UIViewController class]]) {
+        return nextResponder;
+    } else if ([nextResponder isKindOfClass:[UIView class]]) {
+        return [nextResponder traverseResponderChainForUIViewController];
+    } else {
+        return nil;
+    }
+}
+@end
+
+
 @interface MarqueeLabel()
 
 @property (nonatomic, readwrite) BOOL awayFromHome;
@@ -53,6 +81,8 @@
 - (void)returnLabelToOriginImmediately;
 - (void)restartLabel;
 - (void)setupLabel;
+- (void)observedViewControllerChange:(NSNotification *)notification;
+- (void)applyGradientMask;
 
 @end
 
@@ -122,10 +152,30 @@
     [newLabel release];
     
     // Add notification observers
+    // UINavigationController view controller change notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(observedViewControllerChange:) name:@"UINavigationControllerDidShowViewControllerNotification" object:nil];
+    // UIApplication state notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartLabel) name:UIApplicationWillEnterForegroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartLabel) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shutdownLabel) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shutdownLabel) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)observedViewControllerChange:(NSNotification *)notification {
+    NSDictionary *userInfo = [notification userInfo];
+    UIViewController *fromController = [userInfo objectForKey:@"UINavigationControllerLastVisibleViewController"];
+    UIViewController *toController = [userInfo objectForKey:@"UINavigationControllerNextVisibleViewController"];
+    
+    UIViewController *ownController = [self firstAvailableUIViewController];
+    if (fromController == ownController) {
+        [self shutdownLabel];
+        return;
+    }
+    
+    if (toController == ownController) {
+        [self restartLabel];
+        return;
+    }
 }
 
 - (void)applyGradientMask {
@@ -210,6 +260,7 @@
                          }];
     }
 }
+
 
 - (void)restartLabel {
     [self returnLabelToOriginImmediately];

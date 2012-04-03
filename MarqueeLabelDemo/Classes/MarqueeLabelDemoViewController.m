@@ -107,10 +107,6 @@
     
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-
 - (void)changeTheLabel {
     self.demoLabel.text = @"This label is not as long.";
 }
