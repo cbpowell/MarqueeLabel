@@ -67,10 +67,18 @@
  */
 @property (nonatomic) CGFloat fadeLength;
 
+
+/* pauseLength:
+ * Sets the length of fade (from alpha 1.0 to alpha 0.0) at the edges of the
+ * MarqueeLabel. Cannot be larger than 1/2 of the frame width (will be santized).
+ */
+@property (nonatomic) CGFloat animationDelay;
+
 - (id)initWithFrame:(CGRect)frame rate:(float)pixelsPerSec andFadeLength:(float)fadeLength;
 - (id)initWithFrame:(CGRect)frame duration:(NSTimeInterval)lengthOfScroll andFadeLength:(float)fadeLength;
 
 - (void)restartLabel;
+- (void)resetLabel;
 
 
 

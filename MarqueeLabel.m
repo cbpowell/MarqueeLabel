@@ -93,7 +93,7 @@
 @synthesize animationDuration, lengthOfScroll, rate, labelShouldScroll;
 @synthesize animationOptions, homeLabelFrame, awayLabelFrame, baseAlpha;
 @synthesize awayFromHome;
-@synthesize animationCurve, labelize, fadeLength;
+@synthesize animationCurve, labelize, fadeLength, animationDelay;
 
 // UILabel properties for pass through WITH modification
 @synthesize text;
@@ -144,6 +144,7 @@
     self.awayFromHome = NO;
     self.labelize = NO;
     self.labelText = nil;
+    self.animationDelay = 1.0f;
     
     // Create sublabel
     UILabel *newLabel = [[UILabel alloc] initWithFrame:self.bounds];
@@ -214,7 +215,7 @@
     // Perform animation
     self.awayFromHome = YES;
     [UIView animateWithDuration:interval
-                          delay:1.0 
+                          delay:self.animationDelay 
                         options:self.animationOptions
                      animations:^{
                          self.subLabel.frame = self.awayLabelFrame;
@@ -230,7 +231,7 @@
     
     // Perform animation
     [UIView animateWithDuration:animationDuration
-                          delay:0.3
+                          delay:0.8f
                         options:self.animationOptions
                      animations:^{
                          self.subLabel.frame = self.homeLabelFrame;
@@ -270,6 +271,14 @@
     }
 }
 
+
+- (void)resetLabel {
+    self.homeLabelFrame = CGRectZero;
+    self.awayLabelFrame = CGRectZero;
+    self.labelText = nil;
+    [self returnLabelToOriginImmediately];
+}
+
 - (void)shutdownLabel {
     [self.layer removeAllAnimations];
     
@@ -294,6 +303,9 @@
 #pragma mark Modified UILabel Getters/Setters
 
 - (void)setText:(NSString *)newText {
+    if (newText == nil && self.labelText == nil) {
+        return;
+    }
     
     if (![newText isEqualToString:self.labelText]) {
         
