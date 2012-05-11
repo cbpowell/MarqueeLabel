@@ -29,6 +29,7 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum MarqueeType {MLLeftRight=0, MLContinuous} MarqueeType;
 
 @interface MarqueeLabel : UIView {
     
@@ -60,6 +61,18 @@
  */
 @property (nonatomic) BOOL labelize;
 
+/* marqueeType:
+ * When set to LeftRight, the label moves from left to right and from right to left alternatively,
+ * When set to Continuous, the label slides continuously to the left.
+ * Defaults to LeftRight.
+ */
+@property (nonatomic) MarqueeType marqueeType;
+
+/* continuousMarqueeSeparator:
+ * NString inserted after label's end when marqueeType is Continuous.
+ * Defaults to @"    ".
+ */
+@property (nonatomic, strong) NSString *continuousMarqueeSeparator;
 
 /* fadeLength:
  * Sets the length of fade (from alpha 1.0 to alpha 0.0) at the edges of the

@@ -105,6 +105,38 @@
     [self.view addSubview:rateLabelTwo];
     [rateLabelTwo release];
     
+    // Continuous label example
+    MarqueeLabel *continuousLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 300, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
+    continuousLabel.marqueeType = MLContinuous;
+    continuousLabel.numberOfLines = 1;
+    continuousLabel.opaque = NO;
+    continuousLabel.enabled = YES;
+    continuousLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    continuousLabel.textAlignment = UITextAlignmentLeft;
+    continuousLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
+    continuousLabel.backgroundColor = [UIColor clearColor];
+    continuousLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
+    continuousLabel.text = @"This is another long label that scrolls continuously rather than scrolling back and forth!";
+    
+    [self.view addSubview:continuousLabel];
+    [continuousLabel release];
+    
+    MarqueeLabel *continuousLabel2 = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 330, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
+    continuousLabel2.marqueeType = MLContinuous;
+    continuousLabel2.continuousMarqueeSeparator = @"  |SEPARATOR|  ";
+    continuousLabel2.numberOfLines = 1;
+    continuousLabel2.opaque = NO;
+    continuousLabel2.enabled = YES;
+    continuousLabel2.shadowOffset = CGSizeMake(0.0, -1.0);
+    continuousLabel2.textAlignment = UITextAlignmentLeft;
+    continuousLabel2.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
+    continuousLabel2.backgroundColor = [UIColor clearColor];
+    continuousLabel2.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
+    continuousLabel2.text = @"This is another long label that scrolls continuously with a custom label separator!";
+    
+    [self.view addSubview:continuousLabel2];
+    [continuousLabel2 release];
+  
 }
 
 - (void)changeTheLabel {
