@@ -90,8 +90,10 @@
 @implementation MarqueeLabel
 
 @synthesize subLabel, labelText;
+@synthesize homeLabelFrame = _homeLabelFrame;
+@synthesize awayLabelFrame = _awayLabelFrame;
 @synthesize animationDuration, lengthOfScroll, rate, labelShouldScroll;
-@synthesize animationOptions, homeLabelFrame, awayLabelFrame, baseAlpha;
+@synthesize animationOptions, baseAlpha;
 @synthesize awayFromHome;
 @synthesize animationCurve, labelize, fadeLength, animationDelay;
 
@@ -273,10 +275,10 @@
 
 
 - (void)resetLabel {
-    self.homeLabelFrame = CGRectZero;
-    self.awayLabelFrame = CGRectZero;
-    self.labelText = nil;
     [self returnLabelToOriginImmediately];
+    self.homeLabelFrame = CGRectNull;
+    self.awayLabelFrame = CGRectNull;
+    self.labelText = nil;
 }
 
 - (void)shutdownLabel {
@@ -315,8 +317,8 @@
         // Calculate label size
         CGSize maximumLabelSize = CGSizeMake(9999, self.frame.size.height);
         CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
-                                       constrainedToSize:maximumLabelSize
-                                           lineBreakMode:self.subLabel.lineBreakMode];
+                                              constrainedToSize:maximumLabelSize
+                                                  lineBreakMode:self.subLabel.lineBreakMode];
         // Create home label frame
         self.homeLabelFrame = CGRectMake(self.fadeLength, 0, (expectedLabelSize.width + self.fadeLength), self.bounds.size.height);
         self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, -expectedLabelSize.width + (self.bounds.size.width - self.fadeLength * 2), 0.0);
@@ -362,9 +364,16 @@
             
         } else {
             // Currently labelized, act like a UILabel
-            self.subLabel.frame = self.homeLabelFrame;
+            [self returnLabelToOriginImmediately];
             self.subLabel.text = self.labelText;
-            
+            // Calculate label size
+            CGSize maximumLabelSize = CGSizeMake(9999, self.frame.size.height);
+            CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
+                                                  constrainedToSize:maximumLabelSize
+                                                      lineBreakMode:self.subLabel.lineBreakMode];
+            // Create home label frame
+            self.homeLabelFrame = CGRectMake(self.fadeLength, 0, (expectedLabelSize.width + self.fadeLength), self.bounds.size.height);
+            self.subLabel.frame = self.homeLabelFrame;
         }
     }
 }
@@ -409,6 +418,34 @@
 
 - (BOOL)labelShouldScroll {
     return ((self.labelText != nil) && !CGRectContainsRect(self.bounds, self.homeLabelFrame));
+}
+
+- (CGRect)awayLabelFrame {
+    if (CGRectEqualToRect(_awayLabelFrame, CGRectNull)) {
+        // Calculate label size
+        CGSize maximumLabelSize = CGSizeMake(9999, self.frame.size.height);
+        CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
+                                              constrainedToSize:maximumLabelSize
+                                                  lineBreakMode:self.subLabel.lineBreakMode];
+        // Create home label frame
+        _awayLabelFrame = CGRectOffset(self.homeLabelFrame, -expectedLabelSize.width + (self.bounds.size.width - self.fadeLength * 2), 0.0);
+    }
+    
+    return _awayLabelFrame;
+}
+
+- (CGRect)homeLabelFrame {
+    if (CGRectEqualToRect(_homeLabelFrame, CGRectNull)) {
+        // Calculate label size
+        CGSize maximumLabelSize = CGSizeMake(9999, self.frame.size.height);
+        CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
+                                              constrainedToSize:maximumLabelSize
+                                                  lineBreakMode:self.subLabel.lineBreakMode];
+        // Create home label frame
+        _homeLabelFrame = CGRectMake(self.fadeLength, 0, (expectedLabelSize.width + self.fadeLength), self.bounds.size.height);
+    }
+    
+    return _homeLabelFrame;
 }
 
 #pragma mark -
