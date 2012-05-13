@@ -89,7 +89,8 @@
 
 @implementation MarqueeLabel
 
-@synthesize subLabel, labelText;
+@synthesize subLabel = _subLabel;
+@synthesize labelText;
 @synthesize homeLabelFrame = _homeLabelFrame;
 @synthesize awayLabelFrame = _awayLabelFrame;
 @synthesize animationDuration, lengthOfScroll, rate, labelShouldScroll;
@@ -148,12 +149,6 @@
     self.labelize = NO;
     self.labelText = nil;
     self.animationDelay = 1.0f;
-    
-    // Create sublabel
-    UILabel *newLabel = [[UILabel alloc] initWithFrame:self.bounds];
-    self.subLabel = newLabel;
-    [self addSubview:self.subLabel];
-    [newLabel release];
     
     // Add notification observers
     // UINavigationController view controller change notifications
@@ -236,7 +231,7 @@
     [self returnLabelToOriginImmediately];
     [UIView animateWithDuration:interval
                           delay:delay 
-                        options: (UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction)
+                        options:self.animationOptions
                      animations:^{
                          self.subLabel.frame = self.awayLabelFrame;
                      }
@@ -482,6 +477,21 @@
 
 #pragma mark -
 #pragma mark Custom Getters and Setters
+
+- (UILabel *)subLabel {
+    if (_subLabel == nil) {
+        // Create sublabel
+        _subLabel = [[UILabel alloc] initWithFrame:self.bounds];
+        [self addSubview:_subLabel];
+    }
+    
+    if ([_subLabel superview] == nil) {
+        [self addSubview:_subLabel];
+    }
+    
+    return _subLabel;
+}
+
 - (void)setAnimationCurve:(UIViewAnimationOptions)anAnimationCurve {
     NSUInteger allowableOptions = UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionCurveLinear;
     if ((allowableOptions & animationCurve) == anAnimationCurve) {
@@ -529,9 +539,10 @@
 }
 
 - (NSString *)continuousMarqueeSeparator{
-    if (continuousMarqueeSeparator==nil) {
+    if (continuousMarqueeSeparator == nil) {
         continuousMarqueeSeparator = @"    ";
     }
+    
     return continuousMarqueeSeparator;
 }
 
@@ -543,8 +554,8 @@
 }
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation {
-    if ([subLabel respondsToSelector:[anInvocation selector]]) {
-        [anInvocation invokeWithTarget:subLabel];
+    if ([self.subLabel respondsToSelector:[anInvocation selector]]) {
+        [anInvocation invokeWithTarget:self.subLabel];
     } else {
         NSLog(@"MarqueeLabel does not recognize the selector");
         [super forwardInvocation:anInvocation];
@@ -552,11 +563,11 @@
 }
 
 - (id)valueForUndefinedKey:(NSString *)key {
-    return [subLabel valueForKey:key];
+    return [self.subLabel valueForKey:key];
 }
 
 - (void) setValue:(id)value forUndefinedKey:(NSString *)key {
-    [subLabel setValue:value forKey:key];
+    [self.subLabel setValue:value forKey:key];
 }
 
 #pragma mark -
@@ -564,7 +575,8 @@
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [labelText release];
-    [subLabel release];
+    [self.subLabel removeFromSuperview];
+    [_subLabel release];
     [super dealloc];
 }
 
