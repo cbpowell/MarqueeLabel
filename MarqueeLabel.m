@@ -237,7 +237,7 @@
                      }
                      completion:^(BOOL finished) {
                          if (finished) {
-                             [self scrollLeftPerpetualWithInterval:interval after:self.animationDelay];
+                             [self scrollLeftPerpetualWithInterval:interval after:delay];
                          }
                      }];
 }
@@ -261,11 +261,12 @@
 }
 
 - (void)returnLabelToOriginImmediately {
-    
-    if (!CGRectEqualToRect(self.subLabel.frame, self.homeLabelFrame)) {
-        [self.subLabel.layer removeAllAnimations];
-        self.subLabel.frame = self.homeLabelFrame;
+    [self.subLabel.layer removeAllAnimations];
+    self.subLabel.frame = self.homeLabelFrame;
+    if (CGRectEqualToRect(self.subLabel.frame, self.homeLabelFrame) || CGRectEqualToRect(self.homeLabelFrame, CGRectNull) || CGRectEqualToRect(self.homeLabelFrame, CGRectZero)) {
         self.awayFromHome = NO;
+    } else {
+        [self returnLabelToOriginImmediately];
     }
 }
 
@@ -274,7 +275,15 @@
     [self returnLabelToOriginImmediately];
     
     if (self.labelShouldScroll) {
-        [self scrollLeftWithInterval:self.animationDuration];
+        switch (self.marqueeType) {
+            case MLContinuous:
+                [self scrollLeftPerpetualWithInterval:self.animationDuration after:self.animationDelay];
+                break;
+                
+            default:
+                [self scrollLeftWithInterval:self.animationDuration];
+                break;
+        }
     }
 }
 
@@ -366,7 +375,8 @@
                                              CGSize labelAndSeparatorSize = [[self.labelText stringByAppendingString:self.continuousMarqueeSeparator] sizeWithFont:self.subLabel.font 
                                                                                                                                                  constrainedToSize:maximumLabelSize 
                                                                                                                                                      lineBreakMode:self.subLabel.lineBreakMode];
-                                             self.awayLabelFrame = CGRectOffset(continuousLabelFrame, -labelAndSeparatorSize.width, 0.0);
+                                             // The +1 seems to prevent jitter when using EaseIn/Out, and doesn't affect linear
+                                             self.awayLabelFrame = CGRectOffset(continuousLabelFrame, -labelAndSeparatorSize.width + 1, 0.0);
                                              
                                              // Recompute the animation duration
                                              self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(self.awayLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
@@ -453,6 +463,8 @@
     }
 }
 
+
+
 - (NSString *)text {
     return self.labelText;
 }
@@ -494,7 +506,7 @@
 
 - (void)setAnimationCurve:(UIViewAnimationOptions)anAnimationCurve {
     NSUInteger allowableOptions = UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionCurveLinear;
-    if ((allowableOptions & animationCurve) == anAnimationCurve) {
+    if ((allowableOptions & anAnimationCurve) == anAnimationCurve) {
         self.animationOptions = (anAnimationCurve | UIViewAnimationOptionAllowUserInteraction);
     }
 }
@@ -507,7 +519,7 @@
 }
 
 - (BOOL)labelShouldScroll {
-    return ((self.labelText != nil) && !CGRectContainsRect(self.bounds, self.homeLabelFrame));
+    return ((self.labelText != nil) && !CGRectContainsRect(self.bounds, self.homeLabelFrame) && !self.labelize);
 }
 
 - (CGRect)awayLabelFrame {

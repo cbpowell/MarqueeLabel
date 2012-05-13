@@ -105,6 +105,7 @@
     MarqueeLabel *continuousLabel2 = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 330, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
     continuousLabel2.marqueeType = MLContinuous;
     continuousLabel2.continuousMarqueeSeparator = @"  |SEPARATOR|  ";
+    continuousLabel2.animationCurve = UIViewAnimationOptionCurveLinear;
     continuousLabel2.numberOfLines = 1;
     continuousLabel2.opaque = NO;
     continuousLabel2.enabled = YES;
