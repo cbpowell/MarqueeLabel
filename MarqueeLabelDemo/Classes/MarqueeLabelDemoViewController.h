@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 Charles Powell
+ * Copyright (c) 2012 Charles Powell
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -31,15 +31,13 @@
 #import <UIKit/UIKit.h>
 #import "MarqueeLabel.h"
 
-@interface MarqueeLabelDemoViewController : UIViewController {
-    
-    MarqueeLabel *demoLabel;
-
-}
+@interface MarqueeLabelDemoViewController : UIViewController
 
 @property (nonatomic, retain) MarqueeLabel *demoLabel;
+@property (nonatomic, retain) IBOutlet UISwitch *labelizeSwitch;
 
--(void) changeTheLabel;
+- (void)changeTheLabel;
+- (IBAction)labelizeSwitched:(id)sender;
 
 @end
 
