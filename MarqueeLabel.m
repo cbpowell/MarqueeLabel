@@ -268,17 +268,9 @@
 - (void)returnLabelToOriginImmediately {
     
     if (!CGRectEqualToRect(self.subLabel.frame, self.homeLabelFrame)) {
-        [UIView animateWithDuration:0
-                              delay:0
-                            options:(UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState) 
-                         animations:^{
-                             self.subLabel.frame = self.homeLabelFrame;
-                         }
-                         completion:^(BOOL finished){
-                             if (finished) {
-                                 self.awayFromHome = NO;
-                             }
-                         }];
+        [self.subLabel.layer removeAllAnimations];
+        self.subLabel.frame = self.homeLabelFrame;
+        self.awayFromHome = NO;
     }
 }
 
@@ -302,8 +294,6 @@
 }
 
 - (void)shutdownLabel {
-    [self.layer removeAllAnimations];
-    
     [self returnLabelToOriginImmediately];
 }
 
@@ -368,7 +358,7 @@
                                              
                                              // Set frame and text while invisible
                                              // Double the label text and insert the separator.
-                                             NSString *doubledText= [self.labelText stringByAppendingFormat:@"%@%@",self.continuousMarqueeSeparator,self.labelText];
+                                             NSString *doubledText = [self.labelText stringByAppendingFormat:@"%@%@",self.continuousMarqueeSeparator, self.labelText];
                                             
                                              // Size of the new doubled label
                                              CGSize expectedLabelSizeDoubled = [doubledText sizeWithFont:self.subLabel.font
@@ -378,7 +368,9 @@
                                              CGRect continuousLabelFrame = CGRectMake(self.fadeLength, 0, (expectedLabelSizeDoubled.width + self.fadeLength), self.bounds.size.height);
                                              
                                              // Size of the label and the separator. This is the period of the translation to the left.
-                                             CGSize labelAndSeparatorSize = [[self.labelText stringByAppendingString:self.continuousMarqueeSeparator] sizeWithFont:self.subLabel.font constrainedToSize:maximumLabelSize lineBreakMode:self.subLabel.lineBreakMode];
+                                             CGSize labelAndSeparatorSize = [[self.labelText stringByAppendingString:self.continuousMarqueeSeparator] sizeWithFont:self.subLabel.font 
+                                                                                                                                                 constrainedToSize:maximumLabelSize 
+                                                                                                                                                     lineBreakMode:self.subLabel.lineBreakMode];
                                              self.awayLabelFrame = CGRectOffset(continuousLabelFrame, -labelAndSeparatorSize.width, 0.0);
                                              
                                              // Recompute the animation duration
@@ -387,7 +379,7 @@
                                              self.subLabel.frame = self.homeLabelFrame;
                                              self.subLabel.text = doubledText;
                                              
-                                         }else {//Will not scroll
+                                         } else { //Will not scroll
                                              
                                              self.subLabel.frame = self.homeLabelFrame;
                                              self.subLabel.text = self.labelText;
@@ -402,14 +394,14 @@
                                                           }
                                                           completion:^(BOOL finished) {
                                                               if (self.labelShouldScroll) {
-                                                                  [self scrollLeftPerpetualWithInterval:self.animationDuration after:1.0];
+                                                                  [self scrollLeftPerpetualWithInterval:self.animationDuration after:self.animationDelay];
                                                               }
                                                           }];
                                      }];
                     
                     break;
                     
-                default://Fallback to LeftRight marqueeType
+                default: //Fallback to LeftRight marqueeType
                     
                     // Calculate animation duration
                     self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(self.awayLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
@@ -444,7 +436,7 @@
                                                           }];
                                      }];
                    
-            }//end of marqueeType switch
+            } //end of marqueeType switch
         } else {
             // Currently labelized, act like a UILabel
             [self returnLabelToOriginImmediately];
