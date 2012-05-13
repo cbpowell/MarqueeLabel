@@ -242,7 +242,7 @@
                      }
                      completion:^(BOOL finished) {
                          if (finished) {
-                             [self scrollLeftPerpetualWithInterval:interval after:0.0];
+                             [self scrollLeftPerpetualWithInterval:interval after:self.animationDelay];
                          }
                      }];
 }
@@ -297,6 +297,8 @@
     self.homeLabelFrame = CGRectNull;
     self.awayLabelFrame = CGRectNull;
     self.labelText = nil;
+    self.subLabel.alpha = 1.0f;
+    self.alpha = 1.0f;
 }
 
 - (void)shutdownLabel {
@@ -417,7 +419,7 @@
                                           delay:0.0 
                                         options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState)
                                      animations:^{
-                                         self.subLabel.alpha = 0.0;
+                                         self.subLabel.alpha = 0.0f;
                                      }
                                      completion:^(BOOL finished){
                                          
@@ -447,6 +449,11 @@
             // Currently labelized, act like a UILabel
             [self returnLabelToOriginImmediately];
             self.subLabel.text = self.labelText;
+            
+            // Make sure alpha is returned;
+            self.alpha = 1.0f;
+            self.subLabel.alpha = self.baseAlpha;
+            
             // Calculate label size
             CGSize maximumLabelSize = CGSizeMake(9999, self.frame.size.height);
             CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
