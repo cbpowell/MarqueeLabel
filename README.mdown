@@ -26,7 +26,7 @@ If you'd rather have a label that scrolls at a specific rate (points per second)
 See the included MarqueeLabelDemo project for further example usage.
 
 ## Todo
-- Add an option to have the label loop around, rather than return to the original position by scrolling back to the right.
+- Any ideas?
 
 ## About
 
