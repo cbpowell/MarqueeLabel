@@ -96,7 +96,8 @@
 @synthesize animationDuration, lengthOfScroll, rate, labelShouldScroll;
 @synthesize animationOptions, baseAlpha;
 @synthesize awayFromHome;
-@synthesize animationCurve, labelize, fadeLength, animationDelay;
+@synthesize labelize = _labelize;
+@synthesize animationCurve, fadeLength, animationDelay;
 @synthesize marqueeType, continuousMarqueeSeparator;
 
 // UILabel properties for pass through WITH modification
@@ -201,12 +202,36 @@
     }
     
     if (self.labelShouldScroll) {
-        [self scrollLeftWithInterval:self.animationDuration];
+        [self beginScroll];
     }
 }
 
 #pragma mark -
-#pragma mark Animation Handlers 
+#pragma mark Animation Handlers
+
+- (NSTimeInterval)durationForInterval:(NSTimeInterval)interval {
+    switch (self.marqueeType) {
+        case MLContinuous:
+            return (interval * 2.0f);
+            break;
+            
+        default:
+            return interval;
+            break;
+    }
+}
+
+- (void)beginScroll {
+    switch (self.marqueeType) {
+        case MLContinuous:
+            [self scrollLeftPerpetualWithInterval:[self durationForInterval:self.animationDuration] after:self.animationDelay];
+            break;
+            
+        default:
+            [self scrollLeftWithInterval:[self durationForInterval:self.animationDuration]];
+            break;
+    }
+}
 
 - (void)scrollLeftWithInterval:(NSTimeInterval)interval {
     
@@ -275,15 +300,7 @@
     [self returnLabelToOriginImmediately];
     
     if (self.labelShouldScroll) {
-        switch (self.marqueeType) {
-            case MLContinuous:
-                [self scrollLeftPerpetualWithInterval:self.animationDuration after:self.animationDelay];
-                break;
-                
-            default:
-                [self scrollLeftWithInterval:self.animationDuration];
-                break;
-        }
+        [self beginScroll];
     }
 }
 
@@ -302,15 +319,15 @@
 }
 
 // Custom labelize mutator to restart scrolling after changing labelize to NO
-- (void)setLabelize:(BOOL)labelization {
+- (void)setLabelize:(BOOL)labelize {
 
-    if (labelization) {
-        labelize = YES;
+    if (labelize) {
+        _labelize = YES;
         if (self.subLabel) {
             [self returnLabelToOriginImmediately];
         }
     } else {
-        labelize = NO;
+        _labelize = NO;
         [self restartLabel];
     }
 }
@@ -375,8 +392,8 @@
                                              CGSize labelAndSeparatorSize = [[self.labelText stringByAppendingString:self.continuousMarqueeSeparator] sizeWithFont:self.subLabel.font 
                                                                                                                                                  constrainedToSize:maximumLabelSize 
                                                                                                                                                      lineBreakMode:self.subLabel.lineBreakMode];
-                                             // The +1 seems to prevent jitter when using EaseIn/Out, and doesn't affect linear
-                                             self.awayLabelFrame = CGRectOffset(continuousLabelFrame, -labelAndSeparatorSize.width + 1, 0.0);
+                                             
+                                             self.awayLabelFrame = CGRectOffset(continuousLabelFrame, -labelAndSeparatorSize.width, 0.0);
                                              
                                              // Recompute the animation duration
                                              self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(self.awayLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
@@ -399,7 +416,7 @@
                                                           }
                                                           completion:^(BOOL finished) {
                                                               if (self.labelShouldScroll) {
-                                                                  [self scrollLeftPerpetualWithInterval:self.animationDuration after:self.animationDelay];
+                                                                  [self beginScroll];
                                                               }
                                                           }];
                                      }];
@@ -436,7 +453,7 @@
                                                           }
                                                           completion:^(BOOL finished) {
                                                               if (self.labelShouldScroll) {
-                                                                  [self scrollLeftWithInterval:self.animationDuration];
+                                                                  [self beginScroll];
                                                               }
                                                           }];
                                      }];
@@ -550,7 +567,7 @@
     return _homeLabelFrame;
 }
 
-- (NSString *)continuousMarqueeSeparator{
+- (NSString *)continuousMarqueeSeparator {
     if (continuousMarqueeSeparator == nil) {
         continuousMarqueeSeparator = @"    ";
     }
