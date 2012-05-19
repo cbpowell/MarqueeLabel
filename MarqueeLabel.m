@@ -76,8 +76,8 @@
 
 @property (nonatomic) CGFloat baseAlpha;
 
-- (void)scrollLeftWithInterval:(NSTimeInterval)interval;
-- (void)scrollRightWithInterval:(NSTimeInterval)interval;
+- (void)scrollAwayWithInterval:(NSTimeInterval)interval;
+- (void)scrollHomeWithInterval:(NSTimeInterval)interval;
 - (void)returnLabelToOriginImmediately;
 - (void)restartLabel;
 - (void)setupLabel;
@@ -228,13 +228,12 @@
             break;
             
         default:
-            [self scrollLeftWithInterval:[self durationForInterval:self.animationDuration]];
+            [self scrollAwayWithInterval:[self durationForInterval:self.animationDuration]];
             break;
     }
 }
 
-- (void)scrollLeftWithInterval:(NSTimeInterval)interval {
-    
+- (void)scrollAwayWithInterval:(NSTimeInterval)interval {
     // Perform animation
     self.awayFromHome = YES;
     [UIView animateWithDuration:interval
@@ -245,7 +244,24 @@
                      }
                      completion:^(BOOL finished) {
                          if (finished) {
-                             [self scrollRightWithInterval:interval];
+                             [self scrollHomeWithInterval:interval];
+                         }
+                     }];
+}
+
+- (void)scrollHomeWithInterval:(NSTimeInterval)interval {
+    // Perform animation
+    [UIView animateWithDuration:interval
+                          delay:self.animationDelay
+                        options:self.animationOptions
+                     animations:^{
+                         self.subLabel.frame = self.homeLabelFrame;
+                     }
+                     completion:^(BOOL finished){
+                         if (finished) {
+                             // Set awayFromHome
+                             self.awayFromHome = NO;
+                             [self scrollAwayWithInterval:interval];
                          }
                      }];
 }
@@ -263,24 +279,6 @@
                      completion:^(BOOL finished) {
                          if (finished) {
                              [self scrollLeftPerpetualWithInterval:interval after:delay];
-                         }
-                     }];
-}
-
-- (void)scrollRightWithInterval:(NSTimeInterval)interval {
-    
-    // Perform animation
-    [UIView animateWithDuration:interval
-                          delay:self.animationDelay
-                        options:self.animationOptions
-                     animations:^{
-                         self.subLabel.frame = self.homeLabelFrame;
-                     }
-                     completion:^(BOOL finished){
-                         if (finished) {
-                             // Set awayFromHome
-                             self.awayFromHome = NO;
-                             [self scrollLeftWithInterval:interval];
                          }
                      }];
 }
@@ -345,14 +343,19 @@
         // Set labelText to incoming newText
         self.labelText = newText;
         
-        // Calculate label size
+        // Make maximum size
         CGSize maximumLabelSize = CGSizeMake(9999, self.frame.size.height);
+        // Calculate expected size
         CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
-                                              constrainedToSize:maximumLabelSize
-                                                  lineBreakMode:self.subLabel.lineBreakMode];
-        // Create home label frame
-        self.homeLabelFrame = CGRectMake(self.fadeLength, 0, (expectedLabelSize.width + self.fadeLength), self.bounds.size.height);
+                                       constrainedToSize:maximumLabelSize
+                                           lineBreakMode:self.subLabel.lineBreakMode];
+        
+        // Create home label frame (may be changed by ML type switch statement)
+        self.homeLabelFrame = CGRectMake(self.fadeLength, 0, expectedLabelSize.width, self.bounds.size.height);
         self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, -expectedLabelSize.width + (self.bounds.size.width - self.fadeLength * 2), 0.0);
+        
+        // Calculate animation duration (may be changed by ML type switch statement)
+        self.animationDuration = (self.rate != 0) ? ((NSTimeInterval)fabs(self.awayLabelFrame.origin.x - self.homeLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
         
         // Store current alpha
         self.baseAlpha = self.subLabel.alpha;
@@ -407,6 +410,47 @@
                                              self.subLabel.text = self.labelText;
                                              
                                          }
+                                         
+                                         // Fade in quickly
+                                         [UIView animateWithDuration:0.1
+                                                               delay:0.0
+                                                             options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState)
+                                                          animations:^{
+                                                              self.subLabel.alpha = self.baseAlpha;
+                                                          }
+                                                          completion:^(BOOL finished) {
+                                                              if (self.labelShouldScroll) {
+                                                                  [self beginScroll];
+                                                              }
+                                                          }];
+                                     }];
+                    
+                    break;
+                    
+                case MLRightLeft:
+                    
+                    self.homeLabelFrame = CGRectMake(self.bounds.size.width - (expectedLabelSize.width + self.fadeLength), 0.0, expectedLabelSize.width, self.bounds.size.height);
+                    self.awayLabelFrame = CGRectMake(self.fadeLength, 0.0, expectedLabelSize.width, self.bounds.size.height);
+                    
+                    // Fade out quickly
+                    [UIView animateWithDuration:0.1
+                                          delay:0.0 
+                                        options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState)
+                                     animations:^{
+                                         self.subLabel.alpha = 0.0f;
+                                     }
+                                     completion:^(BOOL finished){
+                                         
+                                         // Animate move immediately
+                                         [self returnLabelToOriginImmediately];
+                                         
+                                         // Set frame and text while invisible
+                                         self.subLabel.frame = self.homeLabelFrame;
+                                         self.subLabel.text = self.labelText;
+                                         
+                                         // Enforce text alignment for this type
+                                         self.subLabel.textAlignment = UITextAlignmentRight;
+                                         
                                          // Fade in quickly
                                          [UIView animateWithDuration:0.1
                                                                delay:0.0
@@ -424,6 +468,9 @@
                     break;
                     
                 default: //Fallback to LeftRight marqueeType
+                    
+                    self.homeLabelFrame = CGRectMake(self.fadeLength, 0, expectedLabelSize.width, self.bounds.size.height);
+                    self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, -expectedLabelSize.width + (self.bounds.size.width - self.fadeLength * 2), 0.0);
                     
                     // Calculate animation duration
                     self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(self.awayLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
@@ -444,6 +491,9 @@
                                          self.subLabel.frame = self.homeLabelFrame;
                                          self.subLabel.text = self.labelText;
                                          
+                                         // Enforce text alignment for this type
+                                         self.subLabel.textAlignment = UITextAlignmentLeft;
+                                         
                                          // Fade in quickly
                                          [UIView animateWithDuration:0.1
                                                                delay:0.0
@@ -459,6 +509,7 @@
                                      }];
                    
             } //end of marqueeType switch
+            
         } else {
             // Currently labelized, act like a UILabel
             [self returnLabelToOriginImmediately];

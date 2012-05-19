@@ -63,7 +63,7 @@
     rateLabelOne.opaque = NO;
     rateLabelOne.enabled = YES;
     rateLabelOne.shadowOffset = CGSizeMake(0.0, -1.0);
-    rateLabelOne.textAlignment = UITextAlignmentLeft;
+    rateLabelOne.textAlignment = UITextAlignmentRight;
     rateLabelOne.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
     rateLabelOne.backgroundColor = [UIColor clearColor];
     rateLabelOne.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
@@ -73,15 +73,16 @@
     [rateLabelOne release];
     
     MarqueeLabel *rateLabelTwo = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 230, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
+    rateLabelTwo.marqueeType = MLRightLeft;
     rateLabelTwo.numberOfLines = 1;
     rateLabelTwo.opaque = NO;
     rateLabelTwo.enabled = YES;
     rateLabelTwo.shadowOffset = CGSizeMake(0.0, -1.0);
-    rateLabelTwo.textAlignment = UITextAlignmentLeft;
+    rateLabelTwo.textAlignment = UITextAlignmentRight;
     rateLabelTwo.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
     rateLabelTwo.backgroundColor = [UIColor clearColor];
     rateLabelTwo.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
-    rateLabelTwo.text = @"This text is not as long, but still long enough to scroll, and scrolls the same speed!";
+    rateLabelTwo.text = @"This text is not as long, but still long enough to scroll, and scrolls the same speed but to the right first!";
     
     [self.view addSubview:rateLabelTwo];
     [rateLabelTwo release];

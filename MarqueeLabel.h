@@ -29,7 +29,13 @@
 
 #import <UIKit/UIKit.h>
 
-typedef enum MarqueeType {MLLeftRight=0, MLContinuous} MarqueeType;
+
+// MarqueeLabel types
+typedef enum {
+    MLLeftRight = 0,    // Scrolls left first, then back right to the original position
+    MLRightLeft,        // Scrolls right first, then back left to the original position
+    MLContinuous        // Continuously scrolls left (with a pause at the original position if animationDelay is set)
+} MarqueeType;
 
 @interface MarqueeLabel : UIView {
     
@@ -61,18 +67,33 @@ typedef enum MarqueeType {MLLeftRight=0, MLContinuous} MarqueeType;
  */
 @property (nonatomic) BOOL labelize;
 
+
 /* marqueeType:
- * When set to LeftRight, the label moves from left to right and from right to left alternatively,
+ * When set to LeftRight, the label moves from left to right and back from right to left alternatively.
+ *
+ *      NOTE: LeftRight type is ONLY compatible with a label text alignment of UITextAlignmentLeft. Specifying
+ *      LeftRight will change any previously set, non-compatible text alignment to UITextAlignmentLeft.
+ *
+ * When set to RightLeft, the label moves from right to left and back from left to right alternatively.
+ *
+ *      NOTE: RightLeft type is ONLY compatibile with a label text alignment of UITextAlignmentRight. Specifying
+ *      RightLeft will change any previously set, non-compatible text alignment to UITextAlignmentRight.
+ *
  * When set to Continuous, the label slides continuously to the left.
+ *
+ *      NOTE: MLContinuous does not yet support any alignments besides UITextAlignmentLeft
+ *
  * Defaults to LeftRight.
  */
 @property (nonatomic) MarqueeType marqueeType;
+
 
 /* continuousMarqueeSeparator:
  * NString inserted after label's end when marqueeType is Continuous.
  * Defaults to @"    ".
  */
 @property (nonatomic, strong) NSString *continuousMarqueeSeparator;
+
 
 /* fadeLength:
  * Sets the length of fade (from alpha 1.0 to alpha 0.0) at the edges of the
@@ -81,17 +102,23 @@ typedef enum MarqueeType {MLLeftRight=0, MLContinuous} MarqueeType;
 @property (nonatomic) CGFloat fadeLength;
 
 
-/* pauseLength:
- * Sets the length of fade (from alpha 1.0 to alpha 0.0) at the edges of the
- * MarqueeLabel. Cannot be larger than 1/2 of the frame width (will be santized).
+/* animationDelay:
+ * Sets how long the label pauses at the "origin" position between scrolling
  */
 @property (nonatomic) CGFloat animationDelay;
 
+
+
+// Methods
 - (id)initWithFrame:(CGRect)frame rate:(float)pixelsPerSec andFadeLength:(float)fadeLength;
 - (id)initWithFrame:(CGRect)frame duration:(NSTimeInterval)lengthOfScroll andFadeLength:(float)fadeLength;
 
 - (void)restartLabel;
 - (void)resetLabel;
+
+
+
+
 
 
 
