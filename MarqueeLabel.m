@@ -641,7 +641,9 @@
     if ([self.subLabel respondsToSelector:[anInvocation selector]]) {
         [anInvocation invokeWithTarget:self.subLabel];
     } else {
-        //NSLog(@"MarqueeLabel does not recognize the selector");
+        #if TARGET_IPHONE_SIMULATOR
+            NSLog(@"Method selector not recognized by MarqueeLabel or its contained UILabel");
+        #endif
         [super forwardInvocation:anInvocation];
     }
 }
@@ -650,7 +652,7 @@
     return [self.subLabel valueForKey:key];
 }
 
-- (void) setValue:(id)value forUndefinedKey:(NSString *)key {
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key {
     [self.subLabel setValue:value forKey:key];
 }
 
