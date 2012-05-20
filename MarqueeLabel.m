@@ -60,21 +60,21 @@
 
 @interface MarqueeLabel()
 
-@property (nonatomic, readwrite) BOOL awayFromHome;
+@property (nonatomic, assign, readwrite) BOOL awayFromHome;
 
 @property (nonatomic, retain) UILabel *subLabel;
-@property (nonatomic, retain) NSString *labelText;
-@property (nonatomic) NSUInteger animationOptions;
+@property (nonatomic, copy) NSString *labelText;
+@property (nonatomic, assign) NSUInteger animationOptions;
 
-@property (nonatomic) NSTimeInterval animationDuration;
-@property (nonatomic) NSTimeInterval lengthOfScroll;
-@property (nonatomic) CGFloat rate;
-@property (nonatomic, readonly) BOOL labelShouldScroll;
+@property (nonatomic, assign) NSTimeInterval animationDuration;
+@property (nonatomic, assign) NSTimeInterval lengthOfScroll;
+@property (nonatomic, assign) CGFloat rate;
+@property (nonatomic, assign, readonly) BOOL labelShouldScroll;
 
-@property (nonatomic) CGRect homeLabelFrame;
-@property (nonatomic) CGRect awayLabelFrame;
+@property (nonatomic, assign) CGRect homeLabelFrame;
+@property (nonatomic, assign) CGRect awayLabelFrame;
 
-@property (nonatomic) CGFloat baseAlpha;
+@property (nonatomic, assign) CGFloat baseAlpha;
 
 - (void)scrollAwayWithInterval:(NSTimeInterval)interval;
 - (void)scrollHomeWithInterval:(NSTimeInterval)interval;
