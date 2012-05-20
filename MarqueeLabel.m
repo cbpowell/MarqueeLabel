@@ -620,7 +620,7 @@
 
 - (NSString *)continuousMarqueeSeparator {
     if (continuousMarqueeSeparator == nil) {
-        continuousMarqueeSeparator = @"    ";
+        continuousMarqueeSeparator = @"       ";
     }
     
     return continuousMarqueeSeparator;
@@ -637,7 +637,7 @@
     if ([self.subLabel respondsToSelector:[anInvocation selector]]) {
         [anInvocation invokeWithTarget:self.subLabel];
     } else {
-        NSLog(@"MarqueeLabel does not recognize the selector");
+        //NSLog(@"MarqueeLabel does not recognize the selector");
         [super forwardInvocation:anInvocation];
     }
 }
