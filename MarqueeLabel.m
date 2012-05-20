@@ -382,20 +382,20 @@
                                              
                                              // Set frame and text while invisible
                                              // Double the label text and insert the separator.
-                                             NSString *doubledText = [self.labelText stringByAppendingFormat:@"%@%@",self.continuousMarqueeSeparator, self.labelText];
-                                            
+                                             NSString *doubledText = [self.labelText stringByAppendingFormat:@"%@%@", self.continuousMarqueeSeparator, self.labelText];
+                                             
                                              // Size of the new doubled label
                                              CGSize expectedLabelSizeDoubled = [doubledText sizeWithFont:self.subLabel.font
                                                                                        constrainedToSize:maximumLabelSize
                                                                                            lineBreakMode:self.subLabel.lineBreakMode];
-                                            
+                                             
                                              CGRect continuousLabelFrame = CGRectMake(self.fadeLength, 0, (expectedLabelSizeDoubled.width + self.fadeLength), self.bounds.size.height);
                                              
                                              // Size of the label and the separator. This is the period of the translation to the left.
                                              CGSize labelAndSeparatorSize = [[self.labelText stringByAppendingString:self.continuousMarqueeSeparator] sizeWithFont:self.subLabel.font 
                                                                                                                                                  constrainedToSize:maximumLabelSize 
                                                                                                                                                      lineBreakMode:self.subLabel.lineBreakMode];
-                                             
+                                             self.homeLabelFrame = continuousLabelFrame;
                                              self.awayLabelFrame = CGRectOffset(continuousLabelFrame, -labelAndSeparatorSize.width, 0.0);
                                              
                                              // Recompute the animation duration
@@ -405,10 +405,14 @@
                                              self.subLabel.text = doubledText;
                                              
                                          } else { //Will not scroll
+                                             if (self.subLabel.textAlignment == UITextAlignmentCenter) {
+                                                 CGRect labelFrame = CGRectMake(self.fadeLength, 0, self.bounds.size.width - 2 * self.fadeLength, self.bounds.size.height);
+                                                 self.homeLabelFrame = labelFrame;
+                                                 self.awayLabelFrame = labelFrame;
+                                             }
                                              
                                              self.subLabel.frame = self.homeLabelFrame;
                                              self.subLabel.text = self.labelText;
-                                             
                                          }
                                          
                                          // Fade in quickly
