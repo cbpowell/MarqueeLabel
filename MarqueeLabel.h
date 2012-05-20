@@ -49,7 +49,7 @@ typedef enum {
  * UIViewAnimationOptionCurveEaseOut, UIViewAnimationOptionCurveLinear
  * Default is UIViewAnimationOptionCurveEaseInOut.
  */
-@property (nonatomic) UIViewAnimationOptions animationCurve;
+@property (nonatomic, assign) UIViewAnimationOptions animationCurve;
 
 
 /* awayFromHome:
@@ -58,14 +58,14 @@ typedef enum {
  * in that "home" is offset by those in order for the edge of the labels not to be
  * faded when at the home location.
  */
-@property (nonatomic, readonly) BOOL awayFromHome;
+@property (nonatomic, assign, readonly) BOOL awayFromHome;
 
 
 /* labelize:
  * When set to YES, the MarqueeLabel will not move and behave like a normal UILabel
  * Defaults to NO.
  */
-@property (nonatomic) BOOL labelize;
+@property (nonatomic, assign) BOOL labelize;
 
 
 /* marqueeType:
@@ -85,27 +85,27 @@ typedef enum {
  *
  * Defaults to LeftRight.
  */
-@property (nonatomic) MarqueeType marqueeType;
+@property (nonatomic, assign) MarqueeType marqueeType;
 
 
 /* continuousMarqueeSeparator:
  * NString inserted after label's end when marqueeType is Continuous.
  * Defaults to @"    ".
  */
-@property (nonatomic, strong) NSString *continuousMarqueeSeparator;
+@property (nonatomic, copy) NSString *continuousMarqueeSeparator;
 
 
 /* fadeLength:
  * Sets the length of fade (from alpha 1.0 to alpha 0.0) at the edges of the
  * MarqueeLabel. Cannot be larger than 1/2 of the frame width (will be santized).
  */
-@property (nonatomic) CGFloat fadeLength;
+@property (nonatomic, assign) CGFloat fadeLength;
 
 
 /* animationDelay:
  * Sets how long the label pauses at the "origin" position between scrolling
  */
-@property (nonatomic) CGFloat animationDelay;
+@property (nonatomic, assign) CGFloat animationDelay;
 
 
 
@@ -142,20 +142,20 @@ typedef enum {
 @property (nonatomic, copy) NSString *text;
 
 // UILabel properties
-@property (nonatomic) BOOL adjustsFontSizeToFitWidth;
-@property (nonatomic) UIBaselineAdjustment baselineAdjustment;
-@property (nonatomic, getter=isEnabled) BOOL enabled;
+@property (nonatomic, assign) BOOL adjustsFontSizeToFitWidth;
+@property (nonatomic, assign) UIBaselineAdjustment baselineAdjustment;
+@property (nonatomic, assign, getter=isEnabled) BOOL enabled;
 @property (nonatomic, retain) UIFont *font;
-@property (nonatomic, getter=isHighlighted) BOOL highlighted;
+@property (nonatomic, assign, getter=isHighlighted) BOOL highlighted;
 @property (nonatomic, retain) UIColor *highlightedTextColor;
-@property (nonatomic) UILineBreakMode lineBreakMode;
-@property (nonatomic) CGFloat minimumFontSize;
-@property (nonatomic) NSInteger numberOfLines;
+@property (nonatomic, assign) UILineBreakMode lineBreakMode;
+@property (nonatomic, assign) CGFloat minimumFontSize;
+@property (nonatomic, assign) NSInteger numberOfLines;
 @property (nonatomic, retain) UIColor *shadowColor;
-@property (nonatomic) CGSize shadowOffset;
-@property (nonatomic) UITextAlignment textAlignment;
+@property (nonatomic, assign) CGSize shadowOffset;
+@property (nonatomic, assign) UITextAlignment textAlignment;
 @property (nonatomic, retain) UIColor *textColor;
-@property (nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
+@property (nonatomic, assign, getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
 
 @end
 
