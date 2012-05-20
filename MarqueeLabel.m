@@ -60,21 +60,21 @@
 
 @interface MarqueeLabel()
 
-@property (nonatomic, readwrite) BOOL awayFromHome;
+@property (nonatomic, assign, readwrite) BOOL awayFromHome;
 
 @property (nonatomic, retain) UILabel *subLabel;
-@property (nonatomic, retain) NSString *labelText;
-@property (nonatomic) NSUInteger animationOptions;
+@property (nonatomic, copy) NSString *labelText;
+@property (nonatomic, assign) NSUInteger animationOptions;
 
-@property (nonatomic) NSTimeInterval animationDuration;
-@property (nonatomic) NSTimeInterval lengthOfScroll;
-@property (nonatomic) CGFloat rate;
-@property (nonatomic, readonly) BOOL labelShouldScroll;
+@property (nonatomic, assign) NSTimeInterval animationDuration;
+@property (nonatomic, assign) NSTimeInterval lengthOfScroll;
+@property (nonatomic, assign) CGFloat rate;
+@property (nonatomic, assign, readonly) BOOL labelShouldScroll;
 
-@property (nonatomic) CGRect homeLabelFrame;
-@property (nonatomic) CGRect awayLabelFrame;
+@property (nonatomic, assign) CGRect homeLabelFrame;
+@property (nonatomic, assign) CGRect awayLabelFrame;
 
-@property (nonatomic) CGFloat baseAlpha;
+@property (nonatomic, assign) CGFloat baseAlpha;
 
 - (void)scrollAwayWithInterval:(NSTimeInterval)interval;
 - (void)scrollHomeWithInterval:(NSTimeInterval)interval;
@@ -334,7 +334,7 @@
 #pragma mark Modified UILabel Getters/Setters
 
 - (void)setText:(NSString *)newText {
-    if (newText == nil && self.labelText == nil) {
+    if (newText.length <= 0 && self.labelText.length <= 0) {
         return;
     }
     
@@ -344,7 +344,7 @@
         self.labelText = newText;
         
         // Make maximum size
-        CGSize maximumLabelSize = CGSizeMake(9999, self.frame.size.height);
+        CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
         // Calculate expected size
         CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
                                        constrainedToSize:maximumLabelSize
@@ -382,20 +382,20 @@
                                              
                                              // Set frame and text while invisible
                                              // Double the label text and insert the separator.
-                                             NSString *doubledText = [self.labelText stringByAppendingFormat:@"%@%@",self.continuousMarqueeSeparator, self.labelText];
-                                            
+                                             NSString *doubledText = [self.labelText stringByAppendingFormat:@"%@%@", self.continuousMarqueeSeparator, self.labelText];
+                                             
                                              // Size of the new doubled label
                                              CGSize expectedLabelSizeDoubled = [doubledText sizeWithFont:self.subLabel.font
                                                                                        constrainedToSize:maximumLabelSize
                                                                                            lineBreakMode:self.subLabel.lineBreakMode];
-                                            
+                                             
                                              CGRect continuousLabelFrame = CGRectMake(self.fadeLength, 0, (expectedLabelSizeDoubled.width + self.fadeLength), self.bounds.size.height);
                                              
                                              // Size of the label and the separator. This is the period of the translation to the left.
                                              CGSize labelAndSeparatorSize = [[self.labelText stringByAppendingString:self.continuousMarqueeSeparator] sizeWithFont:self.subLabel.font 
                                                                                                                                                  constrainedToSize:maximumLabelSize 
                                                                                                                                                      lineBreakMode:self.subLabel.lineBreakMode];
-                                             
+                                             self.homeLabelFrame = continuousLabelFrame;
                                              self.awayLabelFrame = CGRectOffset(continuousLabelFrame, -labelAndSeparatorSize.width, 0.0);
                                              
                                              // Recompute the animation duration
@@ -405,10 +405,14 @@
                                              self.subLabel.text = doubledText;
                                              
                                          } else { //Will not scroll
+                                             if (self.subLabel.textAlignment == UITextAlignmentCenter) {
+                                                 CGRect labelFrame = CGRectMake(self.fadeLength, 0, self.bounds.size.width - 2 * self.fadeLength, self.bounds.size.height);
+                                                 self.homeLabelFrame = labelFrame;
+                                                 self.awayLabelFrame = labelFrame;
+                                             }
                                              
                                              self.subLabel.frame = self.homeLabelFrame;
                                              self.subLabel.text = self.labelText;
-                                             
                                          }
                                          
                                          // Fade in quickly
@@ -520,7 +524,7 @@
             self.subLabel.alpha = self.baseAlpha;
             
             // Calculate label size
-            CGSize maximumLabelSize = CGSizeMake(9999, self.frame.size.height);
+            CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
             CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
                                                   constrainedToSize:maximumLabelSize
                                                       lineBreakMode:self.subLabel.lineBreakMode];
@@ -587,13 +591,13 @@
 }
 
 - (BOOL)labelShouldScroll {
-    return ((self.labelText != nil) && !CGRectContainsRect(self.bounds, self.homeLabelFrame) && !self.labelize);
+    return (!self.labelize && (self.labelText.length > 0) && self.bounds.size.width < self.homeLabelFrame.size.width + self.fadeLength);
 }
 
 - (CGRect)awayLabelFrame {
     if (CGRectEqualToRect(_awayLabelFrame, CGRectNull)) {
         // Calculate label size
-        CGSize maximumLabelSize = CGSizeMake(9999, self.frame.size.height);
+        CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
         CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
                                               constrainedToSize:maximumLabelSize
                                                   lineBreakMode:self.subLabel.lineBreakMode];
@@ -607,7 +611,7 @@
 - (CGRect)homeLabelFrame {
     if (CGRectEqualToRect(_homeLabelFrame, CGRectNull)) {
         // Calculate label size
-        CGSize maximumLabelSize = CGSizeMake(9999, self.frame.size.height);
+        CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
         CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
                                               constrainedToSize:maximumLabelSize
                                                   lineBreakMode:self.subLabel.lineBreakMode];
@@ -620,7 +624,7 @@
 
 - (NSString *)continuousMarqueeSeparator {
     if (continuousMarqueeSeparator == nil) {
-        continuousMarqueeSeparator = @"    ";
+        continuousMarqueeSeparator = @"       ";
     }
     
     return continuousMarqueeSeparator;
@@ -637,7 +641,7 @@
     if ([self.subLabel respondsToSelector:[anInvocation selector]]) {
         [anInvocation invokeWithTarget:self.subLabel];
     } else {
-        NSLog(@"MarqueeLabel does not recognize the selector");
+        //NSLog(@"MarqueeLabel does not recognize the selector");
         [super forwardInvocation:anInvocation];
     }
 }
