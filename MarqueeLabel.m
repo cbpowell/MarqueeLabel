@@ -334,7 +334,7 @@
 #pragma mark Modified UILabel Getters/Setters
 
 - (void)setText:(NSString *)newText {
-    if (newText == nil && self.labelText == nil) {
+    if (newText.length <= 0 && self.labelText.length <= 0) {
         return;
     }
     
@@ -344,7 +344,7 @@
         self.labelText = newText;
         
         // Make maximum size
-        CGSize maximumLabelSize = CGSizeMake(9999, self.frame.size.height);
+        CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
         // Calculate expected size
         CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
                                        constrainedToSize:maximumLabelSize
@@ -520,7 +520,7 @@
             self.subLabel.alpha = self.baseAlpha;
             
             // Calculate label size
-            CGSize maximumLabelSize = CGSizeMake(9999, self.frame.size.height);
+            CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
             CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
                                                   constrainedToSize:maximumLabelSize
                                                       lineBreakMode:self.subLabel.lineBreakMode];
@@ -587,13 +587,13 @@
 }
 
 - (BOOL)labelShouldScroll {
-    return ((self.labelText != nil) && !CGRectContainsRect(self.bounds, self.homeLabelFrame) && !self.labelize);
+    return (!self.labelize && (self.labelText.length > 0) && self.bounds.size.width < self.homeLabelFrame.size.width + self.fadeLength);
 }
 
 - (CGRect)awayLabelFrame {
     if (CGRectEqualToRect(_awayLabelFrame, CGRectNull)) {
         // Calculate label size
-        CGSize maximumLabelSize = CGSizeMake(9999, self.frame.size.height);
+        CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
         CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
                                               constrainedToSize:maximumLabelSize
                                                   lineBreakMode:self.subLabel.lineBreakMode];
@@ -607,7 +607,7 @@
 - (CGRect)homeLabelFrame {
     if (CGRectEqualToRect(_homeLabelFrame, CGRectNull)) {
         // Calculate label size
-        CGSize maximumLabelSize = CGSizeMake(9999, self.frame.size.height);
+        CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
         CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
                                               constrainedToSize:maximumLabelSize
                                                   lineBreakMode:self.subLabel.lineBreakMode];
