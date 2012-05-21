@@ -149,7 +149,7 @@
     self.awayFromHome = NO;
     self.labelize = NO;
     self.labelText = nil;
-    self.animationDelay = 1.0f;
+    self.animationDelay = 1.0;
     
     // Add notification observers
     // UINavigationController view controller change notifications
@@ -180,7 +180,7 @@
 
 - (void)applyGradientMask {
     [self returnLabelToOriginImmediately];
-    if (self.fadeLength != 0.0f) {
+    if (self.fadeLength != 0.0) {
         CAGradientLayer* gradientMask = [CAGradientLayer layer];
         gradientMask.bounds = self.layer.bounds;
         gradientMask.position = CGPointMake([self bounds].size.width / 2, [self bounds].size.height / 2);
@@ -212,7 +212,7 @@
 - (NSTimeInterval)durationForInterval:(NSTimeInterval)interval {
     switch (self.marqueeType) {
         case MLContinuous:
-            return (interval * 2.0f);
+            return (interval * 2.0);
             break;
             
         default:
@@ -308,8 +308,8 @@
     self.homeLabelFrame = CGRectNull;
     self.awayLabelFrame = CGRectNull;
     self.labelText = nil;
-    self.subLabel.alpha = 1.0f;
-    self.alpha = 1.0f;
+    self.subLabel.alpha = 1.0;
+    self.alpha = 1.0;
 }
 
 - (void)shutdownLabel {
@@ -441,7 +441,7 @@
                                           delay:0.0 
                                         options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState)
                                      animations:^{
-                                         self.subLabel.alpha = 0.0f;
+                                         self.subLabel.alpha = 0.0;
                                      }
                                      completion:^(BOOL finished){
                                          
@@ -484,7 +484,7 @@
                                           delay:0.0 
                                         options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState)
                                      animations:^{
-                                         self.subLabel.alpha = 0.0f;
+                                         self.subLabel.alpha = 0.0;
                                      }
                                      completion:^(BOOL finished){
                                          
@@ -520,7 +520,7 @@
             self.subLabel.text = self.labelText;
             
             // Make sure alpha is returned;
-            self.alpha = 1.0f;
+            self.alpha = 1.0;
             self.subLabel.alpha = self.baseAlpha;
             
             // Calculate label size
