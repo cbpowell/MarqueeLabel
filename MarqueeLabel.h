@@ -110,8 +110,8 @@ typedef enum {
 
 
 // Methods
-- (id)initWithFrame:(CGRect)frame rate:(float)pixelsPerSec andFadeLength:(float)fadeLength;
-- (id)initWithFrame:(CGRect)frame duration:(NSTimeInterval)lengthOfScroll andFadeLength:(float)fadeLength;
+- (id)initWithFrame:(CGRect)frame rate:(CGFloat)pixelsPerSec andFadeLength:(CGFloat)fadeLength;
+- (id)initWithFrame:(CGRect)frame duration:(NSTimeInterval)lengthOfScroll andFadeLength:(CGFloat)fadeLength;
 
 - (void)restartLabel;
 - (void)resetLabel;

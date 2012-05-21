@@ -119,7 +119,7 @@
     return [self initWithFrame:frame duration:7.0 andFadeLength:0.0];
 }
 
-- (id)initWithFrame:(CGRect)frame duration:(NSTimeInterval)aLengthOfScroll andFadeLength:(float)aFadeLength {
+- (id)initWithFrame:(CGRect)frame duration:(NSTimeInterval)aLengthOfScroll andFadeLength:(CGFloat)aFadeLength {
     self = [super initWithFrame:frame];
     if (self) {
         [self setupLabel];
@@ -130,7 +130,7 @@
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame rate:(float)pixelsPerSec andFadeLength:(float)aFadeLength {
+- (id)initWithFrame:(CGRect)frame rate:(CGFloat)pixelsPerSec andFadeLength:(CGFloat)aFadeLength {
     self = [super initWithFrame:frame];
     if (self) {
         [self setupLabel];
@@ -188,13 +188,13 @@
         NSObject *opaque = (NSObject*) [[UIColor blackColor] CGColor];
         gradientMask.startPoint = CGPointMake(0.0, CGRectGetMidY(self.frame));
         gradientMask.endPoint = CGPointMake(1.0, CGRectGetMidY(self.frame));
-        float fadePoint = (float)self.fadeLength/self.frame.size.width;
+        CGFloat fadePoint = (CGFloat)self.fadeLength/self.frame.size.width;
         [gradientMask setColors: [NSArray arrayWithObjects: transparent, opaque, opaque, transparent, nil]];
         [gradientMask setLocations: [NSArray arrayWithObjects:
-                                     [NSNumber numberWithFloat: 0.0],
-                                     [NSNumber numberWithFloat: fadePoint],
-                                     [NSNumber numberWithFloat: 1 - fadePoint],
-                                     [NSNumber numberWithFloat: 1.0],
+                                     [NSNumber numberWithDouble: 0.0],
+                                     [NSNumber numberWithDouble: fadePoint],
+                                     [NSNumber numberWithDouble: 1 - fadePoint],
+                                     [NSNumber numberWithDouble: 1.0],
                                      nil]];
         self.layer.mask = gradientMask;
     } else {
