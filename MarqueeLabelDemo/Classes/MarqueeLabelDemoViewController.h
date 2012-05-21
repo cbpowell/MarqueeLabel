@@ -29,11 +29,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MarqueeLabel.h"
+#import "CPMarqueeLabel.h"
 
 @interface MarqueeLabelDemoViewController : UIViewController
 
-@property (nonatomic, retain) MarqueeLabel *demoLabel;
+@property (nonatomic, retain) CPMarqueeLabel *demoLabel;
 @property (nonatomic, retain) IBOutlet UISwitch *labelizeSwitch;
 
 - (void)changeTheLabel;

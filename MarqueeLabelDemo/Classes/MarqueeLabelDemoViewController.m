@@ -38,7 +38,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    MarqueeLabel *newLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 100, self.view.frame.size.width-20, 20) duration:8.0 andFadeLength:10.0f];
+    CPMarqueeLabel *newLabel = [[CPMarqueeLabel alloc] initWithFrame:CGRectMake(10, 100, self.view.frame.size.width-20, 20) duration:8.0 andFadeLength:10.0f];
     self.demoLabel = newLabel;
     [newLabel release];
     
@@ -58,7 +58,7 @@
     [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(changeTheLabel) userInfo:nil repeats:NO];
     
     // Rate-speed label example
-    MarqueeLabel *rateLabelOne = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 200, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
+    CPMarqueeLabel *rateLabelOne = [[CPMarqueeLabel alloc] initWithFrame:CGRectMake(10, 200, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
     rateLabelOne.numberOfLines = 1;
     rateLabelOne.opaque = NO;
     rateLabelOne.enabled = YES;
@@ -72,8 +72,8 @@
     [self.view addSubview:rateLabelOne];
     [rateLabelOne release];
     
-    MarqueeLabel *rateLabelTwo = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 230, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
-    rateLabelTwo.marqueeType = MLRightLeft;
+    CPMarqueeLabel *rateLabelTwo = [[CPMarqueeLabel alloc] initWithFrame:CGRectMake(10, 230, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
+    rateLabelTwo.marqueeType = CPMarqueeFromRightToLeft;
     rateLabelTwo.numberOfLines = 1;
     rateLabelTwo.opaque = NO;
     rateLabelTwo.enabled = YES;
@@ -88,8 +88,8 @@
     [rateLabelTwo release];
     
     // Continuous label example
-    MarqueeLabel *continuousLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 300, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
-    continuousLabel.marqueeType = MLContinuous;
+    CPMarqueeLabel *continuousLabel = [[CPMarqueeLabel alloc] initWithFrame:CGRectMake(10, 300, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
+    continuousLabel.marqueeType = CPMarqueeContinuous;
     continuousLabel.numberOfLines = 1;
     continuousLabel.opaque = NO;
     continuousLabel.enabled = YES;
@@ -103,8 +103,8 @@
     [self.view addSubview:continuousLabel];
     [continuousLabel release];
     
-    MarqueeLabel *continuousLabel2 = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 330, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
-    continuousLabel2.marqueeType = MLContinuous;
+    CPMarqueeLabel *continuousLabel2 = [[CPMarqueeLabel alloc] initWithFrame:CGRectMake(10, 330, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
+    continuousLabel2.marqueeType = CPMarqueeContinuous;
     continuousLabel2.continuousMarqueeSeparator = @"  |SEPARATOR|  ";
     continuousLabel2.animationCurve = UIViewAnimationOptionCurveLinear;
     continuousLabel2.numberOfLines = 1;
@@ -128,8 +128,8 @@
 
 - (IBAction)labelizeSwitched:(UISwitch *)sender {
     for (UIView *v in self.view.subviews) {
-        if ([v isKindOfClass:[MarqueeLabel class]]) {
-            [(MarqueeLabel *)v setLabelize:sender.on];
+        if ([v isKindOfClass:[CPMarqueeLabel class]]) {
+            [(CPMarqueeLabel *)v setLabelize:sender.on];
         }
     }
 }

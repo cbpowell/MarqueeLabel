@@ -24,10 +24,10 @@
  */
 
 //
-//  MarqueeLabel.m
+//  CPMarqueeLabel.m
 //  
 
-#import "MarqueeLabel.h"
+#import "CPMarqueeLabel.h"
 #import <QuartzCore/QuartzCore.h>
 
 
@@ -58,9 +58,9 @@
 @end
 
 
-@interface MarqueeLabel()
+@interface CPMarqueeLabel()
 
-@property (nonatomic, assign, readwrite) BOOL awayFromHome;
+@property (nonatomic, assign, readwrite, getter=isAwayFromHome) BOOL awayFromHome;
 
 @property (nonatomic, retain) UILabel *subLabel;
 @property (nonatomic, copy) NSString *labelText;
@@ -87,7 +87,7 @@
 @end
 
 
-@implementation MarqueeLabel
+@implementation CPMarqueeLabel
 
 @synthesize subLabel = _subLabel;
 @synthesize labelText;
@@ -180,7 +180,7 @@
     if (self.fadeLength != 0.0) {
         CAGradientLayer* gradientMask = [CAGradientLayer layer];
         gradientMask.bounds = self.layer.bounds;
-        gradientMask.position = CGPointMake([self bounds].size.width / 2, [self bounds].size.height / 2);
+        gradientMask.position = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
         NSObject *transparent = (NSObject*) [[UIColor clearColor] CGColor];
         NSObject *opaque = (NSObject*) [[UIColor blackColor] CGColor];
         gradientMask.startPoint = CGPointMake(0.0, CGRectGetMidY(self.frame));
@@ -208,7 +208,7 @@
 
 - (NSTimeInterval)durationForInterval:(NSTimeInterval)interval {
     switch (self.marqueeType) {
-        case MLContinuous:
+        case CPMarqueeContinuous:
             return (interval * 2.0);
             break;
             
@@ -220,7 +220,7 @@
 
 - (void)beginScroll {
     switch (self.marqueeType) {
-        case MLContinuous:
+        case CPMarqueeContinuous:
             [self scrollLeftPerpetualWithInterval:[self durationForInterval:self.animationDuration] after:self.animationDelay];
             break;
             
@@ -361,7 +361,7 @@
             // Label is not set to be static
             
             switch (self.marqueeType) {
-                case MLContinuous:
+                case CPMarqueeContinuous:
                                         
                     // Fade out quickly
                     [UIView animateWithDuration:0.1
@@ -428,7 +428,7 @@
                     
                     break;
                     
-                case MLRightLeft:
+                case CPMarqueeFromRightToLeft:
                     
                     self.homeLabelFrame = CGRectMake(self.bounds.size.width - (expectedLabelSize.width + self.fadeLength), 0.0, expectedLabelSize.width, self.bounds.size.height);
                     self.awayLabelFrame = CGRectMake(self.fadeLength, 0.0, expectedLabelSize.width, self.bounds.size.height);
@@ -468,7 +468,7 @@
                     
                     break;
                     
-                default: //Fallback to LeftRight marqueeType
+                default: //Fallback to CPMarqueeFromLeftToRight marqueeType
                     
                     self.homeLabelFrame = CGRectMake(self.fadeLength, 0, expectedLabelSize.width, self.bounds.size.height);
                     self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, -expectedLabelSize.width + (self.bounds.size.width - self.fadeLength * 2), 0.0);
@@ -639,7 +639,7 @@
         [anInvocation invokeWithTarget:self.subLabel];
     } else {
         #if TARGET_IPHONE_SIMULATOR
-            NSLog(@"Method selector not recognized by MarqueeLabel or its contained UILabel");
+            NSLog(@"Method selector not recognized by CPMarqueeLabel or its contained UILabel.");
         #endif
         [super forwardInvocation:anInvocation];
     }
