@@ -15,7 +15,7 @@
 		2899E5220DE3E06400AC0155 /* MarqueeLabelDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* MarqueeLabelDemoViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* MarqueeLabelDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MarqueeLabelDemoViewController.m */; };
-		EA646A1412F7A5B000F31B16 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */; };
+		EA646A1412F7A5B000F31B16 /* CPMarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EA646A1312F7A5B000F31B16 /* CPMarqueeLabel.m */; };
 		EABFD31A150D55CC00216FCE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABFD319150D55CC00216FCE /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
@@ -33,8 +33,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* MarqueeLabelDemo_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarqueeLabelDemo_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* MarqueeLabelDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MarqueeLabelDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
-		EA646A1212F7A5B000F31B16 /* MarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MarqueeLabel.h; path = ../MarqueeLabel.h; sourceTree = SOURCE_ROOT; };
-		EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MarqueeLabel.m; path = ../MarqueeLabel.m; sourceTree = SOURCE_ROOT; };
+		EA646A1212F7A5B000F31B16 /* CPMarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; name = CPMarqueeLabel.h; path = ../CPMarqueeLabel.h; sourceTree = SOURCE_ROOT; };
+		EA646A1312F7A5B000F31B16 /* CPMarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CPMarqueeLabel.m; path = ../CPMarqueeLabel.m; sourceTree = SOURCE_ROOT; };
 		EABFD319150D55CC00216FCE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -56,8 +56,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				EA646A1212F7A5B000F31B16 /* MarqueeLabel.h */,
-				EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */,
+				EA646A1212F7A5B000F31B16 /* CPMarqueeLabel.h */,
+				EA646A1312F7A5B000F31B16 /* CPMarqueeLabel.m */,
 				1D3623240D0F684500981E51 /* MarqueeLabelDemoAppDelegate.h */,
 				1D3623250D0F684500981E51 /* MarqueeLabelDemoAppDelegate.m */,
 				28D7ACF60DDB3853001CB0EB /* MarqueeLabelDemoViewController.h */,
@@ -183,7 +183,7 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* MarqueeLabelDemoAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* MarqueeLabelDemoViewController.m in Sources */,
-				EA646A1412F7A5B000F31B16 /* MarqueeLabel.m in Sources */,
+				EA646A1412F7A5B000F31B16 /* CPMarqueeLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

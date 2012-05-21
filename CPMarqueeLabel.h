@@ -24,24 +24,24 @@
  */
 
 //
-//  MarqueeLabel.h
+//  CPMarqueeLabel.h
 //  
 
 #import <UIKit/UIKit.h>
 
 
-// MarqueeLabel types
+// CPMarqueeLabel types
 typedef enum {
-    MLLeftRight = 0,    // Scrolls left first, then back right to the original position
-    MLRightLeft,        // Scrolls right first, then back left to the original position
-    MLContinuous        // Continuously scrolls left (with a pause at the original position if animationDelay is set)
-} MarqueeType;
+    CPMarqueeFromLeftToRight = 0,   // Scrolls left first, then back right to the original position
+    CPMarqueeFromRightToLeft,       // Scrolls right first, then back left to the original position
+    CPMarqueeContinuous             // Continuously scrolls left (with a pause at the original position if animationDelay is set)
+} CPMarqueeType;
 
-@interface MarqueeLabel : UIView {
+@interface CPMarqueeLabel : UIView {
     
 }
 
-// MarqueeLabel-specific properties
+// CPMarqueeLabel-specific properties
 
 /* animationCurve:
  * The animation curve used in the motion of the labels. Allowable options:
@@ -58,46 +58,46 @@ typedef enum {
  * in that "home" is offset by those in order for the edge of the labels not to be
  * faded when at the home location.
  */
-@property (nonatomic, assign, readonly) BOOL awayFromHome;
+@property (nonatomic, assign, readonly, getter=isAwayFromHome) BOOL awayFromHome;
 
 
 /* labelize:
- * When set to YES, the MarqueeLabel will not move and behave like a normal UILabel
+ * When set to YES, the CPMarqueeLabel will not move and behave like a normal UILabel
  * Defaults to NO.
  */
 @property (nonatomic, assign) BOOL labelize;
 
 
 /* marqueeType:
- * When set to LeftRight, the label moves from left to right and back from right to left alternatively.
+ * When set to CPMarqueeFromLeftToRight, the label moves from left to right and back from right to left alternatively.
  *
- *      NOTE: LeftRight type is ONLY compatible with a label text alignment of UITextAlignmentLeft. Specifying
- *      LeftRight will change any previously set, non-compatible text alignment to UITextAlignmentLeft.
+ *      NOTE: CPMarqueeFromLeftToRight type is ONLY compatible with a label text alignment of UITextAlignmentLeft. Specifying
+ *      CPMarqueeFromLeftToRight will change any previously set, non-compatible text alignment to UITextAlignmentLeft.
  *
- * When set to RightLeft, the label moves from right to left and back from left to right alternatively.
+ * When set to CPMarqueeFromRightToLeft, the label moves from right to left and back from left to right alternatively.
  *
- *      NOTE: RightLeft type is ONLY compatibile with a label text alignment of UITextAlignmentRight. Specifying
- *      RightLeft will change any previously set, non-compatible text alignment to UITextAlignmentRight.
+ *      NOTE: CPMarqueeFromRightToLeft type is ONLY compatibile with a label text alignment of UITextAlignmentRight. Specifying
+ *      CPMarqueeFromRightToLeft will change any previously set, non-compatible text alignment to UITextAlignmentRight.
  *
- * When set to Continuous, the label slides continuously to the left.
+ * When set to CPMarqueeContinuous, the label slides continuously to the left.
  *
- *      NOTE: MLContinuous does not yet support any alignments besides UITextAlignmentLeft
+ *      NOTE: CPMarqueeContinuous does support any text alignment, but will always scroll left.
  *
- * Defaults to LeftRight.
+ * Defaults to CPMarqueeFromLeftToRight.
  */
-@property (nonatomic, assign) MarqueeType marqueeType;
+@property (nonatomic, assign) CPMarqueeType marqueeType;
 
 
 /* continuousMarqueeSeparator:
  * NString inserted after label's end when marqueeType is Continuous.
- * Defaults to @"    ".
+ * Defaults to @"       ".
  */
 @property (nonatomic, copy) NSString *continuousMarqueeSeparator;
 
 
 /* fadeLength:
  * Sets the length of fade (from alpha 1.0 to alpha 0.0) at the edges of the
- * MarqueeLabel. Cannot be larger than 1/2 of the frame width (will be santized).
+ * CPMarqueeLabel. Cannot be larger than 1/2 of the frame width (will be santized).
  */
 @property (nonatomic, assign) CGFloat fadeLength;
 
@@ -110,8 +110,8 @@ typedef enum {
 
 
 // Methods
-- (id)initWithFrame:(CGRect)frame rate:(float)pixelsPerSec andFadeLength:(float)fadeLength;
-- (id)initWithFrame:(CGRect)frame duration:(NSTimeInterval)lengthOfScroll andFadeLength:(float)fadeLength;
+- (id)initWithFrame:(CGRect)frame rate:(CGFloat)pixelsPerSec andFadeLength:(CGFloat)fadeLength;
+- (id)initWithFrame:(CGRect)frame duration:(NSTimeInterval)lengthOfScroll andFadeLength:(CGFloat)fadeLength;
 
 - (void)restartLabel;
 - (void)resetLabel;
@@ -160,7 +160,7 @@ typedef enum {
 @end
 
 // Declare UILabel methods as extensions to be passed through with forwardInvocation
-@interface UILabel (MarqueeLabel)
+@interface UILabel (CPMarqueeLabel)
 
 - (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(NSInteger)numberOfLines;
 - (void)drawTextInRect:(CGRect)rect;

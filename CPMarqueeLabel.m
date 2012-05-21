@@ -24,10 +24,10 @@
  */
 
 //
-//  MarqueeLabel.m
+//  CPMarqueeLabel.m
 //  
 
-#import "MarqueeLabel.h"
+#import "CPMarqueeLabel.h"
 #import <QuartzCore/QuartzCore.h>
 
 
@@ -58,9 +58,9 @@
 @end
 
 
-@interface MarqueeLabel()
+@interface CPMarqueeLabel()
 
-@property (nonatomic, assign, readwrite) BOOL awayFromHome;
+@property (nonatomic, assign, readwrite, getter=isAwayFromHome) BOOL awayFromHome;
 
 @property (nonatomic, retain) UILabel *subLabel;
 @property (nonatomic, copy) NSString *labelText;
@@ -87,7 +87,7 @@
 @end
 
 
-@implementation MarqueeLabel
+@implementation CPMarqueeLabel
 
 @synthesize subLabel = _subLabel;
 @synthesize labelText;
@@ -119,7 +119,7 @@
     return [self initWithFrame:frame duration:7.0 andFadeLength:0.0];
 }
 
-- (id)initWithFrame:(CGRect)frame duration:(NSTimeInterval)aLengthOfScroll andFadeLength:(float)aFadeLength {
+- (id)initWithFrame:(CGRect)frame duration:(NSTimeInterval)aLengthOfScroll andFadeLength:(CGFloat)aFadeLength {
     self = [super initWithFrame:frame];
     if (self) {
         [self setupLabel];
@@ -130,7 +130,7 @@
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame rate:(float)pixelsPerSec andFadeLength:(float)aFadeLength {
+- (id)initWithFrame:(CGRect)frame rate:(CGFloat)pixelsPerSec andFadeLength:(CGFloat)aFadeLength {
     self = [super initWithFrame:frame];
     if (self) {
         [self setupLabel];
@@ -149,7 +149,7 @@
     self.awayFromHome = NO;
     self.labelize = NO;
     self.labelText = nil;
-    self.animationDelay = 1.0f;
+    self.animationDelay = 1.0;
     
     // Add notification observers
     // UINavigationController view controller change notifications
@@ -167,34 +167,31 @@
     UIViewController *toController = [userInfo objectForKey:@"UINavigationControllerNextVisibleViewController"];
     
     UIViewController *ownController = [self firstAvailableUIViewController];
-    if (fromController == ownController) {
+    if ([fromController isEqual:ownController]) {
         [self shutdownLabel];
-        return;
     }
-    
-    if (toController == ownController) {
+    else if ([toController isEqual:ownController]) {
         [self restartLabel];
-        return;
     }
 }
 
 - (void)applyGradientMask {
     [self returnLabelToOriginImmediately];
-    if (self.fadeLength != 0.0f) {
+    if (self.fadeLength != 0.0) {
         CAGradientLayer* gradientMask = [CAGradientLayer layer];
         gradientMask.bounds = self.layer.bounds;
-        gradientMask.position = CGPointMake([self bounds].size.width / 2, [self bounds].size.height / 2);
+        gradientMask.position = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
         NSObject *transparent = (NSObject*) [[UIColor clearColor] CGColor];
         NSObject *opaque = (NSObject*) [[UIColor blackColor] CGColor];
         gradientMask.startPoint = CGPointMake(0.0, CGRectGetMidY(self.frame));
         gradientMask.endPoint = CGPointMake(1.0, CGRectGetMidY(self.frame));
-        float fadePoint = (float)self.fadeLength/self.frame.size.width;
+        CGFloat fadePoint = (CGFloat)self.fadeLength/self.frame.size.width;
         [gradientMask setColors: [NSArray arrayWithObjects: transparent, opaque, opaque, transparent, nil]];
         [gradientMask setLocations: [NSArray arrayWithObjects:
-                                     [NSNumber numberWithFloat: 0.0],
-                                     [NSNumber numberWithFloat: fadePoint],
-                                     [NSNumber numberWithFloat: 1 - fadePoint],
-                                     [NSNumber numberWithFloat: 1.0],
+                                     [NSNumber numberWithDouble: 0.0],
+                                     [NSNumber numberWithDouble: fadePoint],
+                                     [NSNumber numberWithDouble: 1 - fadePoint],
+                                     [NSNumber numberWithDouble: 1.0],
                                      nil]];
         self.layer.mask = gradientMask;
     } else {
@@ -211,8 +208,8 @@
 
 - (NSTimeInterval)durationForInterval:(NSTimeInterval)interval {
     switch (self.marqueeType) {
-        case MLContinuous:
-            return (interval * 2.0f);
+        case CPMarqueeContinuous:
+            return (interval * 2.0);
             break;
             
         default:
@@ -223,7 +220,7 @@
 
 - (void)beginScroll {
     switch (self.marqueeType) {
-        case MLContinuous:
+        case CPMarqueeContinuous:
             [self scrollLeftPerpetualWithInterval:[self durationForInterval:self.animationDuration] after:self.animationDelay];
             break;
             
@@ -308,8 +305,8 @@
     self.homeLabelFrame = CGRectNull;
     self.awayLabelFrame = CGRectNull;
     self.labelText = nil;
-    self.subLabel.alpha = 1.0f;
-    self.alpha = 1.0f;
+    self.subLabel.alpha = 1.0;
+    self.alpha = 1.0;
 }
 
 - (void)shutdownLabel {
@@ -321,7 +318,7 @@
 
     if (labelize) {
         _labelize = YES;
-        if (self.subLabel) {
+        if (self.subLabel != nil) {
             [self returnLabelToOriginImmediately];
         }
     } else {
@@ -364,7 +361,7 @@
             // Label is not set to be static
             
             switch (self.marqueeType) {
-                case MLContinuous:
+                case CPMarqueeContinuous:
                                         
                     // Fade out quickly
                     [UIView animateWithDuration:0.1
@@ -431,7 +428,7 @@
                     
                     break;
                     
-                case MLRightLeft:
+                case CPMarqueeFromRightToLeft:
                     
                     self.homeLabelFrame = CGRectMake(self.bounds.size.width - (expectedLabelSize.width + self.fadeLength), 0.0, expectedLabelSize.width, self.bounds.size.height);
                     self.awayLabelFrame = CGRectMake(self.fadeLength, 0.0, expectedLabelSize.width, self.bounds.size.height);
@@ -441,7 +438,7 @@
                                           delay:0.0 
                                         options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState)
                                      animations:^{
-                                         self.subLabel.alpha = 0.0f;
+                                         self.subLabel.alpha = 0.0;
                                      }
                                      completion:^(BOOL finished){
                                          
@@ -471,7 +468,7 @@
                     
                     break;
                     
-                default: //Fallback to LeftRight marqueeType
+                default: //Fallback to CPMarqueeFromLeftToRight marqueeType
                     
                     self.homeLabelFrame = CGRectMake(self.fadeLength, 0, expectedLabelSize.width, self.bounds.size.height);
                     self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, -expectedLabelSize.width + (self.bounds.size.width - self.fadeLength * 2), 0.0);
@@ -484,7 +481,7 @@
                                           delay:0.0 
                                         options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState)
                                      animations:^{
-                                         self.subLabel.alpha = 0.0f;
+                                         self.subLabel.alpha = 0.0;
                                      }
                                      completion:^(BOOL finished){
                                          
@@ -520,7 +517,7 @@
             self.subLabel.text = self.labelText;
             
             // Make sure alpha is returned;
-            self.alpha = 1.0f;
+            self.alpha = 1.0;
             self.subLabel.alpha = self.baseAlpha;
             
             // Calculate label size
@@ -642,7 +639,7 @@
         [anInvocation invokeWithTarget:self.subLabel];
     } else {
         #if TARGET_IPHONE_SIMULATOR
-            NSLog(@"Method selector not recognized by MarqueeLabel or its contained UILabel");
+            NSLog(@"Method selector not recognized by CPMarqueeLabel or its contained UILabel.");
         #endif
         [super forwardInvocation:anInvocation];
     }
