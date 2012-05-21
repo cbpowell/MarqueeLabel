@@ -167,14 +167,11 @@
     UIViewController *toController = [userInfo objectForKey:@"UINavigationControllerNextVisibleViewController"];
     
     UIViewController *ownController = [self firstAvailableUIViewController];
-    if (fromController == ownController) {
+    if ([fromController isEqual:ownController]) {
         [self shutdownLabel];
-        return;
     }
-    
-    if (toController == ownController) {
+    else if ([toController isEqual:ownController]) {
         [self restartLabel];
-        return;
     }
 }
 
@@ -321,7 +318,7 @@
 
     if (labelize) {
         _labelize = YES;
-        if (self.subLabel) {
+        if (self.subLabel != nil) {
             [self returnLabelToOriginImmediately];
         }
     } else {
