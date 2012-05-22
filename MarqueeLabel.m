@@ -82,7 +82,8 @@
 - (void)restartLabel;
 - (void)setupLabel;
 - (void)observedViewControllerChange:(NSNotification *)notification;
-- (void)applyGradientMask;
+- (void)applyGradientMaskForFadeLength:(CGFloat)fadeLength;
+- (void)applyGradientMaskForFadeLength:(CGFloat)fadeLength animated:(BOOL)animated;
 
 @end
 
@@ -97,7 +98,8 @@
 @synthesize animationOptions, baseAlpha;
 @synthesize awayFromHome;
 @synthesize labelize = _labelize;
-@synthesize animationCurve, fadeLength, animationDelay;
+@synthesize fadeLength = _fadeLength;
+@synthesize animationCurve, animationDelay;
 @synthesize marqueeType, continuousMarqueeSeparator;
 
 // UILabel properties for pass through WITH modification
@@ -178,18 +180,31 @@
     }
 }
 
-- (void)applyGradientMask {
-    [self returnLabelToOriginImmediately];
-    if (self.fadeLength != 0.0f) {
-        CAGradientLayer* gradientMask = [CAGradientLayer layer];
+- (void)applyGradientMaskForFadeLength:(CGFloat)fadeLength {
+    [self applyGradientMaskForFadeLength:fadeLength animated:YES];
+}
+
+- (void)applyGradientMaskForFadeLength:(CGFloat)fadeLength animated:(BOOL)animated {
+    
+    if (animated) {
+        [self returnLabelToOriginImmediately];
+    }
+    
+    if (fadeLength != 0.0f) {
+        // Recreate gradient mask with new fade length
+        CAGradientLayer *gradientMask = [CAGradientLayer layer];
+        
         gradientMask.bounds = self.layer.bounds;
-        gradientMask.position = CGPointMake([self bounds].size.width / 2, [self bounds].size.height / 2);
-        NSObject *transparent = (NSObject*) [[UIColor clearColor] CGColor];
-        NSObject *opaque = (NSObject*) [[UIColor blackColor] CGColor];
+        gradientMask.position = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
+        
+        NSObject *transparent = (NSObject *)[[UIColor clearColor] CGColor];
+        NSObject *opaque = (NSObject *)[[UIColor blackColor] CGColor];
+        
         gradientMask.startPoint = CGPointMake(0.0, CGRectGetMidY(self.frame));
         gradientMask.endPoint = CGPointMake(1.0, CGRectGetMidY(self.frame));
-        float fadePoint = (float)self.fadeLength/self.frame.size.width;
-        [gradientMask setColors: [NSArray arrayWithObjects: transparent, opaque, opaque, transparent, nil]];
+        
+        float fadePoint = (float)fadeLength/self.frame.size.width;
+        [gradientMask setColors:[NSArray arrayWithObjects: transparent, opaque, opaque, transparent, nil]];
         [gradientMask setLocations: [NSArray arrayWithObjects:
                                      [NSNumber numberWithFloat: 0.0],
                                      [NSNumber numberWithFloat: fadePoint],
@@ -198,10 +213,11 @@
                                      nil]];
         self.layer.mask = gradientMask;
     } else {
+        // Remove gradient mask for 0.0f lenth fade length
         self.layer.mask = nil;
     }
     
-    if (self.labelShouldScroll) {
+    if (animated && self.labelShouldScroll) {
         [self beginScroll];
     }
 }
@@ -268,8 +284,10 @@
 
 - (void)scrollLeftPerpetualWithInterval:(NSTimeInterval)interval after:(NSTimeInterval)delay{
     
-    // Perform animation
+    // Reset label home
     [self returnLabelToOriginImmediately];
+    
+    // Animate
     [UIView animateWithDuration:interval
                           delay:delay 
                         options:self.animationOptions
@@ -378,9 +396,10 @@
                                          // Animate move immediately
                                          [self returnLabelToOriginImmediately];
                                          
-                                         if (self.labelShouldScroll) {//Label will scroll effectively
+                                         if (self.labelShouldScroll) { //Label will scroll effectively
                                              
                                              // Set frame and text while invisible
+                                             
                                              // Double the label text and insert the separator.
                                              NSString *doubledText = [self.labelText stringByAppendingFormat:@"%@%@", self.continuousMarqueeSeparator, self.labelText];
                                              
@@ -389,14 +408,14 @@
                                                                                        constrainedToSize:maximumLabelSize
                                                                                            lineBreakMode:self.subLabel.lineBreakMode];
                                              
-                                             CGRect continuousLabelFrame = CGRectMake(self.fadeLength, 0, (expectedLabelSizeDoubled.width + self.fadeLength), self.bounds.size.height);
+                                             CGRect continuousLabelFrame = CGRectMake(self.fadeLength, 0, expectedLabelSizeDoubled.width, self.bounds.size.height);
                                              
                                              // Size of the label and the separator. This is the period of the translation to the left.
                                              CGSize labelAndSeparatorSize = [[self.labelText stringByAppendingString:self.continuousMarqueeSeparator] sizeWithFont:self.subLabel.font 
                                                                                                                                                  constrainedToSize:maximumLabelSize 
                                                                                                                                                      lineBreakMode:self.subLabel.lineBreakMode];
                                              self.homeLabelFrame = continuousLabelFrame;
-                                             self.awayLabelFrame = CGRectOffset(continuousLabelFrame, -labelAndSeparatorSize.width, 0.0);
+                                             self.awayLabelFrame = CGRectOffset(continuousLabelFrame, -labelAndSeparatorSize.width + 0.5, 0.0);
                                              
                                              // Recompute the animation duration
                                              self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(self.awayLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
@@ -515,7 +534,8 @@
             } //end of marqueeType switch
             
         } else {
-            // Currently labelized, act like a UILabel
+            // Currently labelized
+            // Act like a UILabel
             [self returnLabelToOriginImmediately];
             self.subLabel.text = self.labelText;
             
@@ -529,7 +549,7 @@
                                                   constrainedToSize:maximumLabelSize
                                                       lineBreakMode:self.subLabel.lineBreakMode];
             // Create home label frame
-            self.homeLabelFrame = CGRectMake(self.fadeLength, 0, (expectedLabelSize.width + self.fadeLength), self.bounds.size.height);
+            self.homeLabelFrame = CGRectMake(self.fadeLength, 0, expectedLabelSize.width, self.bounds.size.height);
             self.subLabel.frame = self.homeLabelFrame;
         }
     }
@@ -583,15 +603,15 @@
     }
 }
 
-- (void)setFadeLength:(CGFloat)aFadeLength {
-    if (fadeLength != aFadeLength) {
-        fadeLength = aFadeLength;
-        [self applyGradientMask];
+- (void)setFadeLength:(CGFloat)fadeLength {
+    if (_fadeLength != fadeLength) {
+        _fadeLength = fadeLength;
+        [self applyGradientMaskForFadeLength:_fadeLength];
     }
 }
 
 - (BOOL)labelShouldScroll {
-    return (!self.labelize && (self.labelText.length > 0) && self.bounds.size.width < self.homeLabelFrame.size.width + self.fadeLength);
+    return (!self.labelize && (self.labelText.length > 0) && (self.bounds.size.width < self.homeLabelFrame.size.width + self.fadeLength));
 }
 
 - (CGRect)awayLabelFrame {
