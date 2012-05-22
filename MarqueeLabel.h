@@ -81,7 +81,7 @@ typedef enum {
  *
  * When set to Continuous, the label slides continuously to the left.
  *
- *      NOTE: MLContinuous does not yet support any alignments besides UITextAlignmentLeft
+ *      NOTE: MLContinuous does support any text alignment, but will always scroll left.
  *
  * Defaults to LeftRight.
  */
@@ -90,7 +90,7 @@ typedef enum {
 
 /* continuousMarqueeSeparator:
  * NString inserted after label's end when marqueeType is Continuous.
- * Defaults to @"    ".
+ * Defaults to @"       ".
  */
 @property (nonatomic, copy) NSString *continuousMarqueeSeparator;
 
@@ -110,8 +110,8 @@ typedef enum {
 
 
 // Methods
-- (id)initWithFrame:(CGRect)frame rate:(float)pixelsPerSec andFadeLength:(float)fadeLength;
-- (id)initWithFrame:(CGRect)frame duration:(NSTimeInterval)lengthOfScroll andFadeLength:(float)fadeLength;
+- (id)initWithFrame:(CGRect)frame rate:(CGFloat)pixelsPerSec andFadeLength:(CGFloat)fadeLength;
+- (id)initWithFrame:(CGRect)frame duration:(NSTimeInterval)lengthOfScroll andFadeLength:(CGFloat)fadeLength;
 
 - (void)restartLabel;
 - (void)resetLabel;

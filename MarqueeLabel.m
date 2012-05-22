@@ -121,7 +121,7 @@
     return [self initWithFrame:frame duration:7.0 andFadeLength:0.0];
 }
 
-- (id)initWithFrame:(CGRect)frame duration:(NSTimeInterval)aLengthOfScroll andFadeLength:(float)aFadeLength {
+- (id)initWithFrame:(CGRect)frame duration:(NSTimeInterval)aLengthOfScroll andFadeLength:(CGFloat)aFadeLength {
     self = [super initWithFrame:frame];
     if (self) {
         [self setupLabel];
@@ -132,7 +132,7 @@
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame rate:(float)pixelsPerSec andFadeLength:(float)aFadeLength {
+- (id)initWithFrame:(CGRect)frame rate:(CGFloat)pixelsPerSec andFadeLength:(CGFloat)aFadeLength {
     self = [super initWithFrame:frame];
     if (self) {
         [self setupLabel];
@@ -151,7 +151,7 @@
     self.awayFromHome = NO;
     self.labelize = NO;
     self.labelText = nil;
-    self.animationDelay = 1.0f;
+    self.animationDelay = 1.0;
     
     // Add notification observers
     // UINavigationController view controller change notifications
@@ -169,14 +169,11 @@
     UIViewController *toController = [userInfo objectForKey:@"UINavigationControllerNextVisibleViewController"];
     
     UIViewController *ownController = [self firstAvailableUIViewController];
-    if (fromController == ownController) {
+    if ([fromController isEqual:ownController]) {
         [self shutdownLabel];
-        return;
     }
-    
-    if (toController == ownController) {
+    else if ([toController isEqual:ownController]) {
         [self restartLabel];
-        return;
     }
 }
 
@@ -202,14 +199,13 @@
         
         gradientMask.startPoint = CGPointMake(0.0, CGRectGetMidY(self.frame));
         gradientMask.endPoint = CGPointMake(1.0, CGRectGetMidY(self.frame));
-        
-        float fadePoint = (float)fadeLength/self.frame.size.width;
-        [gradientMask setColors:[NSArray arrayWithObjects: transparent, opaque, opaque, transparent, nil]];
+        CGFloat fadePoint = (CGFloat)self.fadeLength/self.frame.size.width;
+        [gradientMask setColors: [NSArray arrayWithObjects: transparent, opaque, opaque, transparent, nil]];
         [gradientMask setLocations: [NSArray arrayWithObjects:
-                                     [NSNumber numberWithFloat: 0.0],
-                                     [NSNumber numberWithFloat: fadePoint],
-                                     [NSNumber numberWithFloat: 1 - fadePoint],
-                                     [NSNumber numberWithFloat: 1.0],
+                                     [NSNumber numberWithDouble: 0.0],
+                                     [NSNumber numberWithDouble: fadePoint],
+                                     [NSNumber numberWithDouble: 1 - fadePoint],
+                                     [NSNumber numberWithDouble: 1.0],
                                      nil]];
         self.layer.mask = gradientMask;
     } else {
@@ -228,7 +224,7 @@
 - (NSTimeInterval)durationForInterval:(NSTimeInterval)interval {
     switch (self.marqueeType) {
         case MLContinuous:
-            return (interval * 2.0f);
+            return (interval * 2.0);
             break;
             
         default:
@@ -326,8 +322,8 @@
     self.homeLabelFrame = CGRectNull;
     self.awayLabelFrame = CGRectNull;
     self.labelText = nil;
-    self.subLabel.alpha = 1.0f;
-    self.alpha = 1.0f;
+    self.subLabel.alpha = 1.0;
+    self.alpha = 1.0;
 }
 
 - (void)shutdownLabel {
@@ -339,7 +335,7 @@
 
     if (labelize) {
         _labelize = YES;
-        if (self.subLabel) {
+        if (self.subLabel != nil) {
             [self returnLabelToOriginImmediately];
         }
     } else {
@@ -415,7 +411,7 @@
                                                                                                                                                  constrainedToSize:maximumLabelSize 
                                                                                                                                                      lineBreakMode:self.subLabel.lineBreakMode];
                                              self.homeLabelFrame = continuousLabelFrame;
-                                             self.awayLabelFrame = CGRectOffset(continuousLabelFrame, -labelAndSeparatorSize.width + 0.5, 0.0);
+                                             self.awayLabelFrame = CGRectOffset(continuousLabelFrame, -labelAndSeparatorSize.width, 0.0);
                                              
                                              // Recompute the animation duration
                                              self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(self.awayLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
@@ -460,7 +456,7 @@
                                           delay:0.0 
                                         options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState)
                                      animations:^{
-                                         self.subLabel.alpha = 0.0f;
+                                         self.subLabel.alpha = 0.0;
                                      }
                                      completion:^(BOOL finished){
                                          
@@ -503,7 +499,7 @@
                                           delay:0.0 
                                         options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState)
                                      animations:^{
-                                         self.subLabel.alpha = 0.0f;
+                                         self.subLabel.alpha = 0.0;
                                      }
                                      completion:^(BOOL finished){
                                          
@@ -540,7 +536,7 @@
             self.subLabel.text = self.labelText;
             
             // Make sure alpha is returned;
-            self.alpha = 1.0f;
+            self.alpha = 1.0;
             self.subLabel.alpha = self.baseAlpha;
             
             // Calculate label size
