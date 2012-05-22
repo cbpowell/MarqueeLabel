@@ -55,7 +55,7 @@
     
     self.demoLabel.text = @"This is a test of the label. Look how long this label is! It's so long it stretches off the view!";
 
-    [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(changeTheLabel) userInfo:nil repeats:NO];
+    [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(changeTheLabel) userInfo:nil repeats:YES];
     
     // Rate-speed label example
     MarqueeLabel *rateLabelOne = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 200, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
@@ -123,7 +123,13 @@
 }
 
 - (void)changeTheLabel {
-    self.demoLabel.text = @"This label is not as long.";
+    // Generate even or odd
+    int i = arc4random() % 2;
+    if (i == 0) {
+        self.demoLabel.text = @"This label is not as long.";
+    } else {
+        self.demoLabel.text = @"Now we've switched to a string of text that is longer than the specified frame, and will scroll.";
+    }
 }
 
 - (IBAction)labelizeSwitched:(UISwitch *)sender {
