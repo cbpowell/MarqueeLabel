@@ -74,8 +74,6 @@
 @property (nonatomic, assign) CGRect homeLabelFrame;
 @property (nonatomic, assign) CGRect awayLabelFrame;
 
-@property (nonatomic, assign) CGFloat baseAlpha;
-
 - (void)scrollAwayWithInterval:(NSTimeInterval)interval;
 - (void)scrollHomeWithInterval:(NSTimeInterval)interval;
 - (void)returnLabelToOriginImmediately;
@@ -95,7 +93,7 @@
 @synthesize homeLabelFrame = _homeLabelFrame;
 @synthesize awayLabelFrame = _awayLabelFrame;
 @synthesize animationDuration, lengthOfScroll, rate, labelShouldScroll;
-@synthesize animationOptions, baseAlpha;
+@synthesize animationOptions;
 @synthesize awayFromHome;
 @synthesize labelize = _labelize;
 @synthesize fadeLength = _fadeLength;
@@ -322,8 +320,6 @@
     self.homeLabelFrame = CGRectNull;
     self.awayLabelFrame = CGRectNull;
     self.labelText = nil;
-    self.subLabel.alpha = 1.0;
-    self.alpha = 1.0;
 }
 
 - (void)shutdownLabel {
@@ -468,10 +464,6 @@
             
             // Set text
             self.subLabel.text = self.labelText;
-            
-            // Make sure alpha is returned;
-            self.alpha = 1.0;
-            self.subLabel.alpha = self.baseAlpha;
             
             // Calculate label size
             CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
