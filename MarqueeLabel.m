@@ -175,6 +175,133 @@
     }
 }
 
+
+#pragma mark - MarqueeLabel Heavy Lifting
+
+- (void)updateSublabelAndLocations {
+    // Make maximum size
+    CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
+    // Calculate expected size
+    CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
+                                          constrainedToSize:maximumLabelSize
+                                              lineBreakMode:self.subLabel.lineBreakMode];
+    
+    // Move to origin
+    [self returnLabelToOriginImmediately];
+    
+    if (!self.labelize) {
+        // Label is not set to be static
+        
+        switch (self.marqueeType) {
+            case MLContinuous:
+                
+                // Needed for determining if the label should scroll (will be changed)
+                self.homeLabelFrame = CGRectMake(self.fadeLength, 0, expectedLabelSize.width, self.bounds.size.height);
+                
+                if (self.labelShouldScroll) { //Label needs to scroll
+                    
+                    // Double the label text and insert the separator.
+                    NSString *doubledText = [self.labelText stringByAppendingFormat:@"%@%@", self.continuousMarqueeSeparator, self.labelText];
+                    
+                    // Size of the new doubled label
+                    CGSize expectedLabelSizeDoubled = [doubledText sizeWithFont:self.subLabel.font
+                                                              constrainedToSize:maximumLabelSize
+                                                                  lineBreakMode:self.subLabel.lineBreakMode];
+                    
+                    CGRect continuousLabelFrame = CGRectMake(self.fadeLength, 0, expectedLabelSizeDoubled.width, self.bounds.size.height);
+                    
+                    // Size of the label and the separator. This is the period of the translation to the left.
+                    CGSize labelAndSeparatorSize = [[self.labelText stringByAppendingString:self.continuousMarqueeSeparator] sizeWithFont:self.subLabel.font 
+                                                                                                                        constrainedToSize:maximumLabelSize 
+                                                                                                                            lineBreakMode:self.subLabel.lineBreakMode];
+                    self.homeLabelFrame = continuousLabelFrame;
+                    self.awayLabelFrame = CGRectOffset(continuousLabelFrame, -labelAndSeparatorSize.width, 0.0);
+                    
+                    // Recompute the animation duration
+                    self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(self.awayLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
+                    
+                    self.subLabel.frame = self.homeLabelFrame;
+                    self.subLabel.text = doubledText;
+                    
+                } else { //Will not scroll
+                    if (self.subLabel.textAlignment == UITextAlignmentCenter) {
+                        CGRect labelFrame = CGRectMake(self.fadeLength, 0, self.bounds.size.width - self.fadeLength, self.bounds.size.height);
+                        self.homeLabelFrame = labelFrame;
+                        self.awayLabelFrame = labelFrame;
+                    }
+                    
+                    self.subLabel.frame = self.homeLabelFrame;
+                    self.subLabel.text = self.labelText;
+                }
+                
+                if (self.labelShouldScroll) {
+                    [self beginScroll];
+                }
+                
+                break;
+                
+            case MLRightLeft:
+                
+                self.homeLabelFrame = CGRectMake(self.bounds.size.width - (expectedLabelSize.width + self.fadeLength), 0.0, expectedLabelSize.width, self.bounds.size.height);
+                self.awayLabelFrame = CGRectMake(self.fadeLength, 0.0, expectedLabelSize.width, self.bounds.size.height);
+                
+                // Calculate animation duration
+                self.animationDuration = (self.rate != 0) ? ((NSTimeInterval)fabs(self.awayLabelFrame.origin.x - self.homeLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
+                
+                // Set frame and text while invisible
+                self.subLabel.frame = self.homeLabelFrame;
+                self.subLabel.text = self.labelText;
+                
+                // Enforce text alignment for this type
+                self.subLabel.textAlignment = UITextAlignmentRight;
+                
+                
+                if (self.labelShouldScroll) {
+                    [self beginScroll];
+                }
+                
+                break;
+                
+            default: //Fallback to LeftRight marqueeType
+                
+                self.homeLabelFrame = CGRectMake(self.fadeLength, 0, expectedLabelSize.width, self.bounds.size.height);
+                self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, -expectedLabelSize.width + (self.bounds.size.width - self.fadeLength * 2), 0.0);
+                
+                // Calculate animation duration
+                self.animationDuration = (self.rate != 0) ? ((NSTimeInterval)fabs(self.awayLabelFrame.origin.x - self.homeLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
+                
+                // Set frame and text while invisible
+                self.subLabel.frame = self.homeLabelFrame;
+                self.subLabel.text = self.labelText;
+                
+                // Enforce text alignment for this type
+                self.subLabel.textAlignment = UITextAlignmentLeft;
+                
+                if (self.labelShouldScroll) {
+                    [self beginScroll];
+                }
+                
+        } //end of marqueeType switch
+        
+    } else {
+        // Currently labelized
+        // Act like a UILabel
+        [self returnLabelToOriginImmediately];
+        
+        // Set text
+        self.subLabel.text = self.labelText;
+        
+        // Calculate label size
+        CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
+        CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
+                                              constrainedToSize:maximumLabelSize
+                                                  lineBreakMode:self.subLabel.lineBreakMode];
+        // Create home label frame
+        self.homeLabelFrame = CGRectMake(self.fadeLength, 0, expectedLabelSize.width, self.bounds.size.height);
+        self.subLabel.frame = self.homeLabelFrame;
+    }
+}
+
 - (void)applyGradientMaskForFadeLength:(CGFloat)fadeLength {
     [self applyGradientMaskForFadeLength:fadeLength animated:YES];
 }
@@ -349,138 +476,23 @@
     }
     
     if (![newText isEqualToString:self.labelText]) {
-        
         // Set labelText to incoming newText
         self.labelText = newText;
-        
-        // Make maximum size
-        CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
-        // Calculate expected size
-        CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
-                                              constrainedToSize:maximumLabelSize
-                                                  lineBreakMode:self.subLabel.lineBreakMode];
-        
-        // Move to origin
-        [self returnLabelToOriginImmediately];
-        
-        if (!self.labelize) {
-            // Label is not set to be static
-            
-            switch (self.marqueeType) {
-                case MLContinuous:
-                    
-                    // Needed for determining if the label should scroll (will be changed)
-                    self.homeLabelFrame = CGRectMake(self.fadeLength, 0, expectedLabelSize.width, self.bounds.size.height);
-                    
-                    if (self.labelShouldScroll) { //Label needs to scroll
-
-                        // Double the label text and insert the separator.
-                        NSString *doubledText = [self.labelText stringByAppendingFormat:@"%@%@", self.continuousMarqueeSeparator, self.labelText];
-                        
-                        // Size of the new doubled label
-                        CGSize expectedLabelSizeDoubled = [doubledText sizeWithFont:self.subLabel.font
-                                                                  constrainedToSize:maximumLabelSize
-                                                                      lineBreakMode:self.subLabel.lineBreakMode];
-                        
-                        CGRect continuousLabelFrame = CGRectMake(self.fadeLength, 0, expectedLabelSizeDoubled.width, self.bounds.size.height);
-                        
-                        // Size of the label and the separator. This is the period of the translation to the left.
-                        CGSize labelAndSeparatorSize = [[self.labelText stringByAppendingString:self.continuousMarqueeSeparator] sizeWithFont:self.subLabel.font 
-                                                                                                                            constrainedToSize:maximumLabelSize 
-                                                                                                                                lineBreakMode:self.subLabel.lineBreakMode];
-                        self.homeLabelFrame = continuousLabelFrame;
-                        self.awayLabelFrame = CGRectOffset(continuousLabelFrame, -labelAndSeparatorSize.width, 0.0);
-                        
-                        // Recompute the animation duration
-                        self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(self.awayLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
-                        
-                        self.subLabel.frame = self.homeLabelFrame;
-                        self.subLabel.text = doubledText;
-                        
-                    } else { //Will not scroll
-                        if (self.subLabel.textAlignment == UITextAlignmentCenter) {
-                            CGRect labelFrame = CGRectMake(self.fadeLength, 0, self.bounds.size.width - self.fadeLength, self.bounds.size.height);
-                            self.homeLabelFrame = labelFrame;
-                            self.awayLabelFrame = labelFrame;
-                        }
-                        
-                        self.subLabel.frame = self.homeLabelFrame;
-                        self.subLabel.text = self.labelText;
-                    }
-                    
-                    if (self.labelShouldScroll) {
-                        [self beginScroll];
-                    }
-                    
-                    break;
-                    
-                case MLRightLeft:
-                    
-                    self.homeLabelFrame = CGRectMake(self.bounds.size.width - (expectedLabelSize.width + self.fadeLength), 0.0, expectedLabelSize.width, self.bounds.size.height);
-                    self.awayLabelFrame = CGRectMake(self.fadeLength, 0.0, expectedLabelSize.width, self.bounds.size.height);
-                    
-                    // Calculate animation duration
-                    self.animationDuration = (self.rate != 0) ? ((NSTimeInterval)fabs(self.awayLabelFrame.origin.x - self.homeLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
-                    
-                    // Set frame and text while invisible
-                    self.subLabel.frame = self.homeLabelFrame;
-                    self.subLabel.text = self.labelText;
-                    
-                    // Enforce text alignment for this type
-                    self.subLabel.textAlignment = UITextAlignmentRight;
-                    
-                    
-                    if (self.labelShouldScroll) {
-                        [self beginScroll];
-                    }
-                    
-                    break;
-                    
-                default: //Fallback to LeftRight marqueeType
-                    
-                    self.homeLabelFrame = CGRectMake(self.fadeLength, 0, expectedLabelSize.width, self.bounds.size.height);
-                    self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, -expectedLabelSize.width + (self.bounds.size.width - self.fadeLength * 2), 0.0);
-                    
-                    // Calculate animation duration
-                    self.animationDuration = (self.rate != 0) ? ((NSTimeInterval)fabs(self.awayLabelFrame.origin.x - self.homeLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
-                    
-                    // Set frame and text while invisible
-                    self.subLabel.frame = self.homeLabelFrame;
-                    self.subLabel.text = self.labelText;
-                    
-                    // Enforce text alignment for this type
-                    self.subLabel.textAlignment = UITextAlignmentLeft;
-                    
-                    if (self.labelShouldScroll) {
-                        [self beginScroll];
-                    }
-                    
-            } //end of marqueeType switch
-            
-        } else {
-            // Currently labelized
-            // Act like a UILabel
-            [self returnLabelToOriginImmediately];
-            
-            // Set text
-            self.subLabel.text = self.labelText;
-            
-            // Calculate label size
-            CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
-            CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
-                                                  constrainedToSize:maximumLabelSize
-                                                      lineBreakMode:self.subLabel.lineBreakMode];
-            // Create home label frame
-            self.homeLabelFrame = CGRectMake(self.fadeLength, 0, expectedLabelSize.width, self.bounds.size.height);
-            self.subLabel.frame = self.homeLabelFrame;
-        }
+        [self updateSublabelAndLocations];
     }
 }
 
-
-
 - (NSString *)text {
     return self.labelText;
+}
+
+- (void)setFont:(UIFont *)font {
+    if ([self.subLabel.font isEqual:font]) {
+        return;
+    }
+    
+    self.subLabel.font = font;
+    [self updateSublabelAndLocations];
 }
 
 #pragma mark -
@@ -529,6 +541,7 @@
     if (_fadeLength != fadeLength) {
         _fadeLength = fadeLength;
         [self applyGradientMaskForFadeLength:_fadeLength];
+        [self updateSublabelAndLocations];
     }
 }
 
