@@ -140,11 +140,30 @@
     }
 }
 
+- (IBAction)pushNewViewController:(id)sender {
+    UIViewController *newViewController = [[UIViewController alloc] initWithNibName:@"ModalViewController" bundle:nil];
+    [self presentViewController:newViewController animated:YES completion:^{
+        [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(dismissTheModal) userInfo:nil repeats:NO];
+    }];
+    [newViewController release];
+}
+
+- (void)dismissTheModal {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+     
+
+
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
 	
 	// Release any cached data, images, etc that aren't in use.
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [MarqueeLabel controllerViewAppearing:self];
 }
 
 - (void)viewDidUnload {

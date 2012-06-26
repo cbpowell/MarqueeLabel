@@ -108,6 +108,8 @@ typedef enum {
 @property (nonatomic, assign) CGFloat animationDelay;
 
 
+// Class Methods
++ (void)controllerViewAppearing:(UIViewController *)controller;
 
 // Methods
 - (id)initWithFrame:(CGRect)frame rate:(CGFloat)pixelsPerSec andFadeLength:(CGFloat)fadeLength;

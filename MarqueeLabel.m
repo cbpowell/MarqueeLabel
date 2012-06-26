@@ -30,6 +30,7 @@
 #import "MarqueeLabel.h"
 #import <QuartzCore/QuartzCore.h>
 
+NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewControllerDidAppear";
 
 // Thanks to Phil M
 // http://stackoverflow.com/questions/1340434/get-to-uiviewcontroller-from-uiview-on-iphone
@@ -40,12 +41,12 @@
 @end
 
 @implementation UIView (FindUIViewController)
-- (UIViewController *) firstAvailableUIViewController {
+- (id)firstAvailableUIViewController {
     // convenience function for casting and to "mask" the recursive function
-    return (UIViewController *)[self traverseResponderChainForUIViewController];
+    return [self traverseResponderChainForUIViewController];
 }
 
-- (id) traverseResponderChainForUIViewController {
+- (id)traverseResponderChainForUIViewController {
     id nextResponder = [self nextResponder];
     if ([nextResponder isKindOfClass:[UIViewController class]]) {
         return nextResponder;
@@ -112,8 +113,13 @@
 @dynamic shadowColor, shadowOffset, textAlignment, textColor, userInteractionEnabled;
 
 
-#pragma mark -
-#pragma mark Initialization
+#pragma mark - Class Methods
+
++ (void)controllerViewAppearing:(UIViewController *)controller {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelViewDidAppearNotification object:nil userInfo:[NSDictionary dictionaryWithObject:controller forKey:@"controller"]];
+}
+
+#pragma mark - Initialization
 
 - (id)initWithFrame:(CGRect)frame {
     return [self initWithFrame:frame duration:7.0 andFadeLength:0.0];
@@ -152,8 +158,11 @@
     self.animationDelay = 1.0;
     
     // Add notification observers
+    // Custom notification for viewDidAppear on view controllers
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewControllerDidAppear:) name:kMarqueeLabelViewDidAppearNotification object:nil];
     // UINavigationController view controller change notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(observedViewControllerChange:) name:@"UINavigationControllerDidShowViewControllerNotification" object:nil];
+    
     // UIApplication state notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartLabel) name:UIApplicationWillEnterForegroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartLabel) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -161,12 +170,19 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shutdownLabel) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
+- (void)viewControllerDidAppear:(NSNotification *)notification {
+    UIViewController *controller = [[notification userInfo] objectForKey:@"controller"];
+    if (controller == [self firstAvailableUIViewController]) {
+        [self restartLabel];
+    }
+}
+
 - (void)observedViewControllerChange:(NSNotification *)notification {
     NSDictionary *userInfo = [notification userInfo];
-    UIViewController *fromController = [userInfo objectForKey:@"UINavigationControllerLastVisibleViewController"];
-    UIViewController *toController = [userInfo objectForKey:@"UINavigationControllerNextVisibleViewController"];
+    id fromController = [userInfo objectForKey:@"UINavigationControllerLastVisibleViewController"];
+    id toController = [userInfo objectForKey:@"UINavigationControllerNextVisibleViewController"];
     
-    UIViewController *ownController = [self firstAvailableUIViewController];
+    id ownController = [self firstAvailableUIViewController];
     if ([fromController isEqual:ownController]) {
         [self shutdownLabel];
     }

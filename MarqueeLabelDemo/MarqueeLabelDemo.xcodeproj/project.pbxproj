@@ -15,6 +15,8 @@
 		2899E5220DE3E06400AC0155 /* MarqueeLabelDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* MarqueeLabelDemoViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* MarqueeLabelDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MarqueeLabelDemoViewController.m */; };
+		EA0F26E0159947B60052559F /* ModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0F26DE159947B60052559F /* ModalViewController.m */; };
+		EA0F26E1159947B60052559F /* ModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0F26DF159947B60052559F /* ModalViewController.xib */; };
 		EA646A1412F7A5B000F31B16 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */; };
 		EABFD31A150D55CC00216FCE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABFD319150D55CC00216FCE /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
@@ -33,6 +35,9 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* MarqueeLabelDemo_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarqueeLabelDemo_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* MarqueeLabelDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MarqueeLabelDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		EA0F26DD159947B60052559F /* ModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalViewController.h; sourceTree = "<group>"; };
+		EA0F26DE159947B60052559F /* ModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalViewController.m; sourceTree = "<group>"; };
+		EA0F26DF159947B60052559F /* ModalViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ModalViewController.xib; path = Classes/ModalViewController.xib; sourceTree = "<group>"; };
 		EA646A1212F7A5B000F31B16 /* MarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MarqueeLabel.h; path = ../MarqueeLabel.h; sourceTree = SOURCE_ROOT; };
 		EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MarqueeLabel.m; path = ../MarqueeLabel.m; sourceTree = SOURCE_ROOT; };
 		EABFD319150D55CC00216FCE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -62,6 +67,8 @@
 				1D3623250D0F684500981E51 /* MarqueeLabelDemoAppDelegate.m */,
 				28D7ACF60DDB3853001CB0EB /* MarqueeLabelDemoViewController.h */,
 				28D7ACF70DDB3853001CB0EB /* MarqueeLabelDemoViewController.m */,
+				EA0F26DD159947B60052559F /* ModalViewController.h */,
+				EA0F26DE159947B60052559F /* ModalViewController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -101,6 +108,7 @@
 				2899E5210DE3E06400AC0155 /* MarqueeLabelDemoViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* MarqueeLabelDemo-Info.plist */,
+				EA0F26DF159947B60052559F /* ModalViewController.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -170,6 +178,7 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				2899E5220DE3E06400AC0155 /* MarqueeLabelDemoViewController.xib in Resources */,
+				EA0F26E1159947B60052559F /* ModalViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,6 +193,7 @@
 				1D3623260D0F684500981E51 /* MarqueeLabelDemoAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* MarqueeLabelDemoViewController.m in Sources */,
 				EA646A1412F7A5B000F31B16 /* MarqueeLabel.m in Sources */,
+				EA0F26E0159947B60052559F /* ModalViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
