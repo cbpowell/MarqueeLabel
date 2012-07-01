@@ -31,6 +31,8 @@
 #import <QuartzCore/QuartzCore.h>
 
 NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewControllerDidAppear";
+NSString *const kMarqueeLabelShouldLabelizeNotification = @"MarqueeLabelShouldLabelizeNotification";
+NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAnimateNotification";
 
 // Thanks to Phil M
 // http://stackoverflow.com/questions/1340434/get-to-uiviewcontroller-from-uiview-on-iphone
@@ -71,7 +73,7 @@ NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewContr
 @property (nonatomic, assign) NSTimeInterval lengthOfScroll;
 @property (nonatomic, assign) CGFloat rate;
 @property (nonatomic, assign, readonly) BOOL labelShouldScroll;
-
+@property (nonatomic, assign) UITapGestureRecognizer *tapRecognizer;
 @property (nonatomic, assign) CGRect homeLabelFrame;
 @property (nonatomic, assign) CGRect awayLabelFrame;
 
@@ -96,6 +98,8 @@ NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewContr
 @synthesize animationDuration, lengthOfScroll, rate, labelShouldScroll;
 @synthesize animationOptions;
 @synthesize awayFromHome;
+@synthesize tapToScroll = _tapToScroll;
+@synthesize tapRecognizer;
 @synthesize labelize = _labelize;
 @synthesize fadeLength = _fadeLength;
 @synthesize animationCurve, animationDelay;
@@ -113,10 +117,39 @@ NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewContr
 @dynamic shadowColor, shadowOffset, textAlignment, textColor, userInteractionEnabled;
 
 
-#pragma mark - Class Methods
+#pragma mark - Class Methods and handlers
 
 + (void)controllerViewAppearing:(UIViewController *)controller {
     [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelViewDidAppearNotification object:nil userInfo:[NSDictionary dictionaryWithObject:controller forKey:@"controller"]];
+}
+
++ (void)controllerLabelsShouldLabelize:(UIViewController *)controller {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelShouldLabelizeNotification object:nil userInfo:[NSDictionary dictionaryWithObject:controller forKey:@"controller"]];
+}
+
++ (void)controllerLabelsShouldAnimate:(UIViewController *)controller {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelShouldAnimateNotification object:nil userInfo:[NSDictionary dictionaryWithObject:controller forKey:@"controller"]];
+}
+
+- (void)viewControllerDidAppear:(NSNotification *)notification {
+    UIViewController *controller = [[notification userInfo] objectForKey:@"controller"];
+    if (controller == [self firstAvailableUIViewController]) {
+        [self restartLabel];
+    }
+}
+
+- (void)labelsShouldLabelize:(NSNotification *)notification {
+    UIViewController *controller = [[notification userInfo] objectForKey:@"controller"];
+    if (controller == [self firstAvailableUIViewController]) {
+        self.labelize = YES;
+    }
+}
+
+- (void)labelsShouldAnimate:(NSNotification *)notification {
+    UIViewController *controller = [[notification userInfo] objectForKey:@"controller"];
+    if (controller == [self firstAvailableUIViewController]) {
+        self.labelize = NO;
+    }
 }
 
 #pragma mark - Initialization
@@ -154,12 +187,16 @@ NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewContr
     self.animationOptions = (UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction);
     self.awayFromHome = NO;
     self.labelize = NO;
+    _tapToScroll = NO;
     self.labelText = nil;
     self.animationDelay = 1.0;
     
     // Add notification observers
-    // Custom notification for viewDidAppear on view controllers
+    // Custom class notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewControllerDidAppear:) name:kMarqueeLabelViewDidAppearNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(labelsShouldLabelize:) name:kMarqueeLabelShouldLabelizeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(labelsShouldAnimate:) name:kMarqueeLabelShouldAnimateNotification object:nil];
+    
     // UINavigationController view controller change notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(observedViewControllerChange:) name:@"UINavigationControllerDidShowViewControllerNotification" object:nil];
     
@@ -168,13 +205,6 @@ NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewContr
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartLabel) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shutdownLabel) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shutdownLabel) name:UIApplicationDidEnterBackgroundNotification object:nil];
-}
-
-- (void)viewControllerDidAppear:(NSNotification *)notification {
-    UIViewController *controller = [[notification userInfo] objectForKey:@"controller"];
-    if (controller == [self firstAvailableUIViewController]) {
-        [self restartLabel];
-    }
 }
 
 - (void)observedViewControllerChange:(NSNotification *)notification {
@@ -250,7 +280,7 @@ NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewContr
                     self.subLabel.text = self.labelText;
                 }
                 
-                if (self.labelShouldScroll) {
+                if (self.labelShouldScroll && !self.tapToScroll) {
                     [self beginScroll];
                 }
                 
@@ -272,7 +302,7 @@ NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewContr
                 self.subLabel.textAlignment = UITextAlignmentRight;
                 
                 
-                if (self.labelShouldScroll) {
+                if (self.labelShouldScroll && !self.tapToScroll) {
                     [self beginScroll];
                 }
                 
@@ -293,7 +323,7 @@ NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewContr
                 // Enforce text alignment for this type
                 self.subLabel.textAlignment = UITextAlignmentLeft;
                 
-                if (self.labelShouldScroll) {
+                if (self.labelShouldScroll && !self.tapToScroll) {
                     [self beginScroll];
                 }
                 
@@ -335,6 +365,9 @@ NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewContr
         gradientMask.bounds = self.layer.bounds;
         gradientMask.position = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
         
+        gradientMask.shouldRasterize = YES;
+        gradientMask.rasterizationScale = [UIScreen mainScreen].scale;
+        
         NSObject *transparent = (NSObject *)[[UIColor clearColor] CGColor];
         NSObject *opaque = (NSObject *)[[UIColor blackColor] CGColor];
         
@@ -354,7 +387,7 @@ NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewContr
         self.layer.mask = nil;
     }
     
-    if (animated && self.labelShouldScroll) {
+    if (animated && self.labelShouldScroll && !self.tapToScroll) {
         [self beginScroll];
     }
 }
@@ -414,7 +447,9 @@ NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewContr
                          if (finished) {
                              // Set awayFromHome
                              self.awayFromHome = NO;
-                             [self scrollAwayWithInterval:interval];
+                             if (!self.tapToScroll) {
+                                 [self scrollAwayWithInterval:interval];
+                             }
                          }
                      }];
 }
@@ -432,7 +467,7 @@ NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewContr
                          self.subLabel.frame = self.awayLabelFrame;
                      }
                      completion:^(BOOL finished) {
-                         if (finished) {
+                         if (finished && !self.tapToScroll) {
                              [self scrollLeftPerpetualWithInterval:interval after:delay];
                          }
                      }];
@@ -452,7 +487,7 @@ NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewContr
 - (void)restartLabel {
     [self returnLabelToOriginImmediately];
     
-    if (self.labelShouldScroll) {
+    if (self.labelShouldScroll && !self.tapToScroll) {
         [self beginScroll];
     }
 }
@@ -480,6 +515,12 @@ NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewContr
     } else {
         _labelize = NO;
         [self restartLabel];
+    }
+}
+
+- (void)labelWasTapped:(UITapGestureRecognizer *)recognizer {
+    if (self.labelShouldScroll) {
+        [self beginScroll];
     }
 }
 
@@ -563,6 +604,24 @@ NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewContr
 
 - (BOOL)labelShouldScroll {
     return (!self.labelize && (self.labelText.length > 0) && (self.bounds.size.width < self.homeLabelFrame.size.width + self.fadeLength));
+}
+
+- (void)setTapToScroll:(BOOL)tapToScroll {
+    if (_tapToScroll == tapToScroll) {
+        return;
+    }
+    
+    _tapToScroll = tapToScroll;
+    
+    if (_tapToScroll) {
+        UITapGestureRecognizer *newTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(labelWasTapped:)];
+        [self addGestureRecognizer:newTapRecognizer];
+        self.tapRecognizer = newTapRecognizer;
+        [newTapRecognizer release];
+    } else {
+        [self removeGestureRecognizer:self.tapRecognizer];
+        self.tapRecognizer = nil;
+    }
 }
 
 - (CGRect)awayLabelFrame {

@@ -108,8 +108,18 @@ typedef enum {
 @property (nonatomic, assign) CGFloat animationDelay;
 
 
+/* tapToAnimate:
+ * If YES, when tapped the label will scroll through its cycle once.
+ * NOTE: The label will not automatically scroll if this is set to YES!
+ * Defaults to NO.
+ */
+@property (nonatomic, assign) BOOL tapToScroll;
+
+
 // Class Methods
 + (void)controllerViewAppearing:(UIViewController *)controller;
++ (void)controllerLabelsShouldLabelize:(UIViewController *)controller;
++ (void)controllerLabelsShouldAnimate:(UIViewController *)controller;
 
 // Methods
 - (id)initWithFrame:(CGRect)frame rate:(CGFloat)pixelsPerSec andFadeLength:(CGFloat)fadeLength;
