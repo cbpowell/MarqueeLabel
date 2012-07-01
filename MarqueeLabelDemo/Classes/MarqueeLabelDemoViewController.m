@@ -62,6 +62,7 @@
     rateLabelOne.numberOfLines = 1;
     rateLabelOne.opaque = NO;
     rateLabelOne.enabled = YES;
+    rateLabelOne.fadeLength = 10.f;
     rateLabelOne.shadowOffset = CGSizeMake(0.0, -1.0);
     rateLabelOne.textAlignment = UITextAlignmentRight;
     rateLabelOne.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
@@ -73,7 +74,6 @@
     [rateLabelOne release];
     
     MarqueeLabel *rateLabelTwo = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 230, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
-    rateLabelTwo.marqueeType = MLRightLeft;
     rateLabelTwo.numberOfLines = 1;
     rateLabelTwo.opaque = NO;
     rateLabelTwo.enabled = YES;
@@ -82,10 +82,28 @@
     rateLabelTwo.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
     rateLabelTwo.backgroundColor = [UIColor clearColor];
     rateLabelTwo.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
-    rateLabelTwo.text = @"This text is not as long, but still long enough to scroll, and scrolls the same speed but to the right first!";
+    
+    rateLabelTwo.tapToScroll = YES;
+    rateLabelTwo.text = @"This label will not scroll until tapped, and then it performs its scroll cycle only once.";
     
     [self.view addSubview:rateLabelTwo];
     [rateLabelTwo release];
+    
+    MarqueeLabel *rateLabelThree = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 260, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
+    rateLabelThree.numberOfLines = 1;
+    rateLabelThree.opaque = NO;
+    rateLabelThree.enabled = YES;
+    rateLabelThree.shadowOffset = CGSizeMake(0.0, -1.0);
+    rateLabelThree.textAlignment = UITextAlignmentRight;
+    rateLabelThree.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
+    rateLabelThree.backgroundColor = [UIColor clearColor];
+    rateLabelThree.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
+    
+    rateLabelThree.marqueeType = MLRightLeft;
+    rateLabelThree.text =@"This text is not as long, but still long enough to scroll, and scrolls the same speed but to the right first!";
+    
+    [self.view addSubview:rateLabelThree];
+    [rateLabelThree release];
     
     // Continuous label example
     MarqueeLabel *continuousLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 300, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
@@ -143,7 +161,7 @@
 - (IBAction)pushNewViewController:(id)sender {
     UIViewController *newViewController = [[UIViewController alloc] initWithNibName:@"ModalViewController" bundle:nil];
     [self presentViewController:newViewController animated:YES completion:^{
-        [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(dismissTheModal) userInfo:nil repeats:NO];
+        [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(dismissTheModal) userInfo:nil repeats:NO];
     }];
     [newViewController release];
 }
