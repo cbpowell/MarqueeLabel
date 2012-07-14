@@ -133,7 +133,11 @@
     continuousLabel2.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
     continuousLabel2.backgroundColor = [UIColor clearColor];
     continuousLabel2.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
-    continuousLabel2.text = @"This is another long label that scrolls continuously with a custom label separator!";
+    continuousLabel2.text = @"This is another long label that scrolls continuously with a custom label separator! You can also tap it to pause and unpause it!";
+    
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pauseTap:)];
+    [continuousLabel2 addGestureRecognizer:tapRecognizer];
+    continuousLabel2.tag = 101;
     
     [self.view addSubview:continuousLabel2];
     [continuousLabel2 release];
@@ -147,6 +151,18 @@
         self.demoLabel.text = @"This label is not as long.";
     } else {
         self.demoLabel.text = @"Now we've switched to a string of text that is longer than the specified frame, and will scroll.";
+    }
+}
+
+- (void)pauseTap:(UITapGestureRecognizer *)recognizer {
+    MarqueeLabel *continuousLabel2 = (MarqueeLabel *)recognizer.view;
+    
+    if (recognizer.state == UIGestureRecognizerStateEnded) {
+        if (!continuousLabel2.isPaused) {
+            [continuousLabel2 pauseLabel];
+        } else {
+            [continuousLabel2 unpauseLabel];
+        }
     }
 }
 
