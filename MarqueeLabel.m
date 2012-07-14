@@ -76,6 +76,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
 @property (nonatomic, assign) UITapGestureRecognizer *tapRecognizer;
 @property (nonatomic, assign) CGRect homeLabelFrame;
 @property (nonatomic, assign) CGRect awayLabelFrame;
+@property (nonatomic, assign, readwrite) BOOL isPaused;
 
 - (void)scrollAwayWithInterval:(NSTimeInterval)interval;
 - (void)scrollHomeWithInterval:(NSTimeInterval)interval;
@@ -99,6 +100,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
 @synthesize animationOptions;
 @synthesize awayFromHome;
 @synthesize tapToScroll = _tapToScroll;
+@synthesize isPaused = _isPaused;
 @synthesize tapRecognizer;
 @synthesize labelize = _labelize;
 @synthesize fadeLength = _fadeLength;
@@ -188,6 +190,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     self.awayFromHome = NO;
     self.labelize = NO;
     _tapToScroll = NO;
+    _isPaused = NO;
     self.labelText = nil;
     self.animationDelay = 1.0;
     
@@ -504,17 +507,26 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     [self returnLabelToOriginImmediately];
 }
 
-// Custom labelize mutator to restart scrolling after changing labelize to NO
-- (void)setLabelize:(BOOL)labelize {
+-(void)pauseLabel
+{
+    if (!self.isPaused) {
+        CFTimeInterval pausedTime = [self.layer convertTime:CACurrentMediaTime() fromLayer:nil];
+        self.layer.speed = 0.0;
+        self.layer.timeOffset = pausedTime;
+        self.isPaused = YES;
+    }
+}
 
-    if (labelize) {
-        _labelize = YES;
-        if (self.subLabel != nil) {
-            [self returnLabelToOriginImmediately];
-        }
-    } else {
-        _labelize = NO;
-        [self restartLabel];
+-(void)unpauseLabel
+{
+    if (self.isPaused) {
+        CFTimeInterval pausedTime = [self.layer timeOffset];
+        self.layer.speed = 1.0;
+        self.layer.timeOffset = 0.0;
+        self.layer.beginTime = 0.0;
+        CFTimeInterval timeSincePause = [self.layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
+        self.layer.beginTime = timeSincePause;
+        self.isPaused = NO;
     }
 }
 
@@ -526,6 +538,20 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
 
 #pragma mark -
 #pragma mark Modified UILabel Getters/Setters
+
+// Custom labelize mutator to restart scrolling after changing labelize to NO
+- (void)setLabelize:(BOOL)labelize {
+    
+    if (labelize) {
+        _labelize = YES;
+        if (self.subLabel != nil) {
+            [self returnLabelToOriginImmediately];
+        }
+    } else {
+        _labelize = NO;
+        [self restartLabel];
+    }
+}
 
 - (void)setText:(NSString *)newText {
     if (newText.length <= 0 && self.labelText.length <= 0) {

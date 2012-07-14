@@ -108,12 +108,16 @@ typedef enum {
 @property (nonatomic, assign) CGFloat animationDelay;
 
 
-/* tapToAnimate:
+/* tapToScroll:
  * If YES, when tapped the label will scroll through its cycle once.
  * NOTE: The label will not automatically scroll if this is set to YES!
  * Defaults to NO.
  */
 @property (nonatomic, assign) BOOL tapToScroll;
+
+
+// Read-only properties for state
+@property (nonatomic, assign, readonly) BOOL isPaused;
 
 
 // Class Methods
@@ -127,6 +131,9 @@ typedef enum {
 
 - (void)restartLabel;
 - (void)resetLabel;
+
+- (void)pauseLabel;
+- (void)unpauseLabel;
 
 
 
