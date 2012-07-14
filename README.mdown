@@ -2,7 +2,7 @@ MarqueeLabel
 ============
 
 ## Description
-MarqueeLabel is a functional equivalent to UILabel that adds a scrolling marquee effect when the text of the label outgrows the available width (for the given font size). All standard UILabel properties are available in MarqueeLabel and it behaves just like a UILabel.
+MarqueeLabel is a functional equivalent to UILabel that adds a scrolling marquee effect when the text of the label outgrows the available width. The label scrolling direction and speed/rate can be specified as well. All standard UILabel properties (where it makes sense) are available in MarqueeLabel and it behaves just like a UILabel.
 
 ### Usage
 MarqueeLabel supports moving the label at either a defined rate (points per second) or duration (seconds). The animation curve can also be defined, and defaults to `UIViewAnimationOptionCurveEaseInOut`. It also features a variable-length fade at the left and right side view borders, in order to fade the label text into the background rather than simply being chopped off.
@@ -23,7 +23,17 @@ If you'd rather have a label that scrolls at a specific rate (points per second)
 
 	MarqueeLabel *scrollyLabel = [[MarqueeLabel alloc] initWithFrame:labelCGRectFrame rate:50.0 andFadeLength:10.0f];
 
-See the included MarqueeLabelDemo project for further example usage.
+### Even More
+Check out MarqueeLabel.h for more features, with explanations in the comments there:
+- Scrolling diretion (left->right, right->left, and continuous)
+- Label edge fades
+- Pausing/unpausing the scrolling of the label
+- Tap to scroll
+
+### Important Note
+MarqueeLabel is based on UIView animations, which does cause some problems when views appear and disappear and the animation is stopped automatically. To combat this, MarqueeLabel provides a few class methods that allow easily notifying all MarqueeLabels associated with a UIViewController. Specifically, the class method `viewControllerDidAppear:` is intended to be called when your UIViewController appears or is revealed (presenting a modal view controller pauses repeating animations!). 
+
+`controllerLabelsShouldLabelize:` and `controllerLabelsShouldAnimate:` are more for convienience, allowing labelizing and re-animating all labels.
 
 ## Todo
 - Any ideas?
