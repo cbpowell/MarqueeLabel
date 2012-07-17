@@ -28,12 +28,12 @@ Check out MarqueeLabel.h for more features, with explanations in the comments th
 - Scrolling diretion (left->right, right->left, and continuous)
 - Label edge fades
 - Pausing/unpausing the scrolling of the label
-- Tap to scroll
+- Tap to scroll once
 
 ### Important Note
-MarqueeLabel is based on UIView animations, which does cause some problems when views appear and disappear and the animation is stopped automatically. To combat this, MarqueeLabel provides a few class methods that allow easily notifying all MarqueeLabels associated with a UIViewController. Specifically, the class method `viewControllerDidAppear:` is intended to be called when your UIViewController appears or is revealed (presenting a modal view controller pauses repeating animations!). 
+MarqueeLabel is based on UIView animations, which does cause some problems when views appear and disappear and the repeating animation is stopped by iOS and does not automatically restart. To combat this, MarqueeLabel provides a few class methods that allow easy "restarting" of all MarqueeLabels associated with a UIViewController. Specifically, the class method `viewControllerDidAppear:` is intended to be called when your UIViewController appears or is revealed (presenting a modal view controller pauses repeating animations!). 
 
-`controllerLabelsShouldLabelize:` and `controllerLabelsShouldAnimate:` are more for convienience, allowing labelizing and re-animating all labels.
+`controllerLabelsShouldLabelize:` and `controllerLabelsShouldAnimate:` are more for convienience, allowing labelizing and re-animating all labels of a UIViewController. Labelizing can be useful for performance, such as labelizing all MarqueeLabels when a UITableView/UIScrollView starts scrolling.
 
 ## Todo
 - Any ideas?
