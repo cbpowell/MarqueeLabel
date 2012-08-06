@@ -164,16 +164,16 @@ typedef enum {
 @property (nonatomic, assign) BOOL adjustsFontSizeToFitWidth;
 @property (nonatomic, assign) UIBaselineAdjustment baselineAdjustment;
 @property (nonatomic, assign, getter=isEnabled) BOOL enabled;
-@property (nonatomic, retain) UIFont *font;
+@property (nonatomic, strong) UIFont *font;
 @property (nonatomic, assign, getter=isHighlighted) BOOL highlighted;
-@property (nonatomic, retain) UIColor *highlightedTextColor;
+@property (nonatomic, strong) UIColor *highlightedTextColor;
 @property (nonatomic, assign) UILineBreakMode lineBreakMode;
 @property (nonatomic, assign) CGFloat minimumFontSize;
 @property (nonatomic, assign) NSInteger numberOfLines;
-@property (nonatomic, retain) UIColor *shadowColor;
+@property (nonatomic, strong) UIColor *shadowColor;
 @property (nonatomic, assign) CGSize shadowOffset;
 @property (nonatomic, assign) UITextAlignment textAlignment;
-@property (nonatomic, retain) UIColor *textColor;
+@property (nonatomic, strong) UIColor *textColor;
 @property (nonatomic, assign, getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
 
 @end
