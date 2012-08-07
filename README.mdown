@@ -4,9 +4,9 @@ MarqueeLabel
 ## Description
 MarqueeLabel is a functional equivalent to UILabel that adds a scrolling marquee effect when the text of the label outgrows the available width. The label scrolling direction and speed/rate can be specified as well. All standard UILabel properties (where it makes sense) are available in MarqueeLabel and it behaves just like a UILabel.
 
-### Usage
+**MarqueeLabel now uses ARC by default.** If you want to use it in a non-ARC project you can use the non-ARC branch, however that branch probably won't see any updates in the future.
 
-**MarqueeLabel now uses ARC by default.** If you want to use it in a non-ARC project you can use the non-ARC branch, however this branch probably won't see any updates in the future.
+### Usage
 
 MarqueeLabel supports moving the label at either a defined rate (points per second) or duration (seconds). The animation curve can also be defined, and defaults to `UIViewAnimationOptionCurveEaseInOut`. It also features a variable-length fade at the left and right side view borders, in order to fade the label text into the background rather than simply being chopped off.
 
