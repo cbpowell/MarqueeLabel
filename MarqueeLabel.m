@@ -191,7 +191,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     self.labelize = NO;
     _tapToScroll = NO;
     _isPaused = NO;
-    self.labelText = nil;
+    self.labelText = @"";  // Set to zero-length string to start, so that self.text returns a non-nil string (allows appending, etc)
     self.animationDelay = 1.0;
     
     // Add notification observers
