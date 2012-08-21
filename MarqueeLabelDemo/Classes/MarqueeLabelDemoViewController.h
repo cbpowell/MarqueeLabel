@@ -33,8 +33,8 @@
 
 @interface MarqueeLabelDemoViewController : UIViewController
 
-@property (nonatomic, retain) MarqueeLabel *demoLabel;
-@property (nonatomic, assign) IBOutlet UISwitch *labelizeSwitch;
+@property (nonatomic, strong) MarqueeLabel *demoLabel;
+@property (nonatomic, weak) IBOutlet UISwitch *labelizeSwitch;
 
 - (void)changeTheLabel;
 - (IBAction)labelizeSwitched:(id)sender;

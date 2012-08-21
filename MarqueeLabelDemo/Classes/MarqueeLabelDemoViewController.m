@@ -38,9 +38,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    MarqueeLabel *newLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 100, self.view.frame.size.width-20, 20) duration:8.0 andFadeLength:10.0f];
-    self.demoLabel = newLabel;
-    [newLabel release];
+    self.demoLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 100, self.view.frame.size.width-20, 20) duration:8.0 andFadeLength:10.0f];
     
     [self.view addSubview:self.demoLabel];
     
@@ -71,7 +69,6 @@
     rateLabelOne.text = @"This is another long label that scrolls at a specific rate, rather than scrolling its length in a specific time window!";
     
     [self.view addSubview:rateLabelOne];
-    [rateLabelOne release];
     
     MarqueeLabel *rateLabelTwo = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 230, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
     rateLabelTwo.numberOfLines = 1;
@@ -87,7 +84,6 @@
     rateLabelTwo.text = @"This label will not scroll until tapped, and then it performs its scroll cycle only once.";
     
     [self.view addSubview:rateLabelTwo];
-    [rateLabelTwo release];
     
     MarqueeLabel *rateLabelThree = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 260, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
     rateLabelThree.numberOfLines = 1;
@@ -103,7 +99,6 @@
     rateLabelThree.text =@"This text is not as long, but still long enough to scroll, and scrolls the same speed but to the right first!";
     
     [self.view addSubview:rateLabelThree];
-    [rateLabelThree release];
     
     // Continuous label example
     MarqueeLabel *continuousLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 300, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
@@ -119,7 +114,6 @@
     continuousLabel.text = @"This is another long label that scrolls continuously rather than scrolling back and forth!";
     
     [self.view addSubview:continuousLabel];
-    [continuousLabel release];
     
     MarqueeLabel *continuousLabel2 = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 330, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
     continuousLabel2.marqueeType = MLContinuous;
@@ -140,8 +134,6 @@
     continuousLabel2.tag = 101;
     
     [self.view addSubview:continuousLabel2];
-    [continuousLabel2 release];
-  
 }
 
 - (void)changeTheLabel {
@@ -179,7 +171,6 @@
     [self presentViewController:newViewController animated:YES completion:^{
         [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(dismissTheModal) userInfo:nil repeats:NO];
     }];
-    [newViewController release];
 }
 
 - (void)dismissTheModal {
@@ -207,8 +198,5 @@
 }
 
 
-- (void)dealloc {
-    [super dealloc];
-}
 
 @end

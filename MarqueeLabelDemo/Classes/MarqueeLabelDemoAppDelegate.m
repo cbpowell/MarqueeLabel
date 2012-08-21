@@ -22,7 +22,6 @@
     
     MarqueeLabelDemoViewController *labelsViewController = [[MarqueeLabelDemoViewController alloc] initWithNibName:@"MarqueeLabelDemoViewController" bundle:nil];
     self.viewController = labelsViewController;
-    [labelsViewController release];
     // Add the view controller's view to the window and display.
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
@@ -78,11 +77,6 @@
 }
 
 
-- (void)dealloc {
-    [viewController release];
-    [window release];
-    [super dealloc];
-}
 
 
 @end
