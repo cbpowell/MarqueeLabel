@@ -129,6 +129,10 @@ typedef enum {
 - (id)initWithFrame:(CGRect)frame rate:(CGFloat)pixelsPerSec andFadeLength:(CGFloat)fadeLength;
 - (id)initWithFrame:(CGRect)frame duration:(NSTimeInterval)lengthOfScroll andFadeLength:(CGFloat)fadeLength;
 
+/* Use this method to resize a MarqueeLabel to the minimum possible size, accounting
+ * for fade length, for the current text while constrained to the maxSize provided. Use
+ * CGSizeZero for maxSize to indicate an unlimited size.
+ */
 - (void)minimizeLabelFrameWithMaximumSize:(CGSize)maxSize adjustHeight:(BOOL)adjustHeight;
 
 - (void)restartLabel;

@@ -227,6 +227,9 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
 - (void)minimizeLabelFrameWithMaximumSize:(CGSize)maxSize adjustHeight:(BOOL)adjustHeight {
     if (self.labelText != nil) {
         // Calculate text size
+        if (CGSizeEqualToSize(maxSize, CGSizeZero)) {
+            maxSize = CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX);
+        }
         CGSize minimizedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
                                                constrainedToSize:maxSize
                                                    lineBreakMode:self.subLabel.lineBreakMode];
