@@ -154,7 +154,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     }
 }
 
-#pragma mark - Initialization
+#pragma mark - Initialization and Label Config
 
 - (id)initWithFrame:(CGRect)frame {
     return [self initWithFrame:frame duration:7.0 andFadeLength:0.0];
@@ -224,6 +224,20 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     }
 }
 
+- (void)minimizeLabelFrameWithMaximumSize:(CGSize)maxSize adjustHeight:(BOOL)adjustHeight {
+    if (self.labelText != nil) {
+        // Calculate text size
+        CGSize minimizedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
+                                               constrainedToSize:maxSize
+                                                   lineBreakMode:self.subLabel.lineBreakMode];
+        // Adjust for fade length
+        minimizedLabelSize = CGSizeMake(minimizedLabelSize.width + (self.fadeLength * 2), minimizedLabelSize.height);
+        
+        // Apply to frame
+        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, minimizedLabelSize.width, (adjustHeight ? minimizedLabelSize.height : self.frame.size.height));
+    }
+}
+    
 
 #pragma mark - MarqueeLabel Heavy Lifting
 
