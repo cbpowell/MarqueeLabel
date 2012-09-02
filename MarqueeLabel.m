@@ -592,6 +592,12 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     [self updateSublabelAndLocations];
 }
 
+- (void)setFrame:(CGRect)frame {
+    [super setFrame:frame];
+    [self applyGradientMaskForFadeLength:self.fadeLength];
+    [self updateSublabelAndLocations];
+}
+
 #pragma mark -
 #pragma mark Overridden UIView properties
 
