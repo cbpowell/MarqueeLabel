@@ -154,6 +154,13 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     }
 }
 
+// Fix wrong animation when label frame is changed (e.g. resizing on interface rotation).
+// You can try commenting this out, then rotate the screen to see the problem.
+- (void)layoutSubviews {
+    [self returnLabelToOriginImmediately]; // this stops the label
+    [self performSelector:@selector(restartLabel) withObject:nil afterDelay:0.1f]; // need delay to fix bug
+}
+
 #pragma mark - Initialization and Label Config
 
 - (id)initWithFrame:(CGRect)frame {
