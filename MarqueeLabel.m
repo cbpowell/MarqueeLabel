@@ -291,7 +291,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
                     
                 } else { //Will not scroll
                     if (self.subLabel.textAlignment == UITextAlignmentCenter) {
-                        CGRect labelFrame = CGRectMake(self.fadeLength, 0, self.bounds.size.width - self.fadeLength, self.bounds.size.height);
+                        CGRect labelFrame = CGRectMake(self.fadeLength, 0, self.bounds.size.width - (self.fadeLength * 2), self.bounds.size.height);
                         self.homeLabelFrame = labelFrame;
                         self.awayLabelFrame = labelFrame;
                     }
