@@ -52,7 +52,10 @@
     self.demoLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
     
     self.demoLabel.text = @"This is a test of the label. Look how long this label is! It's so long it stretches off the view!";
-
+    
+    // For Autoresizing test
+    self.demoLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
     [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(changeTheLabel) userInfo:nil repeats:YES];
     
     // Rate-speed label example
@@ -177,7 +180,10 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
      
-
+// For Autoresizing test
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return YES;
+}
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
