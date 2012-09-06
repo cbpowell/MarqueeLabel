@@ -13,3 +13,6 @@ MarqueeLabelDemo/build/*
 xcuserdata
 profile
 *.moved-aside
+
+# Exclude OS X folder attributes
+.DS_Store

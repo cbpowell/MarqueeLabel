@@ -122,15 +122,21 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
 #pragma mark - Class Methods and handlers
 
 + (void)controllerViewAppearing:(UIViewController *)controller {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelViewDidAppearNotification object:nil userInfo:[NSDictionary dictionaryWithObject:controller forKey:@"controller"]];
+    if (controller) { // avoid creating NSDictionary with nil object
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelViewDidAppearNotification object:nil userInfo:[NSDictionary dictionaryWithObject:controller forKey:@"controller"]];
+    }
 }
 
 + (void)controllerLabelsShouldLabelize:(UIViewController *)controller {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelShouldLabelizeNotification object:nil userInfo:[NSDictionary dictionaryWithObject:controller forKey:@"controller"]];
+    if (controller) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelShouldLabelizeNotification object:nil userInfo:[NSDictionary dictionaryWithObject:controller forKey:@"controller"]];
+    }
 }
 
 + (void)controllerLabelsShouldAnimate:(UIViewController *)controller {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelShouldAnimateNotification object:nil userInfo:[NSDictionary dictionaryWithObject:controller forKey:@"controller"]];
+    if (controller) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelShouldAnimateNotification object:nil userInfo:[NSDictionary dictionaryWithObject:controller forKey:@"controller"]];
+    }
 }
 
 - (void)viewControllerDidAppear:(NSNotification *)notification {
@@ -152,6 +158,13 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     if (controller == [self firstAvailableUIViewController]) {
         self.labelize = NO;
     }
+}
+
+// Fix wrong animation when label frame is changed (e.g. resizing on interface rotation).
+// You can try commenting this out, then rotate the screen to see the problem.
+- (void)layoutSubviews {
+    [self returnLabelToOriginImmediately]; // this stops the label
+    [self performSelector:@selector(restartLabel) withObject:nil afterDelay:0.1f]; // need delay to fix bug
 }
 
 #pragma mark - Initialization and Label Config
