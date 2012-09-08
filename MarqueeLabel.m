@@ -64,6 +64,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
 @interface MarqueeLabel()
 
 @property (nonatomic, assign, readwrite) BOOL awayFromHome;
+@property (nonatomic, assign) BOOL orientationWillChange;
 
 @property (nonatomic, strong) UILabel *subLabel;
 @property (nonatomic, copy) NSString *labelText;
@@ -98,7 +99,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
 @synthesize awayLabelFrame = _awayLabelFrame;
 @synthesize animationDuration, lengthOfScroll, rate, labelShouldScroll;
 @synthesize animationOptions;
-@synthesize awayFromHome;
+@synthesize awayFromHome, orientationWillChange;
 @synthesize tapToScroll = _tapToScroll;
 @synthesize isPaused = _isPaused;
 @synthesize tapRecognizer;
@@ -160,13 +161,6 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     }
 }
 
-// Fix wrong animation when label frame is changed (e.g. resizing on interface rotation).
-// You can try commenting this out, then rotate the screen to see the problem.
-- (void)layoutSubviews {
-    [self returnLabelToOriginImmediately]; // this stops the label
-    [self performSelector:@selector(restartLabel) withObject:nil afterDelay:0.1f]; // need delay to fix bug
-}
-
 #pragma mark - Initialization and Label Config
 
 - (id)initWithFrame:(CGRect)frame {
@@ -201,6 +195,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     self.backgroundColor = [UIColor clearColor];
     self.animationOptions = (UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction);
     self.awayFromHome = NO;
+    self.orientationWillChange = NO;
     self.labelize = NO;
     _tapToScroll = NO;
     _isPaused = NO;
@@ -221,6 +216,35 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartLabel) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shutdownLabel) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shutdownLabel) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    
+    // Device Orientation change handling
+    /* Necessary to prevent a "super-speed" scroll bug. When the frame is changed due to a flexible width autoresizing mask,
+     * the setFrame call occurs during the in-flight orientation rotation animation, and the scroll to the away location
+     * occurs at super speed. To work around this, the orientationWilLChange property is set to YES when the notification
+     * UIApplicationWillChangeStatusBarOrientationNotification is posted, and a notification handler block listening for
+     * the UIViewAnimationDidStopNotification notification is added. The handler block checks the notification userInfo to
+     * see if the delegate of the ending animation is the UIWindow of the label. If so, the rotation animation has finished
+     * and the label can be restarted, and the notification observer removed.
+     */
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillChangeStatusBarOrientationNotification
+                                                      object:nil
+                                                       queue:nil
+                                                  usingBlock:^(NSNotification *notification){
+                                                      self.orientationWillChange = YES;
+                                                      [[NSNotificationCenter defaultCenter] addObserverForName:@"UIViewAnimationDidStopNotification"
+                                                                                                        object:nil
+                                                                                                         queue:nil
+                                                                                                    usingBlock:^(NSNotification *notification){
+                                                                                                        if ([notification.userInfo objectForKey:@"delegate"] == self.window) {
+                                                                                                            self.orientationWillChange = NO;
+                                                                                                            [self restartLabel];
+                                                                                                            
+                                                                                                            // Remove notification observer
+                                                                                                            [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UIViewAnimationDidStopNotification" object:nil];
+                                                                                                        }
+                                                                                                    }];
+                                                  }];
 }
 
 - (void)observedViewControllerChange:(NSNotification *)notification {
@@ -604,8 +628,8 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
 
 - (void)setFrame:(CGRect)frame {
     [super setFrame:frame];
-    [self applyGradientMaskForFadeLength:self.fadeLength];
-    [self updateSublabelAndLocations];
+    [self applyGradientMaskForFadeLength:self.fadeLength animated:!self.orientationWillChange];
+    [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
 }
 
 #pragma mark -
