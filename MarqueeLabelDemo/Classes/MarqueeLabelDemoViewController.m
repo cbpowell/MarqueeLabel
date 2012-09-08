@@ -53,9 +53,6 @@
     
     self.demoLabel.text = @"This is a test of the label. Look how long this label is! It's so long it stretches off the view!";
     
-    // For Autoresizing test
-    self.demoLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    
     [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(changeTheLabel) userInfo:nil repeats:YES];
     
     // Rate-speed label example
@@ -69,7 +66,11 @@
     rateLabelOne.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
     rateLabelOne.backgroundColor = [UIColor clearColor];
     rateLabelOne.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
+    
     rateLabelOne.text = @"This is another long label that scrolls at a specific rate, rather than scrolling its length in a specific time window!";
+    
+    // For Autoresizing test
+    rateLabelOne.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     [self.view addSubview:rateLabelOne];
     
