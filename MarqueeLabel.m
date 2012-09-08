@@ -253,11 +253,14 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
         self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, minimizedLabelSize.width, (adjustHeight ? minimizedLabelSize.height : self.frame.size.height));
     }
 }
-    
 
 #pragma mark - MarqueeLabel Heavy Lifting
 
 - (void)updateSublabelAndLocations {
+    [self updateSublabelAndLocationsAndBeginScroll:YES];
+}
+
+- (void)updateSublabelAndLocationsAndBeginScroll:(BOOL)beginScroll {
     // Make maximum size
     CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
     // Calculate expected size
@@ -313,10 +316,6 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
                     self.subLabel.text = self.labelText;
                 }
                 
-                if (self.labelShouldScroll && !self.tapToScroll) {
-                    [self beginScroll];
-                }
-                
                 break;
                 
             case MLRightLeft:
@@ -333,11 +332,6 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
                 
                 // Enforce text alignment for this type
                 self.subLabel.textAlignment = UITextAlignmentRight;
-                
-                
-                if (self.labelShouldScroll && !self.tapToScroll) {
-                    [self beginScroll];
-                }
                 
                 break;
                 
@@ -356,11 +350,11 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
                 // Enforce text alignment for this type
                 self.subLabel.textAlignment = UITextAlignmentLeft;
                 
-                if (self.labelShouldScroll && !self.tapToScroll) {
-                    [self beginScroll];
-                }
-                
         } //end of marqueeType switch
+        
+        if (self.labelShouldScroll && !self.tapToScroll && beginScroll) {
+            [self beginScroll];
+        }
         
     } else {
         // Currently labelized
