@@ -288,9 +288,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     // Make maximum size
     CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
     // Calculate expected size
-    CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
-                                          constrainedToSize:maximumLabelSize
-                                              lineBreakMode:self.subLabel.lineBreakMode];
+    CGSize expectedLabelSize = [self subLabelSize];
     
     // Move to origin
     [self returnLabelToOriginImmediately];
@@ -389,11 +387,9 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
         self.subLabel.text = self.labelText;
         
         // Calculate label size
-        CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
-        CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
-                                              constrainedToSize:maximumLabelSize
-                                                  lineBreakMode:self.subLabel.lineBreakMode];
-        // Create home label frame
+        CGSize expectedLabelSize = [self subLabelSize];
+        
+        // Create frames
         self.homeLabelFrame = CGRectMake(self.fadeLength, 0, expectedLabelSize.width, self.bounds.size.height);
         self.subLabel.frame = self.homeLabelFrame;
     }
@@ -441,6 +437,15 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     if (animated && self.labelShouldScroll && !self.tapToScroll) {
         [self beginScroll];
     }
+}
+
+- (CGSize)subLabelSize {
+    // Calculate label size
+    CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
+    CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
+                                          constrainedToSize:maximumLabelSize
+                                              lineBreakMode:self.subLabel.lineBreakMode];
+    return expectedLabelSize;
 }
 
 #pragma mark -
@@ -706,10 +711,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
 - (CGRect)awayLabelFrame {
     if (CGRectEqualToRect(_awayLabelFrame, CGRectNull)) {
         // Calculate label size
-        CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
-        CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
-                                              constrainedToSize:maximumLabelSize
-                                                  lineBreakMode:self.subLabel.lineBreakMode];
+        CGSize expectedLabelSize = [self subLabelSize];
         // Create home label frame
         _awayLabelFrame = CGRectOffset(self.homeLabelFrame, -expectedLabelSize.width + (self.bounds.size.width - self.fadeLength * 2), 0.0);
     }
@@ -720,10 +722,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
 - (CGRect)homeLabelFrame {
     if (CGRectEqualToRect(_homeLabelFrame, CGRectNull)) {
         // Calculate label size
-        CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
-        CGSize expectedLabelSize = [self.labelText sizeWithFont:self.subLabel.font
-                                              constrainedToSize:maximumLabelSize
-                                                  lineBreakMode:self.subLabel.lineBreakMode];
+        CGSize expectedLabelSize = [self subLabelSize];
         // Create home label frame
         _homeLabelFrame = CGRectMake(self.fadeLength, 0, (expectedLabelSize.width + self.fadeLength), self.bounds.size.height);
     }
