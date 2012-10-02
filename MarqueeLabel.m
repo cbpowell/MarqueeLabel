@@ -391,6 +391,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
         
         // Create frames
         self.homeLabelFrame = CGRectMake(self.fadeLength, 0, expectedLabelSize.width, self.bounds.size.height);
+        self.awayLabelFrame = CGRectNull;
         self.subLabel.frame = self.homeLabelFrame;
     }
 }
@@ -602,7 +603,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
         }
     } else {
         _labelize = NO;
-        [self restartLabel];
+        [self updateSublabelAndLocationsAndBeginScroll:YES];
     }
 }
 
