@@ -32,30 +32,29 @@
 
 @implementation MarqueeLabelDemoViewController
 
-@synthesize demoLabel;
 @synthesize labelizeSwitch;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.demoLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 100, self.view.frame.size.width-20, 20) duration:8.0 andFadeLength:10.0f];
+    MarqueeLabel *durationLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 100, self.view.frame.size.width-20, 20) duration:8.0 andFadeLength:10.0f];
     
-    [self.view addSubview:self.demoLabel];
+    durationLabel.tag = 101;
+    durationLabel.numberOfLines = 1;
+    durationLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    durationLabel.textAlignment = UITextAlignmentLeft;
+    durationLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
+    durationLabel.backgroundColor = [UIColor clearColor];
+    durationLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
     
-    self.demoLabel.numberOfLines = 1;
-    self.demoLabel.opaque = NO;
-    self.demoLabel.enabled = YES;
-    self.demoLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    self.demoLabel.textAlignment = UITextAlignmentLeft;
-    self.demoLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
-    self.demoLabel.backgroundColor = [UIColor clearColor];
-    self.demoLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
-    
-    self.demoLabel.text = @"This is a test of the label. Look how long this label is! It's so long it stretches off the view!";
+    durationLabel.text = @"This is a test of the label. Look how long this label is! It's so long it stretches off the view!";
     
     [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(changeTheLabel) userInfo:nil repeats:YES];
     
-    // Rate-speed label example
+    [self.view addSubview:durationLabel];
+    
+    
+    // Rate label example
     MarqueeLabel *rateLabelOne = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 200, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
     rateLabelOne.numberOfLines = 1;
     rateLabelOne.opaque = NO;
@@ -71,54 +70,56 @@
     
     // For Autoresizing test
     rateLabelOne.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    
     [self.view addSubview:rateLabelOne];
     
-    MarqueeLabel *rateLabelTwo = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 230, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
-    rateLabelTwo.numberOfLines = 1;
-    rateLabelTwo.opaque = NO;
-    rateLabelTwo.enabled = YES;
-    rateLabelTwo.shadowOffset = CGSizeMake(0.0, -1.0);
-    rateLabelTwo.textAlignment = UITextAlignmentRight;
-    rateLabelTwo.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
-    rateLabelTwo.backgroundColor = [UIColor clearColor];
-    rateLabelTwo.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
     
-    rateLabelTwo.tapToScroll = YES;
-    rateLabelTwo.text = @"This label will not scroll until tapped, and then it performs its scroll cycle only once.";
+    // Tap to scroll
+    MarqueeLabel *tapToScrollLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 230, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
+    tapToScrollLabel.numberOfLines = 1;
+    tapToScrollLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    tapToScrollLabel.textAlignment = UITextAlignmentRight;
+    tapToScrollLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
+    tapToScrollLabel.backgroundColor = [UIColor clearColor];
+    tapToScrollLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
     
-    [self.view addSubview:rateLabelTwo];
+    tapToScrollLabel.tapToScroll = YES;
+    tapToScrollLabel.text = @"This label will not scroll until tapped, and then it performs its scroll cycle only once.";
     
-    MarqueeLabel *rateLabelThree = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 260, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
-    rateLabelThree.numberOfLines = 1;
-    rateLabelThree.opaque = NO;
-    rateLabelThree.enabled = YES;
-    rateLabelThree.shadowOffset = CGSizeMake(0.0, -1.0);
-    rateLabelThree.textAlignment = UITextAlignmentRight;
-    rateLabelThree.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
-    rateLabelThree.backgroundColor = [UIColor clearColor];
-    rateLabelThree.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
+    [self.view addSubview:tapToScrollLabel];
     
-    rateLabelThree.marqueeType = MLRightLeft;
-    rateLabelThree.text =@"This text is not as long, but still long enough to scroll, and scrolls the same speed but to the right first!";
     
-    [self.view addSubview:rateLabelThree];
+    // MLRightLeft label example
+    MarqueeLabel *rightLeftLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 260, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
+    rightLeftLabel.numberOfLines = 1;
+    rightLeftLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    rightLeftLabel.textAlignment = UITextAlignmentRight;
+    rightLeftLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
+    rightLeftLabel.backgroundColor = [UIColor clearColor];
+    rightLeftLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
+    
+    rightLeftLabel.marqueeType = MLRightLeft;
+    rightLeftLabel.text =@"This text is not as long, but still long enough to scroll, and scrolls the same speed but to the right first!";
+    
+    [self.view addSubview:rightLeftLabel];
+    
     
     // Continuous label example
-    MarqueeLabel *continuousLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 300, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
+    MarqueeLabel *continuousLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 300, self.view.frame.size.width-20, 20) rate:100.0f andFadeLength:10.0f];
+    continuousLabel.tag = 102;
     continuousLabel.marqueeType = MLContinuous;
     continuousLabel.numberOfLines = 1;
     continuousLabel.opaque = NO;
     continuousLabel.enabled = YES;
     continuousLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    continuousLabel.textAlignment = UITextAlignmentLeft;
+    continuousLabel.textAlignment = UITextAlignmentCenter;
     continuousLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
     continuousLabel.backgroundColor = [UIColor clearColor];
     continuousLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
-    continuousLabel.text = @"This is another long label that scrolls continuously rather than scrolling back and forth!";
+    continuousLabel.text = @"This is a short, centered label.";
     
     [self.view addSubview:continuousLabel];
     
+    // Second continuous label example
     MarqueeLabel *continuousLabel2 = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 330, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
     continuousLabel2.marqueeType = MLContinuous;
     continuousLabel2.continuousMarqueeSeparator = @"  |SEPARATOR|  ";
@@ -144,9 +145,11 @@
     // Generate even or odd
     int i = arc4random() % 2;
     if (i == 0) {
-        self.demoLabel.text = @"This label is not as long.";
+        [(MarqueeLabel *)[self.view viewWithTag:101] setText:@"This label is not as long."];
+        [(MarqueeLabel *)[self.view viewWithTag:102] setText:@"That also scrolls continuously rather than scrolling back and forth!"];
     } else {
-        self.demoLabel.text = @"Now we've switched to a string of text that is longer than the specified frame, and will scroll.";
+        [(MarqueeLabel *)[self.view viewWithTag:101] setText:@"Now we've switched to a string of text that is longer than the specified frame, and will scroll."];
+        [(MarqueeLabel *)[self.view viewWithTag:102] setText:@"This is a short, centered label."];
     }
 }
 
@@ -197,13 +200,6 @@
     [super viewWillAppear:animated];
     [MarqueeLabel controllerViewAppearing:self];
 }
-
-- (void)viewDidUnload {
-	[super viewDidUnload];
-    
-    self.demoLabel = nil;
-}
-
 
 
 @end
