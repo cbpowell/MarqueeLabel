@@ -298,7 +298,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
         // Label is not set to be static
         
         if (!self.labelShouldScroll) {
-            CGRect labelFrame = CGRectInset(self.bounds, 2 * self.fadeLength, 0.0f);
+            CGRect labelFrame = CGRectInset(self.bounds, self.fadeLength, 0.0f);
             
             self.homeLabelFrame = labelFrame;
             self.awayLabelFrame = labelFrame;
