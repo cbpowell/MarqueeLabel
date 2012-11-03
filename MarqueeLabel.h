@@ -173,14 +173,25 @@ typedef enum {
 @property (nonatomic, strong) UIFont *font;
 @property (nonatomic, assign, getter=isHighlighted) BOOL highlighted;
 @property (nonatomic, strong) UIColor *highlightedTextColor;
-@property (nonatomic, assign) UILineBreakMode lineBreakMode;
 @property (nonatomic, assign) CGFloat minimumFontSize;
 @property (nonatomic, assign) NSInteger numberOfLines;
 @property (nonatomic, strong) UIColor *shadowColor;
 @property (nonatomic, assign) CGSize shadowOffset;
-@property (nonatomic, assign) UITextAlignment textAlignment;
 @property (nonatomic, strong) UIColor *textColor;
 @property (nonatomic, assign, getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_6_0
+@property (nonatomic, copy) NSAttributedString *attributedText;
+@property (nonatomic) BOOL adjustsLetterSpacingToFitWidth;
+@property (nonatomic) CGFloat minimumScaleFactor;
+@property (nonatomic, assign) NSLineBreakMode lineBreakMode;
+@property (nonatomic, assign) NSTextAlignment textAlignment;
+@property (nonatomic) CGFloat preferredMaxLayoutWidth;
+#else
+@property (nonatomic, assign) UILineBreakMode lineBreakMode;
+@property (nonatomic, assign) UITextAlignment textAlignment;
+#endif
+
 
 @end
 
