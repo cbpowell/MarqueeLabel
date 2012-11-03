@@ -8,9 +8,11 @@ MarqueeLabel is a functional equivalent to UILabel that adds a scrolling marquee
 
 ### Usage
 
-MarqueeLabel supports moving the label at either a defined rate (points per second) or duration (seconds). The animation curve can also be defined, and defaults to `UIViewAnimationOptionCurveEaseInOut`. It also features a variable-length fade at the left and right side view borders, in order to fade the label text into the background rather than simply being chopped off.
+1. Add MarqueeLabel.h and MarqueeLabel.m to your project.
+2. Add QuartzCore.framework to your project frameworks.
+3. Import MarqueeLabel.h and replace your UILabels with MarqueeLabels as needed.
 
-Import MarqueeLabel.h and replace your UILabels with MarqueeLabels.
+MarqueeLabel supports moving the label at either a defined rate (points per second) or duration (seconds). The animation curve can also be defined, and defaults to `UIViewAnimationOptionCurveEaseInOut`. It also features a variable-length fade at the left and right side view borders, in order to fade the label text into the background rather than simply being chopped off.
 
 Replace:
 
