@@ -202,6 +202,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     _isPaused = NO;
     self.labelText = @"";  // Set to zero-length string to start, so that self.text returns a non-nil string (allows appending, etc)
     self.animationDelay = 1.0;
+    self.animationDuration = 0.0f; // initialize animation duration
     
     // Add notification observers
     // Custom class notifications
