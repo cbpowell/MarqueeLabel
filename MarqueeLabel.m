@@ -705,7 +705,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
 }
 
 - (BOOL)labelShouldScroll {
-    return (!self.labelize && (self.labelText.length > 0) && (self.bounds.size.width < [self subLabelSize].width + (self.marqueeType == MLContinuous ? 2 * self.fadeLength : self.fadeLength)));
+    return (!self.labelize && (self.labelText.length > 0) && (self.bounds.size.width < [self subLabelSize].width + 2 * self.fadeLength)); // (self.marqueeType == MLContinuous ? 2 * self.fadeLength : self.fadeLength)));
 }
 
 - (void)setTapToScroll:(BOOL)tapToScroll {
