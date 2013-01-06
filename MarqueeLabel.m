@@ -469,9 +469,13 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
 }
 
 - (void)beginScroll {
+    [self beginScrollWithDelay:YES];
+}
+
+- (void)beginScrollWithDelay:(BOOL)delay {
     switch (self.marqueeType) {
         case MLContinuous:
-            [self scrollLeftPerpetualWithInterval:[self durationForInterval:self.animationDuration] after:self.animationDelay];
+            [self scrollLeftPerpetualWithInterval:[self durationForInterval:self.animationDuration] after:(delay ? self.animationDelay : 0.0)];
             break;
             
         default:
@@ -481,10 +485,14 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
 }
 
 - (void)scrollAwayWithInterval:(NSTimeInterval)interval {
+    [self scrollAwayWithInterval:interval delay:YES];
+}
+
+- (void)scrollAwayWithInterval:(NSTimeInterval)interval delay:(BOOL)delay {
     // Perform animation
     self.awayFromHome = YES;
     [UIView animateWithDuration:interval
-                          delay:self.animationDelay 
+                          delay:(delay ? self.animationDelay : 0.0)
                         options:self.animationOptions
                      animations:^{
                          self.subLabel.frame = self.awayLabelFrame;
@@ -497,9 +505,13 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
 }
 
 - (void)scrollHomeWithInterval:(NSTimeInterval)interval {
+    [self scrollHomeWithInterval:interval delay:YES];
+}
+
+- (void)scrollHomeWithInterval:(NSTimeInterval)interval delay:(BOOL)delay {
     // Perform animation
     [UIView animateWithDuration:interval
-                          delay:self.animationDelay
+                          delay:(delay ? self.animationDelay : 0.0)
                         options:self.animationOptions
                      animations:^{
                          self.subLabel.frame = self.homeLabelFrame;
@@ -590,7 +602,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
 
 - (void)labelWasTapped:(UITapGestureRecognizer *)recognizer {
     if (self.labelShouldScroll) {
-        [self beginScroll];
+        [self beginScrollWithDelay:NO];
     }
 }
 
