@@ -37,7 +37,7 @@ typedef enum {
     MLContinuous        // Continuously scrolls left (with a pause at the original position if animationDelay is set)
 } MarqueeType;
 
-@interface MarqueeLabel : UIView {
+@interface MarqueeLabel : UILabel {
     
 }
 
