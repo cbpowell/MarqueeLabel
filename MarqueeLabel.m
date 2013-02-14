@@ -88,26 +88,13 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
 - (void)applyGradientMaskForFadeLength:(CGFloat)fadeLength;
 - (void)applyGradientMaskForFadeLength:(CGFloat)fadeLength animated:(BOOL)animated;
 
+// Support
+@property (nonatomic, strong) NSArray *gradientColors;
+
 @end
 
 
 @implementation MarqueeLabel
-
-@synthesize subLabel = _subLabel;
-@synthesize labelText;
-@synthesize homeLabelFrame = _homeLabelFrame;
-@synthesize awayLabelFrame = _awayLabelFrame;
-@synthesize animationDuration, lengthOfScroll, rate, labelShouldScroll;
-@synthesize animationOptions;
-@synthesize awayFromHome, orientationWillChange;
-@synthesize tapToScroll = _tapToScroll;
-@synthesize isPaused = _isPaused;
-@synthesize tapRecognizer;
-@synthesize labelize = _labelize;
-@synthesize fadeLength = _fadeLength;
-@synthesize animationCurve, animationDelay;
-@synthesize marqueeType = _marqueeType;
-@synthesize continuousMarqueeSeparator;
 
 // UILabel properties for pass through WITH modification
 @synthesize text;
@@ -420,13 +407,10 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
         gradientMask.shouldRasterize = YES;
         gradientMask.rasterizationScale = [UIScreen mainScreen].scale;
         
-        NSObject *transparent = (NSObject *)[[UIColor clearColor] CGColor];
-        NSObject *opaque = (NSObject *)[[UIColor blackColor] CGColor];
-        
         gradientMask.startPoint = CGPointMake(0.0, CGRectGetMidY(self.frame));
         gradientMask.endPoint = CGPointMake(1.0, CGRectGetMidY(self.frame));
         CGFloat fadePoint = (CGFloat)self.fadeLength/self.frame.size.width;
-        [gradientMask setColors: [NSArray arrayWithObjects: transparent, opaque, opaque, transparent, nil]];
+        [gradientMask setColors:self.gradientColors];
         [gradientMask setLocations: [NSArray arrayWithObjects:
                                      [NSNumber numberWithDouble: 0.0],
                                      [NSNumber numberWithDouble: fadePoint],
@@ -453,8 +437,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     return expectedLabelSize;
 }
 
-#pragma mark -
-#pragma mark Animation Handlers
+#pragma mark - Animation Handlers
 
 - (NSTimeInterval)durationForInterval:(NSTimeInterval)interval {
     switch (self.marqueeType) {
@@ -606,8 +589,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     }
 }
 
-#pragma mark -
-#pragma mark Modified UILabel Getters/Setters
+#pragma mark - Modified UILabel Getters/Setters
 
 // Custom labelize mutator to restart scrolling after changing labelize to NO
 - (void)setLabelize:(BOOL)labelize {
@@ -654,8 +636,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
 }
 
-#pragma mark -
-#pragma mark Overridden UIView properties
+#pragma mark - Overridden UIView properties
 
 - (void)setBackgroundColor:(UIColor *)newColor {
     
@@ -672,8 +653,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     
 }
 
-#pragma mark -
-#pragma mark Custom Getters and Setters
+#pragma mark - Custom Getters and Setters
 
 - (UILabel *)subLabel {
     if (_subLabel == nil) {
@@ -760,15 +740,25 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
 }
 
 - (NSString *)continuousMarqueeSeparator {
-    if (continuousMarqueeSeparator == nil) {
-        continuousMarqueeSeparator = @"       ";
+    if (_continuousMarqueeSeparator == nil) {
+        _continuousMarqueeSeparator = @"       ";
     }
     
-    return continuousMarqueeSeparator;
+    return _continuousMarqueeSeparator;
 }
 
-#pragma mark -
-#pragma mark UILabel Message Forwarding
+#pragma mark - Support
+
+- (NSArray *)gradientColors {
+    if (!_gradientColors) {
+        NSObject *transparent = (NSObject *)[[UIColor clearColor] CGColor];
+        NSObject *opaque = (NSObject *)[[UIColor blackColor] CGColor];
+        _gradientColors = [NSArray arrayWithObjects: transparent, opaque, opaque, transparent, nil];
+    }
+    return _gradientColors;
+}
+
+#pragma mark - UILabel Message Forwarding
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector {
     return [UILabel instanceMethodSignatureForSelector:aSelector];
