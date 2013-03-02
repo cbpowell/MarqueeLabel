@@ -37,23 +37,34 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    MarqueeLabel *durationLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 100, self.view.frame.size.width-20, 20) duration:8.0 andFadeLength:10.0f];
+    MarqueeLabel *durationLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 100, self.view.frame.size.width/2.0f - 10.0f, 20.0) duration:8.0 andFadeLength:10.0f];
     
     durationLabel.tag = 101;
     durationLabel.numberOfLines = 1;
     durationLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     durationLabel.textAlignment = UITextAlignmentLeft;
     durationLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
-    durationLabel.backgroundColor = [UIColor clearColor];
-    durationLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
+    durationLabel.backgroundColor = [UIColor redColor];
+    durationLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18.0f];
+    durationLabel.tapToScroll = YES;
+    
+    UILabel *testLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2.0f + 10.0f, 100.0f, 160.0f, 20.0f)];
+    testLabel.numberOfLines = 1;
+    testLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    testLabel.textAlignment = UITextAlignmentLeft;
+    testLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
+    testLabel.backgroundColor = [UIColor redColor];
+    testLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18.0f];
     
     durationLabel.text = @"This is a test of the label. Look how long this label is! It's so long it stretches off the view!";
+    testLabel.text = durationLabel.text;
     
-    [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(changeTheLabel) userInfo:nil repeats:YES];
+    //[NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(changeTheLabel) userInfo:nil repeats:YES];
     
     [self.view addSubview:durationLabel];
+    [self.view addSubview:testLabel];
     
-    
+    /*
     // Rate label example
     MarqueeLabel *rateLabelOne = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 200, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
     rateLabelOne.numberOfLines = 1;
@@ -103,6 +114,7 @@
     [self.view addSubview:rightLeftLabel];
     
     
+    /* EXTRA:
     // Continuous label example
     MarqueeLabel *continuousLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 300, self.view.frame.size.width-20, 20) rate:100.0f andFadeLength:10.0f];
     continuousLabel.tag = 102;
@@ -139,6 +151,8 @@
     continuousLabel2.tag = 101;
     
     [self.view addSubview:continuousLabel2];
+     
+     */
 }
 
 - (void)changeTheLabel {
