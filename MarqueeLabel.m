@@ -65,6 +65,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
 
 @property (nonatomic, assign, readwrite) BOOL awayFromHome;
 @property (nonatomic, assign) BOOL orientationWillChange;
+@property (nonatomic, strong) id orientationObserver;
 
 @property (nonatomic, strong) UILabel *subLabel;
 @property (nonatomic, copy) NSString *labelText;
@@ -218,28 +219,25 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     
     __weak __typeof(&*self)weakSelf = self;
     
-    __block id orientationObserver = nil;
     __block id animationObserver = nil;
-    orientationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillChangeStatusBarOrientationNotification
-                                                                            object:nil
-                                                                             queue:nil
-                                                                        usingBlock:^(NSNotification *notification){
-                                                                            weakSelf.orientationWillChange = YES;
-                                                                            animationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:@"UIViewAnimationDidStopNotification"
-                                                                                                                                                  object:nil
-                                                                                                                                                   queue:nil
-                                                                                                                                              usingBlock:^(NSNotification *notification){
-                                                                                                                                                  if ([notification.userInfo objectForKey:@"delegate"] == self.window) {
-                                                                                                                                                      weakSelf.orientationWillChange = NO;
-                                                                                                                                                      [weakSelf restartLabel];
-                                                                                                                                                      
-                                                                                                                                                      // Remove notification observer
-                                                                                                                                                      [[NSNotificationCenter defaultCenter] removeObserver:animationObserver];
-                                                                                                                                                  }
-                                                                                                                                              }];
-                                                                            
-                                                                            [[NSNotificationCenter defaultCenter] removeObserver:orientationObserver];
-                                                                        }];
+    self.orientationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillChangeStatusBarOrientationNotification
+                                                                                 object:nil
+                                                                                  queue:nil
+                                                                             usingBlock:^(NSNotification *notification){
+                                                                                 weakSelf.orientationWillChange = YES;
+                                                                                 animationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:@"UIViewAnimationDidStopNotification"
+                                                                                                                                                       object:nil
+                                                                                                                                                        queue:nil
+                                                                                                                                                   usingBlock:^(NSNotification *notification){
+                                                                                                                                                       if ([notification.userInfo objectForKey:@"delegate"] == self.window) {
+                                                                                                                                                           weakSelf.orientationWillChange = NO;
+                                                                                                                                                           [weakSelf restartLabel];
+                                                                                                                                                           
+                                                                                                                                                           // Remove notification observer
+                                                                                                                                                           [[NSNotificationCenter defaultCenter] removeObserver:animationObserver];
+                                                                                                                                                       }
+                                                                                                                                                   }];
+                                                                             }];
 }
 
 - (void)observedViewControllerChange:(NSNotification *)notification {
@@ -792,6 +790,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
 #pragma mark -
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self.orientationObserver];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.subLabel removeFromSuperview];
 }
