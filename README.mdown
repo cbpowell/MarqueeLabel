@@ -6,9 +6,9 @@ MarqueeLabel is a functional equivalent to UILabel that adds a scrolling marquee
 
 ### Usage
 
-**MarqueeLabel has been rewritten to use a CATextLayer rather than a UILabel subview.** This was done to attempt to reduce the overall number of UIViews, to help when multiple MarqueeLabels are onscreen. Continuous scrolling performance (hopefully no more jump between scrolls) has also been improved, although the custom text separator has been replaced with the option to adjust the spacing in points.
+**MarqueeLabel has been rewritten to use a CATextLayer rather than a UILabel subview.** This was done to attempt to reduce the overall number of UIViews, to help when multiple MarqueeLabels are onscreen. Continuous scrolling performance (hopefully no more jump between scrolls) has also been improved, although the custom text separator has been replaced with the option to adjust the spacing in points. The UIView/UILabel-based implementation can still be found on the [uiview-version branch](https://github.com/cbpowell/MarqueeLabel/tree/uiview-version).
 
-**MarqueeLabel uses ARC**
+**MarqueeLabel uses ARC.**
 
 1. Add MarqueeLabel.h and MarqueeLabel.m to your project.
 2. Add QuartzCore.framework and CoreText.framework to your project frameworks.
