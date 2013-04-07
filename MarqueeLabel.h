@@ -92,7 +92,8 @@ typedef enum {
 
 /* continuousMarqueeExtraBuffer:
  * Sets an additional amount (in points) of space between the strings of a
- * continuous label. Default spacing is defined by fade length.
+ * continuous label. The minimum spacing is 2x the fade length, and can be increased
+ * by adjusting this value.
  * Defaults to 0.0;
  */
 @property (nonatomic, assign) CGFloat continuousMarqueeExtraBuffer;

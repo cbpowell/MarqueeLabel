@@ -915,6 +915,16 @@ typedef void (^animationCompletionBlock)(void);
     }
 }
 
+- (void)setContinuousMarqueeExtraBuffer:(CGFloat)continuousMarqueeExtraBuffer {
+    if (_continuousMarqueeExtraBuffer == continuousMarqueeExtraBuffer) {
+        return;
+    }
+    
+    // Do not allow negative values
+    _continuousMarqueeExtraBuffer = fabsf(continuousMarqueeExtraBuffer);
+    [self updateSublabelAndLocations];
+}
+
 - (void)setFadeLength:(CGFloat)fadeLength {
     if (_fadeLength == fadeLength) {
         return;
