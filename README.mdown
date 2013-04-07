@@ -4,12 +4,14 @@ MarqueeLabel
 ## Description
 MarqueeLabel is a functional equivalent to UILabel that adds a scrolling marquee effect when the text of the label outgrows the available width. The label scrolling direction and speed/rate can be specified as well. All standard UILabel properties (where it makes sense) are available in MarqueeLabel and it behaves just like a UILabel.
 
-**MarqueeLabel now uses ARC by default.** If you want to use it in a non-ARC project you can use the non-ARC branch, however that branch probably won't see any updates in the future.
-
 ### Usage
 
+**MarqueeLabel has been rewritten to use a CATextLayer rather than a UILabel subview.** This was done to attempt to reduce the overall number of UIViews, to help when multiple MarqueeLabels are onscreen. Continuous scrolling performance (hopefully no more jump between scrolls) has also been improved, although the custom text separator has been replaced with the option to adjust the spacing in points.
+
+**MarqueeLabel uses ARC**
+
 1. Add MarqueeLabel.h and MarqueeLabel.m to your project.
-2. Add QuartzCore.framework to your project frameworks.
+2. Add QuartzCore.framework and CoreText.framework to your project frameworks.
 3. Import MarqueeLabel.h and replace your UILabels with MarqueeLabels as needed.
 
 MarqueeLabel supports moving the label at either a defined rate (points per second) or duration (seconds). The animation curve can also be defined, and defaults to `UIViewAnimationOptionCurveEaseInOut`. It also features a variable-length fade at the left and right side view borders, in order to fade the label text into the background rather than simply being chopped off.
@@ -30,7 +32,7 @@ If you'd rather have a label that scrolls at a specific rate (points per second)
 
 ### Even More
 Check out MarqueeLabel.h for more features, with explanations in the comments there:
-- Scrolling diretion (left->right, right->left, and continuous)
+- Scrolling direction (left->right, right->left, and continuous)
 - Label edge fades
 - Pausing/unpausing the scrolling of the label
 - Tap to scroll once
