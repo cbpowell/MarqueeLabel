@@ -33,8 +33,8 @@
 // MarqueeLabel types
 typedef enum {
     MLLeftRight = 0,    // Scrolls left first, then back right to the original position
-    MLRightLeft        // Scrolls right first, then back left to the original position
-    //MLContinuous        // Continuously scrolls left (with a pause at the original position if animationDelay is set)
+    MLRightLeft,        // Scrolls right first, then back left to the original position
+    MLContinuous        // Continuously scrolls left (with a pause at the original position if animationDelay is set)
 } MarqueeType;
 
 @interface MarqueeLabel : UILabel
@@ -42,9 +42,13 @@ typedef enum {
 // MarqueeLabel-specific properties
 
 /* animationCurve:
- * The animation curve used in the motion of the labels. Allowable options:
- * UIViewAnimationOptionCurveEaseInOut, UIViewAnimationOptionCurveEaseIn,
- * UIViewAnimationOptionCurveEaseOut, UIViewAnimationOptionCurveLinear
+ * The animation curve used in the motion of the labels.
+ *  Allowable options:
+ *      UIViewAnimationOptionCurveEaseInOut
+ *      UIViewAnimationOptionCurveEaseIn
+ *      UIViewAnimationOptionCurveEaseOut
+ *      UIViewAnimationOptionCurveLinear
+ *
  * Default is UIViewAnimationOptionCurveEaseInOut.
  */
 @property (nonatomic, assign) UIViewAnimationOptions animationCurve;
@@ -86,11 +90,12 @@ typedef enum {
 @property (nonatomic, assign) MarqueeType marqueeType;
 
 
-/* continuousMarqueeSeparator:
- * NString inserted after label's end when marqueeType is Continuous.
- * Defaults to @"       ".
+/* continuousMarqueeExtraBuffer:
+ * Sets an additional amount (in points) of space between the strings of a
+ * continuous label. Default spacing is defined by fade length.
+ * Defaults to 0.0;
  */
-@property (nonatomic, copy) NSString *continuousMarqueeSeparator;
+@property (nonatomic, assign) CGFloat continuousMarqueeExtraBuffer;
 
 
 /* fadeLength:
