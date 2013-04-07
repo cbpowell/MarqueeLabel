@@ -37,16 +37,18 @@ typedef enum {
     MLContinuous        // Continuously scrolls left (with a pause at the original position if animationDelay is set)
 } MarqueeType;
 
-@interface MarqueeLabel : UIView {
-    
-}
+@interface MarqueeLabel : UILabel
 
 // MarqueeLabel-specific properties
 
 /* animationCurve:
- * The animation curve used in the motion of the labels. Allowable options:
- * UIViewAnimationOptionCurveEaseInOut, UIViewAnimationOptionCurveEaseIn,
- * UIViewAnimationOptionCurveEaseOut, UIViewAnimationOptionCurveLinear
+ * The animation curve used in the motion of the labels.
+ *  Allowable options:
+ *      UIViewAnimationOptionCurveEaseInOut
+ *      UIViewAnimationOptionCurveEaseIn
+ *      UIViewAnimationOptionCurveEaseOut
+ *      UIViewAnimationOptionCurveLinear
+ *
  * Default is UIViewAnimationOptionCurveEaseInOut.
  */
 @property (nonatomic, assign) UIViewAnimationOptions animationCurve;
@@ -88,11 +90,12 @@ typedef enum {
 @property (nonatomic, assign) MarqueeType marqueeType;
 
 
-/* continuousMarqueeSeparator:
- * NString inserted after label's end when marqueeType is Continuous.
- * Defaults to @"       ".
+/* continuousMarqueeExtraBuffer:
+ * Sets an additional amount (in points) of space between the strings of a
+ * continuous label. Default spacing is defined by fade length.
+ * Defaults to 0.0;
  */
-@property (nonatomic, copy) NSString *continuousMarqueeSeparator;
+@property (nonatomic, assign) CGFloat continuousMarqueeExtraBuffer;
 
 
 /* fadeLength:
@@ -140,66 +143,6 @@ typedef enum {
 
 - (void)pauseLabel;
 - (void)unpauseLabel;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**********************************************
- * These properties silence and/or override
- * the standard UILabel properties, in order
- * to silence compiler warnings. You shouldn't
- * need to mess with these!
- **********************************************/
-
-// UIView Override properties
-@property (nonatomic, copy) UIColor *backgroundColor;
-@property (nonatomic, copy) NSString *text;
-
-// UILabel properties
-@property (nonatomic, assign) BOOL adjustsFontSizeToFitWidth;
-@property (nonatomic, assign) UIBaselineAdjustment baselineAdjustment;
-@property (nonatomic, assign, getter=isEnabled) BOOL enabled;
-@property (nonatomic, strong) UIFont *font;
-@property (nonatomic, assign, getter=isHighlighted) BOOL highlighted;
-@property (nonatomic, strong) UIColor *highlightedTextColor;
-@property (nonatomic, assign) CGFloat minimumFontSize;
-@property (nonatomic, assign) NSInteger numberOfLines;
-@property (nonatomic, strong) UIColor *shadowColor;
-@property (nonatomic, assign) CGSize shadowOffset;
-@property (nonatomic, strong) UIColor *textColor;
-@property (nonatomic, assign, getter=isUserInteractionEnabled) BOOL userInteractionEnabled;
-
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_6_0
-@property (nonatomic, copy) NSAttributedString *attributedText;
-@property (nonatomic) BOOL adjustsLetterSpacingToFitWidth;
-@property (nonatomic) CGFloat minimumScaleFactor;
-@property (nonatomic, assign) NSLineBreakMode lineBreakMode;
-@property (nonatomic, assign) NSTextAlignment textAlignment;
-@property (nonatomic) CGFloat preferredMaxLayoutWidth;
-#else
-@property (nonatomic, assign) UILineBreakMode lineBreakMode;
-@property (nonatomic, assign) UITextAlignment textAlignment;
-#endif
-
-
-@end
-
-// Declare UILabel methods as extensions to be passed through with forwardInvocation
-@interface UILabel (MarqueeLabel)
-
-- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(NSInteger)numberOfLines;
-- (void)drawTextInRect:(CGRect)rect;
 
 @end
 

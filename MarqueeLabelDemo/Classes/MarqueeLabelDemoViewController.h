@@ -34,6 +34,7 @@
 @interface MarqueeLabelDemoViewController : UIViewController
 
 @property (nonatomic, weak) IBOutlet UISwitch *labelizeSwitch;
+@property (nonatomic, strong) NSTimer *labelChangeTimer;
 
 - (void)changeTheLabel;
 - (IBAction)labelizeSwitched:(id)sender;
