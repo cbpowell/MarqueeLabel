@@ -178,9 +178,43 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     return self;
 }
 
+- (id) initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder: aDecoder];
+    if (self) {
+        [self setupLabel];
+        
+        if (self.lengthOfScroll == 0) {
+            self.lengthOfScroll = 7.0;
+        }
+    }
+    return self;
+}
+
+- (void) awakeFromNib
+{
+    [super awakeFromNib];
+    [self forwardPropertiesToSublabel];
+    [super setText: nil];
+}
+
+- (void) forwardPropertiesToSublabel
+{
+    // Since we're a UILabel, we actually do implement all of UILabel's properties.
+    // We don't care about these values, we just want to forward them on to our sublabel.
+    NSArray *properties = @[@"baselineAdjustment", @"enabled", @"font", @"highlighted", @"highlightedTextColor", @"minimumFontSize", @"shadowColor", @"shadowOffset", @"textAlignment", @"textColor", @"userInteractionEnabled", @"text", @"adjustsFontSizeToFitWidth", @"lineBreakMode", @"numberOfLines", @"backgroundColor"];
+    for (NSString *property in properties) {
+        id val = [super valueForKey: property];
+        [self.subLabel setValue: val forKey: property];
+    }
+    [self setText: [super text]];
+    [self setFont: [super font]];
+}
+
 - (void)setupLabel {
     
     [self setClipsToBounds:YES];
+    self.opaque = NO;
     self.backgroundColor = [UIColor clearColor];
     self.animationOptions = (UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction);
     self.awayFromHome = NO;

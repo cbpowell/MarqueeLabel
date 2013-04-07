@@ -15,6 +15,18 @@
 		2899E5220DE3E06400AC0155 /* MarqueeLabelDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* MarqueeLabelDemoViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* MarqueeLabelDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MarqueeLabelDemoViewController.m */; };
+		8B660C6B16BCFEEF007F9463 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
+		8B660C6D16BCFEEF007F9463 /* ModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0F26DF159947B60052559F /* ModalViewController.xib */; };
+		8B660C6F16BCFEEF007F9463 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		8B660C7016BCFEEF007F9463 /* MarqueeLabelDemoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* MarqueeLabelDemoAppDelegate.m */; };
+		8B660C7216BCFEEF007F9463 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */; };
+		8B660C7316BCFEEF007F9463 /* ModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0F26DE159947B60052559F /* ModalViewController.m */; };
+		8B660C7516BCFEEF007F9463 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABFD319150D55CC00216FCE /* QuartzCore.framework */; };
+		8B660C7616BCFEEF007F9463 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		8B660C7716BCFEEF007F9463 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		8B660C7816BCFEEF007F9463 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
+		8B660C8116BCFFB1007F9463 /* MarqueeLabelDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B660C8016BCFFB1007F9463 /* MarqueeLabelDemoViewController.m */; };
+		8B660C8316BD0007007F9463 /* MarqueeLabelDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B660C8216BD0007007F9463 /* MarqueeLabelDemoViewController.xib */; };
 		EA0F26E0159947B60052559F /* ModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0F26DE159947B60052559F /* ModalViewController.m */; };
 		EA0F26E1159947B60052559F /* ModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0F26DF159947B60052559F /* ModalViewController.xib */; };
 		EA646A1412F7A5B000F31B16 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */; };
@@ -34,6 +46,11 @@
 		28D7ACF70DDB3853001CB0EB /* MarqueeLabelDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarqueeLabelDemoViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* MarqueeLabelDemo_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarqueeLabelDemo_Prefix.pch; sourceTree = "<group>"; };
+		8B660C7C16BCFEEF007F9463 /* MarqueeLabelDemoNibs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarqueeLabelDemoNibs.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B660C7D16BCFEEF007F9463 /* MarqueeLabelDemoNibs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MarqueeLabelDemoNibs-Info.plist"; path = "/Users/tyrone/Development/MarqueeLabel/MarqueeLabelDemo/MarqueeLabelDemoNibs-Info.plist"; sourceTree = "<absolute>"; };
+		8B660C7F16BCFFB1007F9463 /* MarqueeLabelDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarqueeLabelDemoViewController.h; sourceTree = "<group>"; };
+		8B660C8016BCFFB1007F9463 /* MarqueeLabelDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarqueeLabelDemoViewController.m; sourceTree = "<group>"; };
+		8B660C8216BD0007007F9463 /* MarqueeLabelDemoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MarqueeLabelDemoViewController.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* MarqueeLabelDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MarqueeLabelDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		EA0F26DD159947B60052559F /* ModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalViewController.h; sourceTree = "<group>"; };
 		EA0F26DE159947B60052559F /* ModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalViewController.m; sourceTree = "<group>"; };
@@ -55,12 +72,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8B660C7416BCFEEF007F9463 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B660C7516BCFEEF007F9463 /* QuartzCore.framework in Frameworks */,
+				8B660C7616BCFEEF007F9463 /* Foundation.framework in Frameworks */,
+				8B660C7716BCFEEF007F9463 /* UIKit.framework in Frameworks */,
+				8B660C7816BCFEEF007F9463 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				8B660C7E16BCFFB1007F9463 /* Nibs */,
 				EA646A1212F7A5B000F31B16 /* MarqueeLabel.h */,
 				EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */,
 				1D3623240D0F684500981E51 /* MarqueeLabelDemoAppDelegate.h */,
@@ -77,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				1D6058910D05DD3D006BFB54 /* MarqueeLabelDemo.app */,
+				8B660C7C16BCFEEF007F9463 /* MarqueeLabelDemoNibs.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -89,6 +119,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				8B660C7D16BCFEEF007F9463 /* MarqueeLabelDemoNibs-Info.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -124,6 +155,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		8B660C7E16BCFFB1007F9463 /* Nibs */ = {
+			isa = PBXGroup;
+			children = (
+				8B660C7F16BCFFB1007F9463 /* MarqueeLabelDemoViewController.h */,
+				8B660C8016BCFFB1007F9463 /* MarqueeLabelDemoViewController.m */,
+				8B660C8216BD0007007F9463 /* MarqueeLabelDemoViewController.xib */,
+			);
+			path = Nibs;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -142,6 +183,23 @@
 			name = MarqueeLabelDemo;
 			productName = MarqueeLabelDemo;
 			productReference = 1D6058910D05DD3D006BFB54 /* MarqueeLabelDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8B660C6916BCFEEF007F9463 /* MarqueeLabelDemoNibs */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8B660C7916BCFEEF007F9463 /* Build configuration list for PBXNativeTarget "MarqueeLabelDemoNibs" */;
+			buildPhases = (
+				8B660C6A16BCFEEF007F9463 /* Resources */,
+				8B660C6E16BCFEEF007F9463 /* Sources */,
+				8B660C7416BCFEEF007F9463 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MarqueeLabelDemoNibs;
+			productName = MarqueeLabelDemo;
+			productReference = 8B660C7C16BCFEEF007F9463 /* MarqueeLabelDemoNibs.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -167,6 +225,7 @@
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* MarqueeLabelDemo */,
+				8B660C6916BCFEEF007F9463 /* MarqueeLabelDemoNibs */,
 			);
 		};
 /* End PBXProject section */
@@ -182,6 +241,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8B660C6A16BCFEEF007F9463 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B660C6B16BCFEEF007F9463 /* MainWindow.xib in Resources */,
+				8B660C6D16BCFEEF007F9463 /* ModalViewController.xib in Resources */,
+				8B660C8316BD0007007F9463 /* MarqueeLabelDemoViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -194,6 +263,18 @@
 				28D7ACF80DDB3853001CB0EB /* MarqueeLabelDemoViewController.m in Sources */,
 				EA646A1412F7A5B000F31B16 /* MarqueeLabel.m in Sources */,
 				EA0F26E0159947B60052559F /* ModalViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B660C6E16BCFEEF007F9463 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B660C6F16BCFEEF007F9463 /* main.m in Sources */,
+				8B660C7016BCFEEF007F9463 /* MarqueeLabelDemoAppDelegate.m in Sources */,
+				8B660C7216BCFEEF007F9463 /* MarqueeLabel.m in Sources */,
+				8B660C7316BCFEEF007F9463 /* ModalViewController.m in Sources */,
+				8B660C8116BCFFB1007F9463 /* MarqueeLabelDemoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,6 +308,37 @@
 				INFOPLIST_FILE = "MarqueeLabelDemo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = MarqueeLabelDemo;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8B660C7A16BCFEEF007F9463 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = MarqueeLabelDemo_Prefix.pch;
+				INFOPLIST_FILE = "MarqueeLabelDemoNibs-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PRODUCT_NAME = MarqueeLabelDemoNibs;
+			};
+			name = Debug;
+		};
+		8B660C7B16BCFEEF007F9463 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = MarqueeLabelDemo_Prefix.pch;
+				INFOPLIST_FILE = "MarqueeLabelDemoNibs-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PRODUCT_NAME = MarqueeLabelDemoNibs;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -266,6 +378,15 @@
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8B660C7916BCFEEF007F9463 /* Build configuration list for PBXNativeTarget "MarqueeLabelDemoNibs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B660C7A16BCFEEF007F9463 /* Debug */,
+				8B660C7B16BCFEEF007F9463 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
