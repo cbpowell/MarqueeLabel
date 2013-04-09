@@ -64,10 +64,21 @@ typedef enum {
 
 
 /* labelize:
- * When set to YES, the MarqueeLabel will not move and behave like a normal UILabel
+ * When set to YES, the MarqueeLabel will not scroll and will behave like a normal UILabel
  * Defaults to NO.
+ * See also: holdScrolling
  */
 @property (nonatomic, assign) BOOL labelize;
+
+
+/* holdScrolling:
+ * When set to YES, the MarqueeLabel will not scroll but will not otherwise adjust normal operation
+ * or truncate text. Any in-progress animations will complete when this is set to YES.
+ * The labelize property supercedes this setting.
+ * Defaults to NO.
+ * See also: labelize
+ */
+@property (nonatomic, assign) BOOL holdScrolling;
 
 
 /* marqueeType:
