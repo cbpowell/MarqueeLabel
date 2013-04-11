@@ -147,6 +147,33 @@ typedef void (^animationCompletionBlock)(void);
     return self;
 }
 
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder: aDecoder];
+    if (self) {
+        [self setupLabel];
+        
+        if (self.lengthOfScroll == 0) {
+            self.lengthOfScroll = 7.0;
+        }
+    }
+    return self;
+}
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    [self forwardPropertiesToSubLabel];
+}
+
+- (void)forwardPropertiesToSubLabel {
+    // Since we're a UILabel, we actually do implement all of UILabel's properties.
+    // We don't care about these values, we just want to forward them on to our sublabel.
+    NSArray *properties = @[@"baselineAdjustment", @"enabled", @"font", @"highlighted", @"highlightedTextColor", @"minimumFontSize", @"shadowColor", @"shadowOffset", @"textAlignment", @"textColor", @"userInteractionEnabled", @"text", @"adjustsFontSizeToFitWidth", @"lineBreakMode", @"numberOfLines", @"backgroundColor"];
+    for (NSString *property in properties) {
+        id val = [super valueForKey:property];
+        [self.subLabel setValue:val forKey:property];
+    }
+}
+
 - (void)setupLabel {
     
     // Basic UILabel options override
