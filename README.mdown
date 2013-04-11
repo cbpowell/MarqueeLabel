@@ -6,7 +6,7 @@ MarqueeLabel is a UILabel subclass adds a scrolling marquee effect when the text
 
 ### Setup
 
-**NOTE:** The `labelize` feature may act slightly differently than in previous versions. Check out the [Special Notes](#specialnotes) section below.
+**NOTE:** The `labelize` feature may act slightly differently than in previous versions. Check out the [Special Notes](#special-notes) section below.
 
 **MarqueeLabel uses ARC.**
 
@@ -45,7 +45,7 @@ If you simply wish to pausing scrolling with the label at the "home" location, u
 
 **Modal View Controllers**
 
-Currently I haven't found a clean way to auto-restart MarqueeLabels upon the dismissal of a modal view controller. See the [Important Animation Note](#importantanimationnote) section below.
+Currently I haven't found a clean way to auto-restart MarqueeLabels upon the dismissal of a modal view controller. See the [Important Animation Note](#important-animation-note) section below.
 
 ### Even More
 Check out MarqueeLabel.h for more features, with explanations in the comments there:
