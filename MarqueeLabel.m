@@ -148,6 +148,8 @@ typedef void (^animationCompletionBlock)(void);
         id val = [super valueForKey:property];
         [self.subLabel setValue:val forKey:property];
     }
+    [self setText:[super text]];
+    [self setFont:[super font]];
 }
 
 - (void)setupLabel {
