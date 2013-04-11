@@ -8,13 +8,18 @@ MarqueeLabel is a UILabel subclass adds a scrolling marquee effect when the text
 
 **NOTE:** The `labelize` feature may act slightly differently than in previous versions. Check out the [Special Notes](#special-notes) section below.
 
-**MarqueeLabel uses ARC.**
+If you use CocoaPods, you can install MarqueeLabel by adding the config:
+```
+pod 'MarqueeLabel', '~> 1.0'
+```
 
-Setup steps:
+Or, you can add it manually:
 
 1. Add MarqueeLabel.h and MarqueeLabel.m to your project.
 2. Add **QuartzCore.framework** to your project frameworks.
 3. Import MarqueeLabel.h and replace your UILabels with MarqueeLabels as needed.
+
+**Note: MarqueeLabel uses ARC.**
 
 
 ### Usage
