@@ -30,10 +30,6 @@
 #import "MarqueeLabel.h"
 #import <QuartzCore/QuartzCore.h>
 
-NSString *const kMarqueeLabelAnimationName = @"MarqueeLabelAnimationName";
-NSString *const kMarqueeLabelAnimationCompletionBlock = @"MarqueeLabelAnimationCompletionBlocK";
-NSString *const kMarqueeLabelScrollAwayAnimation = @"MarqueeLabelScrollAwayAnimation";
-NSString *const kMarqueeLabelScrollHomeAnimation = @"MarqueeLabelScrollHomeAnimation";
 NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewControllerDidAppear";
 NSString *const kMarqueeLabelShouldLabelizeNotification = @"MarqueeLabelShouldLabelizeNotification";
 NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAnimateNotification";
@@ -158,11 +154,6 @@ typedef void (^animationCompletionBlock)(void);
     self.numberOfLines = 1;
     
     self.subLabel = [[UILabel alloc] initWithFrame:self.bounds];
-    self.subLabel.text = [super text];
-    self.subLabel.font = [super font];
-    self.subLabel.textColor = [super textColor];
-    self.subLabel.textAlignment = [super textAlignment];
-    self.subLabel.backgroundColor = [super backgroundColor];
     self.subLabel.tag = 700;
     [self addSubview:self.subLabel];
     
@@ -597,20 +588,6 @@ typedef void (^animationCompletionBlock)(void);
     }
 }
 
-#pragma mark CATextLayer Delegate
-
-- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
-    if(!flag) {
-        // Animation was interrupted
-        return;
-    }
-    
-    animationCompletionBlock completionBlock = [anim valueForKey:kMarqueeLabelAnimationCompletionBlock];
-    if (completionBlock) {
-        completionBlock();
-    }
-}
-
 #pragma mark - Label Control
 
 - (void)restartLabel {
@@ -663,6 +640,12 @@ typedef void (^animationCompletionBlock)(void);
 
 #pragma mark - Modified UILabel Getters/Setters
 
+- (void)setFrame:(CGRect)frame {
+    [super setFrame:frame];
+    [self applyGradientMaskForFadeLength:self.fadeLength animated:!self.orientationWillChange];
+    [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
+}
+
 - (NSString *)text {
     return self.subLabel.text;
 }
@@ -693,7 +676,6 @@ typedef void (^animationCompletionBlock)(void);
 
 - (void)setTextColor:(UIColor *)textColor {
     self.subLabel.textColor = textColor;
-    [self setNeedsDisplay];
 }
 
 - (UIColor *)backgroundColor {
@@ -710,16 +692,39 @@ typedef void (^animationCompletionBlock)(void);
 
 - (void)setShadowColor:(UIColor *)shadowColor {
     self.subLabel.shadowColor = shadowColor;
-    [self setNeedsDisplay];
 }
 
-- (void)setFrame:(CGRect)frame {
-    [super setFrame:frame];
-    [self applyGradientMaskForFadeLength:self.fadeLength animated:!self.orientationWillChange];
-    [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
+- (CGSize)shadowOffset {
+    return self.subLabel.shadowOffset;
 }
 
-#pragma Override UILabel Getters and Setters
+- (void)setShadowOffset:(CGSize)shadowOffset {
+    self.subLabel.shadowOffset = shadowOffset;
+}
+
+- (UIColor *)highlightedTextColor {
+    return self.subLabel.highlightedTextColor;
+}
+
+- (void)setHighlightedTextColor:(UIColor *)highlightedTextColor {
+    self.subLabel.highlightedTextColor = highlightedTextColor;
+}
+
+- (BOOL)isHighlighted {
+    return self.subLabel.isHighlighted;
+}
+
+- (void)setHighlighted:(BOOL)highlighted {
+    self.subLabel.highlighted = highlighted;
+}
+
+- (BOOL)isEnabled {
+    return self.subLabel.isEnabled;
+}
+
+- (void)setEnabled:(BOOL)enabled {
+    self.subLabel.enabled = enabled;
+}
 
 - (void)setNumberOfLines:(NSInteger)numberOfLines {
     // By the nature of MarqueeLabel, this is 1
@@ -731,18 +736,36 @@ typedef void (^animationCompletionBlock)(void);
     [super setAdjustsFontSizeToFitWidth:NO];
 }
 
+- (void)setMinimumFontSize:(CGFloat)minimumFontSize {
+    [super setMinimumFontSize:0.0];
+}
+
+- (UIBaselineAdjustment)baselineAdjustment {
+    return self.subLabel.baselineAdjustment;
+}
+
+- (void)setBaselineAdjustment:(UIBaselineAdjustment)baselineAdjustment {
+    self.subLabel.baselineAdjustment = baselineAdjustment;
+}
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
+- (NSAttributedString *)attributedText {
+    return self.subLabel.attributedText;
+}
+
+- (void)setAttributedText:(NSAttributedString *)attributedText {
+    self.subLabel.attributedText = attributedText;
+}
+
 - (void)setAdjustsLetterSpacingToFitWidth:(BOOL)adjustsLetterSpacingToFitWidth {
     // By the nature of MarqueeLabel, this is NO
     [super setAdjustsLetterSpacingToFitWidth:NO];
 }
 
-- (void)setMinimumFontSize:(CGFloat)minimumFontSize {
-    [super setMinimumFontSize:0.0];
-}
-
 - (void)setMinimumScaleFactor:(CGFloat)minimumScaleFactor {
     [super setMinimumScaleFactor:0.0f];
 }
+#endif
 
 #pragma mark - Custom Getters and Setters
 
