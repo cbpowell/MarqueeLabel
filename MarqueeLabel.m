@@ -244,14 +244,14 @@ typedef void (^animationCompletionBlock)(void);
         if (CGSizeEqualToSize(maxSize, CGSizeZero)) {
             maxSize = CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX);
         }
-        CGSize minimizedLabelSize = [self.subLabel.text sizeWithFont:self.subLabel.font
+        CGSize minimumLabelSize = [self.subLabel.text sizeWithFont:self.subLabel.font
                                                    constrainedToSize:maxSize
-                                                       lineBreakMode:self.lineBreakMode];
+                                                       lineBreakMode:NSLineBreakByClipping];
         // Adjust for fade length
-        minimizedLabelSize = CGSizeMake(minimizedLabelSize.width + (self.fadeLength * 2), minimizedLabelSize.height);
+        CGSize minimumSize = CGSizeMake(minimumLabelSize.width + (self.fadeLength * 2), minimumLabelSize.height);
         
         // Apply to frame
-        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, minimizedLabelSize.width, (adjustHeight ? minimizedLabelSize.height : self.frame.size.height));
+        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, minimumSize.width, (adjustHeight ? minimumSize.height : self.frame.size.height));
     }
 }
 
@@ -430,6 +430,12 @@ typedef void (^animationCompletionBlock)(void);
                                                           constrainedToSize:maximumLabelSize
                                                               lineBreakMode:NSLineBreakByClipping];
     return expectedLabelSize;
+}
+
+- (CGSize)sizeThatFits:(CGSize)size {
+    CGSize fitSize = [super sizeThatFits:size];
+    fitSize.width += 2.0f * self.fadeLength;
+    return fitSize;
 }
 
 #pragma mark - Animation Handlers
