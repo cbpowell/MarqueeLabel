@@ -54,7 +54,7 @@ Currently I haven't found a clean way to auto-restart MarqueeLabels upon the dis
 
 ### Even More
 Check out MarqueeLabel.h for more features, with explanations in the comments there:
-- Scrolling direction (left->right, right->left, and continuous)
+- Scrolling direction: left->right, right->left, and continuous looping (both left and right)
 - Label edge fades
 - Pausing/unpausing mid-animation scrolling of the label
 - Tap to scroll once
