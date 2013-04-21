@@ -7,9 +7,10 @@
 
 // MarqueeLabel types
 typedef enum {
-    MLLeftRight = 0,    // Scrolls left first, then back right to the original position
-    MLRightLeft,        // Scrolls right first, then back left to the original position
-    MLContinuous        // Continuously scrolls left (with a pause at the original position if animationDelay is set)
+    MLLeftRight = 0,        // Scrolls left first, then back right to the original position
+    MLRightLeft,            // Scrolls right first, then back left to the original position
+    MLContinuous,           // Continuously scrolls left (with a pause at the original position if animationDelay is set)
+    MLContinuousReverse     // Continuously scrolls right (with a pause at the original position if animationDelay is set)
 } MarqueeType;
 
 @interface MarqueeLabel : UILabel

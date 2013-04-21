@@ -339,6 +339,40 @@ typedef void (^animationCompletionBlock)(void);
             break;
         }
             
+        case MLContinuousReverse:
+        {
+            self.homeLabelFrame = CGRectMake(self.bounds.size.width - (expectedLabelSize.width + self.fadeLength), 0.0f, expectedLabelSize.width, expectedLabelSize.height);
+            CGFloat awayLabelOffset = (self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer);
+            self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, awayLabelOffset, 0.0f);
+            
+            NSArray *labels = [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", 700]];
+            if (labels.count < 2) {
+                UILabel *secondSubLabel = [[UILabel alloc] initWithFrame:CGRectOffset(self.homeLabelFrame, -(self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer), 0.0f)];
+                secondSubLabel.font = self.font;
+                secondSubLabel.textColor = self.textColor;
+                secondSubLabel.backgroundColor = self.backgroundColor;
+                secondSubLabel.shadowColor = self.shadowColor;
+                secondSubLabel.shadowOffset = self.shadowOffset;
+                secondSubLabel.textAlignment = NSTextAlignmentLeft;
+                secondSubLabel.tag = 701;
+                
+                [self addSubview:secondSubLabel];
+                labels = [labels arrayByAddingObject:secondSubLabel];
+            }
+            
+            for (UILabel *sl in labels) {
+                sl.text = self.text;
+                sl.textAlignment = NSTextAlignmentLeft;
+            }
+            
+            // Recompute the animation duration
+            self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(self.awayLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
+            
+            self.subLabel.frame = self.homeLabelFrame;
+            
+            break;
+        }
+            
         case MLRightLeft:
         {
             self.homeLabelFrame = CGRectMake(self.bounds.size.width - (expectedLabelSize.width + self.fadeLength), 0.0f, expectedLabelSize.width, expectedLabelSize.height);
@@ -468,7 +502,8 @@ typedef void (^animationCompletionBlock)(void);
 - (void)beginScrollWithDelay:(BOOL)delay {
     switch (self.marqueeType) {
         case MLContinuous:
-            [self scrollLeftPerpetualWithInterval:[self durationForInterval:self.animationDuration] after:(delay ? self.animationDelay : 0.0)];
+        case MLContinuousReverse:
+            [self scrollContinuousWithInterval:[self durationForInterval:self.animationDuration] after:(delay ? self.animationDelay : 0.0)];
             break;
         default:
             [self scrollAwayWithInterval:[self durationForInterval:self.animationDuration]];
@@ -543,7 +578,7 @@ typedef void (^animationCompletionBlock)(void);
                      }];
 }
 
-- (void)scrollLeftPerpetualWithInterval:(NSTimeInterval)interval after:(NSTimeInterval)delayAmount {
+- (void)scrollContinuousWithInterval:(NSTimeInterval)interval after:(NSTimeInterval)delayAmount {
     if (![self superview]) {
         return;
     }
@@ -570,13 +605,13 @@ typedef void (^animationCompletionBlock)(void);
                              sl.frame = CGRectOffset(self.awayLabelFrame, offset, 0.0f);
                              
                              // Increment offset
-                             offset += self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer;
+                             offset += (self.marqueeType == MLContinuousReverse ? -1 : 1) * (self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer);
                          }
                      }
                      completion:^(BOOL finished) {
                          if (finished && !self.tapToScroll && !self.holdScrolling) {
                              self.awayFromHome = NO;
-                             [self scrollLeftPerpetualWithInterval:interval after:delayAmount];
+                             [self scrollContinuousWithInterval:interval after:delayAmount];
                          }
                      }];
 }
@@ -589,7 +624,7 @@ typedef void (^animationCompletionBlock)(void);
     for (UILabel *sl in labels) {
         [sl.layer removeAllAnimations];
         sl.frame = CGRectOffset(self.homeLabelFrame, offset, 0.0f);
-        offset += self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer;
+        offset += (self.marqueeType == MLContinuousReverse ? -1 : 1) * (self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer);
     }
     
     if (self.subLabel.frame.origin.x == self.homeLabelFrame.origin.x) {
