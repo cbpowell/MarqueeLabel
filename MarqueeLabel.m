@@ -687,7 +687,14 @@ typedef void (^animationCompletionBlock)(void);
 #pragma mark - Modified UILabel Getters/Setters
 
 - (void)setFrame:(CGRect)frame {
+    CGRect oldFrame = self.frame;
+    
     [super setFrame:frame];
+    
+    if (CGSizeEqualToSize(frame.size, oldFrame.size)) {
+        return;
+    }
+    
     [self applyGradientMaskForFadeLength:self.fadeLength animated:!self.orientationWillChange];
     [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
 }

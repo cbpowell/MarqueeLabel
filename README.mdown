@@ -10,7 +10,7 @@ MarqueeLabel is a UILabel subclass adds a scrolling marquee effect when the text
 
 If you use CocoaPods, you can install MarqueeLabel by adding the config:
 ```
-pod 'MarqueeLabel', '~> 1.0'
+pod 'MarqueeLabel', '~> 1.1'
 ```
 
 Or, you can add it manually:
