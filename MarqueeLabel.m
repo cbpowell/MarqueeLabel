@@ -255,6 +255,10 @@ typedef void (^animationCompletionBlock)(void);
     }
 }
 
+-(void)didMoveToSuperview {
+    [self updateSublabelAndLocationsAndBeginScroll:YES];
+}
+
 #pragma mark - MarqueeLabel Heavy Lifting
 
 - (void)updateSublabelAndLocations {
