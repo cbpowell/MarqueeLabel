@@ -51,6 +51,19 @@
     durationLabel.text = @"This is a test of the label. Look how long this label is! It's so long it stretches off the view!";
     [self.view addSubview:durationLabel];
     
+    MarqueeLabel *attributedLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 130, self.view.frame.size.width-20.0f, 26.0f) duration:8.0 andFadeLength:10.0f];
+    attributedLabel.numberOfLines = 1;
+    attributedLabel.textAlignment = NSTextAlignmentLeft;
+    attributedLabel.backgroundColor = [UIColor clearColor];
+    attributedLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18.0f];
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"This is a long string, that's also an attributed string, which works just as well!"];
+    [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:18.0f] range:NSMakeRange(0, 21)];
+    [attributedString addAttribute:NSBackgroundColorAttributeName value:[UIColor lightGrayColor] range:NSMakeRange(10,11)];
+    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000] range:NSMakeRange(0,attributedString.length)];
+    [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Light" size:18.0f] range:NSMakeRange(21, attributedString.length - 21)];
+    attributedLabel.attributedText = attributedString;
+    [self.view addSubview:attributedLabel];
     
     // Rate label example
     MarqueeLabel *rateLabelOne = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 200, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
@@ -92,7 +105,7 @@
     rightLeftLabel.backgroundColor = [UIColor clearColor];
     rightLeftLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
     rightLeftLabel.marqueeType = MLRightLeft;
-    rightLeftLabel.text =@"This text is not as long, but still long enough to scroll, and scrolls the same speed but to the right first!";
+    rightLeftLabel.text = @"This text is not as long, but still long enough to scroll, and scrolls the same speed but to the right first!";
     [self.view addSubview:rightLeftLabel];
     
     // Continuous label example
@@ -133,6 +146,7 @@
     tapRecognizer.numberOfTouchesRequired = 1;
     [continuousLabel2 addGestureRecognizer:tapRecognizer];
     continuousLabel2.userInteractionEnabled = YES; // Don't forget this, otherwise the gesture recognizer will fail (UILabel has this as NO by default)
+    
 }
 
 - (void)changeTheLabel {
