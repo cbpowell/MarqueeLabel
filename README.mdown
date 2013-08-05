@@ -8,9 +8,9 @@ MarqueeLabel is a UILabel subclass adds a scrolling marquee effect when the text
 
 **NOTE:** The `labelize` feature may act slightly differently than in previous versions. Check out the [Special Notes](#special-notes) section below.
 
-If you use CocoaPods, you can install MarqueeLabel by adding the config:
+If you use CocoaPods, you can install the latest release version of MarqueeLabel by adding the config:
 ```
-pod 'MarqueeLabel', '~> 1.1'
+pod 'MarqueeLabel', '~> 1.2'
 ```
 
 Or, you can add it manually:
