@@ -670,9 +670,12 @@ typedef void (^animationCompletionBlock)(void);
 -(void)pauseLabel
 {
     if (!self.isPaused) {
-        CFTimeInterval pausedTime = [self.layer convertTime:CACurrentMediaTime() fromLayer:nil];
-        self.layer.speed = 0.0;
-        self.layer.timeOffset = pausedTime;
+        NSArray *labels = [self allSubLabels];
+        for (UILabel *sl in labels) {
+            CFTimeInterval pausedTime = [sl.layer convertTime:CACurrentMediaTime() fromLayer:nil];
+            sl.layer.speed = 0.0;
+            sl.layer.timeOffset = pausedTime;
+        }
         self.isPaused = YES;
     }
 }
@@ -680,12 +683,15 @@ typedef void (^animationCompletionBlock)(void);
 -(void)unpauseLabel
 {
     if (self.isPaused) {
-        CFTimeInterval pausedTime = [self.layer timeOffset];
-        self.layer.speed = 1.0;
-        self.layer.timeOffset = 0.0;
-        self.layer.beginTime = 0.0;
-        CFTimeInterval timeSincePause = [self.layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
-        self.layer.beginTime = timeSincePause;
+        NSArray *labels = [self allSubLabels];
+        for (UILabel *sl in labels) {
+            CFTimeInterval pausedTime = [sl.layer timeOffset];
+            sl.layer.speed = 1.0;
+            sl.layer.timeOffset = 0.0;
+            sl.layer.beginTime = 0.0;
+            CFTimeInterval timeSincePause = [sl.layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
+            sl.layer.beginTime = timeSincePause;
+        }
         self.isPaused = NO;
     }
 }
