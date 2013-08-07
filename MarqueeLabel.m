@@ -43,6 +43,7 @@ typedef void (^animationCompletionBlock)(void);
 - (void)observedViewControllerChange:(NSNotification *)notification;
 - (void)applyGradientMaskForFadeLength:(CGFloat)fadeLength;
 - (void)applyGradientMaskForFadeLength:(CGFloat)fadeLength animated:(BOOL)animated;
+- (NSArray *)allSubLabels;
 
 // Support
 @property (nonatomic, strong) NSArray *gradientColors;
@@ -288,7 +289,7 @@ typedef void (^animationCompletionBlock)(void);
         self.awayLabelFrame = labelFrame;
         
         // Remove any additional text layers (for MLContinuous)
-        NSArray *labels = [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", 700]];
+        NSArray *labels = [self allSubLabels];
         for (UILabel *sl in labels) {
             if (sl != self.subLabel) {
                 [sl removeFromSuperview];
@@ -310,7 +311,7 @@ typedef void (^animationCompletionBlock)(void);
             CGFloat awayLabelOffset = -(self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer);
             self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, awayLabelOffset, 0.0f);
             
-            NSArray *labels = [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", 700]];
+            NSArray *labels = [self allSubLabels];
             if (labels.count < 2) {
                 UILabel *secondSubLabel = [[UILabel alloc] initWithFrame:CGRectOffset(self.homeLabelFrame, self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer, 0.0f)];
                 secondSubLabel.font = self.font;
@@ -344,7 +345,7 @@ typedef void (^animationCompletionBlock)(void);
             CGFloat awayLabelOffset = (self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer);
             self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, awayLabelOffset, 0.0f);
             
-            NSArray *labels = [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", 700]];
+            NSArray *labels = [self allSubLabels];
             if (labels.count < 2) {
                 UILabel *secondSubLabel = [[UILabel alloc] initWithFrame:CGRectOffset(self.homeLabelFrame, -(self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer), 0.0f)];
                 secondSubLabel.font = self.font;
@@ -604,7 +605,7 @@ typedef void (^animationCompletionBlock)(void);
         return;
     }
     
-    NSArray *labels = [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", 700]];
+    NSArray *labels = [self allSubLabels];
     __block CGFloat offset = 0.0f;
     
     self.awayFromHome = YES;
@@ -630,9 +631,7 @@ typedef void (^animationCompletionBlock)(void);
 }
 
 - (void)returnLabelToOriginImmediately {
-    [self.layer removeAllAnimations];
-    
-    NSArray *labels = [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", 700]];
+    NSArray *labels = [self allSubLabels];
     CGFloat offset = 0.0f;
     for (UILabel *sl in labels) {
         [sl.layer removeAllAnimations];
@@ -908,7 +907,7 @@ typedef void (^animationCompletionBlock)(void);
         
     } else {
         // Remove any second text layers
-        NSArray *labels = [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", 700]];
+        NSArray *labels = [self allSubLabels];
         for (UILabel *sl in labels) {
             if (sl != self.subLabel) {
                 [sl removeFromSuperview];
@@ -976,6 +975,10 @@ typedef void (^animationCompletionBlock)(void);
         _gradientColors = [NSArray arrayWithObjects: transparent, opaque, opaque, transparent, nil];
     }
     return _gradientColors;
+}
+
+- (NSArray *)allSubLabels {
+    return [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", 700]];
 }
 
 #pragma mark -
