@@ -51,6 +51,7 @@
     durationLabel.text = @"This is a test of the label. Look how long this label is! It's so long it stretches off the view!";
     [self.view addSubview:durationLabel];
     
+    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
     MarqueeLabel *attributedLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 130, self.view.frame.size.width-20.0f, 26.0f) duration:8.0 andFadeLength:10.0f];
     attributedLabel.numberOfLines = 1;
     attributedLabel.textAlignment = NSTextAlignmentLeft;
@@ -64,6 +65,7 @@
     [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Light" size:18.0f] range:NSMakeRange(21, attributedString.length - 21)];
     attributedLabel.attributedText = attributedString;
     [self.view addSubview:attributedLabel];
+    #endif
     
     // Rate label example
     MarqueeLabel *rateLabelOne = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 200, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
