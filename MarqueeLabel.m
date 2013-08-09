@@ -43,6 +43,7 @@ typedef void (^animationCompletionBlock)(void);
 - (void)observedViewControllerChange:(NSNotification *)notification;
 - (void)applyGradientMaskForFadeLength:(CGFloat)fadeLength;
 - (void)applyGradientMaskForFadeLength:(CGFloat)fadeLength animated:(BOOL)animated;
+- (NSArray *)allSubLabels;
 
 // Support
 @property (nonatomic, strong) NSArray *gradientColors;
@@ -271,22 +272,7 @@ typedef void (^animationCompletionBlock)(void);
     }
     
     // Calculate expected size
-    CGSize expectedLabelSize = CGSizeZero;
-    CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX);
-    // Check for attributed string attributes
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0) {
-        // Calculate based on attributed text
-        expectedLabelSize = [self.subLabel.attributedText boundingRectWithSize:maximumLabelSize
-                                                                       options:0
-                                                                       context:nil].size;
-    } else {
-        // Calculate on base string
-        expectedLabelSize = [self.subLabel.text sizeWithFont:self.font
-                                           constrainedToSize:maximumLabelSize
-                                               lineBreakMode:NSLineBreakByClipping];
-    }
-    
-    expectedLabelSize.height = self.bounds.size.height;
+    CGSize expectedLabelSize = [self subLabelSize];
     
     // Move to origin
     [self returnLabelToOriginImmediately];
@@ -303,7 +289,7 @@ typedef void (^animationCompletionBlock)(void);
         self.awayLabelFrame = labelFrame;
         
         // Remove any additional text layers (for MLContinuous)
-        NSArray *labels = [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", 700]];
+        NSArray *labels = [self allSubLabels];
         for (UILabel *sl in labels) {
             if (sl != self.subLabel) {
                 [sl removeFromSuperview];
@@ -325,7 +311,7 @@ typedef void (^animationCompletionBlock)(void);
             CGFloat awayLabelOffset = -(self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer);
             self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, awayLabelOffset, 0.0f);
             
-            NSArray *labels = [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", 700]];
+            NSArray *labels = [self allSubLabels];
             if (labels.count < 2) {
                 UILabel *secondSubLabel = [[UILabel alloc] initWithFrame:CGRectOffset(self.homeLabelFrame, self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer, 0.0f)];
                 secondSubLabel.font = self.font;
@@ -359,7 +345,7 @@ typedef void (^animationCompletionBlock)(void);
             CGFloat awayLabelOffset = (self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer);
             self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, awayLabelOffset, 0.0f);
             
-            NSArray *labels = [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", 700]];
+            NSArray *labels = [self allSubLabels];
             if (labels.count < 2) {
                 UILabel *secondSubLabel = [[UILabel alloc] initWithFrame:CGRectOffset(self.homeLabelFrame, -(self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer), 0.0f)];
                 secondSubLabel.font = self.font;
@@ -472,11 +458,25 @@ typedef void (^animationCompletionBlock)(void);
 }
 
 - (CGSize)subLabelSize {
-    // Calculate label size
-    CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, self.frame.size.height);
-    CGSize expectedLabelSize = [(NSString *)self.subLabel.text sizeWithFont:self.font
-                                                          constrainedToSize:maximumLabelSize
-                                                              lineBreakMode:NSLineBreakByClipping];
+    // Calculate expected size
+    CGSize expectedLabelSize = CGSizeZero;
+    CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX);
+    // Check for attributed string attributes
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0) {
+        // Calculate based on attributed text
+        expectedLabelSize = [self.subLabel.attributedText boundingRectWithSize:maximumLabelSize
+                                                                       options:0
+                                                                       context:nil].size;
+    } else {
+        // Calculate on base string
+        expectedLabelSize = [self.subLabel.text sizeWithFont:self.font
+                                           constrainedToSize:maximumLabelSize
+                                               lineBreakMode:NSLineBreakByClipping];
+    }
+    
+    expectedLabelSize.width = ceilf(expectedLabelSize.width);
+    expectedLabelSize.height = self.bounds.size.height;
+    
     return expectedLabelSize;
 }
 
@@ -605,7 +605,7 @@ typedef void (^animationCompletionBlock)(void);
         return;
     }
     
-    NSArray *labels = [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", 700]];
+    NSArray *labels = [self allSubLabels];
     __block CGFloat offset = 0.0f;
     
     self.awayFromHome = YES;
@@ -631,9 +631,7 @@ typedef void (^animationCompletionBlock)(void);
 }
 
 - (void)returnLabelToOriginImmediately {
-    [self.layer removeAllAnimations];
-    
-    NSArray *labels = [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", 700]];
+    NSArray *labels = [self allSubLabels];
     CGFloat offset = 0.0f;
     for (UILabel *sl in labels) {
         [sl.layer removeAllAnimations];
@@ -672,9 +670,12 @@ typedef void (^animationCompletionBlock)(void);
 -(void)pauseLabel
 {
     if (!self.isPaused) {
-        CFTimeInterval pausedTime = [self.layer convertTime:CACurrentMediaTime() fromLayer:nil];
-        self.layer.speed = 0.0;
-        self.layer.timeOffset = pausedTime;
+        NSArray *labels = [self allSubLabels];
+        for (UILabel *sl in labels) {
+            CFTimeInterval pausedTime = [sl.layer convertTime:CACurrentMediaTime() fromLayer:nil];
+            sl.layer.speed = 0.0;
+            sl.layer.timeOffset = pausedTime;
+        }
         self.isPaused = YES;
     }
 }
@@ -682,12 +683,15 @@ typedef void (^animationCompletionBlock)(void);
 -(void)unpauseLabel
 {
     if (self.isPaused) {
-        CFTimeInterval pausedTime = [self.layer timeOffset];
-        self.layer.speed = 1.0;
-        self.layer.timeOffset = 0.0;
-        self.layer.beginTime = 0.0;
-        CFTimeInterval timeSincePause = [self.layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
-        self.layer.beginTime = timeSincePause;
+        NSArray *labels = [self allSubLabels];
+        for (UILabel *sl in labels) {
+            CFTimeInterval pausedTime = [sl.layer timeOffset];
+            sl.layer.speed = 1.0;
+            sl.layer.timeOffset = 0.0;
+            sl.layer.beginTime = 0.0;
+            CFTimeInterval timeSincePause = [sl.layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
+            sl.layer.beginTime = timeSincePause;
+        }
         self.isPaused = NO;
     }
 }
@@ -909,7 +913,7 @@ typedef void (^animationCompletionBlock)(void);
         
     } else {
         // Remove any second text layers
-        NSArray *labels = [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", 700]];
+        NSArray *labels = [self allSubLabels];
         for (UILabel *sl in labels) {
             if (sl != self.subLabel) {
                 [sl removeFromSuperview];
@@ -977,6 +981,10 @@ typedef void (^animationCompletionBlock)(void);
         _gradientColors = [NSArray arrayWithObjects: transparent, opaque, opaque, transparent, nil];
     }
     return _gradientColors;
+}
+
+- (NSArray *)allSubLabels {
+    return [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", 700]];
 }
 
 #pragma mark -
