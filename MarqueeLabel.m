@@ -729,18 +729,6 @@ typedef void (^animationCompletionBlock)(void);
     [self updateSublabelAndLocations];
 }
 
-- (NSAttributedString *)attributedText {
-    return self.subLabel.attributedText;
-}
-
-- (void)setAttributedText:(NSAttributedString *)attributedText {
-    if ([attributedText isEqualToAttributedString:self.subLabel.attributedText]) {
-        return;
-    }
-    self.subLabel.attributedText = attributedText;
-    [self updateSublabelAndLocations];
-}
-
 - (UIFont *)font {
     return self.subLabel.font;
 }
@@ -837,7 +825,11 @@ typedef void (^animationCompletionBlock)(void);
 }
 
 - (void)setAttributedText:(NSAttributedString *)attributedText {
+    if ([attributedText isEqualToAttributedString:self.subLabel.attributedText]) {
+        return;
+    }
     self.subLabel.attributedText = attributedText;
+    [self updateSublabelAndLocations];
 }
 
 - (void)setAdjustsLetterSpacingToFitWidth:(BOOL)adjustsLetterSpacingToFitWidth {
