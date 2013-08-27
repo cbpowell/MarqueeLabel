@@ -314,20 +314,24 @@ typedef void (^animationCompletionBlock)(void);
             NSArray *labels = [self allSubLabels];
             if (labels.count < 2) {
                 UILabel *secondSubLabel = [[UILabel alloc] initWithFrame:CGRectOffset(self.homeLabelFrame, self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer, 0.0f)];
-                secondSubLabel.font = self.font;
-                secondSubLabel.textColor = self.textColor;
-                secondSubLabel.backgroundColor = self.backgroundColor;
-                secondSubLabel.shadowColor = self.shadowColor;
-                secondSubLabel.shadowOffset = self.shadowOffset;
-                secondSubLabel.textAlignment = NSTextAlignmentLeft;
                 secondSubLabel.tag = 701;
+                secondSubLabel.numberOfLines = 1;
                 
                 [self addSubview:secondSubLabel];
                 labels = [labels arrayByAddingObject:secondSubLabel];
             }
             
             for (UILabel *sl in labels) {
+                #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
+                sl.attributedText = self.attributedText;
+                #else
                 sl.text = self.text;
+                sl.font = self.font;
+                sl.textColor = self.textColor;
+                #endif
+                sl.backgroundColor = self.backgroundColor;
+                sl.shadowColor = self.shadowColor;
+                sl.shadowOffset = self.shadowOffset;
                 sl.textAlignment = NSTextAlignmentLeft;
             }
             
@@ -348,12 +352,7 @@ typedef void (^animationCompletionBlock)(void);
             NSArray *labels = [self allSubLabels];
             if (labels.count < 2) {
                 UILabel *secondSubLabel = [[UILabel alloc] initWithFrame:CGRectOffset(self.homeLabelFrame, -(self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer), 0.0f)];
-                secondSubLabel.font = self.font;
-                secondSubLabel.textColor = self.textColor;
-                secondSubLabel.backgroundColor = self.backgroundColor;
-                secondSubLabel.shadowColor = self.shadowColor;
-                secondSubLabel.shadowOffset = self.shadowOffset;
-                secondSubLabel.textAlignment = NSTextAlignmentLeft;
+                secondSubLabel.numberOfLines = 1;
                 secondSubLabel.tag = 701;
                 
                 [self addSubview:secondSubLabel];
@@ -361,7 +360,16 @@ typedef void (^animationCompletionBlock)(void);
             }
             
             for (UILabel *sl in labels) {
+                #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
+                sl.attributedText = self.attributedText;
+                #else
                 sl.text = self.text;
+                sl.font = self.font;
+                sl.textColor = self.textColor;
+                #endif
+                sl.backgroundColor = self.backgroundColor;
+                sl.shadowColor = self.shadowColor;
+                sl.shadowOffset = self.shadowOffset;
                 sl.textAlignment = NSTextAlignmentLeft;
             }
             
@@ -746,7 +754,7 @@ typedef void (^animationCompletionBlock)(void);
 }
 
 - (void)setTextColor:(UIColor *)textColor {
-    self.subLabel.textColor = textColor;
+    [self updateSubLabelsForKey:@"textColor" withValue:textColor];
 }
 
 - (UIColor *)backgroundColor {
@@ -754,7 +762,7 @@ typedef void (^animationCompletionBlock)(void);
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
-    self.subLabel.backgroundColor = backgroundColor;
+    [self updateSubLabelsForKey:@"backgroundColor" withValue:backgroundColor];
 }
 
 - (UIColor *)shadowColor {
@@ -762,7 +770,7 @@ typedef void (^animationCompletionBlock)(void);
 }
 
 - (void)setShadowColor:(UIColor *)shadowColor {
-    self.subLabel.shadowColor = shadowColor;
+    [self updateSubLabelsForKey:@"shadowColor" withValue:shadowColor];
 }
 
 - (CGSize)shadowOffset {
@@ -770,7 +778,7 @@ typedef void (^animationCompletionBlock)(void);
 }
 
 - (void)setShadowOffset:(CGSize)shadowOffset {
-    self.subLabel.shadowOffset = shadowOffset;
+    [self updateSubLabelsForKey:@"shadowOffset" withValue:[NSValue valueWithCGSize:shadowOffset]];
 }
 
 - (UIColor *)highlightedTextColor {
@@ -778,7 +786,7 @@ typedef void (^animationCompletionBlock)(void);
 }
 
 - (void)setHighlightedTextColor:(UIColor *)highlightedTextColor {
-    self.subLabel.highlightedTextColor = highlightedTextColor;
+    [self updateSubLabelsForKey:@"highlightedTextColor" withValue:highlightedTextColor];
 }
 
 - (BOOL)isHighlighted {
@@ -786,7 +794,7 @@ typedef void (^animationCompletionBlock)(void);
 }
 
 - (void)setHighlighted:(BOOL)highlighted {
-    self.subLabel.highlighted = highlighted;
+    [self updateSubLabelsForKey:@"highlighted" withValue:@(highlighted)];
 }
 
 - (BOOL)isEnabled {
@@ -794,7 +802,7 @@ typedef void (^animationCompletionBlock)(void);
 }
 
 - (void)setEnabled:(BOOL)enabled {
-    self.subLabel.enabled = enabled;
+    [self updateSubLabelsForKey:@"enabled" withValue:@(enabled)];
 }
 
 - (void)setNumberOfLines:(NSInteger)numberOfLines {
@@ -816,7 +824,7 @@ typedef void (^animationCompletionBlock)(void);
 }
 
 - (void)setBaselineAdjustment:(UIBaselineAdjustment)baselineAdjustment {
-    self.subLabel.baselineAdjustment = baselineAdjustment;
+    [self updateSubLabelsForKey:@"baselineAdjustment" withValue:@(baselineAdjustment)];
 }
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
@@ -841,6 +849,22 @@ typedef void (^animationCompletionBlock)(void);
     [super setMinimumScaleFactor:0.0f];
 }
 #endif
+
+- (void)updateSubLabelsForKey:(NSString *)key withValue:(id)value {
+    NSArray *labels = [self allSubLabels];
+    for (UILabel *sl in labels) {
+        [sl setValue:value forKeyPath:key];
+    }
+}
+
+- (void)updateSuLabelsForKeysWithValues:(NSDictionary *)dictionary {
+    NSArray *labels = [self allSubLabels];
+    for (UILabel *sl in labels) {
+        for (NSString *key in dictionary) {
+            [sl setValue:[dictionary objectForKey:key] forKey:key];
+        }
+    }
+}
 
 #pragma mark - Custom Getters and Setters
 
