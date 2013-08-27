@@ -53,6 +53,7 @@
     
     #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
     MarqueeLabel *attributedLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 130, self.view.frame.size.width-20.0f, 26.0f) duration:8.0 andFadeLength:10.0f];
+    attributedLabel.marqueeType = MLContinuous;
     attributedLabel.numberOfLines = 1;
     attributedLabel.textAlignment = NSTextAlignmentLeft;
     attributedLabel.backgroundColor = [UIColor clearColor];
@@ -102,7 +103,7 @@
     MarqueeLabel *rightLeftLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 260, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
     rightLeftLabel.numberOfLines = 1;
     rightLeftLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-    rightLeftLabel.textAlignment = UITextAlignmentRight;
+    rightLeftLabel.textAlignment = NSTextAlignmentRight;
     rightLeftLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
     rightLeftLabel.backgroundColor = [UIColor clearColor];
     rightLeftLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
