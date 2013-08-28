@@ -321,19 +321,7 @@ typedef void (^animationCompletionBlock)(void);
                 labels = [labels arrayByAddingObject:secondSubLabel];
             }
             
-            for (UILabel *sl in labels) {
-                #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
-                sl.attributedText = self.attributedText;
-                #else
-                sl.text = self.text;
-                sl.font = self.font;
-                sl.textColor = self.textColor;
-                #endif
-                sl.backgroundColor = self.backgroundColor;
-                sl.shadowColor = self.shadowColor;
-                sl.shadowOffset = self.shadowOffset;
-                sl.textAlignment = NSTextAlignmentLeft;
-            }
+            [self refreshSubLabels:labels];
             
             // Recompute the animation duration
             self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(self.awayLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
@@ -359,19 +347,7 @@ typedef void (^animationCompletionBlock)(void);
                 labels = [labels arrayByAddingObject:secondSubLabel];
             }
             
-            for (UILabel *sl in labels) {
-                #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
-                sl.attributedText = self.attributedText;
-                #else
-                sl.text = self.text;
-                sl.font = self.font;
-                sl.textColor = self.textColor;
-                #endif
-                sl.backgroundColor = self.backgroundColor;
-                sl.shadowColor = self.shadowColor;
-                sl.shadowOffset = self.shadowOffset;
-                sl.textAlignment = NSTextAlignmentLeft;
-            }
+            [self refreshSubLabels:labels];
             
             // Recompute the animation duration
             self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(self.awayLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
@@ -850,6 +826,22 @@ typedef void (^animationCompletionBlock)(void);
 }
 #endif
 
+- (void)refreshSubLabels:(NSArray *)subLabels {
+    for (UILabel *sl in subLabels) {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
+        sl.attributedText = self.attributedText;
+#else
+        sl.text = self.text;
+        sl.font = self.font;
+        sl.textColor = self.textColor;
+#endif
+        sl.backgroundColor = self.backgroundColor;
+        sl.shadowColor = self.shadowColor;
+        sl.shadowOffset = self.shadowOffset;
+        sl.textAlignment = NSTextAlignmentLeft;
+    }
+}
+
 - (void)updateSubLabelsForKey:(NSString *)key withValue:(id)value {
     NSArray *labels = [self allSubLabels];
     for (UILabel *sl in labels) {
@@ -857,7 +849,7 @@ typedef void (^animationCompletionBlock)(void);
     }
 }
 
-- (void)updateSuLabelsForKeysWithValues:(NSDictionary *)dictionary {
+- (void)updateSubLabelsForKeysWithValues:(NSDictionary *)dictionary {
     NSArray *labels = [self allSubLabels];
     for (UILabel *sl in labels) {
         for (NSString *key in dictionary) {
