@@ -172,6 +172,7 @@ typedef void (^animationCompletionBlock)(void);
     _holdScrolling = NO;
     _tapToScroll = NO;
     _isPaused = NO;
+    _fadeLength = 0.0f;
     _animationDelay = 1.0;
     _animationDuration = 0.0f;
     _continuousMarqueeExtraBuffer = 0.0f;
@@ -282,7 +283,7 @@ typedef void (^animationCompletionBlock)(void);
         [self.subLabel setTextAlignment:[super textAlignment]];
         [self.subLabel setLineBreakMode:[super lineBreakMode]];
         
-        CGRect labelFrame = CGRectMake(self.fadeLength, 0.0f, self.bounds.size.width - self.fadeLength * 2.0f, expectedLabelSize.height);
+        CGRect labelFrame = CGRectIntegral(CGRectMake(self.fadeLength, 0.0f, self.bounds.size.width - self.fadeLength * 2.0f, expectedLabelSize.height));
         
         self.homeLabelFrame = labelFrame;
         self.awayLabelFrame = labelFrame;
@@ -306,7 +307,7 @@ typedef void (^animationCompletionBlock)(void);
     switch (self.marqueeType) {
         case MLContinuous:
         {
-            self.homeLabelFrame = CGRectMake(self.fadeLength, 0.0f, expectedLabelSize.width, expectedLabelSize.height);
+            self.homeLabelFrame = CGRectIntegral(CGRectMake(self.fadeLength, 0.0f, expectedLabelSize.width, expectedLabelSize.height));
             CGFloat awayLabelOffset = -(self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer);
             self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, awayLabelOffset, 0.0f);
             
@@ -332,7 +333,7 @@ typedef void (^animationCompletionBlock)(void);
             
         case MLContinuousReverse:
         {
-            self.homeLabelFrame = CGRectMake(self.bounds.size.width - (expectedLabelSize.width + self.fadeLength), 0.0f, expectedLabelSize.width, expectedLabelSize.height);
+            self.homeLabelFrame = CGRectIntegral(CGRectMake(self.bounds.size.width - (expectedLabelSize.width + self.fadeLength), 0.0f, expectedLabelSize.width, expectedLabelSize.height));
             CGFloat awayLabelOffset = (self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer);
             self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, awayLabelOffset, 0.0f);
             
@@ -358,8 +359,8 @@ typedef void (^animationCompletionBlock)(void);
             
         case MLRightLeft:
         {
-            self.homeLabelFrame = CGRectMake(self.bounds.size.width - (expectedLabelSize.width + self.fadeLength), 0.0f, expectedLabelSize.width, expectedLabelSize.height);
-            self.awayLabelFrame = CGRectMake(self.fadeLength, 0.0f, expectedLabelSize.width, expectedLabelSize.height);
+            self.homeLabelFrame = CGRectIntegral(CGRectMake(self.bounds.size.width - (expectedLabelSize.width + self.fadeLength), 0.0f, expectedLabelSize.width, expectedLabelSize.height));
+            self.awayLabelFrame = CGRectIntegral(CGRectMake(self.fadeLength, 0.0f, expectedLabelSize.width, expectedLabelSize.height));
             
             // Calculate animation duration
             self.animationDuration = (self.rate != 0) ? ((NSTimeInterval)fabs(self.awayLabelFrame.origin.x - self.homeLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
@@ -376,8 +377,8 @@ typedef void (^animationCompletionBlock)(void);
         //Fallback to LeftRight marqueeType
         default:
         {
-            self.homeLabelFrame = CGRectMake(self.fadeLength, 0.0f, expectedLabelSize.width, expectedLabelSize.height);
-            self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, -expectedLabelSize.width + (self.bounds.size.width - self.fadeLength * 2), 0.0);
+            self.homeLabelFrame = CGRectIntegral(CGRectMake(self.fadeLength, 0.0f, expectedLabelSize.width, expectedLabelSize.height));
+            self.awayLabelFrame = CGRectIntegral(CGRectOffset(self.homeLabelFrame, -expectedLabelSize.width + (self.bounds.size.width - self.fadeLength * 2), 0.0));
             
             // Calculate animation duration
             self.animationDuration = (self.rate != 0) ? ((NSTimeInterval)fabs(self.awayLabelFrame.origin.x - self.homeLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
