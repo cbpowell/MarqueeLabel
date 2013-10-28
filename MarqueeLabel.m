@@ -704,6 +704,19 @@ typedef void (^animationCompletionBlock)(void);
     [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
 }
 
+- (void)setBounds:(CGRect)bounds {
+    CGRect oldBounds = self.bounds;
+    
+    [super setBounds:bounds];
+    
+    if (CGSizeEqualToSize(bounds.size, oldBounds.size)) {
+        return;
+    }
+    
+    [self applyGradientMaskForFadeLength:self.fadeLength animated:!self.orientationWillChange];
+    [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
+}
+
 - (NSString *)text {
     return self.subLabel.text;
 }
@@ -804,6 +817,10 @@ typedef void (^animationCompletionBlock)(void);
 
 - (void)setBaselineAdjustment:(UIBaselineAdjustment)baselineAdjustment {
     [self updateSubLabelsForKey:@"baselineAdjustment" withValue:@(baselineAdjustment)];
+}
+
+- (CGSize)intrinsicContentSize {
+    return self.subLabel.intrinsicContentSize;
 }
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
