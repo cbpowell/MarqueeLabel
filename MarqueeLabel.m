@@ -274,6 +274,9 @@ typedef void (^animationCompletionBlock)(void);
     // Calculate expected size
     CGSize expectedLabelSize = [self subLabelSize];
     
+    // Invalidate intrinsic size
+    [self invalidateIntrinsicContentSize];
+    
     // Move to origin
     [self returnLabelToOriginImmediately];
     
@@ -690,19 +693,6 @@ typedef void (^animationCompletionBlock)(void);
 }
 
 #pragma mark - Modified UILabel Getters/Setters
-
-- (void)setFrame:(CGRect)frame {
-    CGRect oldFrame = self.frame;
-    
-    [super setFrame:frame];
-    
-    if (CGSizeEqualToSize(frame.size, oldFrame.size)) {
-        return;
-    }
-    
-    [self applyGradientMaskForFadeLength:self.fadeLength animated:!self.orientationWillChange];
-    [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
-}
 
 - (void)setBounds:(CGRect)bounds {
     CGRect oldBounds = self.bounds;
