@@ -707,6 +707,19 @@ typedef void (^animationCompletionBlock)(void);
     [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
 }
 
+- (void)setBounds:(CGRect)bounds {
+    CGRect oldBounds = self.bounds;
+    
+    [super setBounds:bounds];
+    
+    if (CGSizeEqualToSize(bounds.size, oldBounds.size)) {
+        return;
+    }
+    
+    [self applyGradientMaskForFadeLength:self.fadeLength animated:!self.orientationWillChange];
+    [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
+}
+
 - (NSString *)text {
     return self.subLabel.text;
 }
