@@ -450,7 +450,7 @@ typedef void (^animationCompletionBlock)(void);
     CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX);
     
     // Check for attributed string attributes
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0) {
+    if ([self.subLabel respondsToSelector:@selector(attributedText)]) {
         // Calculate based on attributed text
         expectedLabelSize = [self.subLabel.attributedText boundingRectWithSize:maximumLabelSize
                                                                        options:0
