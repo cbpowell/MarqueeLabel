@@ -631,8 +631,6 @@ typedef void (^animationCompletionBlock)(void);
     
     if (self.subLabel.frame.origin.x == self.homeLabelFrame.origin.x) {
         self.awayFromHome = NO;
-    } else {
-        [self returnLabelToOriginImmediately];
     }
 }
 
