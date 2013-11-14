@@ -275,7 +275,9 @@ typedef void (^animationCompletionBlock)(void);
     CGSize expectedLabelSize = [self subLabelSize];
     
     // Invalidate intrinsic size
-    [self invalidateIntrinsicContentSize];
+    if ([self respondsToSelector:@selector(invalidateIntrinsicContentSize)]) {
+        [self invalidateIntrinsicContentSize];
+    }
     
     // Move to origin
     [self returnLabelToOriginImmediately];
