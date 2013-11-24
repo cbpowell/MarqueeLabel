@@ -1,7 +1,7 @@
 
 //
 //  MarqueeLabel.h
-//  
+//
 
 #import <UIKit/UIKit.h>
 
@@ -115,6 +115,7 @@ typedef enum {
 + (void)controllerViewAppearing:(UIViewController *)controller;
 + (void)controllerLabelsShouldLabelize:(UIViewController *)controller;
 + (void)controllerLabelsShouldAnimate:(UIViewController *)controller;
++ (void)controllerLabelsShouldRestart:(UIViewController *)controller;
 
 // Methods
 - (id)initWithFrame:(CGRect)frame rate:(CGFloat)pixelsPerSec andFadeLength:(CGFloat)fadeLength;
