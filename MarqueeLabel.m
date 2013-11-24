@@ -1,7 +1,7 @@
 
 //
 //  MarqueeLabel.m
-//  
+//
 
 #import "MarqueeLabel.h"
 #import <QuartzCore/QuartzCore.h>
@@ -9,6 +9,7 @@
 NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewControllerDidAppear";
 NSString *const kMarqueeLabelShouldLabelizeNotification = @"MarqueeLabelShouldLabelizeNotification";
 NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAnimateNotification";
+NSString *const kMarqueeLabelShouldRestartNotification = @"MarqueeLabelShouldRestartNotification";
 
 typedef void (^animationCompletionBlock)(void);
 
@@ -75,11 +76,14 @@ typedef void (^animationCompletionBlock)(void);
     }
 }
 
-- (void)viewControllerDidAppear:(NSNotification *)notification {
-    UIViewController *controller = [[notification userInfo] objectForKey:@"controller"];
-    if (controller == [self firstAvailableUIViewController]) {
-        [self restartLabel];
++ (void)controllerLabelsShouldRestart:(UIViewController *)controller {
+    if (controller) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelShouldRestartNotification object:nil userInfo:[NSDictionary dictionaryWithObject:controller forKey:@"controller"]];
     }
+}
+
+- (void)viewControllerDidAppear:(NSNotification *)notification {
+    [self labelsShouldRestart:notification];
 }
 
 - (void)labelsShouldLabelize:(NSNotification *)notification {
@@ -96,6 +100,13 @@ typedef void (^animationCompletionBlock)(void);
     }
 }
 
+- (void)labelsShouldRestart:(NSNotification *)notification {
+    UIViewController *controller = [[notification userInfo] objectForKey:@"controller"];
+    if (controller == [self firstAvailableUIViewController]) {
+        [self restartLabel];
+    }
+}
+
 #pragma mark - Initialization and Label Config
 
 - (id)initWithFrame:(CGRect)frame {
@@ -106,7 +117,7 @@ typedef void (^animationCompletionBlock)(void);
     self = [super initWithFrame:frame];
     if (self) {
         [self setupLabel];
-        
+
         _lengthOfScroll = aLengthOfScroll;
         self.fadeLength = MIN(aFadeLength, frame.size.width/2);
     }
@@ -117,7 +128,7 @@ typedef void (^animationCompletionBlock)(void);
     self = [super initWithFrame:frame];
     if (self) {
         [self setupLabel];
-        
+
         _rate = pixelsPerSec;
         self.fadeLength = MIN(aFadeLength, frame.size.width/2);
     }
@@ -128,7 +139,7 @@ typedef void (^animationCompletionBlock)(void);
     self = [super initWithCoder: aDecoder];
     if (self) {
         [self setupLabel];
-        
+
         if (self.lengthOfScroll == 0) {
             self.lengthOfScroll = 7.0;
         }
@@ -154,17 +165,17 @@ typedef void (^animationCompletionBlock)(void);
 }
 
 - (void)setupLabel {
-    
+
     // Basic UILabel options override
     self.clipsToBounds = YES;
     self.numberOfLines = 1;
-    
+
     self.subLabel = [[UILabel alloc] initWithFrame:self.bounds];
     self.subLabel.tag = 700;
     [self addSubview:self.subLabel];
-    
+
     [super setBackgroundColor:[UIColor clearColor]];
-    
+
     _animationCurve = UIViewAnimationOptionCurveEaseInOut;
     _awayFromHome = NO;
     _orientationWillChange = NO;
@@ -176,22 +187,23 @@ typedef void (^animationCompletionBlock)(void);
     _animationDelay = 1.0;
     _animationDuration = 0.0f;
     _continuousMarqueeExtraBuffer = 0.0f;
-    
+
     // Add notification observers
     // Custom class notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewControllerDidAppear:) name:kMarqueeLabelViewDidAppearNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(labelsShouldLabelize:) name:kMarqueeLabelShouldLabelizeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(labelsShouldAnimate:) name:kMarqueeLabelShouldAnimateNotification object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(labelsShouldRestart:) name:kMarqueeLabelShouldRestartNotification object:nil];
+
     // UINavigationController view controller change notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(observedViewControllerChange:) name:@"UINavigationControllerDidShowViewControllerNotification" object:nil];
-    
+
     // UIApplication state notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartLabel) name:UIApplicationWillEnterForegroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartLabel) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shutdownLabel) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shutdownLabel) name:UIApplicationDidEnterBackgroundNotification object:nil];
-    
+
     // Device Orientation change handling
     /* Necessary to prevent a "super-speed" scroll bug. When the frame is changed due to a flexible width autoresizing mask,
      * the setFrame call occurs during the in-flight orientation rotation animation, and the scroll to the away location
@@ -201,9 +213,9 @@ typedef void (^animationCompletionBlock)(void);
      * see if the delegate of the ending animation is the UIWindow of the label. If so, the rotation animation has finished
      * and the label can be restarted, and the notification observer removed.
      */
-    
+
     __weak __typeof(&*self)weakSelf = self;
-    
+
     __block id animationObserver = nil;
     self.orientationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillChangeStatusBarOrientationNotification
                                                                                  object:nil
@@ -218,7 +230,7 @@ typedef void (^animationCompletionBlock)(void);
                                                                                                                                                        if ([notification.userInfo objectForKey:@"delegate"] == self.window) {
                                                                                                                                                            weakSelf.orientationWillChange = NO;
                                                                                                                                                            [weakSelf restartLabel];
-                                                                                                                                                           
+
                                                                                                                                                            // Remove notification observer
                                                                                                                                                            [[NSNotificationCenter defaultCenter] removeObserver:animationObserver];
                                                                                                                                                        }
@@ -230,7 +242,7 @@ typedef void (^animationCompletionBlock)(void);
     NSDictionary *userInfo = [notification userInfo];
     id fromController = [userInfo objectForKey:@"UINavigationControllerLastVisibleViewController"];
     id toController = [userInfo objectForKey:@"UINavigationControllerNextVisibleViewController"];
-    
+
     id ownController = [self firstAvailableUIViewController];
     if ([fromController isEqual:ownController]) {
         [self shutdownLabel];
@@ -242,15 +254,11 @@ typedef void (^animationCompletionBlock)(void);
 
 - (void)minimizeLabelFrameWithMaximumSize:(CGSize)maxSize adjustHeight:(BOOL)adjustHeight {
     if (self.subLabel.text != nil) {
-        // Calculate text size
-        if (CGSizeEqualToSize(maxSize, CGSizeZero)) {
-            maxSize = CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX);
-        }
         CGSize minimumLabelSize = [self subLabelSize];
-        
+
         // Adjust for fade length
         CGSize minimumSize = CGSizeMake(minimumLabelSize.width + (self.fadeLength * 2), minimumLabelSize.height);
-        
+
         // Apply to frame
         self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, minimumSize.width, (adjustHeight ? minimumSize.height : self.frame.size.height));
     }
@@ -270,29 +278,29 @@ typedef void (^animationCompletionBlock)(void);
     if (!self.subLabel.text) {
         return;
     }
-    
+
     // Calculate expected size
     CGSize expectedLabelSize = [self subLabelSize];
-    
+
     // Invalidate intrinsic size
     if ([self respondsToSelector:@selector(invalidateIntrinsicContentSize)]) {
         [self invalidateIntrinsicContentSize];
     }
-    
+
     // Move to origin
     [self returnLabelToOriginImmediately];
-    
+
     // Check if label is labelized, or does not need to scroll
     if (self.labelize || !self.labelShouldScroll) {
         // Set text alignment and break mode to act like normal label
         [self.subLabel setTextAlignment:[super textAlignment]];
         [self.subLabel setLineBreakMode:[super lineBreakMode]];
-        
+
         CGRect labelFrame = CGRectIntegral(CGRectMake(self.fadeLength, 0.0f, self.bounds.size.width - self.fadeLength * 2.0f, expectedLabelSize.height));
-        
+
         self.homeLabelFrame = labelFrame;
         self.awayLabelFrame = labelFrame;
-        
+
         // Remove any additional text layers (for MLContinuous)
         NSArray *labels = [self allSubLabels];
         for (UILabel *sl in labels) {
@@ -300,107 +308,107 @@ typedef void (^animationCompletionBlock)(void);
                 [sl removeFromSuperview];
             }
         }
-        
+
         self.subLabel.frame = self.homeLabelFrame;
-        
+
         return;
     }
-    
+
     // Label does need to scroll
     [self.subLabel setLineBreakMode:NSLineBreakByClipping];
-    
+
     switch (self.marqueeType) {
         case MLContinuous:
         {
             self.homeLabelFrame = CGRectIntegral(CGRectMake(self.fadeLength, 0.0f, expectedLabelSize.width, expectedLabelSize.height));
             CGFloat awayLabelOffset = -(self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer);
             self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, awayLabelOffset, 0.0f);
-            
+
             NSArray *labels = [self allSubLabels];
             if (labels.count < 2) {
                 UILabel *secondSubLabel = [[UILabel alloc] initWithFrame:CGRectOffset(self.homeLabelFrame, self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer, 0.0f)];
                 secondSubLabel.tag = 701;
                 secondSubLabel.numberOfLines = 1;
-                
+
                 [self addSubview:secondSubLabel];
                 labels = [labels arrayByAddingObject:secondSubLabel];
             }
-            
+
             [self refreshSubLabels:labels];
-            
+
             // Recompute the animation duration
             self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(self.awayLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
-            
+
             self.subLabel.frame = self.homeLabelFrame;
-            
+
             break;
         }
-            
+
         case MLContinuousReverse:
         {
             self.homeLabelFrame = CGRectIntegral(CGRectMake(self.bounds.size.width - (expectedLabelSize.width + self.fadeLength), 0.0f, expectedLabelSize.width, expectedLabelSize.height));
             CGFloat awayLabelOffset = (self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer);
             self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, awayLabelOffset, 0.0f);
-            
+
             NSArray *labels = [self allSubLabels];
             if (labels.count < 2) {
                 UILabel *secondSubLabel = [[UILabel alloc] initWithFrame:CGRectOffset(self.homeLabelFrame, -(self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer), 0.0f)];
                 secondSubLabel.numberOfLines = 1;
                 secondSubLabel.tag = 701;
-                
+
                 [self addSubview:secondSubLabel];
                 labels = [labels arrayByAddingObject:secondSubLabel];
             }
-            
+
             [self refreshSubLabels:labels];
-            
+
             // Recompute the animation duration
             self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(self.awayLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
-            
+
             self.subLabel.frame = self.homeLabelFrame;
-            
+
             break;
         }
-            
+
         case MLRightLeft:
         {
             self.homeLabelFrame = CGRectIntegral(CGRectMake(self.bounds.size.width - (expectedLabelSize.width + self.fadeLength), 0.0f, expectedLabelSize.width, expectedLabelSize.height));
             self.awayLabelFrame = CGRectIntegral(CGRectMake(self.fadeLength, 0.0f, expectedLabelSize.width, expectedLabelSize.height));
-            
+
             // Calculate animation duration
             self.animationDuration = (self.rate != 0) ? ((NSTimeInterval)fabs(self.awayLabelFrame.origin.x - self.homeLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
-            
+
             // Set frame and text
             self.subLabel.frame = self.homeLabelFrame;
-            
+
             // Enforce text alignment for this type
             self.subLabel.textAlignment = NSTextAlignmentRight;
-            
+
             break;
         }
-        
-        //Fallback to LeftRight marqueeType
+
+            //Fallback to LeftRight marqueeType
         default:
         {
             self.homeLabelFrame = CGRectIntegral(CGRectMake(self.fadeLength, 0.0f, expectedLabelSize.width, expectedLabelSize.height));
             self.awayLabelFrame = CGRectIntegral(CGRectOffset(self.homeLabelFrame, -expectedLabelSize.width + (self.bounds.size.width - self.fadeLength * 2), 0.0));
-            
+
             // Calculate animation duration
             self.animationDuration = (self.rate != 0) ? ((NSTimeInterval)fabs(self.awayLabelFrame.origin.x - self.homeLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
-            
+
             // Set frame
             self.subLabel.frame = self.homeLabelFrame;
-            
+
             // Enforce text alignment for this type
             self.subLabel.textAlignment = NSTextAlignmentLeft;
         }
-            
+
     } //end of marqueeType switch
-    
+
     if (!self.tapToScroll && !self.holdScrolling && beginScroll) {
         [self beginScroll];
     }
-    
+
 }
 
 - (void)applyGradientMaskForFadeLength:(CGFloat)fadeLength {
@@ -408,22 +416,22 @@ typedef void (^animationCompletionBlock)(void);
 }
 
 - (void)applyGradientMaskForFadeLength:(CGFloat)fadeLength animated:(BOOL)animated {
-    
+
     if (animated) {
         [self returnLabelToOriginImmediately];
     }
-    
+
     CAGradientLayer *gradientMask = nil;
     if (fadeLength != 0.0f) {
         // Recreate gradient mask with new fade length
         gradientMask = [CAGradientLayer layer];
-        
+
         gradientMask.bounds = self.layer.bounds;
         gradientMask.position = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
-        
+
         gradientMask.shouldRasterize = YES;
         gradientMask.rasterizationScale = [UIScreen mainScreen].scale;
-        
+
         gradientMask.startPoint = CGPointMake(0.0, CGRectGetMidY(self.frame));
         gradientMask.endPoint = CGPointMake(1.0, CGRectGetMidY(self.frame));
         CGFloat fadePoint = (CGFloat)self.fadeLength/self.frame.size.width;
@@ -435,12 +443,12 @@ typedef void (^animationCompletionBlock)(void);
                                      [NSNumber numberWithDouble: 1.0],
                                      nil]];
     }
-    
+
     [CATransaction begin];
     [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
     self.layer.mask = gradientMask;
     [CATransaction commit];
-    
+
     if (animated && self.labelShouldScroll && !self.tapToScroll) {
         [self beginScroll];
     }
@@ -450,7 +458,7 @@ typedef void (^animationCompletionBlock)(void);
     // Calculate expected size
     CGSize expectedLabelSize = CGSizeZero;
     CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX);
-    
+
     // Check for attributed string attributes
     if ([self.subLabel respondsToSelector:@selector(attributedText)]) {
         // Calculate based on attributed text
@@ -465,10 +473,10 @@ typedef void (^animationCompletionBlock)(void);
                                                lineBreakMode:NSLineBreakByClipping];
 #endif
     }
-    
+
     expectedLabelSize.width = ceilf(expectedLabelSize.width);
     expectedLabelSize.height = self.bounds.size.height;
-    
+
     return expectedLabelSize;
 }
 
@@ -485,7 +493,7 @@ typedef void (^animationCompletionBlock)(void);
     if (!stringLength) {
         return NO;
     }
-    
+
     BOOL labelWidth = (self.bounds.size.width < [self subLabelSize].width + (self.marqueeType == MLContinuous ? 2 * self.fadeLength : self.fadeLength));
     return (!self.labelize && labelWidth);
 }
@@ -529,18 +537,18 @@ typedef void (^animationCompletionBlock)(void);
     if (![self superview]) {
         return;
     }
-    
+
     UIViewController *viewController = [self firstAvailableUIViewController];
     if (!(viewController.isViewLoaded && viewController.view.window)) {
         return;
     }
-    
+
     // Perform animation
     self.awayFromHome = YES;
-    
+
     [self.subLabel.layer removeAllAnimations];
     [self.layer removeAllAnimations];
-    
+
     [UIView animateWithDuration:interval
                           delay:delayAmount
                         options:self.animationCurve
@@ -566,7 +574,7 @@ typedef void (^animationCompletionBlock)(void);
     if (![self superview]) {
         return;
     }
-    
+
     [UIView animateWithDuration:interval
                           delay:delayAmount
                         options:self.animationCurve
@@ -588,20 +596,20 @@ typedef void (^animationCompletionBlock)(void);
     if (![self superview]) {
         return;
     }
-    
+
     // Return labels to home frame
     [self returnLabelToOriginImmediately];
-    
+
     UIViewController *viewController = [self firstAvailableUIViewController];
     if (!(viewController.isViewLoaded && viewController.view.window)) {
         return;
     }
-    
+
     NSArray *labels = [self allSubLabels];
     __block CGFloat offset = 0.0f;
-    
+
     self.awayFromHome = YES;
-    
+
     // Animate
     [UIView animateWithDuration:interval
                           delay:delayAmount
@@ -609,7 +617,7 @@ typedef void (^animationCompletionBlock)(void);
                      animations:^{
                          for (UILabel *sl in labels) {
                              sl.frame = CGRectOffset(self.awayLabelFrame, offset, 0.0f);
-                             
+
                              // Increment offset
                              offset += (self.marqueeType == MLContinuousReverse ? -1 : 1) * (self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer);
                          }
@@ -630,7 +638,7 @@ typedef void (^animationCompletionBlock)(void);
         sl.frame = CGRectOffset(self.homeLabelFrame, offset, 0.0f);
         offset += (self.marqueeType == MLContinuousReverse ? -1 : 1) * (self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer);
     }
-    
+
     if (self.subLabel.frame.origin.x == self.homeLabelFrame.origin.x) {
         self.awayFromHome = NO;
     }
@@ -640,12 +648,11 @@ typedef void (^animationCompletionBlock)(void);
 
 - (void)restartLabel {
     [self returnLabelToOriginImmediately];
-    
+
     if (self.labelShouldScroll && !self.tapToScroll) {
         [self beginScroll];
     }
 }
-
 
 - (void)resetLabel {
     [self returnLabelToOriginImmediately];
@@ -696,13 +703,13 @@ typedef void (^animationCompletionBlock)(void);
 
 - (void)setBounds:(CGRect)bounds {
     CGRect oldBounds = self.bounds;
-    
+
     [super setBounds:bounds];
-    
+
     if (CGSizeEqualToSize(bounds.size, oldBounds.size)) {
         return;
     }
-    
+
     [self applyGradientMaskForFadeLength:self.fadeLength animated:!self.orientationWillChange];
     [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
 }
@@ -874,7 +881,7 @@ typedef void (^animationCompletionBlock)(void);
     if (_animationCurve == animationCurve) {
         return;
     }
-    
+
     NSUInteger allowableOptions = UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionCurveLinear;
     if ((allowableOptions & animationCurve) == animationCurve) {
         _animationCurve = animationCurve;
@@ -885,7 +892,7 @@ typedef void (^animationCompletionBlock)(void);
     if (_continuousMarqueeExtraBuffer == continuousMarqueeExtraBuffer) {
         return;
     }
-    
+
     // Do not allow negative values
     _continuousMarqueeExtraBuffer = fabsf(continuousMarqueeExtraBuffer);
     [self updateSublabelAndLocations];
@@ -895,7 +902,7 @@ typedef void (^animationCompletionBlock)(void);
     if (_fadeLength == fadeLength) {
         return;
     }
-    
+
     _fadeLength = fadeLength;
     [self applyGradientMaskForFadeLength:_fadeLength];
     [self updateSublabelAndLocations];
@@ -905,9 +912,9 @@ typedef void (^animationCompletionBlock)(void);
     if (_tapToScroll == tapToScroll) {
         return;
     }
-    
+
     _tapToScroll = tapToScroll;
-    
+
     if (_tapToScroll) {
         UITapGestureRecognizer *newTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(labelWasTapped:)];
         [self addGestureRecognizer:newTapRecognizer];
@@ -924,11 +931,11 @@ typedef void (^animationCompletionBlock)(void);
     if (marqueeType == _marqueeType) {
         return;
     }
-    
+
     _marqueeType = marqueeType;
-    
+
     if (_marqueeType == MLContinuous) {
-        
+
     } else {
         // Remove any second text layers
         NSArray *labels = [self allSubLabels];
@@ -938,7 +945,7 @@ typedef void (^animationCompletionBlock)(void);
             }
         }
     }
-    
+
     [self updateSublabelAndLocations];
 }
 
@@ -949,7 +956,7 @@ typedef void (^animationCompletionBlock)(void);
         // Create home label frame
         _awayLabelFrame = CGRectOffset(self.homeLabelFrame, -expectedLabelSize.width + (self.bounds.size.width - self.fadeLength * 2), 0.0);
     }
-    
+
     return _awayLabelFrame;
 }
 
@@ -960,7 +967,7 @@ typedef void (^animationCompletionBlock)(void);
         // Create home label frame
         _homeLabelFrame = CGRectMake(self.fadeLength, 0, (expectedLabelSize.width + self.fadeLength), self.bounds.size.height);
     }
-    
+
     return _homeLabelFrame;
 }
 
@@ -968,13 +975,13 @@ typedef void (^animationCompletionBlock)(void);
     if (_labelize == labelize) {
         return;
     }
-    
+
     _labelize = labelize;
-    
+
     if (labelize && self.subLabel != nil) {
         [self returnLabelToOriginImmediately];
     }
-    
+
     [self updateSublabelAndLocationsAndBeginScroll:YES];
 }
 
@@ -982,9 +989,9 @@ typedef void (^animationCompletionBlock)(void);
     if (_holdScrolling == holdScrolling) {
         return;
     }
-    
+
     _holdScrolling = holdScrolling;
-    
+
     if (!holdScrolling && !self.awayFromHome) {
         [self beginScroll];
     }
