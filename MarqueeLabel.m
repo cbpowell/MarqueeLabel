@@ -55,7 +55,7 @@ typedef void (^animationCompletionBlock)(void);
 
 #pragma mark - Class Methods and handlers
 
-+ (void)controllerViewAppearing:(UIViewController *)controller {
++ (void)controllerViewDidAppear:(UIViewController *)controller {
     if (controller) { // avoid creating NSDictionary with nil object
         [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelViewDidAppearNotification
                                                             object:nil
