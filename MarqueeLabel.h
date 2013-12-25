@@ -132,6 +132,7 @@ typedef enum {
 - (void)pauseLabel;
 - (void)unpauseLabel;
 
++ (void)controllerViewAppearing:(UIViewController *)controller __attribute((deprecated("Use controllerViewDidAppear: method")));
 @end
 
 

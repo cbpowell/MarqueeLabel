@@ -63,6 +63,10 @@ typedef void (^animationCompletionBlock)(void);
     }
 }
 
++ (void)controllerViewAppearing:(UIViewController *)controller {
+    [MarqueeLabel controllerViewDidAppear:controller];
+}
+
 + (void)controllerLabelsShouldLabelize:(UIViewController *)controller {
     if (controller) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelShouldLabelizeNotification object:nil userInfo:[NSDictionary dictionaryWithObject:controller forKey:@"controller"]];
