@@ -252,8 +252,12 @@ typedef void (^animationCompletionBlock)(void);
         }
         CGSize minimumLabelSize = [self subLabelSize];
         
+        
         // Adjust for fade length
         CGSize minimumSize = CGSizeMake(minimumLabelSize.width + (self.fadeLength * 2), minimumLabelSize.height);
+        
+        // Find minimum size of options
+        minimumSize = CGSizeMake(MIN(minimumSize.width, maxSize.width), MIN(minimumSize.height, maxSize.height));
         
         // Apply to frame
         self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, minimumSize.width, (adjustHeight ? minimumSize.height : self.frame.size.height));
