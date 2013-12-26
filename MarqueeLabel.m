@@ -14,8 +14,8 @@ typedef void (^animationCompletionBlock)(void);
 
 // Helpers
 @interface UIView (MarqueeLabelHelpers)
-- (UIViewController *)firstAvailableUIViewController;
-- (id)traverseResponderChainForUIViewController;
+- (UIViewController *)firstAvailableViewController;
+- (id)traverseResponderChainForFirstViewController;
 @end
 
 @interface MarqueeLabel()
@@ -81,21 +81,21 @@ typedef void (^animationCompletionBlock)(void);
 
 - (void)viewControllerDidAppear:(NSNotification *)notification {
     UIViewController *controller = [[notification userInfo] objectForKey:@"controller"];
-    if (controller == [self firstAvailableUIViewController]) {
+    if (controller == [self firstAvailableViewController]) {
         [self restartLabel];
     }
 }
 
 - (void)labelsShouldLabelize:(NSNotification *)notification {
     UIViewController *controller = [[notification userInfo] objectForKey:@"controller"];
-    if (controller == [self firstAvailableUIViewController]) {
+    if (controller == [self firstAvailableViewController]) {
         self.labelize = YES;
     }
 }
 
 - (void)labelsShouldAnimate:(NSNotification *)notification {
     UIViewController *controller = [[notification userInfo] objectForKey:@"controller"];
-    if (controller == [self firstAvailableUIViewController]) {
+    if (controller == [self firstAvailableViewController]) {
         self.labelize = NO;
     }
 }
@@ -235,7 +235,7 @@ typedef void (^animationCompletionBlock)(void);
     id fromController = [userInfo objectForKey:@"UINavigationControllerLastVisibleViewController"];
     id toController = [userInfo objectForKey:@"UINavigationControllerNextVisibleViewController"];
     
-    id ownController = [self firstAvailableUIViewController];
+    id ownController = [self firstAvailableViewController];
     if ([fromController isEqual:ownController]) {
         [self shutdownLabel];
     }
@@ -538,7 +538,7 @@ typedef void (^animationCompletionBlock)(void);
         return;
     }
     
-    UIViewController *viewController = [self firstAvailableUIViewController];
+    UIViewController *viewController = [self firstAvailableViewController];
     if (!(viewController.isViewLoaded && viewController.view.window)) {
         return;
     }
@@ -600,7 +600,7 @@ typedef void (^animationCompletionBlock)(void);
     // Return labels to home frame
     [self returnLabelToOriginImmediately];
     
-    UIViewController *viewController = [self firstAvailableUIViewController];
+    UIViewController *viewController = [self firstAvailableViewController];
     if (!(viewController.isViewLoaded && viewController.view.window)) {
         return;
     }
@@ -1034,17 +1034,17 @@ typedef void (^animationCompletionBlock)(void);
 // Thanks to Phil M
 // http://stackoverflow.com/questions/1340434/get-to-uiviewcontroller-from-uiview-on-iphone
 
-- (id)firstAvailableUIViewController {
+- (id)firstAvailableViewController {
     // convenience function for casting and to "mask" the recursive function
-    return [self traverseResponderChainForUIViewController];
+    return [self traverseResponderChainForFirstViewController];
 }
 
-- (id)traverseResponderChainForUIViewController {
+- (id)traverseResponderChainForFirstViewController {
     id nextResponder = [self nextResponder];
     if ([nextResponder isKindOfClass:[UIViewController class]]) {
         return nextResponder;
     } else if ([nextResponder isKindOfClass:[UIView class]]) {
-        return [nextResponder traverseResponderChainForUIViewController];
+        return [nextResponder traverseResponderChainForFirstViewController];
     } else {
         return nil;
     }
