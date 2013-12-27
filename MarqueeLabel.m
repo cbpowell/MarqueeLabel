@@ -57,19 +57,13 @@ typedef void (^animationCompletionBlock)(void);
 #pragma mark - Class Methods and handlers
 
 + (void)controllerViewWillAppear:(UIViewController *)controller {
-    if (controller) { // avoid creating NSDictionary with nil object
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelViewWillAppearNotification
-                                                            object:nil
-                                                          userInfo:[NSDictionary dictionaryWithObjectsAndKeys:controller, @"controller", nil]];
-    }
+    [MarqueeLabel notifyController:controller
+                       withMessage:kMarqueeLabelViewWillAppearNotification];
 }
 
 + (void)controllerViewDidAppear:(UIViewController *)controller {
-    if (controller) { // avoid creating NSDictionary with nil object
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelViewDidAppearNotification
-                                                            object:nil
-                                                          userInfo:[NSDictionary dictionaryWithObjectsAndKeys:controller, @"controller", nil]];
-    }
+    [MarqueeLabel notifyController:controller
+                       withMessage:kMarqueeLabelViewDidAppearNotification];
 }
 
 + (void)controllerViewAppearing:(UIViewController *)controller {
@@ -77,14 +71,22 @@ typedef void (^animationCompletionBlock)(void);
 }
 
 + (void)controllerLabelsShouldLabelize:(UIViewController *)controller {
-    if (controller) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelShouldLabelizeNotification object:nil userInfo:[NSDictionary dictionaryWithObject:controller forKey:@"controller"]];
-    }
+    [MarqueeLabel notifyController:controller
+                       withMessage:kMarqueeLabelShouldLabelizeNotification];
 }
 
 + (void)controllerLabelsShouldAnimate:(UIViewController *)controller {
-    if (controller) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelShouldAnimateNotification object:nil userInfo:[NSDictionary dictionaryWithObject:controller forKey:@"controller"]];
+    [MarqueeLabel notifyController:controller
+                       withMessage:kMarqueeLabelShouldAnimateNotification];
+}
+
++ (void)notifyController:(UIViewController *)controller withMessage:(NSString *)message
+{
+    if (controller && message) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:message
+                                                            object:nil
+                                                          userInfo:[NSDictionary dictionaryWithObject:controller
+                                                                                               forKey:@"controller"]];
     }
 }
 
