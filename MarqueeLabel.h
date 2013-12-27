@@ -29,6 +29,17 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 /// @name Creating MarqueeLabels
 ////////////////////////////////////////////////////////////////////////////////
 
+/** Returns a newly initialized `MarqueeLabel` instance.
+
+ The default scroll duration of 7.0 seconds and fade length of 0.0 are used.
+ 
+ @param frame A rectangle specifying the initial location and size of the view in its superview's coordinates. Text (for the given font, font size, etc.) that does not fit in this frame will automatically scroll.
+ @return An initialized `MarqueeLabel` object or nil if the object couldn't be created.
+*/
+
+- (id)initWithFrame:(CGRect)frame;
+
+
 /** Returns a newly initialized `MarqueeLabel` instance with the specified scroll rate and edge transparency fade length.
  
  You must specify a non-zero rate, and you cannot thereafter modify the rate.
