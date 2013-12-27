@@ -195,7 +195,7 @@
 - (void)dismissTheModal {
     __weak __typeof(&*self)weakSelf = self;
     [self dismissViewControllerAnimated:YES completion:^{
-        [MarqueeLabel controllerViewAppearing:weakSelf];
+        [MarqueeLabel controllerViewWillAppear:weakSelf];
     }];
 }
      
@@ -218,11 +218,20 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [MarqueeLabel controllerViewAppearing:self];
+    [MarqueeLabel controllerViewWillAppear:self];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+
+    // Optionally could use viewDidAppear bulk method
+    
+    // However, comment out the controllerViewWillAppear: method above, and uncomment the below method
+    // to see the text jump when the modal view is finally fully dismissed. This is because viewDidAppear:
+    // is not called until the view has fully appeared (animations complete, etc) so the text is not reset
+    // to the home position until that point, and then the automatic scrolling begins again.
+    
+    // [MarqueeLabel controllerViewDidAppear:self];
 }
 
 

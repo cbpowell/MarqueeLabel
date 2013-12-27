@@ -257,12 +257,34 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  to all `MarqueeLabel` instances with the specified view controller in their next responder chain. These instances
  will be automatically restarted.
  
+ @warning MarqueeLabel instances in view controllers that appear with animation (such as from underneath a modal-style controller)
+ may experience some text position jumping when this method is used in `viewDidAppear`. Use `controllerViewWillAppear:` inside your
+ view controller's `viewWillAppear:` method to avoid this issue. Currently, both methods use the same procedure to restart label
+ scroll animation.
+ 
  @param controller The view controller that has appeared.
  @see restartLabel
+ @see controllerViewWillAppear:
  @since Available in 1.2.7 and later.
  */
 
 + (void)controllerViewDidAppear:(UIViewController *)controller;
+
+
+/** Prepares all `MarqueeLabel` instances that have the specified view controller in their next responder chain to restart
+ the scroll animation, and then automatically restarts scrolling.
+ 
+ This method is intended to be placed in the `viewDidAppear:` method of view controllers, and sends an `NSNotification`
+ to all `MarqueeLabel` instances with the specified view controller in their next responder chain. These instances
+ will be automatically restarted.
+ 
+ @param controller The view controller that has appeared.
+ @see restartLabel
+ @see controllerViewDidAppear:
+ @since Available in 1.2.7 and later.
+ */
+
++ (void)controllerViewWillAppear:(UIViewController *)controller;
 
 
 /** Restarts all `MarqueeLabel` instances that have the specified view controller in their next responder chain.
@@ -275,7 +297,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  @see restartLabel
  @deprecated Use `controllerViewDidAppear:` instead.
  */
-+ (void)controllerViewAppearing:(UIViewController *)controller __attribute((deprecated("Use controllerViewDidAppear: method")));
++ (void)controllerViewAppearing:(UIViewController *)controller __attribute((deprecated("Use controllerViewWillAppear: method")));
 
 
 /** Labelizes all `MarqueeLabel` instances that have the specified view controller in their next responder chain.
