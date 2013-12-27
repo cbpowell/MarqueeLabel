@@ -6,8 +6,7 @@
 #import "MarqueeLabel.h"
 #import <QuartzCore/QuartzCore.h>
 
-NSString *const kMarqueeLabelViewWillAppearNotification = @"MarqueeLabelViewControllerWillAppear";
-NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewControllerDidAppear";
+NSString *const kMarqueeLabelControllerRestartNotification = @"MarqueeLabelViewControllerRestart";
 NSString *const kMarqueeLabelShouldLabelizeNotification = @"MarqueeLabelShouldLabelizeNotification";
 NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAnimateNotification";
 
@@ -56,18 +55,21 @@ typedef void (^animationCompletionBlock)(void);
 
 #pragma mark - Class Methods and handlers
 
-+ (void)controllerViewWillAppear:(UIViewController *)controller {
++ (void)restartLabelsOfController:(UIViewController *)controller {
     [MarqueeLabel notifyController:controller
-                       withMessage:kMarqueeLabelViewWillAppearNotification];
+                       withMessage:kMarqueeLabelControllerRestartNotification];
+}
+
++ (void)controllerViewWillAppear:(UIViewController *)controller {
+    [MarqueeLabel restartLabelsOfController:controller];
 }
 
 + (void)controllerViewDidAppear:(UIViewController *)controller {
-    [MarqueeLabel notifyController:controller
-                       withMessage:kMarqueeLabelViewDidAppearNotification];
+    [MarqueeLabel restartLabelsOfController:controller];
 }
 
 + (void)controllerViewAppearing:(UIViewController *)controller {
-    [MarqueeLabel controllerViewDidAppear:controller];
+    [MarqueeLabel restartLabelsOfController:controller];
 }
 
 + (void)controllerLabelsShouldLabelize:(UIViewController *)controller {
@@ -90,14 +92,7 @@ typedef void (^animationCompletionBlock)(void);
     }
 }
 
-- (void)viewControllerWillAppear:(NSNotification *)notification {
-    UIViewController *controller = [[notification userInfo] objectForKey:@"controller"];
-    if (controller == [self firstAvailableViewController]) {
-        [self restartLabel];
-    }
-}
-
-- (void)viewControllerDidAppear:(NSNotification *)notification {
+- (void)viewControllerShouldRestart:(NSNotification *)notification {
     UIViewController *controller = [[notification userInfo] objectForKey:@"controller"];
     if (controller == [self firstAvailableViewController]) {
         [self restartLabel];
@@ -201,8 +196,7 @@ typedef void (^animationCompletionBlock)(void);
     
     // Add notification observers
     // Custom class notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewControllerWillAppear:) name:kMarqueeLabelViewWillAppearNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewControllerDidAppear:) name:kMarqueeLabelViewDidAppearNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewControllerShouldRestart:) name:kMarqueeLabelControllerRestartNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(labelsShouldLabelize:) name:kMarqueeLabelShouldLabelizeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(labelsShouldAnimate:) name:kMarqueeLabelShouldAnimateNotification object:nil];
     

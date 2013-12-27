@@ -251,16 +251,34 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 /// @name Bulk-manipulation Methods
 ////////////////////////////////////////////////////////////////////////////////
 
-/** Restarts all `MarqueeLabel` instances that have the specified view controller in their next responder chain.
+/** Convenience method to restart all `MarqueeLabel` instances that have the specified view controller in their next responder chain.
  
- This method is intended to be placed in the `viewDidAppear:` method of view controllers, and sends an `NSNotification`
- to all `MarqueeLabel` instances with the specified view controller in their next responder chain. These instances
- will be automatically restarted.
+ This method sends a `NSNotification` to all `MarqueeLabel` instances with the specified view controller in their next responder chain.
+ The scrolling animation of these instances will be automatically restarted. This is equivalent to calling `restartLabel` on all affected
+ instances.
  
- @warning MarqueeLabel instances in view controllers that appear with animation (such as from underneath a modal-style controller)
- may experience some text position jumping when this method is used in `viewDidAppear`. Use `controllerViewWillAppear:` inside your
- view controller's `viewWillAppear:` method to avoid this issue. Currently, both methods use the same procedure to restart label
- scroll animation.
+ There is currently no functional difference between this method and `controllerViewDidAppear:` or `controllerViewWillAppear:`. The methods may 
+ be used interchangeably.
+ 
+ @warning View controllers that appear with animation (such as from underneath a modal-style controller) can cause some `MarqueeLabel` text
+ position "jumping" when this method is used in `viewDidAppear` if scroll animations are already underway. Use this method inside `viewWillAppear:`
+ instead to avoid this problem.
+ 
+ @warning This method may not function properly if passed the parent view controller when using view controller containment.
+ 
+ @param controller The view controller that has appeared.
+ @see restartLabel
+ @see controllerViewDidAppear:
+ @see controllerViewWillAppear:
+ @since Available in 1.3.1 and later.
+ */
+
++ (void)restartLabelsOfController:(UIViewController *)controller;
+
+
+/** Convenience method to restart all `MarqueeLabel` instances that have the specified view controller in their next responder chain.
+ 
+ Alternative to `restartLabelsOfController:`. This method is retained for backwards compatibility and future enhancements.
  
  @param controller The view controller that has appeared.
  @see restartLabel
@@ -271,17 +289,14 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 + (void)controllerViewDidAppear:(UIViewController *)controller;
 
 
-/** Prepares all `MarqueeLabel` instances that have the specified view controller in their next responder chain to restart
- the scroll animation, and then automatically restarts scrolling.
+/** Convenience method to restart all `MarqueeLabel` instances that have the specified view controller in their next responder chain.
  
- This method is intended to be placed in the `viewDidAppear:` method of view controllers, and sends an `NSNotification`
- to all `MarqueeLabel` instances with the specified view controller in their next responder chain. These instances
- will be automatically restarted.
+ Alternative to `restartLabelsOfController:`. This method is retained for backwards compatibility and future enhancements.
  
  @param controller The view controller that has appeared.
  @see restartLabel
  @see controllerViewDidAppear:
- @since Available in 1.2.7 and later.
+ @since Available in 1.2.8 and later.
  */
 
 + (void)controllerViewWillAppear:(UIViewController *)controller;
@@ -297,7 +312,8 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  @see restartLabel
  @deprecated Use `controllerViewDidAppear:` instead.
  */
-+ (void)controllerViewAppearing:(UIViewController *)controller __attribute((deprecated("Use controllerViewWillAppear: method")));
+
++ (void)controllerViewAppearing:(UIViewController *)controller __attribute((deprecated("Use restartLabelsOfController: method")));
 
 
 /** Labelizes all `MarqueeLabel` instances that have the specified view controller in their next responder chain.
