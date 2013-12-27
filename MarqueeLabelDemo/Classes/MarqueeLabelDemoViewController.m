@@ -195,7 +195,7 @@
 - (void)dismissTheModal {
     __weak __typeof(&*self)weakSelf = self;
     [self dismissViewControllerAnimated:YES completion:^{
-        [MarqueeLabel controllerViewAppearing:weakSelf];
+        [MarqueeLabel controllerViewWillAppear:weakSelf];
     }];
 }
      
@@ -218,7 +218,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [MarqueeLabel controllerViewAppearing:self];
+    [MarqueeLabel controllerViewWillAppear:self];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

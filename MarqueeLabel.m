@@ -6,6 +6,7 @@
 #import "MarqueeLabel.h"
 #import <QuartzCore/QuartzCore.h>
 
+NSString *const kMarqueeLabelViewWillAppearNotification = @"MarqueeLabelViewControllerWillAppear";
 NSString *const kMarqueeLabelViewDidAppearNotification = @"MarqueeLabelViewControllerDidAppear";
 NSString *const kMarqueeLabelShouldLabelizeNotification = @"MarqueeLabelShouldLabelizeNotification";
 NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAnimateNotification";
@@ -55,6 +56,14 @@ typedef void (^animationCompletionBlock)(void);
 
 #pragma mark - Class Methods and handlers
 
++ (void)controllerViewWillAppear:(UIViewController *)controller {
+    if (controller) { // avoid creating NSDictionary with nil object
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelViewWillAppearNotification
+                                                            object:nil
+                                                          userInfo:[NSDictionary dictionaryWithObjectsAndKeys:controller, @"controller", nil]];
+    }
+}
+
 + (void)controllerViewDidAppear:(UIViewController *)controller {
     if (controller) { // avoid creating NSDictionary with nil object
         [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelViewDidAppearNotification
@@ -76,6 +85,13 @@ typedef void (^animationCompletionBlock)(void);
 + (void)controllerLabelsShouldAnimate:(UIViewController *)controller {
     if (controller) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kMarqueeLabelShouldAnimateNotification object:nil userInfo:[NSDictionary dictionaryWithObject:controller forKey:@"controller"]];
+    }
+}
+
+- (void)viewControllerWillAppear:(NSNotification *)notification {
+    UIViewController *controller = [[notification userInfo] objectForKey:@"controller"];
+    if (controller == [self firstAvailableUIViewController]) {
+        [self restartLabel];
     }
 }
 

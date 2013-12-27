@@ -112,6 +112,7 @@ typedef enum {
 
 
 // Class Methods
++ (void)controllerViewWillAppear:(UIViewController *)controller;
 + (void)controllerViewDidAppear:(UIViewController *)controller;
 + (void)controllerLabelsShouldLabelize:(UIViewController *)controller;
 + (void)controllerLabelsShouldAnimate:(UIViewController *)controller;
