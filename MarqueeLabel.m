@@ -891,6 +891,26 @@ typedef void (^animationCompletionBlock)(void);
 
 #pragma mark - Custom Getters and Setters
 
+- (void)setRate:(CGFloat)rate {
+    if (_rate == rate) {
+        return;
+    }
+    
+    _lengthOfScroll = 0.0f;
+    _rate = rate;
+    [self updateSublabelAndLocations];
+}
+
+- (void)setLengthOfScroll:(NSTimeInterval)lengthOfScroll {
+    if (_lengthOfScroll == lengthOfScroll) {
+        return;
+    }
+    
+    _rate = 0.0f;
+    _lengthOfScroll = lengthOfScroll;
+    [self updateSublabelAndLocations];
+}
+
 - (void)setAnimationCurve:(UIViewAnimationOptions)animationCurve {
     if (_animationCurve == animationCurve) {
         return;

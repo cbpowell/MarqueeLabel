@@ -153,6 +153,32 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 @property (nonatomic, assign) MarqueeType marqueeType;
 
 
+/** Defines the duration of the scrolling animation.
+ 
+ This property sets the amount of time it will take for the scrolling animation to complete 1/2 of a
+ scrolling cycle. For `MLContinous` and `MLContinousReverse` types, this will be 1/2 the time for the
+ label to loop around to the original location.
+ 
+ Setting this property will automatically override any value previously set to the `rate` property, and the `rate`
+ property will be set to `0.0`.
+ 
+ @see rate
+ */
+
+@property (nonatomic, assign) NSTimeInterval lengthOfScroll;
+
+
+/** Defines the rate at which the label will scroll, in pixels per second.
+ 
+ Setting this property will automatically override any value previousy set to the `lengthOfScroll` property, and the
+ `lengthOfScroll` property will be set to `0.0`.
+ 
+ @see lengthOfScroll
+ */
+
+@property (nonatomic, assign) CGFloat rate;
+
+
 /** The additional amount of space (in points) inbetween the strings of a continuous-type label.
  
  The minimum spacing is two times the specified fade length.
