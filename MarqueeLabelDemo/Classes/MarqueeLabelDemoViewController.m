@@ -69,11 +69,13 @@
     #endif
     
     // Rate label example
-    MarqueeLabel *rateLabelOne = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 200, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
+    MarqueeLabel *rateLabelOne = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 200, self.view.frame.size.width-20, 20)];
+    rateLabelOne.rate = 200.0f;
+    rateLabelOne.fadeLength = 10.0f;
+    
     rateLabelOne.numberOfLines = 1;
     rateLabelOne.opaque = NO;
     rateLabelOne.enabled = YES;
-    rateLabelOne.fadeLength = 10.f;
     rateLabelOne.shadowOffset = CGSizeMake(0.0, -1.0);
     rateLabelOne.textAlignment = NSTextAlignmentLeft;
     rateLabelOne.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];

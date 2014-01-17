@@ -27,8 +27,6 @@ typedef void (^animationCompletionBlock)(void);
 @property (nonatomic, strong) id orientationObserver;
 
 @property (nonatomic, assign) NSTimeInterval animationDuration;
-@property (nonatomic, assign) NSTimeInterval lengthOfScroll;
-@property (nonatomic, assign) CGFloat rate;
 @property (nonatomic, assign, readonly) BOOL labelShouldScroll;
 @property (nonatomic, weak) UITapGestureRecognizer *tapRecognizer;
 @property (nonatomic, assign) CGRect homeLabelFrame;
