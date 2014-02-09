@@ -313,8 +313,8 @@ typedef void (^animationCompletionBlock)(void);
     // Move to origin
     [self returnLabelToOriginImmediately];
     
-    // Check if label is labelized, or does not need to scroll
-    if (self.labelize || !self.labelShouldScroll) {
+    // Check if label should scroll
+    if (!self.labelShouldScroll) {
         // Set text alignment and break mode to act like normal label
         [self.subLabel setTextAlignment:[super textAlignment]];
         [self.subLabel setLineBreakMode:[super lineBreakMode]];
