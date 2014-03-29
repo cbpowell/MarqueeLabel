@@ -333,7 +333,7 @@ typedef void (^animationCompletionBlock)(void);
         {
             self.homeLabelFrame = CGRectIntegral(CGRectMake(self.fadeLength, 0.0f, expectedLabelSize.width, expectedLabelSize.height));
             CGFloat awayLabelOffset = -(self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer);
-            self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, awayLabelOffset, 0.0f);
+            self.awayLabelFrame = CGRectIntegral(CGRectOffset(self.homeLabelFrame, awayLabelOffset, 0.0f));
             
             NSArray *labels = [self allSubLabels];
             if (labels.count < 2) {
@@ -359,7 +359,7 @@ typedef void (^animationCompletionBlock)(void);
         {
             self.homeLabelFrame = CGRectIntegral(CGRectMake(self.bounds.size.width - (expectedLabelSize.width + self.fadeLength), 0.0f, expectedLabelSize.width, expectedLabelSize.height));
             CGFloat awayLabelOffset = (self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer);
-            self.awayLabelFrame = CGRectOffset(self.homeLabelFrame, awayLabelOffset, 0.0f);
+            self.awayLabelFrame = CGRectIntegral(CGRectOffset(self.homeLabelFrame, awayLabelOffset, 0.0f));
             
             NSArray *labels = [self allSubLabels];
             if (labels.count < 2) {
@@ -627,10 +627,10 @@ typedef void (^animationCompletionBlock)(void);
                         options:self.animationCurve
                      animations:^{
                          for (UILabel *sl in labels) {
-                             sl.frame = CGRectOffset(self.awayLabelFrame, offset, 0.0f);
+                             sl.frame = CGRectIntegral(CGRectOffset(self.awayLabelFrame, offset, 0.0f));
                              
                              // Increment offset
-                             offset += (self.marqueeType == MLContinuousReverse ? -1 : 1) * (self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer);
+                             offset += (self.marqueeType == MLContinuousReverse ? -1.0f : 1.0f) * (self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer);
                          }
                      }
                      completion:^(BOOL finished) {
@@ -646,8 +646,8 @@ typedef void (^animationCompletionBlock)(void);
     CGFloat offset = 0.0f;
     for (UILabel *sl in labels) {
         [sl.layer removeAllAnimations];
-        sl.frame = CGRectOffset(self.homeLabelFrame, offset, 0.0f);
-        offset += (self.marqueeType == MLContinuousReverse ? -1 : 1) * (self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer);
+        sl.frame = CGRectIntegral(CGRectOffset(self.homeLabelFrame, offset, 0.0f));
+        offset += (self.marqueeType == MLContinuousReverse ? -1.0f : 1.0f) * (self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer);
     }
     
     if (self.subLabel.frame.origin.x == self.homeLabelFrame.origin.x) {
