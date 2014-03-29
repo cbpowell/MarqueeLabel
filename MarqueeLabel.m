@@ -230,7 +230,7 @@ typedef void (^animationCompletionBlock)(void);
                                                                                                                                                        object:nil
                                                                                                                                                         queue:nil
                                                                                                                                                    usingBlock:^(NSNotification *notification){
-                                                                                                                                                       if ([notification.userInfo objectForKey:@"delegate"] == self.window) {
+                                                                                                                                                       if ([notification.userInfo objectForKey:@"delegate"] == weakSelf.window) {
                                                                                                                                                            weakSelf.orientationWillChange = NO;
                                                                                                                                                            [weakSelf restartLabel];
                                                                                                                                                            
