@@ -281,6 +281,14 @@ typedef void (^animationCompletionBlock)(void);
 
 #pragma mark - MarqueeLabel Heavy Lifting
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    [self applyGradientMaskForFadeLength:self.fadeLength animated:!self.orientationWillChange];
+    [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
+}
+
 - (void)updateSublabelAndLocations {
     [self updateSublabelAndLocationsAndBeginScroll:YES];
 }
@@ -712,19 +720,6 @@ typedef void (^animationCompletionBlock)(void);
 }
 
 #pragma mark - Modified UILabel Getters/Setters
-
-- (void)setBounds:(CGRect)bounds {
-    CGRect oldBounds = self.bounds;
-    
-    [super setBounds:bounds];
-    
-    if (CGSizeEqualToSize(bounds.size, oldBounds.size)) {
-        return;
-    }
-    
-    [self applyGradientMaskForFadeLength:self.fadeLength animated:!self.orientationWillChange];
-    [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
-}
 
 - (NSString *)text {
     return self.subLabel.text;
