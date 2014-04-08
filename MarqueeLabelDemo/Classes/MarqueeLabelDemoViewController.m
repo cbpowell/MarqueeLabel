@@ -40,7 +40,7 @@
     // Timer for changing texts
     self.labelChangeTimer = [NSTimer scheduledTimerWithTimeInterval:4 target:self selector:@selector(changeTheLabel) userInfo:nil repeats:YES];
     
-    MarqueeLabel *durationLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 100, self.view.frame.size.width-20.0f, 20.0f) duration:8.0 andFadeLength:10.0f];
+    CBPMarqueeLabel *durationLabel = [[CBPMarqueeLabel alloc] initWithFrame:CGRectMake(10, 100, self.view.frame.size.width-20.0f, 20.0f) duration:8.0 andFadeLength:10.0f];
     durationLabel.tag = 101;
     durationLabel.numberOfLines = 1;
     durationLabel.shadowOffset = CGSizeMake(0.0, -1.0);
@@ -53,7 +53,7 @@
     
     #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
     MarqueeLabel *attributedLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 130, self.view.frame.size.width-20.0f, 26.0f) duration:8.0 andFadeLength:10.0f];
-    attributedLabel.marqueeType = MLContinuous;
+    attributedLabel.marqueeType = CBPMarqueeLabelTypeContinuous;
     attributedLabel.numberOfLines = 1;
     attributedLabel.textAlignment = NSTextAlignmentLeft;
     attributedLabel.backgroundColor = [UIColor clearColor];
@@ -69,7 +69,7 @@
     #endif
     
     // Rate label example
-    MarqueeLabel *rateLabelOne = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 200, self.view.frame.size.width-20, 20)];
+    CBPMarqueeLabel *rateLabelOne = [[CBPMarqueeLabel alloc] initWithFrame:CGRectMake(10, 200, self.view.frame.size.width-20, 20)];
     rateLabelOne.rate = 200.0f;
     rateLabelOne.fadeLength = 10.0f;
     
@@ -89,7 +89,7 @@
     
     
     // Tap to scroll
-    MarqueeLabel *tapToScrollLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 230, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
+    CBPMarqueeLabel *tapToScrollLabel = [[CBPMarqueeLabel alloc] initWithFrame:CGRectMake(10, 230, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
     tapToScrollLabel.numberOfLines = 1;
     tapToScrollLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     tapToScrollLabel.textAlignment = NSTextAlignmentLeft;
@@ -101,22 +101,22 @@
     [self.view addSubview:tapToScrollLabel];
     
     
-    // MLRightLeft label example
-    MarqueeLabel *rightLeftLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 260, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
+    // CBPMarqueeLabelTypeRightLeft label example
+    CBPMarqueeLabel *rightLeftLabel = [[CBPMarqueeLabel alloc] initWithFrame:CGRectMake(10, 260, self.view.frame.size.width-20, 20) rate:50.0f andFadeLength:10.0f];
     rightLeftLabel.numberOfLines = 1;
     rightLeftLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     rightLeftLabel.textAlignment = NSTextAlignmentRight;
     rightLeftLabel.textColor = [UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000];
     rightLeftLabel.backgroundColor = [UIColor clearColor];
     rightLeftLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:17.000];
-    rightLeftLabel.marqueeType = MLRightLeft;
+    rightLeftLabel.marqueeType = CBPMarqueeLabelTypeRightLeft;
     rightLeftLabel.text = @"This text is not as long, but still long enough to scroll, and scrolls the same speed but to the right first!";
     [self.view addSubview:rightLeftLabel];
     
     // Continuous label example
-    MarqueeLabel *continuousLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 300, self.view.frame.size.width-20, 20) rate:100.0f andFadeLength:10.0f];
+    CBPMarqueeLabel *continuousLabel = [[CBPMarqueeLabel alloc] initWithFrame:CGRectMake(10, 300, self.view.frame.size.width-20, 20) rate:100.0f andFadeLength:10.0f];
     continuousLabel.tag = 102;
-    continuousLabel.marqueeType = MLContinuous;
+    continuousLabel.marqueeType = CBPMarqueeLabelTypeContinuous;
     continuousLabel.numberOfLines = 1;
     continuousLabel.opaque = NO;
     continuousLabel.enabled = YES;
@@ -129,9 +129,9 @@
     [self.view addSubview:continuousLabel];
     
     // Second continuous label example
-    MarqueeLabel *continuousLabel2 = [[MarqueeLabel alloc] initWithFrame:CGRectMake(10, 330, self.view.frame.size.width-20, 20) rate:100.0f andFadeLength:10.0f];
+    CBPMarqueeLabel *continuousLabel2 = [[CBPMarqueeLabel alloc] initWithFrame:CGRectMake(10, 330, self.view.frame.size.width-20, 20) rate:100.0f andFadeLength:10.0f];
     continuousLabel2.tag = 101;
-    continuousLabel2.marqueeType = MLContinuous;
+    continuousLabel2.marqueeType = CBPMarqueeLabelTypeContinuous;
     continuousLabel2.animationCurve = UIViewAnimationOptionCurveLinear;
     continuousLabel2.continuousMarqueeExtraBuffer = 50.0f;
     continuousLabel2.numberOfLines = 1;
@@ -158,16 +158,16 @@
     // Generate even or odd
     int i = arc4random() % 2;
     if (i == 0) {
-        [(MarqueeLabel *)[self.view viewWithTag:101] setText:@"This label is not as long."];
-        [(MarqueeLabel *)[self.view viewWithTag:102] setText:@"That also scrolls continuously rather than scrolling back and forth!"];
+        [(CBPMarqueeLabel *)[self.view viewWithTag:101] setText:@"This label is not as long."];
+        [(CBPMarqueeLabel *)[self.view viewWithTag:102] setText:@"That also scrolls continuously rather than scrolling back and forth!"];
     } else {
-        [(MarqueeLabel *)[self.view viewWithTag:101] setText:@"Now we've switched to a string of text that is longer than the specified frame, and will scroll."];
-        [(MarqueeLabel *)[self.view viewWithTag:102] setText:@"This is a short, centered label."];
+        [(CBPMarqueeLabel *)[self.view viewWithTag:101] setText:@"Now we've switched to a string of text that is longer than the specified frame, and will scroll."];
+        [(CBPMarqueeLabel *)[self.view viewWithTag:102] setText:@"This is a short, centered label."];
     }
 }
 
 - (void)pauseTap:(UITapGestureRecognizer *)recognizer {
-    MarqueeLabel *continuousLabel2 = (MarqueeLabel *)recognizer.view;
+    CBPMarqueeLabel *continuousLabel2 = (CBPMarqueeLabel *)recognizer.view;
     
     if (recognizer.state == UIGestureRecognizerStateEnded) {
         if (!continuousLabel2.isPaused) {
@@ -180,8 +180,8 @@
 
 - (IBAction)labelizeSwitched:(UISwitch *)sender {
     for (UIView *v in self.view.subviews) {
-        if ([v isKindOfClass:[MarqueeLabel class]]) {
-            [(MarqueeLabel *)v setLabelize:sender.on];
+        if ([v isKindOfClass:[CBPMarqueeLabel class]]) {
+            [(CBPMarqueeLabel *)v setLabelize:sender.on];
         }
     }
 }
@@ -197,7 +197,7 @@
 - (void)dismissTheModal {
     __weak __typeof(&*self)weakSelf = self;
     [self dismissViewControllerAnimated:YES completion:^{
-        [MarqueeLabel controllerViewWillAppear:weakSelf];
+        [CBPMarqueeLabel controllerViewWillAppear:weakSelf];
     }];
 }
      
@@ -220,7 +220,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [MarqueeLabel controllerViewWillAppear:self];
+    [CBPMarqueeLabel controllerViewWillAppear:self];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

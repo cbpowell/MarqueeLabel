@@ -1,14 +1,14 @@
 
 //
-//  MarqueeLabel.m
+//  CBPMarqueeLabel.m
 //  
 
-#import "MarqueeLabel.h"
+#import "CBPMarqueeLabel.h"
 #import <QuartzCore/QuartzCore.h>
 
-NSString *const kMarqueeLabelControllerRestartNotification = @"MarqueeLabelViewControllerRestart";
-NSString *const kMarqueeLabelShouldLabelizeNotification = @"MarqueeLabelShouldLabelizeNotification";
-NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAnimateNotification";
+NSString *const kCBPMarqueeLabelControllerRestartNotification = @"kCBPMarqueeLabelControllerRestartNotification";
+NSString *const kCBPMarqueeLabelShouldLabelizeNotification = @"kCBPMarqueeLabelShouldLabelizeNotification";
+NSString *const kCBPMarqueeLabelShouldAnimateNotification = @"kCBPMarqueeLabelShouldAnimateNotification";
 
 typedef void (^animationCompletionBlock)(void);
 
@@ -18,7 +18,7 @@ typedef void (^animationCompletionBlock)(void);
 - (id)traverseResponderChainForFirstViewController;
 @end
 
-@interface MarqueeLabel()
+@interface CBPMarqueeLabel()
 
 @property (nonatomic, strong) UILabel *subLabel;
 
@@ -49,35 +49,35 @@ typedef void (^animationCompletionBlock)(void);
 @end
 
 
-@implementation MarqueeLabel
+@implementation CBPMarqueeLabel
 
 #pragma mark - Class Methods and handlers
 
 + (void)restartLabelsOfController:(UIViewController *)controller {
-    [MarqueeLabel notifyController:controller
-                       withMessage:kMarqueeLabelControllerRestartNotification];
+    [CBPMarqueeLabel notifyController:controller
+                       withMessage:kCBPMarqueeLabelControllerRestartNotification];
 }
 
 + (void)controllerViewWillAppear:(UIViewController *)controller {
-    [MarqueeLabel restartLabelsOfController:controller];
+    [CBPMarqueeLabel restartLabelsOfController:controller];
 }
 
 + (void)controllerViewDidAppear:(UIViewController *)controller {
-    [MarqueeLabel restartLabelsOfController:controller];
+    [CBPMarqueeLabel restartLabelsOfController:controller];
 }
 
 + (void)controllerViewAppearing:(UIViewController *)controller {
-    [MarqueeLabel restartLabelsOfController:controller];
+    [CBPMarqueeLabel restartLabelsOfController:controller];
 }
 
 + (void)controllerLabelsShouldLabelize:(UIViewController *)controller {
-    [MarqueeLabel notifyController:controller
-                       withMessage:kMarqueeLabelShouldLabelizeNotification];
+    [CBPMarqueeLabel notifyController:controller
+                       withMessage:kCBPMarqueeLabelShouldLabelizeNotification];
 }
 
 + (void)controllerLabelsShouldAnimate:(UIViewController *)controller {
-    [MarqueeLabel notifyController:controller
-                       withMessage:kMarqueeLabelShouldAnimateNotification];
+    [CBPMarqueeLabel notifyController:controller
+                       withMessage:kCBPMarqueeLabelShouldAnimateNotification];
 }
 
 + (void)notifyController:(UIViewController *)controller withMessage:(NSString *)message
@@ -194,9 +194,9 @@ typedef void (^animationCompletionBlock)(void);
     
     // Add notification observers
     // Custom class notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewControllerShouldRestart:) name:kMarqueeLabelControllerRestartNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(labelsShouldLabelize:) name:kMarqueeLabelShouldLabelizeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(labelsShouldAnimate:) name:kMarqueeLabelShouldAnimateNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewControllerShouldRestart:) name:kCBPMarqueeLabelControllerRestartNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(labelsShouldLabelize:) name:kCBPMarqueeLabelShouldLabelizeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(labelsShouldAnimate:) name:kCBPMarqueeLabelShouldAnimateNotification object:nil];
     
     // UINavigationController view controller change notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(observedViewControllerChange:) name:@"UINavigationControllerDidShowViewControllerNotification" object:nil];
@@ -312,7 +312,7 @@ typedef void (^animationCompletionBlock)(void);
         self.homeLabelFrame = labelFrame;
         self.awayLabelFrame = labelFrame;
         
-        // Remove any additional text layers (for MLContinuous)
+        // Remove any additional text layers (for CBPMarqueeLabelTypeContinuous)
         NSArray *labels = [self allSubLabels];
         for (UILabel *sl in labels) {
             if (sl != self.subLabel) {
@@ -329,7 +329,7 @@ typedef void (^animationCompletionBlock)(void);
     [self.subLabel setLineBreakMode:NSLineBreakByClipping];
     
     switch (self.marqueeType) {
-        case MLContinuous:
+        case CBPMarqueeLabelTypeContinuous:
         {
             self.homeLabelFrame = CGRectIntegral(CGRectMake(self.fadeLength, 0.0f, expectedLabelSize.width, expectedLabelSize.height));
             CGFloat awayLabelOffset = -(self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer);
@@ -355,7 +355,7 @@ typedef void (^animationCompletionBlock)(void);
             break;
         }
             
-        case MLContinuousReverse:
+        case CBPMarqueeLabelTypeContinuousReverse:
         {
             self.homeLabelFrame = CGRectIntegral(CGRectMake(self.bounds.size.width - (expectedLabelSize.width + self.fadeLength), 0.0f, expectedLabelSize.width, expectedLabelSize.height));
             CGFloat awayLabelOffset = (self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer);
@@ -381,7 +381,7 @@ typedef void (^animationCompletionBlock)(void);
             break;
         }
             
-        case MLRightLeft:
+        case CBPMarqueeLabelTypeRightLeft:
         {
             self.homeLabelFrame = CGRectIntegral(CGRectMake(self.bounds.size.width - (expectedLabelSize.width + self.fadeLength), 0.0f, expectedLabelSize.width, expectedLabelSize.height));
             self.awayLabelFrame = CGRectIntegral(CGRectMake(self.fadeLength, 0.0f, expectedLabelSize.width, expectedLabelSize.height));
@@ -505,13 +505,13 @@ typedef void (^animationCompletionBlock)(void);
         return NO;
     }
     
-    BOOL labelWidth = (self.bounds.size.width < [self subLabelSize].width + (self.marqueeType == MLContinuous ? 2 * self.fadeLength : self.fadeLength));
+    BOOL labelWidth = (self.bounds.size.width < [self subLabelSize].width + (self.marqueeType == CBPMarqueeLabelTypeContinuous ? 2 * self.fadeLength : self.fadeLength));
     return (!self.labelize && labelWidth);
 }
 
 - (NSTimeInterval)durationForInterval:(NSTimeInterval)interval {
     switch (self.marqueeType) {
-        case MLContinuous:
+        case CBPMarqueeLabelTypeContinuous:
             return (interval * 2.0);
             break;
         default:
@@ -526,8 +526,8 @@ typedef void (^animationCompletionBlock)(void);
 
 - (void)beginScrollWithDelay:(BOOL)delay {
     switch (self.marqueeType) {
-        case MLContinuous:
-        case MLContinuousReverse:
+        case CBPMarqueeLabelTypeContinuous:
+        case CBPMarqueeLabelTypeContinuousReverse:
             [self scrollContinuousWithInterval:[self durationForInterval:self.animationDuration] after:(delay ? self.animationDelay : 0.0)];
             break;
         default:
@@ -630,7 +630,7 @@ typedef void (^animationCompletionBlock)(void);
                              sl.frame = CGRectIntegral(CGRectOffset(self.awayLabelFrame, offset, 0.0f));
                              
                              // Increment offset
-                             offset += (self.marqueeType == MLContinuousReverse ? -1.0f : 1.0f) * (self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer);
+                             offset += (self.marqueeType == CBPMarqueeLabelTypeContinuousReverse ? -1.0f : 1.0f) * (self.homeLabelFrame.size.width + 2 * self.fadeLength + self.continuousMarqueeExtraBuffer);
                          }
                      }
                      completion:^(BOOL finished) {
@@ -647,7 +647,7 @@ typedef void (^animationCompletionBlock)(void);
     for (UILabel *sl in labels) {
         [sl.layer removeAllAnimations];
         sl.frame = CGRectIntegral(CGRectOffset(self.homeLabelFrame, offset, 0.0f));
-        offset += (self.marqueeType == MLContinuousReverse ? -1.0f : 1.0f) * (self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer);
+        offset += (self.marqueeType == CBPMarqueeLabelTypeContinuousReverse ? -1.0f : 1.0f) * (self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer);
     }
     
     if (self.subLabel.frame.origin.x == self.homeLabelFrame.origin.x) {
@@ -959,14 +959,14 @@ typedef void (^animationCompletionBlock)(void);
     }
 }
 
-- (void)setMarqueeType:(MarqueeType)marqueeType {
+- (void)setMarqueeType:(CBPMarqueeLabelType)marqueeType {
     if (marqueeType == _marqueeType) {
         return;
     }
     
     _marqueeType = marqueeType;
     
-    if (_marqueeType == MLContinuous) {
+    if (_marqueeType == CBPMarqueeLabelTypeContinuous) {
         
     } else {
         // Remove any second text layers

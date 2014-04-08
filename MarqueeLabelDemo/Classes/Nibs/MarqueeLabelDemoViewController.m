@@ -43,16 +43,16 @@
     // Generate even or odd
     int i = arc4random() % 2;
     if (i == 0) {
-        [(MarqueeLabel *)[self.view viewWithTag:101] setText:@"This label is not as long."];
-        [(MarqueeLabel *)[self.view viewWithTag:102] setText:@"That also scrolls continuously rather than scrolling back and forth!"];
+        [(CBPMarqueeLabel *)[self.view viewWithTag:101] setText:@"This label is not as long."];
+        [(CBPMarqueeLabel *)[self.view viewWithTag:102] setText:@"That also scrolls continuously rather than scrolling back and forth!"];
     } else {
-        [(MarqueeLabel *)[self.view viewWithTag:101] setText:@"Now we've switched to a string of text that is longer than the specified frame, and will scroll."];
-        [(MarqueeLabel *)[self.view viewWithTag:102] setText:@"This is a short, centered label."];
+        [(CBPMarqueeLabel *)[self.view viewWithTag:101] setText:@"Now we've switched to a string of text that is longer than the specified frame, and will scroll."];
+        [(CBPMarqueeLabel *)[self.view viewWithTag:102] setText:@"This is a short, centered label."];
     }
 }
 
 - (void)pauseTap:(UITapGestureRecognizer *)recognizer {
-    MarqueeLabel *continuousLabel2 = (MarqueeLabel *)recognizer.view;
+    CBPMarqueeLabel *continuousLabel2 = (CBPMarqueeLabel *)recognizer.view;
     
     if (recognizer.state == UIGestureRecognizerStateEnded) {
         if (!continuousLabel2.isPaused) {
@@ -65,7 +65,7 @@
 
 - (IBAction)labelizeSwitched:(UISwitch *)sender {
     for (UIView *v in self.view.subviews) {
-        if ([v isKindOfClass:[MarqueeLabel class]]) {
+        if ([v isKindOfClass:[CBPMarqueeLabel class]]) {
             [(MarqueeLabel *)v setLabelize:sender.on];
         }
     }
@@ -96,7 +96,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [MarqueeLabel controllerViewAppearing:self];
+    [CBPMarqueeLabel controllerViewAppearing:self];
 }
 
 

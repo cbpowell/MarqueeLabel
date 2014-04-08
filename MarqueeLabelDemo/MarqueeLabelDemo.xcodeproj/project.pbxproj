@@ -19,7 +19,7 @@
 		8B660C6D16BCFEEF007F9463 /* ModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0F26DF159947B60052559F /* ModalViewController.xib */; };
 		8B660C6F16BCFEEF007F9463 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		8B660C7016BCFEEF007F9463 /* MarqueeLabelDemoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* MarqueeLabelDemoAppDelegate.m */; };
-		8B660C7216BCFEEF007F9463 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */; };
+		8B660C7216BCFEEF007F9463 /* CBPMarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EA646A1312F7A5B000F31B16 /* CBPMarqueeLabel.m */; };
 		8B660C7316BCFEEF007F9463 /* ModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0F26DE159947B60052559F /* ModalViewController.m */; };
 		8B660C7516BCFEEF007F9463 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABFD319150D55CC00216FCE /* QuartzCore.framework */; };
 		8B660C7616BCFEEF007F9463 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -30,7 +30,7 @@
 		EA0F26E0159947B60052559F /* ModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0F26DE159947B60052559F /* ModalViewController.m */; };
 		EA0F26E1159947B60052559F /* ModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0F26DF159947B60052559F /* ModalViewController.xib */; };
 		EA41461816D340B4004A3B02 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA41461716D340B4004A3B02 /* CoreText.framework */; };
-		EA646A1412F7A5B000F31B16 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */; };
+		EA646A1412F7A5B000F31B16 /* CBPMarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EA646A1312F7A5B000F31B16 /* CBPMarqueeLabel.m */; };
 		EA86D35F1716384E0019F1BB /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAA86CD6170FBF6400F91CEE /* Default-568h@2x.png */; };
 		EAA86CD7170FBF6400F91CEE /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAA86CD6170FBF6400F91CEE /* Default-568h@2x.png */; };
 		EABFD31A150D55CC00216FCE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABFD319150D55CC00216FCE /* QuartzCore.framework */; };
@@ -59,8 +59,8 @@
 		EA0F26DE159947B60052559F /* ModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalViewController.m; sourceTree = "<group>"; };
 		EA0F26DF159947B60052559F /* ModalViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ModalViewController.xib; path = Classes/ModalViewController.xib; sourceTree = "<group>"; };
 		EA41461716D340B4004A3B02 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		EA646A1212F7A5B000F31B16 /* MarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MarqueeLabel.h; path = ../MarqueeLabel.h; sourceTree = SOURCE_ROOT; };
-		EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MarqueeLabel.m; path = ../MarqueeLabel.m; sourceTree = SOURCE_ROOT; };
+		EA646A1212F7A5B000F31B16 /* CBPMarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CBPMarqueeLabel.h; path = ../CBPMarqueeLabel.h; sourceTree = SOURCE_ROOT; };
+		EA646A1312F7A5B000F31B16 /* CBPMarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CBPMarqueeLabel.m; path = ../CBPMarqueeLabel.m; sourceTree = SOURCE_ROOT; };
 		EAA86CD6170FBF6400F91CEE /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		EABFD319150D55CC00216FCE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -96,8 +96,8 @@
 			isa = PBXGroup;
 			children = (
 				8B660C7E16BCFFB1007F9463 /* Nibs */,
-				EA646A1212F7A5B000F31B16 /* MarqueeLabel.h */,
-				EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */,
+				EA646A1212F7A5B000F31B16 /* CBPMarqueeLabel.h */,
+				EA646A1312F7A5B000F31B16 /* CBPMarqueeLabel.m */,
 				1D3623240D0F684500981E51 /* MarqueeLabelDemoAppDelegate.h */,
 				1D3623250D0F684500981E51 /* MarqueeLabelDemoAppDelegate.m */,
 				28D7ACF60DDB3853001CB0EB /* MarqueeLabelDemoViewController.h */,
@@ -271,7 +271,7 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* MarqueeLabelDemoAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* MarqueeLabelDemoViewController.m in Sources */,
-				EA646A1412F7A5B000F31B16 /* MarqueeLabel.m in Sources */,
+				EA646A1412F7A5B000F31B16 /* CBPMarqueeLabel.m in Sources */,
 				EA0F26E0159947B60052559F /* ModalViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,7 +282,7 @@
 			files = (
 				8B660C6F16BCFEEF007F9463 /* main.m in Sources */,
 				8B660C7016BCFEEF007F9463 /* MarqueeLabelDemoAppDelegate.m in Sources */,
-				8B660C7216BCFEEF007F9463 /* MarqueeLabel.m in Sources */,
+				8B660C7216BCFEEF007F9463 /* CBPMarqueeLabel.m in Sources */,
 				8B660C7316BCFEEF007F9463 /* ModalViewController.m in Sources */,
 				8B660C8116BCFFB1007F9463 /* MarqueeLabelDemoViewController.m in Sources */,
 			);
