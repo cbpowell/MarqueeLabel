@@ -29,7 +29,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MarqueeLabel.h"
+#import "CBPMarqueeLabel.h"
 
 @interface MarqueeLabelDemoViewController : UIViewController
 
