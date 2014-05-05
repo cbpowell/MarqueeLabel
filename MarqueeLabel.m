@@ -1041,10 +1041,6 @@ typedef void (^animationCompletionBlock)(void);
 
 #pragma mark -
 
-- (void)drawRect:(CGRect)rect {
-    // Do nothing, override UILabel drawing
-}
-
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self.orientationObserver];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
