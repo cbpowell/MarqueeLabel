@@ -566,12 +566,13 @@ typedef void (^animationCompletionBlock)(void);
         return;
     }
     
-    // Perform animation
-    self.awayFromHome = YES;
-    
     [self.subLabel.layer removeAllAnimations];
     [self.layer removeAllAnimations];
     
+    // Call pre-animation method
+    [self labelWillBeginScroll];
+    
+    // Animate
     [UIView animateWithDuration:interval
                           delay:delayAmount
                         options:self.animationCurve
@@ -583,6 +584,9 @@ typedef void (^animationCompletionBlock)(void);
                              [self scrollHomeWithInterval:interval delayAmount:delayAmount];
                          }
                      }];
+    
+    // Move to away state
+    self.awayFromHome = YES;
 }
 
 - (void)scrollHomeWithInterval:(NSTimeInterval)interval {
@@ -605,9 +609,13 @@ typedef void (^animationCompletionBlock)(void);
                          self.subLabel.frame = self.homeLabelFrame;
                      }
                      completion:^(BOOL finished){
+                         // Call completion method
+                         [self labelReturnedToHome:finished];
+                         
                          if (finished) {
                              // Set awayFromHome
                              self.awayFromHome = NO;
+                             
                              if (!self.tapToScroll && !self.holdScrolling) {
                                  [self scrollAwayWithInterval:interval];
                              }
@@ -633,6 +641,9 @@ typedef void (^animationCompletionBlock)(void);
     
     self.awayFromHome = YES;
     
+    // Call pre-animation method
+    [self labelWillBeginScroll];
+    
     // Animate
     [UIView animateWithDuration:interval
                           delay:delayAmount
@@ -646,6 +657,9 @@ typedef void (^animationCompletionBlock)(void);
                          }
                      }
                      completion:^(BOOL finished) {
+                         // Call completion method
+                         [self labelReturnedToHome:finished];
+                         
                          if (finished && !self.tapToScroll && !self.holdScrolling) {
                              self.awayFromHome = NO;
                              [self scrollContinuousWithInterval:interval after:delayAmount];
@@ -721,6 +735,14 @@ typedef void (^animationCompletionBlock)(void);
     if (self.labelShouldScroll) {
         [self beginScrollWithDelay:NO];
     }
+}
+
+- (void)labelWillBeginScroll {
+    return;
+}
+
+- (void)labelReturnedToHome:(BOOL)finished {
+    return;
 }
 
 #pragma mark - Modified UILabel Getters/Setters

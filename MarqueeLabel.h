@@ -253,12 +253,40 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 
 - (void)pauseLabel;
 
+
 /** Un-pauses a previously paused text scrolling animation
  
  @see pauseLabel
  */
 
 - (void)unpauseLabel;
+
+
+/** Called when the label animation is about to begin.
+ 
+ The default implementation of this method does nothing. Subclasses may override this method in order to perform any custom actions before
+ the label animation begins. This is only called in the event that the conditions for scrolling to begin are met.
+ 
+ @since Available in 1.5.0 and later.
+ */
+
+- (void)labelWillBeginScroll;
+
+
+/** Called when the label animation has finished, and the label is at the home position.
+ 
+ The default implementation of this method does nothing. Subclasses may override this method in order to perform any custom actions after
+ the label animation is complete, and before the next animation would begin (assuming the conditions are met).
+ 
+ @param A Boolean that indicates whether or not the scroll animation actually finished before the completion handler was called.
+ @since Available in 1.5.0 and later.
+ 
+ @warning This method will be called, and the `finished` parameter will be `NO`, when any property changes are made that would cause the label 
+ scrolling to be automatically reset. This includes changes to label text and font/font size changes.
+ */
+
+- (void)labelReturnedToHome:(BOOL)finished;
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
