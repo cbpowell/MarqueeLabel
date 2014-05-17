@@ -262,6 +262,11 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 - (void)unpauseLabel;
 
 
+
+////////////////////////////////////////////////////////////////////////////////
+/// @name Animation Status
+////////////////////////////////////////////////////////////////////////////////
+
 /** Called when the label animation is about to begin.
  
  The default implementation of this method does nothing. Subclasses may override this method in order to perform any custom actions before
@@ -278,7 +283,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  The default implementation of this method does nothing. Subclasses may override this method in order to perform any custom actions after
  the label animation is complete, and before the next animation would begin (assuming the conditions are met).
  
- @param A Boolean that indicates whether or not the scroll animation actually finished before the completion handler was called.
+ @param finished A Boolean that indicates whether or not the scroll animation actually finished before the completion handler was called.
  @since Available in 1.5.0 and later.
  
  @warning This method will be called, and the `finished` parameter will be `NO`, when any property changes are made that would cause the label 
@@ -287,11 +292,6 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 
 - (void)labelReturnedToHome:(BOOL)finished;
 
-
-
-////////////////////////////////////////////////////////////////////////////////
-/// @name Label States
-////////////////////////////////////////////////////////////////////////////////
 
 /** A boolean property that indicates if the label's scroll animation has been paused.
  
