@@ -6,7 +6,7 @@ MarqueeLabel is a UILabel subclass adds a scrolling marquee effect when the text
 ## How To Get Started
 
 1. Clone MarqueeLabel from Github, and check out the demo project.
-2. Read the [MarqueeLabel CocoaDocs documentation](http://cocoadocs.org/docsets/MarqueeLabel/1.3.1/Classes/MarqueeLabel.html).
+2. Read the [MarqueeLabel CocoaDocs documentation](http://cocoadocs.org/docsets/MarqueeLabel/).
 3. Take a look at the [special notes](https://github.com/cbpowell/MarqueeLabel/blob/master/README.mdown#special-notes) section to be aware of any gotchas.
 4. Drop in MarqueeLabel as a replacement to your lengthy UILabels!
 5. Help out with bug fixes and new features.
@@ -50,7 +50,7 @@ If you'd rather have a label that scrolls at a specific rate (points per second)
 
 ### Even More
 
-Check out the [MarqueeLabel documentation](http://cocoadocs.org/docsets/MarqueeLabel/1.3.1/Classes/MarqueeLabel.html) more features, with explanations in the comments there:
+Check out the [MarqueeLabel documentation](http://cocoadocs.org/docsets/MarqueeLabel/) more features, with explanations in the comments there:
 - Bulk-manipulation class methods to conveniently restart, pause, and unpause all labels in a view controller
 - Scrolling direction: left->right, right->left, and continuous looping (both left and right)
 - Label edge fades
