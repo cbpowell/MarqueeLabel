@@ -140,7 +140,7 @@ typedef void (^animationCompletionBlock)(void);
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-    self = [super initWithCoder: aDecoder];
+    self = [super initWithCoder:aDecoder];
     if (self) {
         [self setupLabel];
         
@@ -165,6 +165,10 @@ typedef void (^animationCompletionBlock)(void);
         [self.subLabel setValue:val forKey:property];
     }
     [self setText:[super text]];
+    
+    // Clear super text, in the case of IB-created labels, to prevent double-drawing
+    [super setText:nil];
+    
     [self setFont:[super font]];
 }
 
