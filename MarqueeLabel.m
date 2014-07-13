@@ -18,6 +18,11 @@ typedef void (^animationCompletionBlock)(void);
 - (id)traverseResponderChainForFirstViewController;
 @end
 
+@interface CAMediaTimingFunction (MarqueeLabelHelpers)
+- (NSArray *)controlPoints;
+- (CGFloat)durationPercentageForPositionPercentage:(CGFloat)positionPercentage withDuration:(NSTimeInterval)duration;
+@end
+
 @interface MarqueeLabel()
 
 @property (nonatomic, strong) UILabel *subLabel;
@@ -183,7 +188,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     self.subLabel.layer.anchorPoint = CGPointMake(0.0f, 0.0f);
     [self addSubview:self.subLabel];
     
-    [super setBackgroundColor:[UIColor redColor]];
+    [super setBackgroundColor:[UIColor clearColor]];
     
     _animationCurve = UIViewAnimationOptionCurveEaseInOut;
     _awayFromHome = NO;
@@ -558,7 +563,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
                          @(0.0),                                                    // Initial gradient
                          @(delayAmount/totalDuration),                              // Begin of fade in
                          @((delayAmount + 0.2)/totalDuration),                      // End of fade in, just as scroll away starts
-                         @(2.0 * (delayAmount + interval - 0.1)/totalDuration),     // Begin of fade out, just before scroll home completes
+                         @(2.0 * (delayAmount + interval)/totalDuration),     // Begin of fade out, just before scroll home completes
                          @(1.0)                                                     // End of fade out, as scroll home completes
                          ];
             break;
@@ -570,7 +575,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
                          @(0.0),                                                    // Initial gradient
                          @(delayAmount/totalDuration),                              // Begin of fade in
                          @((delayAmount + 0.2)/totalDuration),                      // End of fade in, just as scroll away starts
-                         @((delayAmount + self.subLabel.bounds.size.width/scrollRate)/totalDuration),           // Begin of fade out, just before scroll home completes
+                         @((delayAmount + (self.subLabel.bounds.size.width/scrollRate)*0.8)/totalDuration),           // Begin of fade out, just before scroll home completes
                          @(1.0)                                                     // End of fade out, as scroll home completes
                          ];
             break;
@@ -604,7 +609,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     animation.values = values;
     animation.keyTimes = keyTimes;
     animation.timingFunctions = @[timingFunction, timingFunction, timingFunction, timingFunction];
-    animation.duration = totalDuration;
+    //animation.duration = totalDuration;
     
     return animation;
 }
@@ -660,13 +665,13 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     // Set values
     animation.values = values;
     // Set duration
-    animation.duration = totalDuration;
+    //animation.duration = totalDuration;
     
     return animation;
 }
 
 - (CAMediaTimingFunction *)timingFunctionForAnimationOptions:(UIViewAnimationOptions)animationOptions {
-    return [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    return [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
 }
 
 - (CGSize)subLabelSize {
@@ -758,6 +763,10 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     // Animate
     [CATransaction begin];
     
+    // Set Duration
+    [CATransaction setAnimationDuration:interval];
+    
+    // Set completion block
     [CATransaction setCompletionBlock:^{
         if (![self.subLabel.layer animationForKey:@"position"]) {
             [self labelReturnedToHome:YES];
@@ -809,6 +818,10 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     // Animate
     [CATransaction begin];
     
+    // Set Duration
+    [CATransaction setAnimationDuration:interval];
+    
+    // Set completion block
     [CATransaction setCompletionBlock:^{
         if (![self.subLabel.layer animationForKey:@"position"]) {
             // Call returned home method
@@ -1283,12 +1296,14 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset) {
 // Thanks to Phil M
 // http://stackoverflow.com/questions/1340434/get-to-uiviewcontroller-from-uiview-on-iphone
 
-- (id)firstAvailableViewController {
+- (id)firstAvailableViewController
+{
     // convenience function for casting and to "mask" the recursive function
     return [self traverseResponderChainForFirstViewController];
 }
 
-- (id)traverseResponderChainForFirstViewController {
+- (id)traverseResponderChainForFirstViewController
+{
     id nextResponder = [self nextResponder];
     if ([nextResponder isKindOfClass:[UIViewController class]]) {
         return nextResponder;
@@ -1297,6 +1312,113 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset) {
     } else {
         return nil;
     }
+}
+
+@end
+
+@implementation CAMediaTimingFunction (MarqueeLabelHelpers)
+
+- (CGFloat)durationPercentageForPositionPercentage:(CGFloat)positionPercentage withDuration:(NSTimeInterval)duration
+{
+    // Finds the animation duration percentage that corresponds with the given animation "position" percentage.
+    // Utilizes Newton's Method to solve for the parametric Bezier curve that is used by CAMediaAnimation.
+    
+    NSArray *controlPoints = [self controlPoints];
+    CGFloat epsilon = 1.0f / (100.0f * duration);
+    
+    // Find the t value that gives the position percentage we want
+    CGFloat t_found = [self solveTForY:positionPercentage
+                           withEpsilon:epsilon
+                         controlPoints:controlPoints];
+    
+    // With that t, find the corresponding animation percentage
+    CGFloat durationPercentage = [self XforCurveAt:t_found withControlPoints:controlPoints];
+    
+    return durationPercentage;
+}
+
+- (CGFloat)solveTForY:(CGFloat)y_0 withEpsilon:(CGFloat)epsilon controlPoints:(NSArray *)controlPoints
+{
+    // Use Newton's Method: http://en.wikipedia.org/wiki/Newton's_method
+    // For first guess, use t = y (i.e. if curve were linear)
+    CGFloat t0 = y_0;
+    CGFloat t1 = y_0;
+    CGFloat f0, df0;
+    
+    for (int i = 0; i < 12; i++) {
+        // Base this iteration of t1 calculated from last iteration
+        t0 = t1;
+        // Calculate f(t0)
+        f0 = [self YforCurveAt:t0 withControlPoints:controlPoints] - y_0;
+        // Check if this is close (enough)
+        if (fabs(f0) < epsilon) {
+            // Done!
+            return y_0;
+        }
+        // Else continue Newton's Method
+        df0 = [self derivativeValueForCurveAt:t0 withControlPoints:controlPoints];
+        // Check if derivative is small or zero ( http://en.wikipedia.org/wiki/Newton's_method#Failure_analysis )
+        if (fabs(df0) < 1e-6) {
+            break;
+        }
+        // Else recalculate t1
+        t1 = t0 - f0/df0;
+    }
+    
+    NSLog(@"MarqueeLabel: Failed to find t for Y input!");
+    return t0;
+}
+
+- (CGFloat)YforCurveAt:(CGFloat)t withControlPoints:(NSArray *)controlPoints
+{
+    CGPoint P0 = [controlPoints[0] CGPointValue];
+    CGPoint P1 = [controlPoints[1] CGPointValue];
+    CGPoint P2 = [controlPoints[2] CGPointValue];
+    CGPoint P3 = [controlPoints[3] CGPointValue];
+    
+    return  powf(t, 3) * (-P0.y - 3.0f * P1.y - 3.0f * P2.y + P3.y) +
+            powf(t, 2) * (3.0f * P0.y + 3.0f * P2.y) +
+            t * (-3.0f * P0.y + 3.0f * P1.y) +
+            P0.y;
+    
+}
+
+- (CGFloat)XforCurveAt:(CGFloat)t withControlPoints:(NSArray *)controlPoints
+{
+    CGPoint P0 = [controlPoints[0] CGPointValue];
+    CGPoint P1 = [controlPoints[1] CGPointValue];
+    CGPoint P2 = [controlPoints[2] CGPointValue];
+    CGPoint P3 = [controlPoints[3] CGPointValue];
+    
+    return  powf(t, 3) * (-P0.x - 3.0f * P1.x - 3.0f * P2.x + P3.x) +
+            powf(t, 2) * (3.0f * P0.x + 3.0f * P2.x) +
+            t * (-3.0f * P0.x + 3.0f * P1.x) +
+            P0.x;
+    
+}
+
+- (CGFloat)derivativeValueForCurveAt:(CGFloat)t withControlPoints:(NSArray *)controlPoints
+{
+    CGPoint P0 = [controlPoints[0] CGPointValue];
+    CGPoint P1 = [controlPoints[1] CGPointValue];
+    CGPoint P2 = [controlPoints[2] CGPointValue];
+    CGPoint P3 = [controlPoints[3] CGPointValue];
+    
+    return  powf(t, 2) * (-3.0f * P0.y - 9.0f * P1.y - 9.0f * P2.y + 3.0f * P3.y) +
+            t * (6.0f * P0.y + 6.0f * P2.y) +
+            (-3.0f * P0.y + 3.0f * P1.y);
+}
+
+- (NSArray *)controlPoints
+{
+    float point[2];
+    NSMutableArray *pointArray = [NSMutableArray array];
+    for (int i = 0; i <= 3; i++) {
+        [self getControlPointAtIndex:i values:point];
+        [pointArray addObject:[NSValue valueWithCGPoint:CGPointMake(point[0], point[1])]];
+    }
+    
+    return [NSArray arrayWithArray:pointArray];
 }
 
 @end
