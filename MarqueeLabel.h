@@ -100,8 +100,9 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 /** A boolean property that sets whether the `MarqueeLabel` should behave like a normal UILabel.
  
  When set to `YES` the `MarqueeLabel` will behave like a normal UILabel, and  will not begin scrolling when the text is
- larger than the specified frame. The change takes effect immediately. Note that the `MarqueeLabel` will respect the
- setting of the UILabel `lineBreakMode` and `textAlignment` properties while labelized.
+ larger than the specified frame. The change takes effect immediately, removing any in-flight animation as well as any
+ current edge fade. Note that the `MarqueeLabel` will respect the current values of the `lineBreakMode` and `textAlignment` 
+ properties while labelized.
  
  To simply prevent automatic scrolling, use the `holdScrolling` property.
  
@@ -116,14 +117,14 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 @property (nonatomic, assign) BOOL labelize;
 
 
-/** A boolean property that sets whether the `MarqueeLabel` should hold (prevent) label scrolling
+/** A boolean property that sets whether the `MarqueeLabel` should hold (prevent) label scrolling.
  
- When set to `YES`, the `MarqueeLabel` will not automatically scroll when its text is larger than the specified frame.
- Note that edge fades will be not be disabled when this property is set to `YES`.
+ When set to `YES`, the `MarqueeLabel` will not automatically scroll even its text is larger than the specified frame, 
+ although the specified edge fades will remain.
  
  To set the `MarqueeLabel` to act like a normal UILabel, use the `labelize` property.
  
- Defaults to `NO` .
+ Defaults to `NO`.
  
  @see labelize
  @warning The label will not automatically scroll when this property is set to `YES`.
@@ -304,8 +305,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 
 /** A boolean property that indicates if the label is currently away from the home location.
  
- The home location is approximately the traditional location of `UILabel` text. This property essentially
- reflects if a scroll animation is underway.
+ The "home" location is the traditional location of `UILabel` text. This property essentially reflects if a scroll animation is underway.
  */
 
 @property (nonatomic, assign, readonly) BOOL awayFromHome;
