@@ -505,14 +505,15 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)returnLabelToOriginImmediately {
-    // Remove gradient animations
-    [self.layer.mask removeAllAnimations];
-    
     // Remove sublabel position animations
     NSArray *labels = [self allSubLabels];
     for (UILabel *sl in labels) {
         [sl.layer removeAllAnimations];
     }
+    
+    // Remove gradient animations
+    [self.layer.mask removeAllAnimations];
+    
 }
 
 - (void)scrollAwayWithInterval:(NSTimeInterval)interval {
@@ -546,11 +547,22 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     // Set Duration
     [CATransaction setAnimationDuration:interval];
     
-    // Set completion block
+    // Create animation for gradient, if needed
+    if (self.fadeLength != 0.0f) {
+        CAKeyframeAnimation *gradAnim = [self keyFrameAnimationForGradientFadeLength:self.fadeLength
+                                                                            interval:interval
+                                                                               delay:delayAmount];
+        [self.layer.mask addAnimation:gradAnim forKey:@"gradient"];
+    }
+    
+    // Set completion block, after adding gradient animation (so that gradient animation does not affect completion)
     [CATransaction setCompletionBlock:^{
+        // Call returned home method
+        [self labelReturnedToHome:YES];
+        // Check to ensure we don't double fire
         if (![self.subLabel.layer animationForKey:@"position"]) {
-            [self labelReturnedToHome:YES];
-            if (!self.tapToScroll && !self.holdScrolling) {
+            // Begin again, if conditions met
+            if (self.labelShouldScroll && !self.tapToScroll && !self.holdScrolling) {
                 [self scrollAwayWithInterval:interval delayAmount:delayAmount];
             }
         }
@@ -568,14 +580,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
                                                               interval:interval
                                                                  delay:delayAmount];
     [self.subLabel.layer addAnimation:awayAnim forKey:@"position"];
-    
-    // Create animation for gradient, if needed
-    if (self.fadeLength != 0.0f) {
-        CAKeyframeAnimation *gradAnim = [self keyFrameAnimationForGradientFadeLength:self.fadeLength
-                                                                            interval:interval
-                                                                               delay:delayAmount];
-        [self.layer.mask addAnimation:gradAnim forKey:@"gradient"];
-    }
     
     [CATransaction commit];
 }
@@ -604,14 +608,22 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     // Set Duration
     [CATransaction setAnimationDuration:interval];
     
-    // Set completion block
+    // Create animation for gradient, if needed
+    if (self.fadeLength != 0.0f) {
+        CAKeyframeAnimation *gradAnim = [self keyFrameAnimationForGradientFadeLength:self.fadeLength
+                                                                            interval:interval
+                                                                               delay:delayAmount];
+        [self.layer.mask addAnimation:gradAnim forKey:@"gradient"];
+    }
+    
+    // Set completion block, after adding gradient animation (so that gradient animation does not affect completion)
     [CATransaction setCompletionBlock:^{
-        // Check for conditions where we would not want this block to fire (i.e. when animations are removed before completion)
-        if (![self.subLabel.layer animationForKey:@"position"] && !self.labelize) {
-            // Call returned home method
-            [self labelReturnedToHome:YES];
+        // Call returned home method
+        [self labelReturnedToHome:YES];
+        // Check to ensure we don't double fire
+        if (![self.subLabel.layer animationForKey:@"position"]) {
             // Begin again, if conditions met
-            if (!self.tapToScroll && !self.holdScrolling) {
+            if (self.labelShouldScroll && !self.tapToScroll && !self.holdScrolling) {
                 [self scrollContinuousWithInterval:interval after:delayAmount];
             }
         }
@@ -634,15 +646,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         
         // Increment offset
         offset += (self.marqueeType == MLContinuousReverse ? -1.0f : 1.0f) * (self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer);
-    }
-    
-    
-    // Create animation for gradient, if needed
-    if (self.fadeLength != 0.0f) {
-        CAKeyframeAnimation *gradAnim = [self keyFrameAnimationForGradientFadeLength:self.fadeLength
-                                                                            interval:interval
-                                                                               delay:delayAmount];
-        [self.layer.mask addAnimation:gradAnim forKey:@"gradient"];
     }
     
     [CATransaction commit];
