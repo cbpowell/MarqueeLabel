@@ -117,7 +117,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     if (self) {
         [self setupLabel];
         
-        _lengthOfScroll = aLengthOfScroll;
+        _scrollDuration = aLengthOfScroll;
         self.fadeLength = MIN(aFadeLength, frame.size.width/2);
     }
     return self;
@@ -139,8 +139,8 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     if (self) {
         [self setupLabel];
         
-        if (self.lengthOfScroll == 0) {
-            self.lengthOfScroll = 7.0;
+        if (self.scrollDuration == 0) {
+            self.scrollDuration = 7.0;
         }
     }
     return self;
@@ -368,7 +368,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
             [self refreshSubLabels:labels];
             
             // Recompute the animation duration
-            self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(self.awayLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
+            self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(awayLabelOffset) / self.rate) : (self.scrollDuration);
             
             self.subLabel.frame = self.homeLabelFrame;
             
@@ -395,7 +395,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
             [self refreshSubLabels:labels];
             
             // Recompute the animation duration
-            self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(self.awayLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
+            self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(awayLabelOffset) / self.rate) : (self.scrollDuration);
             
             self.subLabel.frame = self.homeLabelFrame;
             
@@ -408,7 +408,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
             self.awayLabelFrame = CGRectIntegral(CGRectMake(self.fadeLength, 0.0f, expectedLabelSize.width, expectedLabelSize.height));
             
             // Calculate animation duration
-            self.animationDuration = (self.rate != 0) ? ((NSTimeInterval)fabs(self.awayLabelFrame.origin.x - self.homeLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
+            self.animationDuration = (self.rate != 0) ? ((NSTimeInterval)fabs(self.awayLabelFrame.origin.x - self.homeLabelFrame.origin.x) / self.rate) : (self.scrollDuration);
             
             // Set frame and text
             self.subLabel.frame = self.homeLabelFrame;
@@ -426,7 +426,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
             self.awayLabelFrame = CGRectIntegral(CGRectOffset(self.homeLabelFrame, -expectedLabelSize.width + (self.bounds.size.width - self.fadeLength), 0.0));
             
             // Calculate animation duration
-            self.animationDuration = (self.rate != 0) ? ((NSTimeInterval)fabs(self.awayLabelFrame.origin.x - self.homeLabelFrame.origin.x) / self.rate) : (self.lengthOfScroll);
+            self.animationDuration = (self.rate != 0) ? ((NSTimeInterval)fabs(self.awayLabelFrame.origin.x - self.homeLabelFrame.origin.x) / self.rate) : (self.scrollDuration);
             
             // Set frame
             self.subLabel.frame = self.homeLabelFrame;
@@ -476,17 +476,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     return (!self.labelize && labelTooLarge);
 }
 
-- (NSTimeInterval)durationForInterval:(NSTimeInterval)interval {
-    switch (self.marqueeType) {
-        case MLContinuous:
-            return (interval * 2.0);
-            break;
-        default:
-            return interval;
-            break;
-    }
-}
-
 - (void)beginScroll {
     [self beginScrollWithDelay:YES];
 }
@@ -495,10 +484,10 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     switch (self.marqueeType) {
         case MLContinuous:
         case MLContinuousReverse:
-            [self scrollContinuousWithInterval:[self durationForInterval:self.animationDuration] after:(delay ? self.animationDelay : 0.0)];
+            [self scrollContinuousWithInterval:self.animationDuration after:(delay ? self.animationDelay : 0.0)];
             break;
         default:
-            [self scrollAwayWithInterval:[self durationForInterval:self.animationDuration]];
+            [self scrollAwayWithInterval:self.animationDuration];
             break;
     }
 }
@@ -1122,18 +1111,18 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         return;
     }
     
-    _lengthOfScroll = 0.0f;
+    _scrollDuration = 0.0f;
     _rate = rate;
     [self updateSublabelAndLocations];
 }
 
-- (void)setLengthOfScroll:(NSTimeInterval)lengthOfScroll {
-    if (_lengthOfScroll == lengthOfScroll) {
+- (void)setScrollDuration:(NSTimeInterval)lengthOfScroll {
+    if (_scrollDuration == lengthOfScroll) {
         return;
     }
     
     _rate = 0.0f;
-    _lengthOfScroll = lengthOfScroll;
+    _scrollDuration = lengthOfScroll;
     [self updateSublabelAndLocations];
 }
 
