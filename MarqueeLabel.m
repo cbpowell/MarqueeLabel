@@ -907,12 +907,18 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 -(void)pauseLabel
 {
     if (!self.isPaused) {
+        // Pause sublabel position animations
         NSArray *labels = [self allSubLabels];
         for (UILabel *sl in labels) {
-            CFTimeInterval pausedTime = [sl.layer convertTime:CACurrentMediaTime() fromLayer:nil];
+            CFTimeInterval labelPauseTime = [sl.layer convertTime:CACurrentMediaTime() fromLayer:nil];
             sl.layer.speed = 0.0;
-            sl.layer.timeOffset = pausedTime;
+            sl.layer.timeOffset = labelPauseTime;
         }
+        // Pause gradient fade animation
+        CFTimeInterval gradientPauseTime = [self.layer.mask convertTime:CACurrentMediaTime() fromLayer:nil];
+        self.layer.mask.speed = 0.0;
+        self.layer.mask.timeOffset = gradientPauseTime;
+        
         self.isPaused = YES;
     }
 }
@@ -920,15 +926,22 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 -(void)unpauseLabel
 {
     if (self.isPaused) {
+        // Unpause sublabel position animations
         NSArray *labels = [self allSubLabels];
         for (UILabel *sl in labels) {
-            CFTimeInterval pausedTime = [sl.layer timeOffset];
+            CFTimeInterval labelPausedTime = [sl.layer timeOffset];
             sl.layer.speed = 1.0;
             sl.layer.timeOffset = 0.0;
             sl.layer.beginTime = 0.0;
-            CFTimeInterval timeSincePause = [sl.layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
-            sl.layer.beginTime = timeSincePause;
+            sl.layer.beginTime = [sl.layer convertTime:CACurrentMediaTime() fromLayer:nil] - labelPausedTime;;
         }
+        // Unpause gradient fade animation
+        CFTimeInterval gradientPauseTime = [self.layer.mask timeOffset];
+        self.layer.mask.speed = 1.0;
+        self.layer.mask.timeOffset = 0.0;
+        self.layer.mask.beginTime = 0.0;
+        self.layer.mask.beginTime = [self.layer.mask convertTime:CACurrentMediaTime() fromLayer:nil] - gradientPauseTime;
+        
         self.isPaused = NO;
     }
 }
