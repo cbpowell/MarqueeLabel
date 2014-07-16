@@ -665,19 +665,19 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     if (!gradientMask) {
         // Create CAGradientLayer if needed
         gradientMask = [CAGradientLayer layer];
-        gradientMask.bounds = self.layer.bounds;
-        gradientMask.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-        gradientMask.shouldRasterize = YES;
-        gradientMask.rasterizationScale = [UIScreen mainScreen].scale;
-        gradientMask.colors = self.gradientColors;
-        gradientMask.startPoint = CGPointMake(0.0f, CGRectGetMidY(self.frame));
-        gradientMask.endPoint = CGPointMake(1.0f, CGRectGetMidY(self.frame));
-        // Start with default (no fade) locations
-        gradientMask.locations = @[@(0.0f), @(0.0f), @(1.0f), @(1.0f)];
-        
-        // Set mask
-        self.layer.mask = gradientMask;
     }
+    gradientMask.bounds = self.layer.bounds;
+    gradientMask.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    gradientMask.shouldRasterize = YES;
+    gradientMask.rasterizationScale = [UIScreen mainScreen].scale;
+    gradientMask.colors = self.gradientColors;
+    gradientMask.startPoint = CGPointMake(0.0f, CGRectGetMidY(self.frame));
+    gradientMask.endPoint = CGPointMake(1.0f, CGRectGetMidY(self.frame));
+    // Start with default (no fade) locations
+    gradientMask.locations = @[@(0.0f), @(0.0f), @(1.0f), @(1.0f)];
+    
+    // Set mask
+    self.layer.mask = gradientMask;
     
     CGFloat leadingFadeLength = 0.0f;
     CGFloat trailingFadeLength = fadeLength;
