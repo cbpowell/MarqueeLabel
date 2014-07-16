@@ -19,13 +19,6 @@
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-    
-    MarqueeLabelDemoViewController *labelsViewController = [[MarqueeLabelDemoViewController alloc] initWithNibName:@"MarqueeLabelDemoViewController" bundle:nil];
-    self.viewController = labelsViewController;
-    // Add the view controller's view to the window and display.
-    self.window.rootViewController = self.viewController;
-    [self.window makeKeyAndVisible];
-    
     return YES;
 }
 

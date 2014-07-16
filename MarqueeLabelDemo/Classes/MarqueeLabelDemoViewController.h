@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 Charles Powell
+ * Copyright (c) 2014 Charles Powell
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -33,11 +33,20 @@
 
 @interface MarqueeLabelDemoViewController : UIViewController
 
+@property (nonatomic, weak) IBOutlet MarqueeLabel *demoLabel1;
+@property (nonatomic, weak) IBOutlet MarqueeLabel *demoLabel2;
+@property (nonatomic, weak) IBOutlet MarqueeLabel *demoLabel3;
+@property (nonatomic, weak) IBOutlet MarqueeLabel *demoLabel4;
+@property (nonatomic, weak) IBOutlet MarqueeLabel *demoLabel5;
+
 @property (nonatomic, weak) IBOutlet UISwitch *labelizeSwitch;
+@property (nonatomic, weak) IBOutlet UISwitch *holdLabelsSwitch;
+
 @property (nonatomic, strong) NSTimer *labelChangeTimer;
 
-- (void)changeTheLabel;
+- (IBAction)changeLabelTexts:(id)sender;
 - (IBAction)labelizeSwitched:(id)sender;
+- (IBAction)holdLabelsSwitched:(id)sender;
 - (IBAction)pushNewViewController:(id)sender;
 
 @end
