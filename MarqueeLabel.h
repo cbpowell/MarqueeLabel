@@ -133,6 +133,20 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 @property (nonatomic, assign) BOOL holdScrolling;
 
 
+/** A boolean property that sets whether the `MarqueeLabel` should only begin a scroll when tapped.
+ 
+ If this property is set to `YES`, the `MarqueeLabel` will begin a scroll animation cycle only when tapped. The label will
+ not automatically being a scroll. This setting overrides the setting of the `holdScrolling` property.
+ 
+ Defaults to `NO` .
+ 
+ @warning The label will not automatically scroll when this property is set to `YES`.
+ @see holdScrolling
+ */
+
+@property (nonatomic, assign) BOOL tapToScroll;
+
+
 /** Defines the direction and method in which the `MarqueeLabel` instance scrolls.
  
  `MarqueeLabel` supports four types of scrolling: `MLLeftRight`, `MLRightLeft`, `MLContinuous`, and `MLContinuousReverse`.
@@ -150,6 +164,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  @see MarqueeType
  @see textAlignment
  */
+
 
 @property (nonatomic, assign) MarqueeType marqueeType;
 
@@ -209,17 +224,6 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 
 @property (nonatomic, assign) CGFloat animationDelay;
 
-
-/** A boolean property that sets whether the `MarqueeLabel` should only begin a scroll when tapped.
- 
- If this property is set to `YES`, the `MarqueeLabel` will begin a scroll animation cycle only when tapped. The label will
- not automatically being a scroll.
- 
- Defaults to `NO` .
- 
- @warning The label will not automatically scroll when this property is set to `YES`.
- */
-@property (nonatomic, assign) BOOL tapToScroll;
 
 
 ////////////////////////////////////////////////////////////////////////////////
