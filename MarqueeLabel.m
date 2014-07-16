@@ -419,8 +419,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
             break;
         }
         
-        //Fallback to LeftRight marqueeType
-        default:
+        case MLLeftRight:
         {
             self.homeLabelFrame = CGRectIntegral(CGRectMake(0.0f, 0.0f, expectedLabelSize.width, expectedLabelSize.height));
             self.awayLabelFrame = CGRectIntegral(CGRectOffset(self.homeLabelFrame, -expectedLabelSize.width + (self.bounds.size.width - self.fadeLength), 0.0));
@@ -433,6 +432,19 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
             
             // Enforce text alignment for this type
             self.subLabel.textAlignment = NSTextAlignmentLeft;
+            
+            break;
+        }
+        
+        default:
+        {
+            // Something strange has happened
+            self.homeLabelFrame = CGRectZero;
+            self.awayLabelFrame = CGRectZero;
+            
+            // Do not attempt to begin scroll
+            return;
+            break;
         }
             
     } //end of marqueeType switch
