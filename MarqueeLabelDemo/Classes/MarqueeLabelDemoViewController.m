@@ -64,7 +64,7 @@
     self.demoLabel3.marqueeType = MLLeftRight;
     self.demoLabel3.rate = 30.0f;
     self.demoLabel3.fadeLength = 10.0f;
-    self.demoLabel3.textAlignment = NSTextAlignmentCenter;
+    self.demoLabel3.textAlignment = NSTextAlignmentLeft;
     self.demoLabel3.text = @"This is another long label that scrolls at a specific rate, rather than scrolling its length in a specific time window!";
     self.demoLabel3.tag = 102;
      
@@ -89,14 +89,15 @@
 }
 
 - (void)changeLabelTexts:(id)sender {
-    // Generate even or odd
-    int i = arc4random() % 2;
-    if (i == 0) {
-        [(MarqueeLabel *)[self.view viewWithTag:101] setText:@"This label is not as long."];
-        [(MarqueeLabel *)[self.view viewWithTag:102] setText:@"That also scrolls continuously rather than scrolling back and forth!"];
+    // Use demoLabel1 tag to store "state"
+    if (self.demoLabel1.tag == 101) {
+        self.demoLabel1.text = @"This label is not as long.";
+        self.demoLabel3.text = @"That also scrolls continuously rather than scrolling back and forth!";
+        self.demoLabel1.tag = 102;
     } else {
-        [(MarqueeLabel *)[self.view viewWithTag:101] setText:@"This is a test of MarqueeLabel - the text is long enough that it needs to scroll to see the whole thing."];
-        [(MarqueeLabel *)[self.view viewWithTag:102] setText:@"This is a short, centered label."];
+        self.demoLabel1.text = @"This is a test of MarqueeLabel - the text is long enough that it needs to scroll to see the whole thing.";
+        self.demoLabel3.text = @"This is a short, centered label.";
+        self.demoLabel1.tag = 101;
     }
 }
 
