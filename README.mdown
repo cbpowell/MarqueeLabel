@@ -13,7 +13,7 @@ MarqueeLabel is a UILabel subclass adds a scrolling marquee effect when the text
 
 ## MarqueeLabel v2.0.0
 
-MarqueeLabel v2.0.0 makes some important changes! Check out the [release notes for v2.0.0](https://github.com/cbpowell/MarqueeLabel/releases/tag/2.0.0) to understand what this means for your app!.
+MarqueeLabel v2.0.0 makes some important changes! Check out the [release notes for v2.0.0](https://github.com/cbpowell/MarqueeLabel/releases/tag/2.0.0) to understand what this means for your app!
 
 ### Installation with Cocoapods
 
