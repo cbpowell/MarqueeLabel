@@ -488,7 +488,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     return (!self.labelize && labelTooLarge);
 }
 
-- (BOOL)labelIsReadyForScroll {
+- (BOOL)labelReadyForScroll {
     // Check if we have a superview
     if (!self.superview) {
         return NO;
@@ -544,7 +544,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (void)scrollAwayWithInterval:(NSTimeInterval)interval delayAmount:(NSTimeInterval)delayAmount {
     // Check for conditions which would prevent scrolling
-    if (![self labelIsReadyForScroll]) {
+    if (![self labelReadyForScroll]) {
         return;
     }
     
@@ -604,7 +604,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (void)scrollContinuousWithInterval:(NSTimeInterval)interval after:(NSTimeInterval)delayAmount {
     // Check for conditions which would prevent scrolling
-    if (![self labelIsReadyForScroll]) {
+    if (![self labelReadyForScroll]) {
         return;
     }
     
