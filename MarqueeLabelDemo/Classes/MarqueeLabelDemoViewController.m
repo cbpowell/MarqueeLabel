@@ -129,19 +129,8 @@
     }
 }
 
-- (IBAction)pushNewViewController:(id)sender {
-    UIViewController *newViewController = [[UIViewController alloc] initWithNibName:@"ModalViewController" bundle:nil];
-    __weak __typeof(&*self)weakSelf = self;
-    [self presentViewController:newViewController animated:YES completion:^{
-        [NSTimer scheduledTimerWithTimeInterval:5.0 target:weakSelf selector:@selector(dismissTheModal) userInfo:nil repeats:NO];
-    }];
-}
-
-- (void)dismissTheModal {
-    __weak __typeof(&*self)weakSelf = self;
-    [self dismissViewControllerAnimated:YES completion:^{
-        [MarqueeLabel controllerViewWillAppear:weakSelf];
-    }];
+- (IBAction)unwindModalPopoverSegue:(UIStoryboardSegue *)segue {
+    
 }
      
 // For Autoresizing test
