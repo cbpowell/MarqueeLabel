@@ -488,6 +488,25 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     return (!self.labelize && labelTooLarge);
 }
 
+- (BOOL)labelIsReadyForScroll {
+    // Check if we have a superview
+    if (!self.superview) {
+        return NO;
+    }
+    
+    if (!self.window) {
+        return NO;
+    }
+    
+    // Check if our view controller is ready
+    UIViewController *viewController = [self firstAvailableViewController];
+    if (!viewController.isViewLoaded) {
+        return NO;
+    }
+    
+    return YES;
+}
+
 - (void)beginScroll {
     [self beginScrollWithDelay:YES];
 }
@@ -505,15 +524,14 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)returnLabelToOriginImmediately {
+    // Remove gradient animations
+    [self.layer.mask removeAllAnimations];
+    
     // Remove sublabel position animations
     NSArray *labels = [self allSubLabels];
     for (UILabel *sl in labels) {
         [sl.layer removeAllAnimations];
     }
-    
-    // Remove gradient animations
-    [self.layer.mask removeAllAnimations];
-    
 }
 
 - (void)scrollAwayWithInterval:(NSTimeInterval)interval {
@@ -525,12 +543,8 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)scrollAwayWithInterval:(NSTimeInterval)interval delayAmount:(NSTimeInterval)delayAmount {
-    if (![self superview]) {
-        return;
-    }
-    
-    UIViewController *viewController = [self firstAvailableViewController];
-    if (!(viewController.isViewLoaded && viewController.view.window)) {
+    // Check for conditions which would prevent scrolling
+    if (![self labelIsReadyForScroll]) {
         return;
     }
     
@@ -559,8 +573,12 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     [CATransaction setCompletionBlock:^{
         // Call returned home method
         [self labelReturnedToHome:YES];
-        // Check to ensure we don't double fire
-        if (![self.subLabel.layer animationForKey:@"position"]) {
+        // Check to ensure that:
+        // 1) We don't double fire if an animation already exists
+        // 2) The instance is still attached to a window - this completion block is called for
+        //    many reasons, including if the animation is removed due to the view being removed
+        //    from the UIWindow (typically when the view controller is no longer the "top" view)
+        if (self.window && ![self.subLabel.layer animationForKey:@"position"]) {
             // Begin again, if conditions met
             if (self.labelShouldScroll && !self.tapToScroll && !self.holdScrolling) {
                 [self scrollAwayWithInterval:interval delayAmount:delayAmount];
@@ -585,19 +603,15 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)scrollContinuousWithInterval:(NSTimeInterval)interval after:(NSTimeInterval)delayAmount {
-    if (![self superview]) {
+    // Check for conditions which would prevent scrolling
+    if (![self labelIsReadyForScroll]) {
         return;
     }
     
     // Return labels to home frame
-    //[self returnLabelToOriginImmediately];
+    [self.subLabel.layer removeAllAnimations];
     [self.layer removeAllAnimations];
     [self.layer.mask removeAllAnimations];
-    
-    UIViewController *viewController = [self firstAvailableViewController];
-    if (!(viewController.isViewLoaded && viewController.view.window)) {
-        return;
-    }
     
     // Call pre-animation method
     [self labelWillBeginScroll];
@@ -620,8 +634,12 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     [CATransaction setCompletionBlock:^{
         // Call returned home method
         [self labelReturnedToHome:YES];
-        // Check to ensure we don't double fire
-        if (![self.subLabel.layer animationForKey:@"position"]) {
+        // Check to ensure that:
+        // 1) We don't double fire if an animation already exists
+        // 2) The instance is still attached to a window - this completion block is called for
+        //    many reasons, including if the animation is removed due to the view being removed
+        //    from the UIWindow (typically when the view controller is no longer the "top" view)
+        if (self.window && ![self.subLabel.layer animationForKey:@"position"]) {
             // Begin again, if conditions met
             if (self.labelShouldScroll && !self.tapToScroll && !self.holdScrolling) {
                 [self scrollContinuousWithInterval:interval after:delayAmount];
@@ -899,8 +917,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 #pragma mark - Label Control
 
 - (void)restartLabel {
-    [self returnLabelToOriginImmediately];
-    
     [self applyGradientMaskForFadeLength:self.fadeLength animated:NO];
     
     if (self.labelShouldScroll && !self.tapToScroll) {
