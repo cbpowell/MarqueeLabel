@@ -295,6 +295,18 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
 }
 
+- (void)willMoveToWindow:(UIWindow *)newWindow {
+    if (!newWindow) {
+        [self shutdownLabel];
+    }
+}
+
+- (void)didMoveToWindow {
+    if (self.window) {
+        [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
+    }
+}
+
 - (void)updateSublabelAndLocations {
     [self updateSublabelAndLocationsAndBeginScroll:YES];
 }
