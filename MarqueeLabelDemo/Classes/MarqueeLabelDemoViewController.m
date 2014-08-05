@@ -129,8 +129,20 @@
     }
 }
 
+- (IBAction)togglePause:(UISwitch *)sender {
+    for (UIView *v in self.view.subviews) {
+        if ([v isKindOfClass:[MarqueeLabel class]]) {
+            if (sender.on) {
+                [(MarqueeLabel *)v pauseLabel];
+            } else {
+                [(MarqueeLabel *)v unpauseLabel];
+            }
+        }
+    }
+}
+
 - (IBAction)unwindModalPopoverSegue:(UIStoryboardSegue *)segue {
-    
+    // Empty
 }
      
 // For Autoresizing test

@@ -47,6 +47,7 @@
 - (IBAction)changeLabelTexts:(id)sender;
 - (IBAction)labelizeSwitched:(id)sender;
 - (IBAction)holdLabelsSwitched:(id)sender;
+- (IBAction)togglePause:(id)sender;
 - (IBAction)unwindModalPopoverSegue:(UIStoryboardSegue *)segue;
 
 @end
