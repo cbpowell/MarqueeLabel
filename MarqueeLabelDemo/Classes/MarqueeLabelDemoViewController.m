@@ -164,18 +164,20 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    // If you have trouble with MarqueeLabel instances not automatically scrolling, implement the
+    // viewWillAppear bulk method as seen below. This will attempt to restart scrolling on all
+    // MarqueeLabels associated (in the view hierarchy) with the calling view controller
+    
     [MarqueeLabel controllerViewWillAppear:self];
+    
+    // Or...
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    // Optionally could use viewDidAppear bulk method
-    
-    // However, comment out the controllerViewWillAppear: method above, and uncomment the below method
-    // to see the text jump when the modal view is finally fully dismissed. This is because viewDidAppear:
-    // is not called until the view has fully appeared (animations complete, etc) so the text is not reset
-    // to the home position until that point, and then the automatic scrolling begins again.
+    // Or you could use viewDidAppear bulk method - try both to see which works best for you!
     
     // [MarqueeLabel controllerViewDidAppear:self];
 }
