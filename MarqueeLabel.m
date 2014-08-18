@@ -164,12 +164,10 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         id val = [super valueForKey:property];
         [self.subLabel setValue:val forKey:property];
     }
-    [self setText:[super text]];
     
-    // Clear super text, in the case of IB-created labels, to prevent double-drawing
-    [super setText:nil];
-    
-    [self setFont:[super font]];
+    // Grab attributed text from super, and clear to prevent double-drawing
+    self.attributedText = super.attributedText;
+    super.attributedText = nil;
 }
 
 - (void)setupLabel {
@@ -1019,6 +1017,18 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     [self updateSublabelAndLocations];
 }
 
+- (NSAttributedString *)attributedText {
+    return self.subLabel.attributedText;
+}
+
+- (void)setAttributedText:(NSAttributedString *)attributedText {
+    if ([attributedText isEqualToAttributedString:self.subLabel.attributedText]) {
+        return;
+    }
+    self.subLabel.attributedText = attributedText;
+    [self updateSublabelAndLocations];
+}
+
 - (UIFont *)font {
     return self.subLabel.font;
 }
@@ -1111,18 +1121,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (CGSize)intrinsicContentSize {
     return self.subLabel.intrinsicContentSize;
-}
-
-- (NSAttributedString *)attributedText {
-    return self.subLabel.attributedText;
-}
-
-- (void)setAttributedText:(NSAttributedString *)attributedText {
-    if ([attributedText isEqualToAttributedString:self.subLabel.attributedText]) {
-        return;
-    }
-    self.subLabel.attributedText = attributedText;
-    [self updateSublabelAndLocations];
 }
 
 - (void)setAdjustsLetterSpacingToFitWidth:(BOOL)adjustsLetterSpacingToFitWidth {
