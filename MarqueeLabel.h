@@ -37,7 +37,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  @return An initialized `MarqueeLabel` object or nil if the object couldn't be created.
 */
 
-- (id)initWithFrame:(CGRect)frame;
+- (instancetype)initWithFrame:(CGRect)frame;
 
 
 /** Returns a newly initialized `MarqueeLabel` instance with the specified scroll rate and edge transparency fade length.
@@ -51,7 +51,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  @return An initialized `MarqueeLabel` object or nil if the object couldn't be created.
  */
 
-- (id)initWithFrame:(CGRect)frame rate:(CGFloat)pixelsPerSec andFadeLength:(CGFloat)fadeLength;
+- (instancetype)initWithFrame:(CGRect)frame rate:(CGFloat)pixelsPerSec andFadeLength:(CGFloat)fadeLength;
 
 
 /** Returns a newly initialized `MarqueeLabel` instance with the specified scroll duration and edge transparency fade length.
@@ -65,7 +65,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  @return An initialized `MarqueeLabel` object or nil if the object couldn't be created.
  */
 
-- (id)initWithFrame:(CGRect)frame duration:(NSTimeInterval)scrollDuration andFadeLength:(CGFloat)fadeLength;
+- (instancetype)initWithFrame:(CGRect)frame duration:(NSTimeInterval)scrollDuration andFadeLength:(CGFloat)fadeLength;
 
 
 /** Resizes the view to the minimum size necessary to fully enclose the current text (i.e. without scrolling), up to the maximum size specified.
