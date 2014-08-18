@@ -1273,28 +1273,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     [self updateSublabelAndLocations];
 }
 
-- (CGRect)awayLabelFrame {
-    if (CGRectEqualToRect(_awayLabelFrame, CGRectNull)) {
-        // Calculate label size
-        CGSize expectedLabelSize = [self subLabelSize];
-        // Create home label frame
-        _awayLabelFrame = CGRectOffset(self.homeLabelFrame, -expectedLabelSize.width + (self.bounds.size.width - self.fadeLength * 2), 0.0);
-    }
-    
-    return _awayLabelFrame;
-}
-
-- (CGRect)homeLabelFrame {
-    if (CGRectEqualToRect(_homeLabelFrame, CGRectNull)) {
-        // Calculate label size
-        CGSize expectedLabelSize = [self subLabelSize];
-        // Create home label frame
-        _homeLabelFrame = CGRectMake(self.fadeLength, 0, (expectedLabelSize.width + self.fadeLength), self.bounds.size.height);
-    }
-    
-    return _homeLabelFrame;
-}
-
 - (void)setLabelize:(BOOL)labelize {
     if (_labelize == labelize) {
         return;
