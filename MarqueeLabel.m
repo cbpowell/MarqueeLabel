@@ -1001,7 +1001,12 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     return;
 }
 
-#pragma mark - Modified UILabel Getters/Setters
+#pragma mark - Modified UILabel Methods/Getters/Setters
+
+- (UIView *)viewForBaselineLayout {
+    // Use subLabel view for handling baseline layouts
+    return self.subLabel;
+}
 
 - (NSString *)text {
     return self.subLabel.text;
