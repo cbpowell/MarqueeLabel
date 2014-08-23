@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  MarqueeLabel-Swift
+//  MarqueeLabelDemo-Swift
 //
 //  Created by Charles Powell on 8/6/14.
 //  Copyright (c) 2014 Charles Powell. All rights reserved.

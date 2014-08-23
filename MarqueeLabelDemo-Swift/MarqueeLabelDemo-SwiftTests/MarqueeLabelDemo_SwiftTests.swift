@@ -1,6 +1,6 @@
 //
-//  MarqueeLabel_SwiftTests.swift
-//  MarqueeLabel-SwiftTests
+//  MarqueeLabelDemo_SwiftTests.swift
+//  MarqueeLabelDemo-SwiftTests
 //
 //  Created by Charles Powell on 8/6/14.
 //  Copyright (c) 2014 Charles Powell. All rights reserved.
@@ -9,7 +9,7 @@
 import UIKit
 import XCTest
 
-class MarqueeLabel_SwiftTests: XCTestCase {
+class MarqueeLabelDemo_SwiftTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
