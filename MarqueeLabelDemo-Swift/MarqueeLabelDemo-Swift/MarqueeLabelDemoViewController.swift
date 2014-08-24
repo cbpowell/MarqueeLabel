@@ -50,7 +50,7 @@ class MarqueeLabelDemoViewController : UIViewController {
         demoLabel1.scrollDuration = 15.0
         demoLabel1.animationCurve = .CurveEaseInOut
         demoLabel1.fadeLength = 10.0
-        demoLabel1.continuousMarqueeExtraBuffer = 10.0
+        demoLabel1.continuousExtraBuffer = 10.0
         demoLabel1.text = "This is a test of MarqueeLabel - the text is long enough that it needs to scroll to see the whole thing."
         demoLabel1.tag = 101
         

@@ -111,9 +111,9 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    public var continuousMarqueeExtraBuffer: CGFloat = 0.0 {
+    public var continuousExtraBuffer: CGFloat = 0.0 {
         didSet {
-            if continuousMarqueeExtraBuffer != oldValue {
+            if continuousExtraBuffer != oldValue {
                 updateAndScroll()
             }
         }
@@ -192,6 +192,26 @@ public class MarqueeLabel: UILabel {
         if let controller = notification.userInfo?["controller"] as? UIViewController {
             if controller === self.firstAvailableViewController() {
                 self.labelize = false
+            }
+        }
+    }
+    
+    private func observedViewControllerChange(notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            let fromController = userInfo["UINavigationControllerLastVisibleViewController"] as? UIViewController
+            let toController = userInfo["UINavigationControllerNextVisibleViewController"] as? UIViewController
+            
+            if let ownController = self.firstAvailableViewController() {
+                if let fromController = fromController {
+                    if ownController === fromController {
+                        shutdownLabel()
+                    }
+                }
+                if let fromController = fromController {
+                    if ownController === fromController {
+                        restartLabel()
+                    }
+                }
             }
         }
     }
@@ -312,7 +332,7 @@ public class MarqueeLabel: UILabel {
         }
         
         // Get text
-        //attributedText = super.attributedText
+        attributedText = super.attributedText
     }
     
     //
@@ -383,7 +403,7 @@ public class MarqueeLabel: UILabel {
         switch self.type {
         case .Continuous:
             homeLabelFrame = CGRectIntegral(CGRectMake(0.0, 0.0, expectedLabelSize.width, expectedLabelSize.height))
-            let awayLabelOffset: CGFloat = -(homeLabelFrame.size.width + fadeLength + continuousMarqueeExtraBuffer)
+            let awayLabelOffset: CGFloat = -(homeLabelFrame.size.width + fadeLength + continuousExtraBuffer)
             awayLabelFrame = CGRectIntegral(CGRectOffset(homeLabelFrame, awayLabelOffset, 0.0))
             
             var sublabels = allSublabels()
@@ -411,7 +431,7 @@ public class MarqueeLabel: UILabel {
         
         case .ContinuousReverse:
             homeLabelFrame = CGRectIntegral(CGRectMake(self.bounds.size.width - expectedLabelSize.width, 0.0, expectedLabelSize.width, expectedLabelSize.height))
-            let awayLabelOffset: CGFloat = (homeLabelFrame.size.width + fadeLength + continuousMarqueeExtraBuffer)
+            let awayLabelOffset: CGFloat = (homeLabelFrame.size.width + fadeLength + continuousExtraBuffer)
             awayLabelFrame = CGRectIntegral(CGRectOffset(homeLabelFrame, awayLabelOffset, 0.0))
             
             var sublabels = allSublabels()
@@ -564,7 +584,7 @@ public class MarqueeLabel: UILabel {
         case .LeftRight, .RightLeft:
             scrollAway(animationDuration, delay: animationDelay)
         default:
-            scrollContinuous(animationDuration, delay: animationDuration)
+            scrollContinuous(animationDuration, delay: animationDelay)
         }
     }
     
@@ -624,7 +644,7 @@ public class MarqueeLabel: UILabel {
             if (self.window != nil && self.sublabel.layer.animationForKey("position") == nil) {
                 // Begin again, if conditions met
                 if (self.labelShouldScroll() && !self.tapToScroll && !self.holdScrolling) {
-                    // Perform callback
+                    // Perform completion callback
                     callback(self)(interval: interval, delay: delay)
                 }
             }
@@ -678,7 +698,7 @@ public class MarqueeLabel: UILabel {
                 sl.layer.addAnimation(awayAnimation, forKey: "position")
                 
                 // Increment offset
-                offset += (self.type == .ContinuousReverse ? -1.0 : 1.0) * (self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer)
+                offset += (self.type == .ContinuousReverse ? -1.0 : 1.0) * (self.homeLabelFrame.size.width + self.fadeLength + self.continuousExtraBuffer)
             }
         }
         
@@ -703,7 +723,8 @@ public class MarqueeLabel: UILabel {
         gradientMask.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
         gradientMask.shouldRasterize = true
         gradientMask.rasterizationScale = UIScreen.mainScreen().scale
-        //gradientMask.colors = self.gradientColors
+        let colors: [AnyObject] = [UIColor.clearColor().CGColor, UIColor.blackColor().CGColor, UIColor.blackColor().CGColor, UIColor.clearColor().CGColor]
+        gradientMask.colors = colors;
         gradientMask.startPoint = CGPointMake(0.0, CGRectGetMidY(self.frame))
         gradientMask.endPoint = CGPointMake(1.0, CGRectGetMidY(self.frame))
         // Start with default (no fade) locations
@@ -871,8 +892,8 @@ public class MarqueeLabel: UILabel {
                 timingFunction
             ]
             
-            // MLContinuous
-            // MLContinuousReverse
+            // .Continuous
+            // .ContinuousReverse
         default:
             //NSAssert(values.count == 3, @"Incorrect number of values passed for MLContinous-type animation")
             totalDuration = delay + interval
@@ -1258,20 +1279,20 @@ extension CAMediaTimingFunction {
             // Base this iteration of t1 calculated from last iteration
             t0 = t1
             // Calculate f(t0)
-            f0 = YforCurveAt(t0, controlPoints: controlPoints)
+            f0 = YforCurveAt(t0, controlPoints:controlPoints) - y_0
             // Check if this is close (enough)
             if (fabs(f0) < epsilon) {
                 // Done!
-                return t0
+                return t0;
             }
             // Else continue Newton's Method
-            df0 = derivativeCurveYValueAt(t0, controlPoints: controlPoints)
+            df0 = derivativeCurveYValueAt(t0, controlPoints:controlPoints)
             // Check if derivative is small or zero ( http://en.wikipedia.org/wiki/Newton's_method#Failure_analysis )
             if (fabs(df0) < 1e-6) {
-                break
+                break;
             }
             // Else recalculate t1
-            t1 = t0 - f0/df0
+            t1 = t0 - f0/df0;
         }
         
         // Give up - shouldn't ever get here...I hope
@@ -1286,10 +1307,10 @@ extension CAMediaTimingFunction {
         let P3 = controlPoints[3]
         
         // Per http://en.wikipedia.org/wiki/Bezier_curve#Cubic_B.C3.A9zier_curves
-        let y0 = pow(1.0 - t, 3.0) * P0.y
-        let y1 = 3.0 * pow(1.0 - t, 2) * t * P1.y
-        let y2 = 3.0 * (1.0 - t) * pow(t, 2.0) * P2.y
-        let y3 = pow(t, 3.0) * P3.y
+        let y0 = (pow((1.0 - t),3.0) * P0.y)
+        let y1 = (3.0 * pow(1.0 - t, 2.0) * t * P1.y)
+        let y2 = (3.0 * (1.0 - t) * pow(t, 2.0) * P2.y)
+        let y3 = (pow(t, 3.0) * P3.y)
         
         return y0 + y1 + y2 + y3
     }
@@ -1302,10 +1323,10 @@ extension CAMediaTimingFunction {
         
         // Per http://en.wikipedia.org/wiki/Bezier_curve#Cubic_B.C3.A9zier_curves
         
-        let x0 = pow((1.0 - t),3.0) * P0.x
-        let x1 = 3.0 * pow(1.0 - t, 2.0) * t * P1.x
-        let x2 = 3.0 * (1.0 - t) * pow(t, 2.0) * P2.x
-        let x3 = pow(t, 3.0) * P3.x
+        let x0 = (pow((1.0 - t),3.0) * P0.x)
+        let x1 = (3.0 * pow(1.0 - t, 2.0) * t * P1.x)
+        let x2 = (3.0 * (1.0 - t) * pow(t, 2.0) * P2.x)
+        let x3 = (pow(t, 3.0) * P3.x)
         
         return x0 + x1 + x2 + x3
     }
@@ -1316,11 +1337,11 @@ extension CAMediaTimingFunction {
         let P2 = controlPoints[2]
         let P3 = controlPoints[3]
         
-        let dy1: CGFloat = pow(t, 3.0) * ((3.0 * P0.y) - (9.0 * (P1.y + P2.y) + 3.0 * P3.y))
-        let dy2: CGFloat = t * 6.0 * (P0.y + P2.y)
-        let dy3: CGFloat = -3.0 * P0.y + 3.0 * P1.y
-        
-        return dy1 + dy2 + dy3
+        let dy0 = (P0.y + 3.0 * P1.y + 3.0 * P2.y - P3.y) * -3.0
+        let dy1 = t * (6.0 * P0.y + 6.0 * P2.y)
+        let dy2 = (-3.0 * P0.y + 3.0 * P1.y)
+
+        return dy0 * pow(t, 2.0) + dy1 + dy2
     }
     
     func controlPoints() -> [CGPoint] {
