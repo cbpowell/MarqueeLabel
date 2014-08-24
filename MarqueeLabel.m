@@ -968,14 +968,14 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         // Unpause sublabel position animations
         NSArray *labels = [self allSubLabels];
         for (UILabel *sl in labels) {
-            CFTimeInterval labelPausedTime = [sl.layer timeOffset];
+            CFTimeInterval labelPausedTime = sl.layer.timeOffset;
             sl.layer.speed = 1.0;
             sl.layer.timeOffset = 0.0;
             sl.layer.beginTime = 0.0;
-            sl.layer.beginTime = [sl.layer convertTime:CACurrentMediaTime() fromLayer:nil] - labelPausedTime;;
+            sl.layer.beginTime = [sl.layer convertTime:CACurrentMediaTime() fromLayer:nil] - labelPausedTime;
         }
         // Unpause gradient fade animation
-        CFTimeInterval gradientPauseTime = [self.layer.mask timeOffset];
+        CFTimeInterval gradientPauseTime = self.layer.mask.timeOffset;
         self.layer.mask.speed = 1.0;
         self.layer.mask.timeOffset = 0.0;
         self.layer.mask.beginTime = 0.0;
