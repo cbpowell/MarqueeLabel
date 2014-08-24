@@ -48,7 +48,7 @@ class MarqueeLabelDemoViewController : UIViewController {
         // Continuous Type
         demoLabel1.type = .Continuous
         demoLabel1.scrollDuration = 15.0
-        demoLabel1.animationCurve = .CurveEaseInOut
+        demoLabel1.animationCurve = .EaseInOut
         demoLabel1.fadeLength = 10.0
         demoLabel1.continuousExtraBuffer = 10.0
         demoLabel1.text = "This is a test of MarqueeLabel - the text is long enough that it needs to scroll to see the whole thing."
@@ -102,7 +102,7 @@ class MarqueeLabelDemoViewController : UIViewController {
         // viewWillAppear bulk method as seen below. This will attempt to restart scrolling on all
         // MarqueeLabels associated (in the view hierarchy) with the calling view controller
         
-        //[MarqueeLabel controllerViewWillAppear:self]
+        // MarqueeLabel.controllerViewWillAppear(self)
         
         // Or.... (see below)
     }
@@ -112,7 +112,7 @@ class MarqueeLabelDemoViewController : UIViewController {
     
         // Or you could use viewDidAppear bulk method - try both to see which works best for you!
     
-        // [MarqueeLabel controllerViewDidAppear:self]
+        // MarqueeLabel.controllerViewDidAppear(self)
     }
 
     override func didReceiveMemoryWarning() {
@@ -165,7 +165,7 @@ class MarqueeLabelDemoViewController : UIViewController {
     }
     
     @IBAction func unwindModalPopoverSegue(segue: UIStoryboardSegue) {
-        // Empty
+        // Empty by design
     }
 
 }
