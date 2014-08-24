@@ -226,6 +226,13 @@
                     </simulatedScreenMetrics>
                     <connections>
                         <outlet property="demoLabel1" destination="6NK-iy-G1b" id="Vkt-hv-CHl"/>
+                        <outlet property="demoLabel2" destination="0Y7-BD-j5i" id="yRf-3L-XUf"/>
+                        <outlet property="demoLabel3" destination="dkc-QT-Fyf" id="Mb1-QR-5fH"/>
+                        <outlet property="demoLabel4" destination="PJ1-ao-mBM" id="VeM-J7-qK7"/>
+                        <outlet property="demoLabel5" destination="FNY-Yp-i3E" id="ypN-c8-Tt8"/>
+                        <outlet property="holdLabelsSwitch" destination="5Hk-N1-s7W" id="g3y-kU-GAP"/>
+                        <outlet property="labelizeSwitch" destination="MFZ-eI-lOI" id="Tys-0P-Vp0"/>
+                        <outlet property="pauseLabelsSwitch" destination="tmC-FS-iei" id="bQs-Dd-5f8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5DW-r9-YTj" userLabel="First Responder" sceneMemberID="firstResponder"/>
