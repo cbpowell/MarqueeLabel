@@ -48,11 +48,7 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    public var animationCurve: UIViewAnimationOptions = UIViewAnimationOptions.CurveLinear {
-        didSet {
-            // TODO: implement this
-        }
-    }
+    public var animationCurve: UIViewAnimationCurve = .Linear
     
     public var labelize: Bool = false {
         didSet {
@@ -790,7 +786,7 @@ public class MarqueeLabel: UILabel {
         let animation = CAKeyframeAnimation(keyPath: "locations")
         
         // Get timing function
-        let timingFunction = timingFunctionForAnimationOptions(animationCurve)
+        let timingFunction = timingFunctionForAnimationCurve(animationCurve)
         
         // Define keyTimes
         switch (type) {
@@ -868,7 +864,7 @@ public class MarqueeLabel: UILabel {
         let animation = CAKeyframeAnimation(keyPath: property)
         
         // Get timing function
-        let timingFunction = timingFunctionForAnimationOptions(animationCurve)
+        let timingFunction = timingFunctionForAnimationCurve(animationCurve)
         
         // Calculate times based on marqueeType
         var totalDuration: NSTimeInterval = 0.0
@@ -916,15 +912,15 @@ public class MarqueeLabel: UILabel {
         return animation
     }
     
-    private func timingFunctionForAnimationOptions(options: UIViewAnimationOptions) -> CAMediaTimingFunction {
+    private func timingFunctionForAnimationCurve(curve: UIViewAnimationCurve) -> CAMediaTimingFunction {
         var timingFunction: NSString? = nil
         
-        switch options {
-        case UIViewAnimationOptions.CurveEaseIn:
+        switch curve {
+        case .EaseIn:
             timingFunction = kCAMediaTimingFunctionEaseIn
-        case UIViewAnimationOptions.CurveEaseInOut:
+        case .EaseInOut:
             timingFunction = kCAMediaTimingFunctionEaseInEaseOut
-        case UIViewAnimationOptions.CurveEaseOut:
+        case .EaseOut:
             timingFunction = kCAMediaTimingFunctionEaseOut
         default:
             timingFunction = kCAMediaTimingFunctionLinear
