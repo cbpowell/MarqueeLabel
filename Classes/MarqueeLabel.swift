@@ -264,12 +264,8 @@ public class MarqueeLabel: UILabel {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "observedViewControllerChange:", name:"UINavigationControllerDidShowViewControllerNotification", object:nil)
         
         // UIApplication state notifications
-        /*
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "restartLabel", name: UIApplicationWillEnterForegroundNotification, object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "restartLabel", name: UIApplicationDidBecomeActiveNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "shutdownLabel", name: UIApplicationWillResignActiveNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "shutdownLabel", name: UIApplicationDidEnterBackgroundNotification, object: nil)
-        */
         
         /*
         // Device Orientation change handling
@@ -1146,20 +1142,6 @@ public class MarqueeLabel: UILabel {
             updateSublabelsForKey("baselineAdjustment", value: newValue.toRaw())
         }
     }
-    
-    /*
-    // TODO: Fix this?
-    public override var adjustsFontSizeToFitWidth: Bool {
-        get {
-            return super.adjustsFontSizeToFitWidth
-        }
-        
-        set {
-            // By the nature of MarqueeLabel, this is NO
-            adjustsFontSizeToFitWidth = false
-        }
-    }
-    */
     
     public override func intrinsicContentSize() -> CGSize {
         return sublabel.intrinsicContentSize()
