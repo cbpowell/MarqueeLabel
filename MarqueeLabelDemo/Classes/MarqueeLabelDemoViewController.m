@@ -88,7 +88,7 @@
     [self.demoLabel5 addGestureRecognizer:tapRecognizer];
 }
 
-- (void)changeLabelTexts:(id)sender {
+- (IBAction)changeLabelTexts:(id)sender {
     // Use demoLabel1 tag to store "state"
     if (self.demoLabel1.tag == 101) {
         self.demoLabel1.text = @"This label is not as long.";
@@ -155,11 +155,6 @@
     [super didReceiveMemoryWarning];
 	
 	// Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-    [self.labelChangeTimer invalidate];
-    self.labelChangeTimer = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

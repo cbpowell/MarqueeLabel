@@ -42,8 +42,6 @@
 @property (nonatomic, weak) IBOutlet UISwitch *labelizeSwitch;
 @property (nonatomic, weak) IBOutlet UISwitch *holdLabelsSwitch;
 
-@property (nonatomic, strong) NSTimer *labelChangeTimer;
-
 - (IBAction)changeLabelTexts:(id)sender;
 - (IBAction)labelizeSwitched:(id)sender;
 - (IBAction)holdLabelsSwitched:(id)sender;
