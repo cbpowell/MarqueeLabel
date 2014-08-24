@@ -3,6 +3,11 @@ Overview
 
 MarqueeLabel is a UILabel subclass adds a scrolling marquee effect when the text of the label outgrows the available width. The label scrolling direction and speed/rate can be specified as well. All standard UILabel properties (where it makes sense) are available in MarqueeLabel and it behaves just like a UILabel.
 
+## MarqueeLabel in Swift!
+
+If you're implementing a project in Swift, be sure to check out the [Swift version of MarqueeLabel](https://github.com/cbpowell/MarqueeLabel-Swift)!
+
+
 ## How To Get Started
 
 1. Clone MarqueeLabel from Github, and check out the demo project.
