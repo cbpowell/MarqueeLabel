@@ -11,11 +11,11 @@ __This is still a work in progress!__
 
 The demo project builds without warnings, and most things seem to work, but I make no guarantee there aren't any bugs. Some functionality is implemented a little differently in order to try out some of Swift's features, and some variable names have changed.
 
-
-
-
-
+<br>
+<br>
 ## Out of date README below here...
+<br>
+<br>
 
 ## How To Get Started
 
