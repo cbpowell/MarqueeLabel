@@ -513,7 +513,16 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     if (!viewController.isViewLoaded) {
         return NO;
     }
-    
+
+    // check if application is in normal state
+    // Sometimes labels will continue to scroll in the background
+    // With "window" and superview, but CAAnimations will finish immideately, which will consume
+    // 100% CPU, while application is in background.
+    // This check will prevent this behaviour
+    if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
+        return NO;
+    }
+
     return YES;
 }
 
