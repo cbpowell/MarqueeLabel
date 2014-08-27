@@ -514,11 +514,9 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         return NO;
     }
 
-    // check if application is in normal state
-    // Sometimes labels will continue to scroll in the background
-    // With "window" and superview, but CAAnimations will finish immideately, which will consume
-    // 100% CPU, while application is in background.
-    // This check will prevent this behaviour
+    // Check if application is in active state
+    // Prevents CATransaction completionBlock (which does not receive a "finished" parameter
+    // like UIView animations) from looping when the application has been backgrounded
     if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
         return NO;
     }
