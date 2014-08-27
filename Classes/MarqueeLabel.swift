@@ -564,6 +564,13 @@ public class MarqueeLabel: UILabel {
             }
         }
         
+        // Check if application is in active state
+        // Prevents CATransaction completionBlock (which does not receive a "finished" parameter
+        // like UIView animations) from looping when the application has been backgrounded
+        if UIApplication.sharedApplication().applicationState != .Active {
+            return false
+        }
+        
         return true
     }
     
