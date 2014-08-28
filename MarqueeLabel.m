@@ -152,19 +152,22 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 - (void)forwardPropertiesToSubLabel {
     // Since we're a UILabel, we actually do implement all of UILabel's properties.
     // We don't care about these values, we just want to forward them on to our sublabel.
-    NSArray *properties = @[@"baselineAdjustment", @"enabled", @"font",
-                            @"highlighted", @"highlightedTextColor", @"minimumFontSize",
-                            @"shadowColor", @"shadowOffset", @"textAlignment", @"textColor",
+    NSArray *properties = @[@"baselineAdjustment", @"enabled", @"highlighted", @"highlightedTextColor",
+                            @"minimumFontSize", @"shadowOffset", @"textAlignment",
                             @"userInteractionEnabled", @"text", @"adjustsFontSizeToFitWidth",
-                            @"lineBreakMode", @"numberOfLines", @"backgroundColor"];
+                            @"lineBreakMode", @"numberOfLines"];
+    
     // Iterate through properties
+    self.subLabel.font = super.font;
+    self.subLabel.textColor = super.textColor;
+    self.subLabel.backgroundColor = super.backgroundColor;
+    self.subLabel.shadowColor = super.shadowColor;
     for (NSString *property in properties) {
         id val = [super valueForKey:property];
         [self.subLabel setValue:val forKey:property];
     }
     
-    // Grab attributed text from super, and clear to prevent double-drawing
-    self.attributedText = super.attributedText;
+    // Clear super to prevent double-drawing
     super.attributedText = nil;
 }
 
@@ -509,7 +512,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     if (!viewController.isViewLoaded) {
         return NO;
     }
-
     // Check if application is in active state
     // Prevents CATransaction completionBlock (which does not receive a "finished" parameter
     // like UIView animations) from looping when the application has been backgrounded
