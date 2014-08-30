@@ -573,8 +573,8 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     [CATransaction begin];
     
     // Set Duration
-    [CATransaction setAnimationDuration:interval];
-    
+    [CATransaction setAnimationDuration: 2.0 * (delayAmount + interval)];
+
     // Create animation for gradient, if needed
     if (self.fadeLength != 0.0f) {
         CAKeyframeAnimation *gradAnim = [self keyFrameAnimationForGradientFadeLength:self.fadeLength
