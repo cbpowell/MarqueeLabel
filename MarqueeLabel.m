@@ -154,7 +154,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     // We don't care about these values, we just want to forward them on to our sublabel.
     NSArray *properties = @[@"baselineAdjustment", @"enabled", @"highlighted", @"highlightedTextColor",
                             @"minimumFontSize", @"shadowOffset", @"textAlignment",
-                            @"userInteractionEnabled", @"text", @"adjustsFontSizeToFitWidth",
+                            @"userInteractionEnabled", @"adjustsFontSizeToFitWidth",
                             @"lineBreakMode", @"numberOfLines"];
     
     // Iterate through properties
@@ -162,6 +162,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     self.subLabel.textColor = super.textColor;
     self.subLabel.backgroundColor = super.backgroundColor;
     self.subLabel.shadowColor = super.shadowColor;
+    self.text = super.text;
     for (NSString *property in properties) {
         id val = [super valueForKey:property];
         [self.subLabel setValue:val forKey:property];
