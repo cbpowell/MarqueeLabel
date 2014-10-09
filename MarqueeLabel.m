@@ -161,11 +161,11 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
                             @"lineBreakMode", @"numberOfLines"];
     
     // Iterate through properties
+    self.subLabel.text = super.text;
     self.subLabel.font = super.font;
     self.subLabel.textColor = super.textColor;
     self.subLabel.backgroundColor = super.backgroundColor;
     self.subLabel.shadowColor = super.shadowColor;
-    self.text = super.text;
     for (NSString *property in properties) {
         id val = [super valueForKey:property];
         [self.subLabel setValue:val forKey:property];
