@@ -9,6 +9,9 @@
 NSString *const kMarqueeLabelControllerRestartNotification = @"MarqueeLabelViewControllerRestart";
 NSString *const kMarqueeLabelShouldLabelizeNotification = @"MarqueeLabelShouldLabelizeNotification";
 NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAnimateNotification";
+NSString *const kMarqueeLabelAnimationCompletionBlock = @"MarqueeLabelAnimationCompletionBlock";
+
+typedef void(^MLAnimationCompletionBlock)(BOOL finished);
 
 // Helpers
 @interface UIView (MarqueeLabelHelpers)
@@ -512,13 +515,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     if (!viewController.isViewLoaded) {
         return NO;
     }
-    // Check if application is in active state
-    // Prevents CATransaction completionBlock (which does not receive a "finished" parameter
-    // like UIView animations) from looping when the application has been backgrounded
-    if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
-        return NO;
-    }
-
+    
     return YES;
 }
 
@@ -583,8 +580,11 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         [self.layer.mask addAnimation:gradAnim forKey:@"gradient"];
     }
     
-    // Set completion block, after adding gradient animation (so that gradient animation does not affect completion)
-    [CATransaction setCompletionBlock:^{
+    MLAnimationCompletionBlock completionBlock = ^(BOOL finished) {
+        if (!finished) {
+            // Do not continue into the next loop
+            return;
+        }
         // Call returned home method
         [self labelReturnedToHome:YES];
         // Check to ensure that:
@@ -598,7 +598,8 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
                 [self scrollAwayWithInterval:interval delayAmount:delayAmount];
             }
         }
-    }];
+    };
+    
 
     // Create animation for position
     NSArray *values = @[[NSValue valueWithCGPoint:self.homeLabelFrame.origin],      // Initial location, home
@@ -611,6 +612,10 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
                                                                 values:values
                                                               interval:interval
                                                                  delay:delayAmount];
+    // Add completion block
+    [awayAnim setValue:completionBlock forKey:kMarqueeLabelAnimationCompletionBlock];
+    
+    // Add animation
     [self.subLabel.layer addAnimation:awayAnim forKey:@"position"];
     
     [CATransaction commit];
@@ -643,8 +648,11 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         [self.layer.mask addAnimation:gradAnim forKey:@"gradient"];
     }
     
-    // Set completion block, after adding gradient animation (so that gradient animation does not affect completion)
-    [CATransaction setCompletionBlock:^{
+    MLAnimationCompletionBlock completionBlock = ^(BOOL finished) {
+        if (!finished) {
+            // Do not continue into the next loop
+            return;
+        }
         // Call returned home method
         [self labelReturnedToHome:YES];
         // Check to ensure that:
@@ -658,7 +666,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
                 [self scrollContinuousWithInterval:interval after:delayAmount];
             }
         }
-    }];
+    };
     
     // Create animations for sublabel positions
     NSArray *labels = [self allSubLabels];
@@ -673,6 +681,12 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
                                                                     values:values
                                                                   interval:interval
                                                                      delay:delayAmount];
+        // Attach completion block to subLabel
+        if (sl == self.subLabel) {
+            [awayAnim setValue:completionBlock forKey:kMarqueeLabelAnimationCompletionBlock];
+        }
+        
+        // Add animation
         [sl.layer addAnimation:awayAnim forKey:@"position"];
         
         // Increment offset
@@ -899,6 +913,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     // Set values
     animation.values = values;
+    animation.delegate = self;
     
     return animation;
 }
@@ -926,6 +941,12 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     return [CAMediaTimingFunction functionWithName:timingFunction];
 }
 
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
+    MLAnimationCompletionBlock completionBlock = [anim valueForKey:kMarqueeLabelAnimationCompletionBlock];
+    if (completionBlock) {
+        completionBlock(flag);
+    }
+}
 
 #pragma mark - Label Control
 
