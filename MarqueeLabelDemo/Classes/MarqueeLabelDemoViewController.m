@@ -43,8 +43,8 @@
     self.demoLabel1.animationCurve = UIViewAnimationOptionCurveEaseInOut;
     self.demoLabel1.fadeLength = 10.0f;
     self.demoLabel1.continuousMarqueeExtraBuffer = 10.0f;
-    self.demoLabel1.text = @"This is a test of MarqueeLabel - the text is long enough that it needs to scroll to see the whole thing.";
     self.demoLabel1.tag = 101;
+    // Text string for this label is set via Interface Builder!
     
     
     // Reverse Continuous Type, with attributed string
