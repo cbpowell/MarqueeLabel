@@ -474,11 +474,11 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     // Calculate based on attributed text
     expectedLabelSize = [self.subLabel.attributedText boundingRectWithSize:maximumLabelSize
-                                                                   options:0
+                                                                   options:NSStringDrawingUsesDeviceMetrics
                                                                    context:nil].size;
     
     expectedLabelSize.width = ceilf(expectedLabelSize.width);
-    expectedLabelSize.height = self.bounds.size.height;
+    expectedLabelSize.height = ceilf(self.bounds.size.height);
     
     return expectedLabelSize;
 }
