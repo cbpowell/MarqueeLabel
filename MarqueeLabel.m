@@ -238,7 +238,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         }
         CGSize minimumLabelSize = [self subLabelSize];
         
-        
         // Adjust for fade length
         CGSize minimumSize = CGSizeMake(minimumLabelSize.width + (self.fadeLength * 2), minimumLabelSize.height);
         
@@ -439,13 +438,8 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     CGSize expectedLabelSize = CGSizeZero;
     CGSize maximumLabelSize = CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX);
     
-    // Calculate based on attributed text
-    expectedLabelSize = [self.subLabel.attributedText boundingRectWithSize:maximumLabelSize
-                                                                   options:NSStringDrawingUsesDeviceMetrics
-                                                                   context:nil].size;
-    
-    expectedLabelSize.width = ceilf(expectedLabelSize.width);
-    expectedLabelSize.height = ceilf(self.bounds.size.height);
+    // Get size of subLabel
+    expectedLabelSize = [self.subLabel sizeThatFits:maximumLabelSize];
     
     return expectedLabelSize;
 }
