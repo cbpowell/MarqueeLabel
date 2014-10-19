@@ -73,7 +73,7 @@ Check out the [MarqueeLabel documentation](http://cocoadocs.org/docsets/MarqueeL
 
 ### Special Notes<a id="specialnotes"></a>
 
-**Automatic Scrolling**
+#### Automatic Scrolling
 
 MarqueeLabel tries its best to automatically begin scrolling when appropriate, but sometimes the way your view/view controller appears onscreen can trip it up.
 
@@ -81,13 +81,24 @@ To combat this, you can try:
 - Using the `restartLabel` instance method to "manually" start scrolling on a MarqueeLabel
 - Try using the bulk manipulation class methods - but note that these don't currently play well with UIViewController containment. You'll need to pass them the lowest UIViewController in your heirarchy.
 
-**Labelize**
+#### Use in UITableView and UICollectionView
+
+As noted above, MarqueeLabel can sometimes have trouble detecting when the scroll animation should start. This is particularly true when you've placed it in UITableViews/UICollectionViews, although Release v2.0 has improved this somewhat.
+
+Usually you'll configure the MarqueeLabel instance when building the cell in `tableView:cellForRowAtIndexPath:` (or similar for UICollectionView), but at this point the cell is not onscreen so MarqueeLabel will not begin the scrolling animation. Even when the cell is eventually placed onscreen as the user scrolls, due to timing it's possible that the animation will not fire.
+
+To make sure the scrolling animation _does_ begin as the cell scrolls onscreen, you can use the the `restartLabel` method on your MarqueeLabels inside the `tableView:willDisplayCell:forRowAtIndexPath:` delegate method (or similar for UICollectionView).
+
+**That said** - the UITableView/UICollectionView best practice is to minimize things like excessive animation, subviews, and custom drawing in your cells, in order to get glassy smooth scrolling. The ever-increasing speed of iOS devices is making smooth scrolling easier and easier to achieve, but in general I would recommend against allowing your labels to automatically animate during user scrolling of the UITableView/UICollectionView. I suggest [holding scrolling](http://cocoadocs.org/docsets/MarqueeLabel/2.0.7/Classes/MarqueeLabel.html#//api/name/holdScrolling) or [labelizing](http://cocoadocs.org/docsets/MarqueeLabel/2.0.7/Classes/MarqueeLabel.html#//api/name/labelize) the labels while the user scrolls.
+
+
+#### Labelize
 
 Using the labelize feature will cause a MarqueeLabel to act like a normal UILabel - including the line break mode you've set. This could cause the ellipsis (...) to appear if you leave the `lineBreakMode` property as the default `NSLineBreakByTruncatingTail`.
 
 If you simply wish to pause scrolling with the label at the "home" location, set the `holdScrolling` property to `YES` instead. The automatic scroll animation won't restart until you set `holdScrolling` back to `NO`.
 
-**Modal View Controllers**
+#### Modal View Controllers
 
 Sometimes MarqueeLabel will fail to auto-restart upon the dismissal of a modal view controller or other view controller which blocks the view of your view controller. It's not always necessary, as sometimes the scroll animations will continue happily in the background. However, see the [Important Animation Note](#important-animation-note) section below.
 
