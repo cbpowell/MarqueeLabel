@@ -440,6 +440,8 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     // Get size of subLabel
     expectedLabelSize = [self.subLabel sizeThatFits:maximumLabelSize];
+    // Adjust to own height (make text baseline match normal label)
+    expectedLabelSize.height = self.bounds.size.height;
     
     return expectedLabelSize;
 }
