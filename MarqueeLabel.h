@@ -18,6 +18,10 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 };
 
 
+#ifndef IBInspectable
+#define IBInspectable
+#endif
+
 /**
  MarqueeLabel is a UILabel subclass adds a scrolling marquee effect when the text of a label instance outgrows the available width. Instances of `MarqueeLabel` can be configured
  for label scrolling direction/looping, speed/rate, and other options.
@@ -94,7 +98,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  Defaults to `UIViewAnimationOptionCurveEaseInOut`.
  */
 
-@property (nonatomic, assign) UIViewAnimationOptions animationCurve;
+@property (nonatomic, assign) /*IBInspectable*/ UIViewAnimationOptions animationCurve;
 
 
 /** A boolean property that sets whether the `MarqueeLabel` should behave like a normal UILabel.
@@ -114,7 +118,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  @warning The UILabel default setting for the `lineBreakMode` property is `NSLineBreakByTruncatingTail`, which truncates the text adds an ellipsis glyph (...). Set the `lineBreakMode` property to `NSLineBreakByClipping` in order to avoid the ellipsis, especially if using an edge transparency fade.
  */
 
-@property (nonatomic, assign) BOOL labelize;
+@property (nonatomic, assign) IBInspectable BOOL labelize;
 
 
 /** A boolean property that sets whether the `MarqueeLabel` should hold (prevent) label scrolling.
@@ -130,7 +134,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  @warning The label will not automatically scroll when this property is set to `YES`.
  */
 
-@property (nonatomic, assign) BOOL holdScrolling;
+@property (nonatomic, assign) IBInspectable BOOL holdScrolling;
 
 
 /** A boolean property that sets whether the `MarqueeLabel` should only begin a scroll when tapped.
@@ -144,7 +148,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  @see holdScrolling
  */
 
-@property (nonatomic, assign) BOOL tapToScroll;
+@property (nonatomic, assign) IBInspectable BOOL tapToScroll;
 
 
 /** Defines the direction and method in which the `MarqueeLabel` instance scrolls.
@@ -166,7 +170,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  */
 
 
-@property (nonatomic, assign) MarqueeType marqueeType;
+@property (nonatomic, assign) /*IBInspectable*/ MarqueeType marqueeType;
 
 
 /** Defines the duration of the scrolling animation.
@@ -181,7 +185,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  @see rate
  */
 
-@property (nonatomic, assign) NSTimeInterval scrollDuration;
+@property (nonatomic, assign) /*IBInspectable*/ NSTimeInterval scrollDuration;
 
 
 /** Defines the rate at which the label will scroll, in pixels per second.
@@ -193,7 +197,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  @see scrollDuration
  */
 
-@property (nonatomic, assign) CGFloat rate;
+@property (nonatomic, assign) IBInspectable CGFloat rate;
 
 
 /** The additional amount of space (in points) inbetween the strings of a continuous-type label.
@@ -205,7 +209,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  @see fadeLength
  */
 
-@property (nonatomic, assign) CGFloat continuousMarqueeExtraBuffer;
+@property (nonatomic, assign) IBInspectable CGFloat continuousMarqueeExtraBuffer;
 
 
 /** The length of transparency fade at the left and right edges of the `MarqueeLabel` instance's frame.
@@ -217,12 +221,12 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  Defaults to `0`.
  */
 
-@property (nonatomic, assign) CGFloat fadeLength;
+@property (nonatomic, assign) IBInspectable CGFloat fadeLength;
 
 
 /** The length of delay in seconds that the label pauses at the completion of a scroll. */
 
-@property (nonatomic, assign) CGFloat animationDelay;
+@property (nonatomic, assign) IBInspectable CGFloat animationDelay;
 
 
 
