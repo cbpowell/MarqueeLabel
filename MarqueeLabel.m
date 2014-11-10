@@ -991,6 +991,18 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     return;
 }
 
+#pragma mark - Modified UIView Methods/Getters/Setters
+
+- (void)setFrame:(CGRect)frame {
+    [super setFrame:frame];
+    [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
+}
+
+- (void)setBounds:(CGRect)bounds {
+    [super setBounds:bounds];
+    [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
+}
+
 #pragma mark - Modified UILabel Methods/Getters/Setters
 
 - (UIView *)viewForBaselineLayout {
