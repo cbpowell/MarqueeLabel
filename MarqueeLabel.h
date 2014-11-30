@@ -111,7 +111,9 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  @see holdScrolling
  @see lineBreakMode
  @warning The label will not automatically scroll when this property is set to `YES`.
- @warning The UILabel default setting for the `lineBreakMode` property is `NSLineBreakByTruncatingTail`, which truncates the text adds an ellipsis glyph (...). Set the `lineBreakMode` property to `NSLineBreakByClipping` in order to avoid the ellipsis, especially if using an edge transparency fade.
+ @warning The UILabel default setting for the `lineBreakMode` property is `NSLineBreakByTruncatingTail`, which truncates
+ the text adds an ellipsis glyph (...). Set the `lineBreakMode` property to `NSLineBreakByClipping` in order to avoid the
+ ellipsis, especially if using an edge transparency fade.
  */
 
 @property (nonatomic, assign) BOOL labelize;
