@@ -42,7 +42,8 @@
     self.demoLabel1.scrollDuration = 15.0;
     self.demoLabel1.animationCurve = UIViewAnimationOptionCurveEaseInOut;
     self.demoLabel1.fadeLength = 10.0f;
-    self.demoLabel1.continuousMarqueeExtraBuffer = 10.0f;
+    self.demoLabel1.leadingBuffer = 30.0f;
+    self.demoLabel1.trailingBuffer = 20.0f;
     self.demoLabel1.tag = 101;
     // Text string for this label is set via Interface Builder!
     
@@ -51,6 +52,7 @@
     self.demoLabel2.marqueeType = MLContinuousReverse;
     self.demoLabel2.scrollDuration = 8.0;
     self.demoLabel2.fadeLength = 15.0f;
+    self.demoLabel2.trailingBuffer = 30.0f;
     
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"This is a long string, that's also an attributed string, which works just as well!"];
     [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:18.0f] range:NSMakeRange(0, 21)];
@@ -64,6 +66,8 @@
     self.demoLabel3.marqueeType = MLLeftRight;
     self.demoLabel3.rate = 30.0f;
     self.demoLabel3.fadeLength = 10.0f;
+    self.demoLabel3.leadingBuffer = 30.0f;
+    self.demoLabel3.trailingBuffer = 20.0f;
     self.demoLabel3.textAlignment = NSTextAlignmentCenter;
     self.demoLabel3.text = @"This is another long label that scrolls at a specific rate, rather than scrolling its length in a specific time window!";
     self.demoLabel3.tag = 102;
@@ -72,6 +76,7 @@
     // Right/left example, with tap to scroll
     self.demoLabel4.marqueeType = MLRightLeft;
     self.demoLabel4.tapToScroll = YES;
+    self.demoLabel4.trailingBuffer = 20.0f;
     self.demoLabel4.text = @"This label will not scroll until tapped, and then it performs its scroll cycle only once. Tap me!";
     
     
@@ -79,6 +84,7 @@
     self.demoLabel5.marqueeType = MLContinuous;
     self.demoLabel5.scrollDuration = 10.0f;
     self.demoLabel5.fadeLength = 10.0f;
+    self.demoLabel5.trailingBuffer = 30.0f;
     self.demoLabel5.text = @"This text is long, and can be paused with a tap - handled via a UIGestureRecognizer!";
     
     self.demoLabel5.userInteractionEnabled = YES; // Don't forget this, otherwise the gesture recognizer will fail (UILabel has this as NO by default)
