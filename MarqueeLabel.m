@@ -1127,6 +1127,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     for (UILabel *sl in subLabels) {
         sl.attributedText = self.attributedText;
         sl.backgroundColor = self.backgroundColor;
+        sl.textColor = self.textColor;
         sl.shadowColor = self.shadowColor;
         sl.shadowOffset = self.shadowOffset;
         sl.textAlignment = NSTextAlignmentLeft;
