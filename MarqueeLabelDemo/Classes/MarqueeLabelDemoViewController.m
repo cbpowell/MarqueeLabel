@@ -99,10 +99,26 @@
     if (self.demoLabel1.tag == 101) {
         self.demoLabel1.text = @"This label is not as long.";
         self.demoLabel3.text = @"This is a short, centered label.";
+        
+        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"This is a different longer string, but still an attributed string, with new different attributes!"];
+        [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:18.0f] range:NSMakeRange(0, 33)];
+        [attributedString addAttribute:NSBackgroundColorAttributeName value:[UIColor colorWithRed:0.000 green:0.002 blue:0.614 alpha:1.000] range:NSMakeRange(0,33)];
+        [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(0,33)];
+        [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Light" size:18.0f] range:NSMakeRange(19, attributedString.length - 21)];
+        self.demoLabel2.attributedText = attributedString;
+        
         self.demoLabel1.tag = 102;
     } else {
         self.demoLabel1.text = @"This is a test of MarqueeLabel - the text is long enough that it needs to scroll to see the whole thing.";
         self.demoLabel3.text = @"That also scrolls continuously rather than scrolling back and forth!";
+        
+        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"This is a long string, that's also an attributed string, which works just as well!"];
+        [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:18.0f] range:NSMakeRange(0, 21)];
+        [attributedString addAttribute:NSBackgroundColorAttributeName value:[UIColor lightGrayColor] range:NSMakeRange(10,11)];
+        [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0.234 green:0.234 blue:0.234 alpha:1.000] range:NSMakeRange(0,attributedString.length)];
+        [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Light" size:18.0f] range:NSMakeRange(21, attributedString.length - 21)];
+        self.demoLabel2.attributedText = attributedString;
+        
         self.demoLabel1.tag = 101;
     }
 }
