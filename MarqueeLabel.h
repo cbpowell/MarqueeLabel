@@ -248,7 +248,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  @deprecated Use `trailingBuffer` instead. Values set to this property are simply forwarded to `trailingBuffer`.
  */
  
-@property (nonatomic, assign) CGFloat continuousMarqueeExtraBuffer  __attribute((deprecated("Use trailingBuffer property instead.")));
+@property (nonatomic, assign) CGFloat continuousMarqueeExtraBuffer DEPRECATED_MSG_ATTRIBUTE("Use trailingBuffer property instead.");
 
 
 /** The length of transparency fade at the left and right edges of the `MarqueeLabel` instance's frame.
