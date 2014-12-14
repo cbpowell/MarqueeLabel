@@ -328,38 +328,19 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     switch (self.marqueeType) {
         case MLContinuous:
-        {
-            self.homeLabelFrame = CGRectIntegral(CGRectMake(0.0f, 0.0f, expectedLabelSize.width, expectedLabelSize.height));
-            CGFloat awayLabelOffset = -(self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer);
-            self.awayLabelFrame = CGRectIntegral(CGRectOffset(self.homeLabelFrame, awayLabelOffset, 0.0f));
-            
-            NSArray *labels = [self allSubLabels];
-            if (labels.count < 2) {
-                UILabel *secondSubLabel = [[UILabel alloc] initWithFrame:CGRectOffset(self.homeLabelFrame, -awayLabelOffset, 0.0f)];
-                secondSubLabel.tag = 701;
-                secondSubLabel.numberOfLines = 1;
-                secondSubLabel.layer.anchorPoint = CGPointMake(0.0f, 0.0f);
-                
-                [self addSubview:secondSubLabel];
-                labels = [labels arrayByAddingObject:secondSubLabel];
-            }
-            
-            [self refreshSubLabels:labels];
-            
-            // Recompute the animation duration
-            self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(awayLabelOffset) / self.rate) : (self.scrollDuration);
-            
-            self.subLabel.frame = self.homeLabelFrame;
-            
-            break;
-        }
-            
         case MLContinuousReverse:
         {
-            self.homeLabelFrame = CGRectIntegral(CGRectMake(self.bounds.size.width - expectedLabelSize.width, 0.0f, expectedLabelSize.width, expectedLabelSize.height));
-            CGFloat awayLabelOffset = (self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer);
-            self.awayLabelFrame = CGRectIntegral(CGRectOffset(self.homeLabelFrame, awayLabelOffset, 0.0f));
-            
+            CGFloat awayLabelOffset;
+            if (self.marqueeType == MLContinuous) {
+                self.homeLabelFrame = CGRectIntegral(CGRectMake(0.0f, 0.0f, expectedLabelSize.width, expectedLabelSize.height));
+                awayLabelOffset = -(self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer);
+                self.awayLabelFrame = CGRectIntegral(CGRectOffset(self.homeLabelFrame, awayLabelOffset, 0.0f));
+            } else {
+                self.homeLabelFrame = CGRectIntegral(CGRectMake(self.bounds.size.width - expectedLabelSize.width, 0.0f, expectedLabelSize.width, expectedLabelSize.height));
+                awayLabelOffset = (self.homeLabelFrame.size.width + self.fadeLength + self.continuousMarqueeExtraBuffer);
+                self.awayLabelFrame = CGRectIntegral(CGRectOffset(self.homeLabelFrame, awayLabelOffset, 0.0f));
+            }
+
             NSArray *labels = [self allSubLabels];
             if (labels.count < 2) {
                 UILabel *secondSubLabel = [[UILabel alloc] initWithFrame:CGRectOffset(self.homeLabelFrame, -awayLabelOffset, 0.0f)];
@@ -376,7 +357,10 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
             // Recompute the animation duration
             self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(awayLabelOffset) / self.rate) : (self.scrollDuration);
             
-            self.subLabel.frame = self.homeLabelFrame;
+            // Set sublabel frames
+            for (UILabel *sl in [self allSubLabels]) {
+                sl.frame = CGRectOffset(self.homeLabelFrame, -awayLabelOffset * (sl.tag - 700), 0.0f);
+            }
             
             break;
         }
