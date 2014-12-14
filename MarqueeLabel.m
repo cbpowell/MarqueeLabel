@@ -6,12 +6,17 @@
 #import "MarqueeLabel.h"
 #import <QuartzCore/QuartzCore.h>
 
+// Notification strings
 NSString *const kMarqueeLabelControllerRestartNotification = @"MarqueeLabelViewControllerRestart";
 NSString *const kMarqueeLabelShouldLabelizeNotification = @"MarqueeLabelShouldLabelizeNotification";
 NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAnimateNotification";
 NSString *const kMarqueeLabelAnimationCompletionBlock = @"MarqueeLabelAnimationCompletionBlock";
 
+// Animation completion block
 typedef void(^MLAnimationCompletionBlock)(BOOL finished);
+
+// iOS Version check for iOS 8.0.0
+#define SYSTEM_VERSION_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
 
 // Helpers
 @interface UIView (MarqueeLabelHelpers)
@@ -979,12 +984,23 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (void)setFrame:(CGRect)frame {
     [super setFrame:frame];
-    [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
+    
+    // Check if device is running iOS 8.0.0
+    if(SYSTEM_VERSION_EQUAL_TO(@"8.0.0")) {
+        // If so, force update because layoutSubviews is not called
+        [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
+    }
 }
 
 - (void)setBounds:(CGRect)bounds {
     [super setBounds:bounds];
-    [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
+    
+    // Check if device is running iOS 8.0.0
+    if(SYSTEM_VERSION_EQUAL_TO(@"8.0.0")) {
+        // If so, force update because layoutSubviews is not called
+        [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
+    }
+    
 }
 
 #pragma mark - Modified UILabel Methods/Getters/Setters
@@ -1388,7 +1404,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset) {
     CGPoint P2 = [controlPoints[2] CGPointValue];
     CGPoint P3 = [controlPoints[3] CGPointValue];
     
-    // Per http://en.wikipedia.org/wiki/Bézier_curve#Cubic_B.C3.A9zier_curves
+    // Per http://en.wikipedia.org/wiki/Bezier_curve#Cubic_B.C3.A9zier_curves
     return  powf((1 - t),3) * P0.y +
             3.0f * powf(1 - t, 2) * t * P1.y +
             3.0f * (1 - t) * powf(t, 2) * P2.y +
@@ -1403,7 +1419,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset) {
     CGPoint P2 = [controlPoints[2] CGPointValue];
     CGPoint P3 = [controlPoints[3] CGPointValue];
     
-    // Per http://en.wikipedia.org/wiki/Bézier_curve#Cubic_B.C3.A9zier_curves
+    // Per http://en.wikipedia.org/wiki/Bezier_curve#Cubic_B.C3.A9zier_curves
     return  powf((1 - t),3) * P0.x +
             3.0f * powf(1 - t, 2) * t * P1.x +
             3.0f * (1 - t) * powf(t, 2) * P2.x +
