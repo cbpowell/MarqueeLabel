@@ -9,7 +9,7 @@ If you're implementing a project in Swift, be sure to check out the [Swift versi
 
 ## Important: MarqueeLabel and iOS 8.0.x
 
-Unfortunately, iOS 8.0 shipped with a bug - the `layoutSubviews` method of UILabel subclasses (which MarqueeLabel is) is _never_ called. MarqueeLabel uses `layoutSubviews` to detect when it's frame/bounds size changes and recalculate the scrolling animation details. The result is changes to the frames of your MarqueeLabel instances can have some weird effects. Take a look at [this issue to see the details](https://github.com/cbpowell/MarqueeLabel/issues/65) and possible workarounds.
+Unfortunately, iOS 8.0.0 shipped with a bug - the `layoutSubviews` method of UILabel subclasses (which MarqueeLabel is) is _never_ called. MarqueeLabel uses `layoutSubviews` to detect when it's frame/bounds size changes and recalculate the scrolling animation details. The result of the bug is that changes to the frames of your MarqueeLabel instances can have some weird effects. Take a look at [this issue to see the details](https://github.com/cbpowell/MarqueeLabel/issues/65) and [possible workarounds](https://github.com/cbpowell/MarqueeLabel/issues/65#issuecomment-50837808).
 
 Fortunately, this appears to be fixed in iOS 8.1!
 
