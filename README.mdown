@@ -7,12 +7,6 @@ MarqueeLabel is a UILabel subclass adds a scrolling marquee effect when the text
 
 If you're implementing a project in Swift, be sure to check out the [Swift version of MarqueeLabel](https://github.com/cbpowell/MarqueeLabel-Swift)!
 
-## Important: MarqueeLabel and iOS 8.0.x
-
-Unfortunately, iOS 8.0.0 shipped with a bug - the `layoutSubviews` method of UILabel subclasses (which MarqueeLabel is) is _never_ called. MarqueeLabel uses `layoutSubviews` to detect when it's frame/bounds size changes and recalculate the scrolling animation details. The result of the bug is that changes to the frames of your MarqueeLabel instances can have some weird effects. Take a look at [this issue to see the details](https://github.com/cbpowell/MarqueeLabel/issues/65) and [possible workarounds](https://github.com/cbpowell/MarqueeLabel/issues/65#issuecomment-50837808).
-
-Fortunately, this appears to be fixed in iOS 8.1!
-
 ## How To Get Started
 
 1. Clone MarqueeLabel from Github, and check out the demo project.
@@ -21,9 +15,13 @@ Fortunately, this appears to be fixed in iOS 8.1!
 4. Drop in MarqueeLabel as a replacement to your lengthy UILabels!
 5. Help out with bug fixes and new features.
 
-## MarqueeLabel v2.0
+#### Important: MarqueeLabel and iOS 8.0.x
 
-MarqueeLabel v2.0 makes some important changes! Check out the [release notes for v2.0.0](https://github.com/cbpowell/MarqueeLabel/releases/tag/2.0.0) to understand what this means for your app!
+Unfortunately, iOS 8.0.0 shipped with a bug - the `layoutSubviews` method of UILabel subclasses is _never_ called. MarqueeLabel [version 2.1.0](https://github.com/cbpowell/MarqueeLabel/releases/tag/2.1.0) (and 2.0.9, a bugfix release on the now older 2.0.x branch) attempt to fix this for iOS 8.0.0 __only__. Fortunately, this issue was fixed in iOS 8.1!
+
+## MarqueeLabel v2.x
+
+MarqueeLabel v2.0 and v2.1 makes some important changes! If you're upgrading from an older version, check out the [release notes for v2.0.0](https://github.com/cbpowell/MarqueeLabel/releases/tag/2.0.0) and [for v2.1.0](https://github.com/cbpowell/MarqueeLabel/releases/tag/2.1.0) to understand what this means for your app!
 
 ### Installation with Cocoapods
 
