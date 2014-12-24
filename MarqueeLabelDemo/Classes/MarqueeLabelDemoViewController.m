@@ -52,7 +52,7 @@
     self.demoLabel2.marqueeType = MLContinuousReverse;
     self.demoLabel2.scrollDuration = 8.0;
     self.demoLabel2.fadeLength = 15.0f;
-    self.demoLabel2.trailingBuffer = 30.0f;
+    self.demoLabel2.leadingBuffer = 40.0f;
     
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"This is a long string, that's also an attributed string, which works just as well!"];
     [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:18.0f] range:NSMakeRange(0, 21)];
@@ -101,10 +101,11 @@
         self.demoLabel3.text = @"This is a short, centered label.";
         
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"This is a different longer string, but still an attributed string, with new different attributes!"];
-        [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:18.0f] range:NSMakeRange(0, 33)];
-        [attributedString addAttribute:NSBackgroundColorAttributeName value:[UIColor colorWithRed:0.000 green:0.002 blue:0.614 alpha:1.000] range:NSMakeRange(0,33)];
-        [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(0,33)];
-        [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Light" size:18.0f] range:NSMakeRange(19, attributedString.length - 21)];
+        [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, attributedString.length)];
+        [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica-Bold" size:18.0f] range:NSMakeRange(0, attributedString.length)];
+        [attributedString addAttribute:NSBackgroundColorAttributeName value:[UIColor colorWithWhite:0.600 alpha:1.000] range:NSMakeRange(0,33)];
+        //[attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(0,19)];
+        [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Light" size:18.0f] range:NSMakeRange(19, attributedString.length - 19)];
         self.demoLabel2.attributedText = attributedString;
         
         self.demoLabel1.tag = 102;
