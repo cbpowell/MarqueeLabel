@@ -309,15 +309,16 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         [self.subLabel setTextAlignment:[super textAlignment]];
         [self.subLabel setLineBreakMode:[super lineBreakMode]];
         
-        CGRect labelFrame;
+        CGRect labelFrame, unusedFrame;
         switch (self.marqueeType) {
             case MLContinuousReverse:
             case MLRightLeft:
-                labelFrame = CGRectIntegral(CGRectMake(self.trailingBuffer, 0.0f, self.bounds.size.width - (self.leadingBuffer + self.trailingBuffer), self.bounds.size.height));
+                CGRectDivide(self.bounds, &unusedFrame, &labelFrame, self.leadingBuffer, CGRectMaxXEdge);
+                labelFrame = CGRectIntegral(labelFrame);
                 break;
                 
             default:
-                labelFrame = CGRectIntegral(CGRectMake(self.leadingBuffer, 0.0f, self.bounds.size.width - (self.leadingBuffer + self.trailingBuffer), self.bounds.size.height));
+                labelFrame = CGRectIntegral(CGRectMake(self.leadingBuffer, 0.0f, self.bounds.size.width - self.leadingBuffer, self.bounds.size.height));
                 break;
         }
         

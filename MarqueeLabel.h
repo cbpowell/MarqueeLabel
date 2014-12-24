@@ -213,7 +213,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  is used as spacing between the two label instances. Zero is an allowable value for all three properties.
  
  @see trailingBuffer
- @since Available in 2.0.9 and later.
+ @since Available in 2.1.0 and later.
  */
 
 @property (nonatomic, assign) CGFloat leadingBuffer;
@@ -230,11 +230,10 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  @note For `MLContinuous`-type labels, the smallest value of `leadingBuffer`, 'trailingBuffer`, and `fadeLength`
  is used as spacing between the two label instances. Zero is an allowable value for all three properties.
  
- @warning The value set to this property will affect label size when the `labelize` property is set to `YES`. Effectively,
- the label frame will be inset by this value on trailing side.
+ @note The value set to this property has no effect when the `labelize` property is set to `YES`.
  
  @see leadingBuffer
- @since Available in 2.0.9 and later.
+ @since Available in 2.1.0 and later.
  */
 
 @property (nonatomic, assign) CGFloat trailingBuffer;
