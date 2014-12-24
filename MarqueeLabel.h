@@ -425,7 +425,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  @deprecated Use `controllerViewDidAppear:` instead.
  */
 
-+ (void)controllerViewAppearing:(UIViewController *)controller __attribute((deprecated("Use restartLabelsOfController: method")));
++ (void)controllerViewAppearing:(UIViewController *)controller DEPRECATED_MSG_ATTRIBUTE("Use restartLabelsOfController: method");
 
 
 /** Labelizes all `MarqueeLabel` instances that have the specified view controller in their next responder chain.
