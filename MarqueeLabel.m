@@ -918,17 +918,10 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 #pragma mark - Label Control
 
 - (void)restartLabel {
-    [self restartLabel:NO];
-}
-
-- (void)restartLabel:(BOOL)forceFirstScroll {
-    [self applyGradientMaskForFadeLength:self.fadeLength animated:NO];
-    
-    if (self.labelShouldScroll && (!self.tapToScroll || forceFirstScroll)) {
+    if (self.labelShouldScroll && !self.tapToScroll) {
         [self beginScroll];
     }
 }
-
 
 - (void)resetLabel {
     [self returnLabelToOriginImmediately];
@@ -985,6 +978,12 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 - (void)labelWasTapped:(UITapGestureRecognizer *)recognizer {
     if (self.labelShouldScroll) {
         [self beginScrollWithDelay:NO];
+    }
+}
+
+- (void)forceScrollStart {
+    if (self.labelShouldScroll && !self.awayFromHome) {
+        [self beginScroll];
     }
 }
 
