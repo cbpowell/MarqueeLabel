@@ -528,8 +528,8 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         return;
     }
     
-    [self.subLabel.layer removeAllAnimations];
-    [self.layer.mask removeAllAnimations];
+    // Return labels to home (cancel any animations)
+    [self returnLabelToOriginImmediately];
     
     // Call pre-animation method
     [self labelWillBeginScroll];
@@ -595,9 +595,8 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         return;
     }
     
-    // Return labels to home frame
-    [self.subLabel.layer removeAllAnimations];
-    [self.layer.mask removeAllAnimations];
+    // Return labels to home (cancel any animations)
+    [self returnLabelToOriginImmediately];
     
     // Call pre-animation method
     [self labelWillBeginScroll];
