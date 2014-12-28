@@ -276,11 +276,10 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 /// @name Animation control
 ////////////////////////////////////////////////////////////////////////////////
 
-/** Restarts the label text scroll animation.
- 
- The text is immediately returned to the home position, and the scroll animation will be begin again if the appropriate conditions are met.
+/** Immediately resets the label to the home position, and restarts the scroll animation if the appropriate conditions are met.
  
  @see resetLabel
+ @see forceScrollStart
  */
 
 - (void)restartLabel;
@@ -339,7 +338,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 
 /** Called when the label animation is about to begin.
  
- The default implementation of this method does nothing. Subclasses may override this method in order to perform any custom actions before
+ The default implementation of this method does nothing. Subclasses may override this method in order to perform any custom actions just as
  the label animation begins. This is only called in the event that the conditions for scrolling to begin are met.
  
  @since Available in 1.5.0 and later.
@@ -350,8 +349,8 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 
 /** Called when the label animation has finished, and the label is at the home position.
  
- The default implementation of this method does nothing. Subclasses may override this method in order to perform any custom actions after
- the label animation is complete, and before the next animation would begin (assuming the conditions are met).
+ The default implementation of this method does nothing. Subclasses may override this method in order to perform any custom actions jas as
+ the label animation completes, and before the next animation would begin (assuming the scroll conditions are met).
  
  @param finished A Boolean that indicates whether or not the scroll animation actually finished before the completion handler was called.
  @since Available in 1.5.0 and later.
