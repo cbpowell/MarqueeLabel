@@ -285,6 +285,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 
 - (void)restartLabel;
 
+- (void)restartLabel:(BOOL)forceFirstScroll;
 
 /** Resets the label text, recalculating the scroll animation.
  

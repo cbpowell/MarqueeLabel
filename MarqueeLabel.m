@@ -921,10 +921,10 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     [self restartLabel:NO];
 }
 
-- (void)restartLabel:(BOOL)forceScroll {
+- (void)restartLabel:(BOOL)forceFirstScroll {
     [self applyGradientMaskForFadeLength:self.fadeLength animated:NO];
     
-    if (self.labelShouldScroll && (!self.tapToScroll || forceScroll)) {
+    if (self.labelShouldScroll && (!self.tapToScroll || forceFirstScroll)) {
         [self beginScroll];
     }
 }
