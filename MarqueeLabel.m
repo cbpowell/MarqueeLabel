@@ -1193,7 +1193,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     [self updateSublabelAndLocations];
 }
 
-- (void)setScrollDuration:(NSTimeInterval)lengthOfScroll {
+- (void)setScrollDuration:(CGFloat)lengthOfScroll {
     if (_scrollDuration == lengthOfScroll) {
         return;
     }
