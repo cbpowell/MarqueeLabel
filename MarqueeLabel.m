@@ -169,7 +169,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     self.subLabel.text = super.text;
     self.subLabel.font = super.font;
     self.subLabel.textColor = super.textColor;
-    self.subLabel.backgroundColor = super.backgroundColor;
+    self.subLabel.backgroundColor = (super.backgroundColor == nil ? [UIColor clearColor] : super.backgroundColor);
     self.subLabel.shadowColor = super.shadowColor;
     for (NSString *property in properties) {
         id val = [super valueForKey:property];
@@ -190,10 +190,8 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     self.subLabel = [[UILabel alloc] initWithFrame:self.bounds];
     self.subLabel.tag = 700;
     self.subLabel.layer.anchorPoint = CGPointMake(0.0f, 0.0f);
-    [self addSubview:self.subLabel];
     
-    // Clear superclass UILabel background
-    [super setBackgroundColor:[UIColor clearColor]];
+    [self addSubview:self.subLabel];
     
     // Setup default values
     _animationCurve = UIViewAnimationOptionCurveLinear;
@@ -1077,6 +1075,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
     [self updateSubLabelsForKey:@"backgroundColor" withValue:backgroundColor];
+    [super setBackgroundColor:backgroundColor];
 }
 
 - (UIColor *)shadowColor {
