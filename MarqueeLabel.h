@@ -279,7 +279,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 /** Immediately resets the label to the home position, and restarts the scroll animation if the appropriate conditions are met.
  
  @see resetLabel
- @see forceScrollStart
+ @see triggerScrollStart
  */
 
 - (void)restartLabel;
@@ -328,7 +328,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  @since Available in 2.2.0 and later.
  */
 
-- (void)forceScrollStart;
+- (void)triggerScrollStart;
 
 
 
