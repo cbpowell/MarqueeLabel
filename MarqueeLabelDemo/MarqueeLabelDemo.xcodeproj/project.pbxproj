@@ -14,10 +14,8 @@
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		28D7ACF80DDB3853001CB0EB /* MarqueeLabelDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MarqueeLabelDemoViewController.m */; };
 		EA0E9AD41974C20200033CD7 /* MarqueeLabel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA0E9AD31974C20200033CD7 /* MarqueeLabel.storyboard */; };
-		EA0F26E1159947B60052559F /* ModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0F26DF159947B60052559F /* ModalViewController.xib */; };
 		EA41461816D340B4004A3B02 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA41461716D340B4004A3B02 /* CoreText.framework */; };
 		EA646A1412F7A5B000F31B16 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */; };
-		EAA86CD7170FBF6400F91CEE /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAA86CD6170FBF6400F91CEE /* Default-568h@2x.png */; };
 		EABFD31A150D55CC00216FCE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABFD319150D55CC00216FCE /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
@@ -35,11 +33,9 @@
 		8B660C7D16BCFEEF007F9463 /* MarqueeLabelDemoNibs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MarqueeLabelDemoNibs-Info.plist"; path = "/Users/cbpowell/Projects/MarqueeLabel/MarqueeLabelDemo/MarqueeLabelDemoNibs-Info.plist"; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* MarqueeLabelDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MarqueeLabelDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		EA0E9AD31974C20200033CD7 /* MarqueeLabel.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MarqueeLabel.storyboard; sourceTree = "<group>"; };
-		EA0F26DF159947B60052559F /* ModalViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ModalViewController.xib; path = Classes/ModalViewController.xib; sourceTree = "<group>"; };
 		EA41461716D340B4004A3B02 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		EA646A1212F7A5B000F31B16 /* MarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MarqueeLabel.h; path = ../MarqueeLabel.h; sourceTree = SOURCE_ROOT; };
 		EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MarqueeLabel.m; path = ../MarqueeLabel.m; sourceTree = SOURCE_ROOT; };
-		EAA86CD6170FBF6400F91CEE /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		EABFD319150D55CC00216FCE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -104,8 +100,6 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				EAA86CD6170FBF6400F91CEE /* Default-568h@2x.png */,
-				EA0F26DF159947B60052559F /* ModalViewController.xib */,
 				8D1107310486CEB800E47090 /* MarqueeLabelDemo-Info.plist */,
 				8B660C7D16BCFEEF007F9463 /* MarqueeLabelDemoNibs-Info.plist */,
 			);
@@ -186,8 +180,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA0E9AD41974C20200033CD7 /* MarqueeLabel.storyboard in Resources */,
-				EA0F26E1159947B60052559F /* ModalViewController.xib in Resources */,
-				EAA86CD7170FBF6400F91CEE /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
