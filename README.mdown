@@ -5,7 +5,7 @@ MarqueeLabel is a UILabel subclass adds a scrolling marquee effect when the text
 
 ## MarqueeLabel in Swift!
 
-If you're implementing a project in Swift, be sure to check out the [Swift version of MarqueeLabel](https://github.com/cbpowell/MarqueeLabel-Swift)!
+If you're implementing a project in Swift, be sure to check out the [Swift version of MarqueeLabel](https://github.com/cbpowell/MarqueeLabel-Swift)! As of this writing it's no longer on par with this Objective-C version (and the demo doesn't even build), but feel free to help out and get it back on track!
 
 ## How To Get Started
 
@@ -17,7 +17,7 @@ If you're implementing a project in Swift, be sure to check out the [Swift versi
 
 #### Important: MarqueeLabel and iOS 8.0.x
 
-Unfortunately, iOS 8.0.0 shipped with a bug - the `layoutSubviews` method of UILabel subclasses is _never_ called. MarqueeLabel [version 2.1.0](https://github.com/cbpowell/MarqueeLabel/releases/tag/2.1.0) (and 2.0.9, a bugfix release on the now older 2.0.x branch) attempt to fix this for iOS 8.0.0 __only__. Fortunately, this issue was fixed in iOS 8.1!
+Unfortunately, iOS 8.0.x shipped with a bug - the `layoutSubviews` method of UILabel subclasses is _never_ called. MarqueeLabel [version 2.1.0](https://github.com/cbpowell/MarqueeLabel/releases/tag/2.1.0) (and 2.0.9) attempt to fix this for iOS 8.0.x __only__. Fortunately, this issue was fixed in iOS 8.1!
 
 ## MarqueeLabel v2.x
 
