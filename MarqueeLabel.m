@@ -918,7 +918,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 #pragma mark - Label Control
 
 - (void)restartLabel {
-    if (self.labelShouldScroll && !self.tapToScroll) {
+    if (self.labelShouldScroll && !self.tapToScroll && !self.holdScrolling) {
         [self beginScroll];
     }
 }
@@ -982,7 +982,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)triggerScrollStart {
-    if (self.labelShouldScroll && !self.awayFromHome) {
+    if (self.labelShouldScroll && !self.awayFromHome && !self.holdScrolling) {
         [self beginScroll];
     }
 }
