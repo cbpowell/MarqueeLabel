@@ -442,6 +442,8 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     // Get size of subLabel
     expectedLabelSize = [self.subLabel sizeThatFits:maximumLabelSize];
+    // Sanitize width to 8192 (largest width a UILabel will draw)
+    expectedLabelSize.width = MIN(expectedLabelSize.width, 8192.0f);
     // Adjust to own height (make text baseline match normal label)
     expectedLabelSize.height = self.bounds.size.height;
     
