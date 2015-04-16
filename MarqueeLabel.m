@@ -1219,7 +1219,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     }
     
     // Do not allow negative values
-    _leadingBuffer = fabsf(leadingBuffer);
+    _leadingBuffer = fabs(leadingBuffer);
     [self updateSublabelAndLocations];
 }
 
@@ -1229,7 +1229,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     }
     
     // Do not allow negative values
-    _trailingBuffer = fabsf(trailingBuffer);
+    _trailingBuffer = fabs(trailingBuffer);
     [self updateSublabelAndLocations];
 }
 
