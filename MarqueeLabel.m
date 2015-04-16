@@ -982,7 +982,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)triggerScrollStart {
-    if (self.labelShouldScroll && !self.awayFromHome && !self.holdScrolling) {
+    if (self.labelShouldScroll && !self.awayFromHome) {
         [self beginScroll];
     }
 }
