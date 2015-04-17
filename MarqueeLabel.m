@@ -1157,11 +1157,16 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (void)refreshSubLabels:(NSArray *)subLabels {
     for (UILabel *sl in subLabels) {
-        sl.attributedText = self.attributedText;
+        if (sl.tag == 700) {
+            // Do not overwrite base subLabel properties
+            continue;
+        }
         sl.backgroundColor = self.backgroundColor;
+        sl.textColor = self.textColor;
         sl.shadowColor = self.shadowColor;
         sl.shadowOffset = self.shadowOffset;
         sl.textAlignment = NSTextAlignmentLeft;
+        sl.attributedText = self.attributedText;
     }
 }
 
