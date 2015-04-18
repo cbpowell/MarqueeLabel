@@ -38,6 +38,7 @@
 @property (nonatomic, weak) IBOutlet MarqueeLabel *demoLabel3;
 @property (nonatomic, weak) IBOutlet MarqueeLabel *demoLabel4;
 @property (nonatomic, weak) IBOutlet MarqueeLabel *demoLabel5;
+@property (nonatomic, weak) IBOutlet MarqueeLabel *demoLabel6;
 
 @property (nonatomic, weak) IBOutlet UISwitch *labelizeSwitch;
 @property (nonatomic, weak) IBOutlet UISwitch *holdLabelsSwitch;

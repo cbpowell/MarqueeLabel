@@ -1157,12 +1157,16 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (void)refreshSubLabels:(NSArray *)subLabels {
     for (UILabel *sl in subLabels) {
-        sl.attributedText = self.attributedText;
+        if (sl.tag == 700) {
+            // Do not overwrite base subLabel properties
+            continue;
+        }
         sl.backgroundColor = self.backgroundColor;
         sl.textColor = self.textColor;
         sl.shadowColor = self.shadowColor;
         sl.shadowOffset = self.shadowOffset;
         sl.textAlignment = NSTextAlignmentLeft;
+        sl.attributedText = self.attributedText;
     }
 }
 
@@ -1336,7 +1340,15 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (NSArray *)allSubLabels {
-    return [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", 700]];
+    return [self allSubLabels:YES];
+}
+
+- (NSArray *)secondarySubLabels {
+    return [self allSubLabels:NO];
+}
+
+- (NSArray *)allSubLabels:(BOOL)includePrimary {
+    return [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", (includePrimary ? 700 : 701)]];
 }
 
 #pragma mark -
