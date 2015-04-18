@@ -1340,7 +1340,15 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (NSArray *)allSubLabels {
-    return [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", 700]];
+    return [self allSubLabels:YES];
+}
+
+- (NSArray *)secondarySubLabels {
+    return [self allSubLabels:NO];
+}
+
+- (NSArray *)allSubLabels:(BOOL)includePrimary {
+    return [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", (includePrimary ? 700 : 701)]];
 }
 
 #pragma mark -
