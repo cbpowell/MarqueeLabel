@@ -8,33 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		EA08C81C1996DAEE00FB72B6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA08C81B1996DAEE00FB72B6 /* QuartzCore.framework */; };
-		EA1E13A519A9564C004EFC17 /* MarqueeLabel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA1E13A419A9564C004EFC17 /* MarqueeLabel.storyboard */; };
+		EA7AF4B01AE5E46F00F31C40 /* MarqueeLabel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA7AF4AF1AE5E46F00F31C40 /* MarqueeLabel.storyboard */; };
 		EADD532D1992FD5600E19A42 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADD532C1992FD5600E19A42 /* AppDelegate.swift */; };
 		EADD532F1992FD5600E19A42 /* MarqueeLabelDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADD532E1992FD5600E19A42 /* MarqueeLabelDemoViewController.swift */; };
 		EADD53341992FD5600E19A42 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EADD53331992FD5600E19A42 /* Images.xcassets */; };
-		EADD53401992FD5600E19A42 /* MarqueeLabelDemo_SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADD533F1992FD5600E19A42 /* MarqueeLabelDemo_SwiftTests.swift */; };
 		EADD534B1992FDF100E19A42 /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADD534A1992FDF100E19A42 /* MarqueeLabel.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		EADD533A1992FD5600E19A42 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EADD531F1992FD5600E19A42 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = EADD53261992FD5600E19A42;
-			remoteInfo = "MarqueeLabelDemo-Swift";
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		EA08C81B1996DAEE00FB72B6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		EA1E13A419A9564C004EFC17 /* MarqueeLabel.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MarqueeLabel.storyboard; sourceTree = "<group>"; };
+		EA7AF4AF1AE5E46F00F31C40 /* MarqueeLabel.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MarqueeLabel.storyboard; sourceTree = "<group>"; };
 		EADD53271992FD5600E19A42 /* MarqueeLabelDemo-Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MarqueeLabelDemo-Swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EADD532B1992FD5600E19A42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EADD532C1992FD5600E19A42 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EADD532E1992FD5600E19A42 /* MarqueeLabelDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeLabelDemoViewController.swift; sourceTree = "<group>"; };
 		EADD53331992FD5600E19A42 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		EADD53391992FD5600E19A42 /* MarqueeLabelDemo-SwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MarqueeLabelDemo-SwiftTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EADD533E1992FD5600E19A42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EADD533F1992FD5600E19A42 /* MarqueeLabelDemo_SwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeLabelDemo_SwiftTests.swift; sourceTree = "<group>"; };
 		EADD534A1992FDF100E19A42 /* MarqueeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MarqueeLabel.swift; path = ../Classes/MarqueeLabel.swift; sourceTree = "<group>"; };
@@ -46,13 +34,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA08C81C1996DAEE00FB72B6 /* QuartzCore.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		EADD53361992FD5600E19A42 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,7 +55,6 @@
 			isa = PBXGroup;
 			children = (
 				EADD53271992FD5600E19A42 /* MarqueeLabelDemo-Swift.app */,
-				EADD53391992FD5600E19A42 /* MarqueeLabelDemo-SwiftTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -84,7 +64,7 @@
 			children = (
 				EADD532C1992FD5600E19A42 /* AppDelegate.swift */,
 				EADD532E1992FD5600E19A42 /* MarqueeLabelDemoViewController.swift */,
-				EA1E13A419A9564C004EFC17 /* MarqueeLabel.storyboard */,
+				EA7AF4AF1AE5E46F00F31C40 /* MarqueeLabel.storyboard */,
 				EADD53331992FD5600E19A42 /* Images.xcassets */,
 				EADD532A1992FD5600E19A42 /* Supporting Files */,
 			);
@@ -144,24 +124,6 @@
 			productReference = EADD53271992FD5600E19A42 /* MarqueeLabelDemo-Swift.app */;
 			productType = "com.apple.product-type.application";
 		};
-		EADD53381992FD5600E19A42 /* MarqueeLabelDemo-SwiftTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = EADD53461992FD5600E19A42 /* Build configuration list for PBXNativeTarget "MarqueeLabelDemo-SwiftTests" */;
-			buildPhases = (
-				EADD53351992FD5600E19A42 /* Sources */,
-				EADD53361992FD5600E19A42 /* Frameworks */,
-				EADD53371992FD5600E19A42 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				EADD533B1992FD5600E19A42 /* PBXTargetDependency */,
-			);
-			name = "MarqueeLabelDemo-SwiftTests";
-			productName = "MarqueeLabelDemo-SwiftTests";
-			productReference = EADD53391992FD5600E19A42 /* MarqueeLabelDemo-SwiftTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -173,10 +135,6 @@
 				TargetAttributes = {
 					EADD53261992FD5600E19A42 = {
 						CreatedOnToolsVersion = 6.0;
-					};
-					EADD53381992FD5600E19A42 = {
-						CreatedOnToolsVersion = 6.0;
-						TestTargetID = EADD53261992FD5600E19A42;
 					};
 				};
 			};
@@ -194,7 +152,6 @@
 			projectRoot = "";
 			targets = (
 				EADD53261992FD5600E19A42 /* MarqueeLabelDemo-Swift */,
-				EADD53381992FD5600E19A42 /* MarqueeLabelDemo-SwiftTests */,
 			);
 		};
 /* End PBXProject section */
@@ -205,14 +162,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EADD53341992FD5600E19A42 /* Images.xcassets in Resources */,
-				EA1E13A519A9564C004EFC17 /* MarqueeLabel.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		EADD53371992FD5600E19A42 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				EA7AF4B01AE5E46F00F31C40 /* MarqueeLabel.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,23 +179,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		EADD53351992FD5600E19A42 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				EADD53401992FD5600E19A42 /* MarqueeLabelDemo_SwiftTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		EADD533B1992FD5600E19A42 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = EADD53261992FD5600E19A42 /* MarqueeLabelDemo-Swift */;
-			targetProxy = EADD533A1992FD5600E19A42 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		EADD53411992FD5600E19A42 /* Debug */ = {
@@ -329,7 +263,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = "MarqueeLabelDemo-Swift/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -340,44 +273,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = "MarqueeLabelDemo-Swift/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		EADD53471992FD5600E19A42 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "MarqueeLabelDemo-SwiftTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MarqueeLabelDemo-Swift.app/MarqueeLabelDemo-Swift";
-			};
-			name = Debug;
-		};
-		EADD53481992FD5600E19A42 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "MarqueeLabelDemo-SwiftTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MarqueeLabelDemo-Swift.app/MarqueeLabelDemo-Swift";
 			};
 			name = Release;
 		};
@@ -398,15 +296,6 @@
 			buildConfigurations = (
 				EADD53441992FD5600E19A42 /* Debug */,
 				EADD53451992FD5600E19A42 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		EADD53461992FD5600E19A42 /* Build configuration list for PBXNativeTarget "MarqueeLabelDemo-SwiftTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				EADD53471992FD5600E19A42 /* Debug */,
-				EADD53481992FD5600E19A42 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

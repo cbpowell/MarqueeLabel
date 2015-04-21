@@ -37,6 +37,7 @@ class MarqueeLabelDemoViewController : UIViewController {
     @IBOutlet weak var demoLabel3: MarqueeLabel!
     @IBOutlet weak var demoLabel4: MarqueeLabel!
     @IBOutlet weak var demoLabel5: MarqueeLabel!
+    @IBOutlet weak var demoLabel6: MarqueeLabel!
     
     @IBOutlet weak var labelizeSwitch: UISwitch!
     @IBOutlet weak var holdLabelsSwitch: UISwitch!
@@ -46,46 +47,56 @@ class MarqueeLabelDemoViewController : UIViewController {
         super.viewDidLoad()
         
         // Continuous Type
+        demoLabel1.tag = 101
         demoLabel1.type = .Continuous
         demoLabel1.scrollDuration = 15.0
         demoLabel1.animationCurve = .EaseInOut
         demoLabel1.fadeLength = 10.0
-        demoLabel1.continuousExtraBuffer = 10.0
-        demoLabel1.text = "This is a test of MarqueeLabel - the text is long enough that it needs to scroll to see the whole thing."
-        demoLabel1.tag = 101
+        demoLabel1.leadingBuffer = 30.0
+        demoLabel1.trailingBuffer = 20.0
+        // Text string for this label is set via Interface Builder!
+        
         
         // Reverse Continuous Type, with attributed string
+        demoLabel2.tag = 201
         demoLabel2.type = .ContinuousReverse
         demoLabel2.scrollDuration = 8.0
         demoLabel2.fadeLength = 15.0
+        demoLabel2.leadingBuffer = 40.0;
         
-        let attributedString = NSMutableAttributedString(string:"This is a long string, that's also an attributed string, which works just as well!")
-        attributedString.addAttribute(NSFontAttributeName, value: UIFont(name: "Helvetica-Bold", size: 18), range: NSMakeRange(0, 21))
-        attributedString.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGrayColor(), range: NSMakeRange(0, 11))
-        attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 0.234, green: 0.234, blue: 0.234, alpha: 1.0), range: NSMakeRange(0, attributedString.length))
-        attributedString.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 18), range: NSMakeRange(21, attributedString.length - 21))
-        demoLabel2.attributedText = attributedString
+        let attributedString2 = NSMutableAttributedString(string:"This is a long string, that's also an attributed string, which works just as well!")
+        attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "Helvetica-Bold", size: 18)!, range: NSMakeRange(0, 21))
+        attributedString2.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGrayColor(), range: NSMakeRange(0, 11))
+        attributedString2.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 0.234, green: 0.234, blue: 0.234, alpha: 1.0), range: NSMakeRange(0, attributedString2.length))
+        attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 18)!, range: NSMakeRange(21, attributedString2.length - 21))
+        demoLabel2.attributedText = attributedString2
         
         
         // Left/right example, with rate usage
+        demoLabel3.tag = 301
         demoLabel3.type = .LeftRight
         demoLabel3.scrollRate = 30.0
         demoLabel3.fadeLength = 10.0
+        demoLabel3.leadingBuffer = 30.0
+        demoLabel3.trailingBuffer = 20.0
         demoLabel3.textAlignment = .Center
         demoLabel3.text = "This is another long label that scrolls at a specific rate, rather than scrolling its length in a specific time window!"
-        demoLabel3.tag = 102
         
         
         // Right/left example, with tap to scroll
+        demoLabel4.tag = 401
         demoLabel4.type = .RightLeft
         demoLabel4.tapToScroll = true
+        demoLabel4.trailingBuffer = 20.0
         demoLabel4.text = "This label will not scroll until tapped, and then it performs its scroll cycle only once. Tap me!"
         
         
         // Continuous, with tap to pause
+        demoLabel5.tag = 501
         demoLabel5.type = .Continuous
         demoLabel5.scrollDuration = 10.0
         demoLabel5.fadeLength = 10.0
+        demoLabel5.trailingBuffer = 30.0
         demoLabel5.text = "This text is long, and can be paused with a tap - handled via a UIGestureRecognizer!"
         
         demoLabel5.userInteractionEnabled = true // Don't forget this, otherwise the gesture recognizer will fail (UILabel has this as NO by default)
@@ -93,6 +104,20 @@ class MarqueeLabelDemoViewController : UIViewController {
         tapRecognizer.numberOfTapsRequired = 1
         tapRecognizer.numberOfTouchesRequired = 1
         demoLabel5.addGestureRecognizer(tapRecognizer)
+        
+        // Continuous, with attributed text
+        demoLabel6.tag = 601
+        demoLabel6.type = .Continuous
+        demoLabel6.scrollDuration = 15.0
+        demoLabel6.fadeLength = 10.0
+        demoLabel6.trailingBuffer = 30.0
+        
+        let attributedString6 = NSMutableAttributedString(string:"This is a long, attributed string, that's set up to loop in a continuous fashion!")
+        attributedString6.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 0.123, green: 0.331, blue: 0.657, alpha: 1.000), range: NSMakeRange(0,34))
+        attributedString6.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 0.657, green: 0.096, blue: 0.088, alpha: 1.000), range: NSMakeRange(34, attributedString6.length - 34))
+        attributedString6.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size:18.0)!, range: NSMakeRange(0, 16))
+        attributedString6.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size:18.0)!, range: NSMakeRange(33, attributedString6.length - 33))
+        demoLabel6.attributedText = attributedString6;
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -122,26 +147,55 @@ class MarqueeLabelDemoViewController : UIViewController {
     
     @IBAction func changeLabelTexts(sender: AnyObject) {
         // Use demoLabel1 tag to store "state"
-        if demoLabel1.tag == 101 {
-            self.demoLabel1.text = "This label is not as long."
-            self.demoLabel3.text = "This is a short, centered label."
-            self.demoLabel1.tag = 102
+        if (demoLabel1.tag == 101) {
+            demoLabel1.text = "This label is not as long."
+            demoLabel3.text = "This is a short, centered label."
+            
+            let attributedString2 = NSMutableAttributedString(string: "This is a different longer string, but still an attributed string, with new different attributes!")
+            attributedString2.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, attributedString2.length))
+            attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "Helvetica-Bold", size:18.0)!, range:NSMakeRange(0, attributedString2.length))
+            attributedString2.addAttribute(NSBackgroundColorAttributeName, value: UIColor(white:0.600, alpha:1.000), range:NSMakeRange(0,33))
+            attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size:18.0)!, range:NSMakeRange(19, attributedString2.length - 19))
+            demoLabel2.attributedText = attributedString2;
+            
+            let attributedString6 = NSMutableAttributedString(string: "This is a different, longer, attributed string, that's set up to loop in a continuous fashion!")
+            attributedString6.addAttribute(NSForegroundColorAttributeName, value:UIColor(red:0.657, green:0.078, blue:0.067, alpha:1.000), range:NSMakeRange(0,attributedString6.length))
+            attributedString6.addAttribute(NSFontAttributeName, value:UIFont(name: "HelveticaNeue-Light", size:18.0)!, range:NSMakeRange(0, 16))
+            attributedString6.addAttribute(NSFontAttributeName, value:UIFont(name: "HelveticaNeue-Light", size:18.0)!, range:NSMakeRange(33, attributedString6.length - 33))
+            attributedString6.addAttribute(NSForegroundColorAttributeName, value: UIColor(red:0.123, green:0.331, blue:0.657, alpha:1.000), range:NSMakeRange(33, attributedString6.length - 33))
+            demoLabel6.attributedText = attributedString6;
+            
+            demoLabel1.tag = 102;
         } else {
-            self.demoLabel1.text = "This is a test of MarqueeLabel - the text is long enough that it needs to scroll to see the whole thing."
-            self.demoLabel3.text = "That also scrolls continuously rather than scrolling back and forth!"
-            self.demoLabel1.tag = 101
+            demoLabel1.text = "This is a test of MarqueeLabel - the text is long enough that it needs to scroll to see the whole thing.";
+            demoLabel3.text = "That also scrolls continuously rather than scrolling back and forth!";
+            
+            let attributedString2 = NSMutableAttributedString(string: "This is a long string, that's also an attributed string, which works just as well!")
+            attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "Helvetica-Bold", size:18.0)!, range:NSMakeRange(0, 21))
+            attributedString2.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGrayColor(), range:NSMakeRange(10,11))
+            attributedString2.addAttribute(NSForegroundColorAttributeName, value: UIColor(red:0.234, green:0.234, blue:0.234, alpha:1.000), range:NSMakeRange(0,attributedString2.length))
+            attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size:18.0)!, range: NSMakeRange(21, attributedString2.length - 21))
+            demoLabel2.attributedText = attributedString2
+            
+            let attributedString6 = NSMutableAttributedString(string: "This is a long, attributed string, that's set up to loop in a continuous fashion!")
+            attributedString6.addAttribute(NSForegroundColorAttributeName, value:UIColor(red:0.123, green:0.331, blue:0.657, alpha:1.000), range:NSMakeRange(0,attributedString6.length))
+            attributedString6.addAttribute(NSFontAttributeName, value:UIFont(name: "HelveticaNeue-Light", size:18.0)!, range:NSMakeRange(0, 16))
+            attributedString6.addAttribute(NSFontAttributeName, value:UIFont(name: "HelveticaNeue-Light", size:18.0)!, range:NSMakeRange(33, attributedString6.length - 33))
+            demoLabel6.attributedText = attributedString6
+            
+            demoLabel1.tag = 101;
         }
     }
     
     func pauseTap(recognizer: UIGestureRecognizer) {
-        let continuousLabel2 = recognizer.view as MarqueeLabel
+        let continuousLabel2 = recognizer.view as! MarqueeLabel
         if recognizer.state == .Ended {
             continuousLabel2.isPaused ? continuousLabel2.unpauseLabel() : continuousLabel2.pauseLabel()
         }
     }
     
     @IBAction func labelizeSwitched(sender: UISwitch) {
-        for pv in self.view.subviews as [UIView] {
+        for pv in view.subviews as! [UIView] {
             if let v = pv as? MarqueeLabel {
                 v.labelize = sender.on
             }
@@ -149,7 +203,7 @@ class MarqueeLabelDemoViewController : UIViewController {
     }
     
     @IBAction func holdLabelsSwitched(sender: UISwitch) {
-        for pv in self.view.subviews as [UIView] {
+        for pv in view.subviews as! [UIView] {
             if let v = pv as? MarqueeLabel {
                 v.holdScrolling = sender.on
             }
@@ -157,7 +211,7 @@ class MarqueeLabelDemoViewController : UIViewController {
     }
     
     @IBAction func togglePause(sender: UISwitch) {
-        for pv in self.view.subviews as [UIView] {
+        for pv in view.subviews as! [UIView] {
             if let v = pv as? MarqueeLabel {
                 sender.on ? v.pauseLabel() : v.unpauseLabel()
             }
