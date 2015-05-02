@@ -3,7 +3,7 @@
 //  MarqueeLabelDemo-Swift
 //
 //  Created by Charles Powell on 8/6/14.
-//  Copyright (c) 2014 Charles Powell. All rights reserved.
+//  Copyright (c) 2015 Charles Powell. All rights reserved.
 //
 
 import UIKit
@@ -395,18 +395,18 @@ public class MarqueeLabel: UILabel {
                 awayLabelFrame = CGRectIntegral(CGRectOffset(homeLabelFrame, awayLabelOffset, 0.0))
             }
             
-            var sublabels = allSublabels()
-            if (sublabels.count < 2) {
-                let sublabelFrame = CGRectIntegral(CGRectOffset(homeLabelFrame, -awayLabelOffset, 0.0))
-                let secondSublabel = UILabel(frame: sublabelFrame)
-                secondSublabel.tag = 701
-                secondSublabel.numberOfLines = 1
-                secondSublabel.layer.anchorPoint = CGPointMake(0.0, 0.0)
-                self.addSubview(secondSublabel)
-                sublabels.append(secondSublabel)
+            var labels = allSublabels()
+            if (labels.count < 2) {
+                let secondSubLabel = UILabel(frame:CGRectOffset(self.homeLabelFrame, -awayLabelOffset, 0.0));
+                secondSubLabel.numberOfLines = 1;
+                secondSubLabel.tag = 701;
+                secondSubLabel.layer.anchorPoint = CGPointMake(0.0, 0.0);
+                
+                self.addSubview(secondSubLabel)
+                labels.append(secondSubLabel)
             }
             
-            refreshSublabels(sublabels)
+            refreshSublabels(labels)
             
             // Recompute the animation duration
             animationDuration = {
@@ -1030,22 +1030,30 @@ public class MarqueeLabel: UILabel {
     }
 
     public override var text: String? {
-        didSet {
-            if text == oldValue {
+        get {
+            return sublabel.text
+        }
+        
+        set {
+            if sublabel.text == newValue {
                 return
             }
-            sublabel.text = text
-            self.updateAndScroll()
+            sublabel.text = newValue
+            updateAndScroll()
         }
     }
     
     public override var attributedText: NSAttributedString? {
-        didSet {
-            if attributedText == oldValue {
+        get {
+            return sublabel.attributedText
+        }
+        
+        set {
+            if sublabel.attributedText == newValue {
                 return
             }
-            sublabel.attributedText = attributedText
-            self.updateAndScroll()
+            sublabel.attributedText = newValue
+            updateAndScroll()
         }
     }
     
