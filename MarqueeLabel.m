@@ -33,9 +33,6 @@ typedef void(^MLAnimationCompletionBlock)(BOOL finished);
 
 @property (nonatomic, strong) UILabel *subLabel;
 
-@property (nonatomic, assign) BOOL orientationWillChange;
-@property (nonatomic, strong) id orientationObserver;
-
 @property (nonatomic, assign) NSTimeInterval animationDuration;
 @property (nonatomic, assign, readonly) BOOL labelShouldScroll;
 @property (nonatomic, weak) UITapGestureRecognizer *tapRecognizer;
@@ -195,7 +192,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     // Setup default values
     _animationCurve = UIViewAnimationOptionCurveLinear;
-    _orientationWillChange = NO;
     _labelize = NO;
     _holdScrolling = NO;
     _tapToScroll = NO;
@@ -254,7 +250,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 -(void)didMoveToSuperview {
-    [self updateSublabelAndLocationsAndBeginScroll:YES];
+    [self updateSublabelAndLocations];
 }
 
 #pragma mark - MarqueeLabel Heavy Lifting
@@ -263,7 +259,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 {
     [super layoutSubviews];
     
-    [self updateSublabelAndLocationsAndBeginScroll:YES];
+    [self updateSublabelAndLocations];
 }
 
 - (void)willMoveToWindow:(UIWindow *)newWindow {
@@ -274,7 +270,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (void)didMoveToWindow {
     if (self.window) {
-        [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
+        [self updateSublabelAndLocations];
     }
 }
 
@@ -1005,7 +1001,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     // Check if device is running iOS 8.0.X
     if(SYSTEM_VERSION_IS_8_0_X) {
         // If so, force update because layoutSubviews is not called
-        [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
+        [self updateSublabelAndLocations];
     }
 }
 
@@ -1015,7 +1011,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     // Check if device is running iOS 8.0.X
     if(SYSTEM_VERSION_IS_8_0_X) {
         // If so, force update because layoutSubviews is not called
-        [self updateSublabelAndLocationsAndBeginScroll:!self.orientationWillChange];
+        [self updateSublabelAndLocations];
     }
     
 }
@@ -1354,7 +1350,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 #pragma mark -
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self.orientationObserver];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
