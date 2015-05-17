@@ -1250,7 +1250,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     _fadeLength = fadeLength;
     
-    [self applyGradientMaskForFadeLength:self.fadeLength animated:YES];
+    [self updateSublabelAndLocations];
 }
 
 - (void)setTapToScroll:(BOOL)tapToScroll {
