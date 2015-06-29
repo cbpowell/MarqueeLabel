@@ -290,9 +290,9 @@ public class MarqueeLabel: UILabel {
                           "lineBreakMode", "numberOfLines"]
         
         // Iterate through properties
-        sublabel.text = super.text;
-        sublabel.font = super.font;
-        sublabel.textColor = super.textColor;
+        sublabel.text = super.text
+        sublabel.font = super.font
+        sublabel.textColor = super.textColor
         sublabel.backgroundColor = super.backgroundColor ?? UIColor.clearColor()
         sublabel.shadowColor = super.shadowColor
         for prop in properties {
@@ -398,10 +398,10 @@ public class MarqueeLabel: UILabel {
             
             var labels = allSublabels()
             if (labels.count < 2) {
-                let secondSubLabel = UILabel(frame:CGRectOffset(self.homeLabelFrame, -awayLabelOffset, 0.0));
-                secondSubLabel.numberOfLines = 1;
-                secondSubLabel.tag = 701;
-                secondSubLabel.layer.anchorPoint = CGPointMake(0.0, 0.0);
+                let secondSubLabel = UILabel(frame:CGRectOffset(self.homeLabelFrame, -awayLabelOffset, 0.0))
+                secondSubLabel.numberOfLines = 1
+                secondSubLabel.tag = 701
+                secondSubLabel.layer.anchorPoint = CGPointMake(0.0, 0.0)
                 
                 self.addSubview(secondSubLabel)
                 labels.append(secondSubLabel)
@@ -421,7 +421,7 @@ public class MarqueeLabel: UILabel {
             // Set sublabel frames
             for sl in allSublabels() {
                 let dx: CGFloat = -awayLabelOffset * CGFloat(sl.tag - 700)
-                sl.frame = CGRectOffset(homeLabelFrame, dx, 0.0);
+                sl.frame = CGRectOffset(homeLabelFrame, dx, 0.0)
             }
         
         case .RightLeft:
@@ -485,7 +485,7 @@ public class MarqueeLabel: UILabel {
         // Sanitize width to 8192 (largest width a UILabel will draw)
         expectedLabelSize.width = ceil(min(expectedLabelSize.width, 8192.0))
         // Adjust to own height (make text baseline match normal label)
-        expectedLabelSize.height = bounds.size.height;
+        expectedLabelSize.height = bounds.size.height
         
         return expectedLabelSize
     }
@@ -602,7 +602,7 @@ public class MarqueeLabel: UILabel {
         let completion = CompletionBlock<(Bool) -> ()>({ (finished: Bool) -> () in
             if !finished {
                 // Do not continue into the next loop
-                return;
+                return
             }
             
             // Call returned home function
@@ -632,7 +632,7 @@ public class MarqueeLabel: UILabel {
             // Add callback to single animation
             if index == 0 {
                 anim.setValue(completion as AnyObject, forKey: MarqueeKeys.CompletionClosure.rawValue)
-                anim.delegate = self;
+                anim.delegate = self
             }
             
             // Add animation
@@ -771,7 +771,7 @@ public class MarqueeLabel: UILabel {
             
             gradientMask.addAnimation(group, forKey: colorAnimation.keyPath)
             gradientMask.locations = adjustedLocations
-            gradientMask.colors = adjustedColors;
+            gradientMask.colors = adjustedColors
         } else {
             CATransaction.begin()
             CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
@@ -1015,29 +1015,29 @@ public class MarqueeLabel: UILabel {
         // Pause sublabel position animations
         for sl in allSublabels() {
             let labelPauseTime = sl.layer.convertTime(CACurrentMediaTime(), fromLayer: nil)
-            sl.layer.speed = 0.0;
-            sl.layer.timeOffset = labelPauseTime;
+            sl.layer.speed = 0.0
+            sl.layer.timeOffset = labelPauseTime
         }
         // Pause gradient fade animation
         let gradientPauseTime = self.layer.mask?.convertTime(CACurrentMediaTime(), fromLayer:nil)
-        self.layer.mask?.speed = 0.0;
-        self.layer.mask?.timeOffset = gradientPauseTime!;
+        self.layer.mask?.speed = 0.0
+        self.layer.mask?.timeOffset = gradientPauseTime!
     }
     
     public func unpauseLabel() {
         // Unpause sublabel position animations
         for sl in allSublabels() {
             let labelPausedTime = sl.layer.timeOffset
-            sl.layer.speed = 1.0;
-            sl.layer.timeOffset = 0.0;
-            sl.layer.beginTime = 0.0;
+            sl.layer.speed = 1.0
+            sl.layer.timeOffset = 0.0
+            sl.layer.beginTime = 0.0
             sl.layer.beginTime = sl.layer.convertTime(CACurrentMediaTime(), fromLayer:nil) - labelPausedTime
         }
         // Unpause gradient fade animation
         let gradientPauseTime = self.layer.mask?.timeOffset
-        self.layer.mask?.speed = 1.0;
-        self.layer.mask?.timeOffset = 0.0;
-        self.layer.mask?.beginTime = 0.0;
+        self.layer.mask?.speed = 1.0
+        self.layer.mask?.timeOffset = 0.0
+        self.layer.mask?.beginTime = 0.0
         self.layer.mask?.beginTime = self.layer.mask.convertTime(CACurrentMediaTime(), fromLayer:nil) - gradientPauseTime!
     }
     
@@ -1342,16 +1342,16 @@ extension CAMediaTimingFunction {
             // Check if this is close (enough)
             if (fabs(f0) < epsilon) {
                 // Done!
-                return t0;
+                return t0
             }
             // Else continue Newton's Method
             df0 = derivativeCurveYValueAt(t0, controlPoints:controlPoints)
             // Check if derivative is small or zero ( http://en.wikipedia.org/wiki/Newton's_method#Failure_analysis )
             if (fabs(df0) < 1e-6) {
-                break;
+                break
             }
             // Else recalculate t1
-            t1 = t0 - f0/df0;
+            t1 = t0 - f0/df0
         }
         
         // Give up - shouldn't ever get here...I hope
