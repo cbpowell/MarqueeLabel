@@ -1103,6 +1103,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         return;
     }
     self.subLabel.font = font;
+    super.font = font;
     [self updateSublabelAndLocations];
 }
 
@@ -1112,6 +1113,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (void)setTextColor:(UIColor *)textColor {
     [self updateSubLabelsForKey:@"textColor" withValue:textColor];
+    super.textColor = textColor;
 }
 
 - (UIColor *)backgroundColor {
@@ -1120,7 +1122,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
     [self updateSubLabelsForKey:@"backgroundColor" withValue:backgroundColor];
-    [super setBackgroundColor:backgroundColor];
+    super.backgroundColor = backgroundColor;
 }
 
 - (UIColor *)shadowColor {
@@ -1129,6 +1131,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (void)setShadowColor:(UIColor *)shadowColor {
     [self updateSubLabelsForKey:@"shadowColor" withValue:shadowColor];
+    super.shadowColor = shadowColor;
 }
 
 - (CGSize)shadowOffset {
@@ -1137,6 +1140,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (void)setShadowOffset:(CGSize)shadowOffset {
     [self updateSubLabelsForKey:@"shadowOffset" withValue:[NSValue valueWithCGSize:shadowOffset]];
+    super.shadowOffset = shadowOffset;
 }
 
 - (UIColor *)highlightedTextColor {
@@ -1145,6 +1149,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (void)setHighlightedTextColor:(UIColor *)highlightedTextColor {
     [self updateSubLabelsForKey:@"highlightedTextColor" withValue:highlightedTextColor];
+    super.highlightedTextColor = highlightedTextColor;
 }
 
 - (BOOL)isHighlighted {
@@ -1153,6 +1158,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (void)setHighlighted:(BOOL)highlighted {
     [self updateSubLabelsForKey:@"highlighted" withValue:@(highlighted)];
+    super.highlighted = highlighted;
 }
 
 - (BOOL)isEnabled {
@@ -1161,6 +1167,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (void)setEnabled:(BOOL)enabled {
     [self updateSubLabelsForKey:@"enabled" withValue:@(enabled)];
+    super.enabled = enabled;
 }
 
 - (void)setNumberOfLines:(NSInteger)numberOfLines {
@@ -1183,6 +1190,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (void)setBaselineAdjustment:(UIBaselineAdjustment)baselineAdjustment {
     [self updateSubLabelsForKey:@"baselineAdjustment" withValue:@(baselineAdjustment)];
+    super.baselineAdjustment = baselineAdjustment;
 }
 
 - (CGSize)intrinsicContentSize {
