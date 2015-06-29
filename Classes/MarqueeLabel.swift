@@ -131,6 +131,7 @@ public class MarqueeLabel: UILabel {
         didSet {
             if fadeLength != oldValue {
                 applyGradientMask(fadeLength, animated: true)
+                updateAndScroll()
             }
         }
     }
