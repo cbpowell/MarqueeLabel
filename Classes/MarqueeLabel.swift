@@ -714,59 +714,69 @@ public class MarqueeLabel: UILabel {
         // Remove any in flight animations
         gradientMask.removeAllAnimations()
         
+        // Set up colors
+        let transparent = UIColor.clearColor().CGColor
+        let opaque = UIColor.blackColor().CGColor
+        
         gradientMask.bounds = self.layer.bounds
         gradientMask.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
         gradientMask.shouldRasterize = true
         gradientMask.rasterizationScale = UIScreen.mainScreen().scale
-        let colors: [AnyObject] = [UIColor.clearColor().CGColor, UIColor.blackColor().CGColor, UIColor.blackColor().CGColor, UIColor.clearColor().CGColor]
-        gradientMask.colors = colors;
-        gradientMask.startPoint = CGPointMake(0.0, CGRectGetMidY(self.frame))
-        gradientMask.endPoint = CGPointMake(1.0, CGRectGetMidY(self.frame))
+        gradientMask.startPoint = CGPointMake(0.0, 0.5)
+        gradientMask.endPoint = CGPointMake(1.0, 0.5)
         // Start with default (no fade) locations
+        gradientMask.colors = [opaque, opaque, opaque, opaque]
         gradientMask.locations = [0.0, 0.0, 1.0, 1.0]
         
         // Set mask
         self.layer.mask = gradientMask
         
-        var leadingFadeLength: CGFloat = 0.0
-        var trailingFadeLength: CGFloat = fadeLength
+        let leftFadeStop = fadeLength/self.bounds.size.width
+        let rightFadeStop = fadeLength/self.bounds.size.width
         
-        // No fade if labelized, or if no scrolling is needed
-        if (labelize || !labelShouldScroll()) {
-            leadingFadeLength = 0.0
-            trailingFadeLength = 0.0
-        }
+        // Adjust stops based on fade length
+        let adjustedLocations = [0.0, leftFadeStop, (1.0 - rightFadeStop), 1.0]
         
-        var leftFadeLength, rightFadeLength: CGFloat
+        // Determine colors for non-scrolling label (i.e. at home)
+        var adjustedColors: [CGColorRef]
+        let trailingFadeNeeded = (!self.labelize || self.labelShouldScroll())
+        
         switch (type) {
         case .ContinuousReverse, .RightLeft:
-            leftFadeLength = trailingFadeLength
-            rightFadeLength = leadingFadeLength
+            adjustedColors = [(trailingFadeNeeded ? transparent : opaque), opaque, opaque, opaque]
         
         // .MLContinuous, .MLLeftRight
         default:
-            leftFadeLength = leadingFadeLength
-            rightFadeLength = trailingFadeLength
+            adjustedColors = [opaque, opaque, opaque, (trailingFadeNeeded ? transparent : opaque)]
             break
         }
         
-        let leftFadePoint: CGFloat = leftFadeLength/self.bounds.size.width
-        let rightFadePoint: CGFloat = rightFadeLength/self.bounds.size.width
-        
-        let adjustedLocations = [0.0, leftFadePoint, 1.0 - rightFadePoint, 1.0]
         if (animated) {
-            // Create animation for gradient change
-            let animation = CABasicAnimation(keyPath: "locations")
-            animation.fromValue = gradientMask.locations
-            animation.toValue = adjustedLocations
-            animation.duration = 0.25
+            // Create animation for location change
+            let locationAnimation = CABasicAnimation(keyPath: "locations")
+            locationAnimation.fromValue = gradientMask.locations
+            locationAnimation.toValue = adjustedLocations
+            locationAnimation.duration = 0.25
             
-            gradientMask.addAnimation(animation, forKey: animation.keyPath)
+            // Create animation for location change
+            let colorAnimation = CABasicAnimation(keyPath: "colors")
+            colorAnimation.fromValue = gradientMask.locations
+            colorAnimation.toValue = adjustedColors
+            colorAnimation.duration = 0.25
+            
+            // Create animation group
+            let group = CAAnimationGroup()
+            group.animations = [locationAnimation, colorAnimation]
+            group.duration = 0.25
+            
+            gradientMask.addAnimation(group, forKey: colorAnimation.keyPath)
             gradientMask.locations = adjustedLocations
+            gradientMask.colors = adjustedColors;
         } else {
             CATransaction.begin()
             CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
             gradientMask.locations = adjustedLocations
+            gradientMask.colors = adjustedColors
             CATransaction.commit()
         }
     }
@@ -777,12 +787,13 @@ public class MarqueeLabel: UILabel {
     
     private func keyFrameAnimationForGradient(fadeLength: CGFloat, interval: CGFloat, delay: CGFloat) -> CAKeyframeAnimation {
         // Setup
-        var values: [AnyObject]? = nil
-        var keyTimes: [AnyObject]? = nil
-        let fadeFraction = fadeLength/self.bounds.size.width
+        var values: [[CGColorRef]]
+        var keyTimes: [CGFloat]
+        let transp = UIColor.clearColor().CGColor
+        let opaque = UIColor.blackColor().CGColor
         
         // Create new animation
-        let animation = CAKeyframeAnimation(keyPath: "locations")
+        let animation = CAKeyframeAnimation(keyPath: "colors")
         
         // Get timing function
         let timingFunction = timingFunctionForAnimationCurve(animationCurve)
@@ -794,12 +805,15 @@ public class MarqueeLabel: UILabel {
             let totalDuration = 2.0 * (delay + interval)
             keyTimes =
             [
-                0.0,                                              // Initial gradient
-                delay/totalDuration,                              // Begin of fade in
-                (delay + 0.4)/totalDuration,                      // End of fade in, just as scroll away starts
-                0.95 * totalDuration/totalDuration,               // Begin of fade out, just before scroll home completes
-                1.0,                                              // End of fade out, as scroll home completes
-                1.0                                               // Buffer final value (used on continuous types)
+                0.0,                                                // 1) Initial gradient
+                delay/totalDuration,                                // 2) Begin of LE fade-in, just as scroll away starts
+                (delay + 0.4)/totalDuration,                        // 3) End of LE fade in [LE fully faded]
+                (delay + interval - 0.4)/totalDuration,             // 4) Begin of TE fade out, just before scroll away finishes
+                (delay + interval)/totalDuration,                   // 5) End of TE fade out [TE fade removed]
+                (delay + interval + delay)/totalDuration,           // 6) Begin of TE fade back in, just as scroll home starts
+                (delay + interval + delay + 0.4)/totalDuration,     // 7) End of TE fade back in [TE fully faded]
+                (totalDuration - 0.4)/totalDuration,                // 8) Begin of LE fade out, just before scroll home finishes
+                1.0                                                 // 9) End of LE fade out, just as scroll home finishes
             ]
             
         // .MLContinuous, .MLContinuousReverse
@@ -827,26 +841,53 @@ public class MarqueeLabel: UILabel {
         
         // Define values
         switch (type) {
-        case .ContinuousReverse, .RightLeft:
+        case .ContinuousReverse:
             values = [
-                [0.0, fadeFraction, 1.0, 1.0],                   // Initial gradient
-                [0.0, fadeFraction, 1.0, 1.0],                   // Begin of fade in
-                [0.0, fadeFraction, 1.0 - fadeFraction, 1.0],    // End of fade in, just as scroll away starts
-                [0.0, fadeFraction, 1.0 - fadeFraction, 1.0],    // Begin of fade out, just before scroll home completes
-                [0.0, fadeFraction, 1.0, 1.0],                   // End of fade out, as scroll home completes
-                [0.0, fadeFraction, 1.0, 1.0]                    // Final "home" value
+                [transp, opaque, opaque, opaque],           // Initial gradient
+                [transp, opaque, opaque, opaque],           // Begin of fade in
+                [transp, opaque, opaque, transp],           // End of fade in, just as scroll away starts
+                [transp, opaque, opaque, transp],           // Begin of fade out, just before scroll home completes
+                [transp, opaque, opaque, opaque],           // End of fade out, as scroll home completes
+                [transp, opaque, opaque, opaque]            // Final "home" value
             ]
             break
         
-        // .MLContinuous, .MLLeftRight
-        default:
+        case .RightLeft:
             values = [
-            [0.0, 0.0, 1.0 - fadeFraction, 1.0],            // Initial gradient
-            [0.0, 0.0, 1.0 - fadeFraction, 1.0],            // Begin of fade in
-            [0.0, fadeFraction, 1.0 - fadeFraction, 1.0],   // End of fade in, just as scroll away starts
-            [0.0, fadeFraction, 1.0 - fadeFraction, 1.0],   // Begin of fade out, just before scroll home completes
-            [0.0, 0.0, 1.0 - fadeFraction, 1.0],            // End of fade out, as scroll home completes
-            [0.0, 0.0, 1.0 - fadeFraction, 1.0]             // Final "home" value
+                [transp, opaque, opaque, opaque],           // 1)
+                [transp, opaque, opaque, opaque],           // 2)
+                [transp, opaque, opaque, transp],           // 3)
+                [transp, opaque, opaque, transp],           // 4)
+                [opaque, opaque, opaque, transp],           // 5)
+                [opaque, opaque, opaque, transp],           // 6)
+                [transp, opaque, opaque, transp],           // 7)
+                [transp, opaque, opaque, transp],           // 8)
+                [transp, opaque, opaque, opaque]            // 9)
+            ]
+            break
+            
+        case .Continuous:
+            values = [
+                [opaque, opaque, opaque, transp],           // Initial gradient
+                [opaque, opaque, opaque, transp],           // Begin of fade in
+                [transp, opaque, opaque, transp],           // End of fade in, just as scroll away starts
+                [transp, opaque, opaque, transp],           // Begin of fade out, just before scroll home completes
+                [opaque, opaque, opaque, transp],           // End of fade out, as scroll home completes
+                [opaque, opaque, opaque, transp]            // Final "home" value
+            ]
+            break
+            
+        case .LeftRight:
+            values = [
+                [opaque, opaque, opaque, transp],           // 1)
+                [opaque, opaque, opaque, transp],           // 2)
+                [transp, opaque, opaque, transp],           // 3)
+                [transp, opaque, opaque, transp],           // 4)
+                [transp, opaque, opaque, opaque],           // 5)
+                [transp, opaque, opaque, opaque],           // 6)
+                [transp, opaque, opaque, transp],           // 7)
+                [transp, opaque, opaque, transp],           // 8)
+                [opaque, opaque, opaque, transp]            // 9)
             ]
             break
         }
