@@ -80,7 +80,7 @@ public class MarqueeLabel: UILabel {
                     self.addGestureRecognizer(tapRecognizer)
                     userInteractionEnabled = true
                 } else {
-                    if let recognizer = self.gestureRecognizers!.first as! UIGestureRecognizer? {
+                    if let recognizer = self.gestureRecognizers!.first as UIGestureRecognizer? {
                         self.removeGestureRecognizer(recognizer)
                     }
                     userInteractionEnabled = false
@@ -595,7 +595,7 @@ public class MarqueeLabel: UILabel {
         // Create gradient animation, if needed
         if fadeLength != 0.0 {
             let gradientAnimation = keyFrameAnimationForGradient(fadeLength, interval: interval, delay: delay)
-            self.layer.mask.addAnimation(gradientAnimation, forKey: "gradient")
+            self.layer.mask!.addAnimation(gradientAnimation, forKey: "gradient")
         }
         
         let completion = CompletionBlock<(Bool) -> ()>({ (finished: Bool) -> () in
@@ -624,7 +624,7 @@ public class MarqueeLabel: UILabel {
         let scrolls = scroller(interval: interval, delay: delay)
         
         // Perform all animations in scrolls
-        for (index, scroll) in enumerate(scrolls) {
+        for (index, scroll) in scrolls.enumerate() {
             let layer = scroll.layer
             let anim = scroll.anim
             
@@ -851,7 +851,7 @@ public class MarqueeLabel: UILabel {
         }
         
         animation.values = values
-        animation.keyTimes = keyTimes
+        animation.keyTimes = keyTimes as? [NSNumber]
         animation.timingFunctions = [timingFunction, timingFunction, timingFunction, timingFunction]
         
         return animation
@@ -924,7 +924,7 @@ public class MarqueeLabel: UILabel {
             timingFunction = kCAMediaTimingFunctionLinear
         }
         
-        return CAMediaTimingFunction(name: timingFunction)
+        return CAMediaTimingFunction(name: timingFunction!)
     }
     
     private func transactionDurationType(labelType: Type, interval: CGFloat, delay: CGFloat) -> NSTimeInterval {
@@ -936,7 +936,7 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    override public func animationDidStop(anim: CAAnimation!, finished flag: Bool) {
+    override public func animationDidStop(anim: CAAnimation, finished flag: Bool) {
         let completion = anim.valueForKey(MarqueeKeys.CompletionClosure.rawValue) as? CompletionBlock<(Bool) -> ()>
         completion?.f(flag)
     }
@@ -996,7 +996,7 @@ public class MarqueeLabel: UILabel {
         self.layer.mask?.speed = 1.0;
         self.layer.mask?.timeOffset = 0.0;
         self.layer.mask?.beginTime = 0.0;
-        self.layer.mask?.beginTime = self.layer.mask.convertTime(CACurrentMediaTime(), fromLayer:nil) - gradientPauseTime!
+        self.layer.mask?.beginTime = self.layer.mask!.convertTime(CACurrentMediaTime(), fromLayer:nil) - gradientPauseTime!
     }
     
     private func labelWasTapped(recognizer: UIGestureRecognizer) {
@@ -1020,7 +1020,7 @@ public class MarqueeLabel: UILabel {
     //
     
 
-    override public func viewForBaselineLayout() -> UIView? {
+    override public func viewForBaselineLayout() -> UIView {
         // Use subLabel view for handling baseline layouts
         return sublabel
     }
@@ -1313,7 +1313,7 @@ extension CAMediaTimingFunction {
         }
         
         // Give up - shouldn't ever get here...I hope
-        println("MarqueeLabel: Failed to find t for Y input!")
+        print("MarqueeLabel: Failed to find t for Y input!")
         return t0
     }
     
