@@ -80,7 +80,7 @@ public class MarqueeLabel: UILabel {
                     self.addGestureRecognizer(tapRecognizer)
                     userInteractionEnabled = true
                 } else {
-                    if let recognizer = self.gestureRecognizers!.first as UIGestureRecognizer? {
+                    if let recognizer = self.gestureRecognizers!.first as! UIGestureRecognizer? {
                         self.removeGestureRecognizer(recognizer)
                     }
                     userInteractionEnabled = false
@@ -206,6 +206,7 @@ public class MarqueeLabel: UILabel {
     private func observedViewControllerChange(notification: NSNotification) {
         if let userInfo = notification.userInfo {
             let fromController = userInfo["UINavigationControllerLastVisibleViewController"] as? UIViewController
+            let toController = userInfo["UINavigationControllerNextVisibleViewController"] as? UIViewController
             
             if let ownController = self.firstAvailableViewController() {
                 if let fromController = fromController {
@@ -241,7 +242,7 @@ public class MarqueeLabel: UILabel {
         setup()
     }
     
-    required public init?(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
@@ -461,7 +462,13 @@ public class MarqueeLabel: UILabel {
             // Enforce text alignment for this type
             sublabel.textAlignment = NSTextAlignment.Left
             
-        // No default: required
+        default:
+            // Something strange happened!
+            homeLabelFrame = CGRect.zeroRect
+            awayLabelFrame = CGRect.zeroRect
+            
+            // Do not attempt to scroll
+            return
         }
         
         if !tapToScroll && !holdScrolling && shouldBeginScroll {
@@ -589,7 +596,7 @@ public class MarqueeLabel: UILabel {
         // Create gradient animation, if needed
         if fadeLength != 0.0 {
             let gradientAnimation = keyFrameAnimationForGradient(fadeLength, interval: interval, delay: delay)
-            self.layer.mask!.addAnimation(gradientAnimation, forKey: "gradient")
+            self.layer.mask.addAnimation(gradientAnimation, forKey: "gradient")
         }
         
         let completion = CompletionBlock<(Bool) -> ()>({ (finished: Bool) -> () in
@@ -618,7 +625,7 @@ public class MarqueeLabel: UILabel {
         let scrolls = scroller(interval: interval, delay: delay)
         
         // Perform all animations in scrolls
-        for (index, scroll) in scrolls.enumerate() {
+        for (index, scroll) in enumerate(scrolls) {
             let layer = scroll.layer
             let anim = scroll.anim
             
@@ -959,7 +966,7 @@ public class MarqueeLabel: UILabel {
             timingFunction = kCAMediaTimingFunctionLinear
         }
         
-        return CAMediaTimingFunction(name: timingFunction!)
+        return CAMediaTimingFunction(name: timingFunction)
     }
     
     private func transactionDurationType(labelType: Type, interval: CGFloat, delay: CGFloat) -> NSTimeInterval {
@@ -971,7 +978,7 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    override public func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+    override public func animationDidStop(anim: CAAnimation!, finished flag: Bool) {
         let completion = anim.valueForKey(MarqueeKeys.CompletionClosure.rawValue) as? CompletionBlock<(Bool) -> ()>
         completion?.f(flag)
     }
@@ -1031,7 +1038,7 @@ public class MarqueeLabel: UILabel {
         self.layer.mask?.speed = 1.0
         self.layer.mask?.timeOffset = 0.0
         self.layer.mask?.beginTime = 0.0
-        self.layer.mask?.beginTime = self.layer.mask!.convertTime(CACurrentMediaTime(), fromLayer:nil) - gradientPauseTime!
+        self.layer.mask?.beginTime = self.layer.mask.convertTime(CACurrentMediaTime(), fromLayer:nil) - gradientPauseTime!
     }
     
     private func labelWasTapped(recognizer: UIGestureRecognizer) {
@@ -1039,7 +1046,7 @@ public class MarqueeLabel: UILabel {
             beginScroll(true)
         }
     }
-
+    
     public func labelWillBeginScroll() {
         // Default implementation does nothing - override to customize
         return
@@ -1055,7 +1062,7 @@ public class MarqueeLabel: UILabel {
     //
     
 
-    override public func viewForBaselineLayout() -> UIView {
+    override public func viewForBaselineLayout() -> UIView? {
         // Use subLabel view for handling baseline layouts
         return sublabel
     }
@@ -1368,7 +1375,7 @@ extension CAMediaTimingFunction {
         }
         
         // Give up - shouldn't ever get here...I hope
-        print("MarqueeLabel: Failed to find t for Y input!")
+        println("MarqueeLabel: Failed to find t for Y input!")
         return t0
     }
     

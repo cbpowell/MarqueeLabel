@@ -130,7 +130,6 @@
 		EADD531F1992FD5600E19A42 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "Charles Powell";
 				TargetAttributes = {
