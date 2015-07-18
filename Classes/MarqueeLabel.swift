@@ -1155,7 +1155,7 @@ public class MarqueeLabel: UILabel {
         
         set {
             updateSublabelsForKey("shadowOffset", value: NSValue(CGSize: newValue))
-            super.shadowOffset = newValue
+            self.shadowOffset = newValue
         }
     }
     
