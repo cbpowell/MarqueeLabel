@@ -206,7 +206,6 @@ public class MarqueeLabel: UILabel {
     private func observedViewControllerChange(notification: NSNotification) {
         if let userInfo = notification.userInfo {
             let fromController = userInfo["UINavigationControllerLastVisibleViewController"] as? UIViewController
-            let toController = userInfo["UINavigationControllerNextVisibleViewController"] as? UIViewController
             
             if let ownController = self.firstAvailableViewController() {
                 if let fromController = fromController {
@@ -242,7 +241,7 @@ public class MarqueeLabel: UILabel {
         setup()
     }
     
-    required public init(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
@@ -462,13 +461,7 @@ public class MarqueeLabel: UILabel {
             // Enforce text alignment for this type
             sublabel.textAlignment = NSTextAlignment.Left
             
-        default:
-            // Something strange happened!
-            homeLabelFrame = CGRect.zeroRect
-            awayLabelFrame = CGRect.zeroRect
-            
-            // Do not attempt to scroll
-            return
+        // Default case not required
         }
         
         if !tapToScroll && !holdScrolling && shouldBeginScroll {
@@ -893,7 +886,7 @@ public class MarqueeLabel: UILabel {
         }
         
         animation.values = values
-        animation.keyTimes = keyTimes as? [NSNumber]
+        animation.keyTimes = keyTimes
         animation.timingFunctions = [timingFunction, timingFunction, timingFunction, timingFunction]
         
         return animation
