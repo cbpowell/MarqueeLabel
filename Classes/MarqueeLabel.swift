@@ -1109,6 +1109,8 @@ public class MarqueeLabel: UILabel {
                 return
             }
             sublabel.font = newValue
+            super.font = newValue
+            
             updateAndScroll()
         }
     }
@@ -1120,6 +1122,7 @@ public class MarqueeLabel: UILabel {
         
         set {
             updateSublabelsForKey("textColor", value: newValue)
+            super.textColor = newValue
         }
     }
     
@@ -1130,6 +1133,7 @@ public class MarqueeLabel: UILabel {
         
         set {
             updateSublabelsForKey("backgroundColor", value: newValue)
+            super.backgroundColor = newValue
         }
     }
     
@@ -1140,6 +1144,18 @@ public class MarqueeLabel: UILabel {
         
         set {
             updateSublabelsForKey("shadowColor", value: newValue)
+            super.shadowColor = newValue
+        }
+    }
+    
+    public override var shadowOffset: CGSize {
+        get {
+            return sublabel.shadowOffset
+        }
+        
+        set {
+            updateSublabelsForKey("shadowOffset", value: NSValue(CGSize: newValue))
+            self.shadowOffset = newValue
         }
     }
     
@@ -1150,6 +1166,7 @@ public class MarqueeLabel: UILabel {
         
         set {
             updateSublabelsForKey("highlightedTextColor", value: newValue)
+            super.highlightedTextColor = newValue
         }
     }
     
@@ -1160,6 +1177,7 @@ public class MarqueeLabel: UILabel {
         
         set {
             updateSublabelsForKey("highlighted", value: newValue)
+            super.highlighted = newValue
         }
     }
     
@@ -1170,6 +1188,7 @@ public class MarqueeLabel: UILabel {
         
         set {
             updateSublabelsForKey("enabled", value: newValue)
+            super.enabled = newValue
         }
     }
     
@@ -1212,6 +1231,7 @@ public class MarqueeLabel: UILabel {
         
         set {
             updateSublabelsForKey("baselineAdjustment", value: newValue.rawValue)
+            super.baselineAdjustment = newValue
         }
     }
     
