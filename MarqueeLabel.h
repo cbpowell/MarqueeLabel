@@ -243,15 +243,11 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 @property (nonatomic, assign) IBInspectable CGFloat trailingBuffer;
 
 
-/** The additional amount of space (in points) inbetween the strings of a continuous-type label.
- 
- Defaults to `0`.
- 
- @see trailingBuffer
+/**
  @deprecated Use `trailingBuffer` instead. Values set to this property are simply forwarded to `trailingBuffer`.
  */
  
-@property (nonatomic, assign) CGFloat continuousMarqueeExtraBuffer DEPRECATED_MSG_ATTRIBUTE("Use trailingBuffer property instead.");
+@property (nonatomic, assign) CGFloat continuousMarqueeExtraBuffer DEPRECATED_ATTRIBUTE;
 
 
 /** The length of transparency fade at the left and right edges of the `MarqueeLabel` instance's frame.
@@ -435,18 +431,11 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 + (void)controllerViewWillAppear:(UIViewController *)controller;
 
 
-/** Restarts all `MarqueeLabel` instances that have the specified view controller in their next responder chain.
- 
- This method is intended to be placed in the `viewDidAppear:` method of view controllers, and sends an `NSNotification`
- to all `MarqueeLabel` instances with the specified view controller in their next responder chain. These instances
- will be automatically restarted.
- 
- @param controller The view controller that has appeared.
- @see restartLabel
+/**
  @deprecated Use `controllerViewDidAppear:` instead.
  */
 
-+ (void)controllerViewAppearing:(UIViewController *)controller DEPRECATED_MSG_ATTRIBUTE("Use restartLabelsOfController: method");
++ (void)controllerViewAppearing:(UIViewController *)controller DEPRECATED_ATTRIBUTE;
 
 
 /** Labelizes all `MarqueeLabel` instances that have the specified view controller in their next responder chain.
