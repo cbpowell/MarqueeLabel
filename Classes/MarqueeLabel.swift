@@ -137,17 +137,6 @@ public class MarqueeLabel: UILabel {
     }
     
     public var animationDelay: CGFloat = 1.0
-    
-    //
-    // MARK: - Private details
-    //
-    
-    private var sublabel = UILabel()
-    private var animationDuration: CGFloat = 0.0
-
-    private var homeLabelFrame: CGRect = CGRect.zeroRect
-    private var awayLabelFrame: CGRect = CGRect.zeroRect
-    
 
     //
     // MARK: - Class Functions and Helpers
@@ -174,7 +163,25 @@ public class MarqueeLabel: UILabel {
         MarqueeLabel.notifyController(controller, message: .Animate)
     }
 
-
+    
+    //
+    // MARK: - Private details
+    //
+    
+    private var sublabel = UILabel()
+    private var animationDuration: CGFloat = 0.0
+    
+    private var homeLabelFrame = CGRect.zeroRect
+    private var awayOffset: CGFloat = 0.0
+    
+    override public class func layerClass() -> AnyClass {
+        return CAReplicatorLayer.self
+    }
+    
+    private func repliLayer() -> CAReplicatorLayer {
+        return self.layer as! CAReplicatorLayer
+    }
+    
     class private func notifyController(controller: UIViewController, message: MarqueeKeys) {
         NSNotificationCenter.defaultCenter().postNotificationName(message.rawValue, object: nil, userInfo: [controller : "controller"])
     }
@@ -366,7 +373,7 @@ public class MarqueeLabel: UILabel {
             }
             
             homeLabelFrame = labelFrame
-            awayLabelFrame = labelFrame
+            awayOffset = 0.0
             
             // Remove an additional sublabels (for continuous types)
             removeSecondarySublabels()
@@ -384,53 +391,40 @@ public class MarqueeLabel: UILabel {
         
         switch type {
         case .Continuous, .ContinuousReverse:
-            let awayLabelOffset: CGFloat
             if (type == .Continuous) {
                 homeLabelFrame = CGRectIntegral(CGRectMake(leadingBuffer, 0.0, expectedLabelSize.width, bounds.size.height))
-                awayLabelOffset = -(homeLabelFrame.size.width + minTrailing)
-                awayLabelFrame = CGRectIntegral(CGRectOffset(homeLabelFrame, awayLabelOffset, 0.0))
+                awayOffset = -(homeLabelFrame.size.width + minTrailing)
             } else {
                 homeLabelFrame = CGRectIntegral(CGRectMake(bounds.size.width - (expectedLabelSize.width + leadingBuffer), 0.0, expectedLabelSize.width, bounds.size.height))
-                awayLabelOffset = (homeLabelFrame.size.width + minTrailing)
-                awayLabelFrame = CGRectIntegral(CGRectOffset(homeLabelFrame, awayLabelOffset, 0.0))
+                awayOffset = (homeLabelFrame.size.width + minTrailing)
             }
             
-            var labels = allSublabels()
-            if (labels.count < 2) {
-                let secondSubLabel = UILabel(frame:CGRectOffset(self.homeLabelFrame, -awayLabelOffset, 0.0))
-                secondSubLabel.numberOfLines = 1
-                secondSubLabel.tag = 701
-                secondSubLabel.layer.anchorPoint = CGPointMake(0.0, 0.0)
-                
-                self.addSubview(secondSubLabel)
-                labels.append(secondSubLabel)
-            }
+            // Set frame and text
+            sublabel.frame = homeLabelFrame
             
-            refreshSublabels(labels)
+            // Configure replication
+            self.repliLayer().instanceCount = 2
+            self.repliLayer().instanceTransform = CATransform3DMakeTranslation(-awayOffset, 0.0, 0.0)
             
             // Recompute the animation duration
             animationDuration = {
                 if let rate = self.scrollRate {
-                    return CGFloat(fabs(awayLabelOffset) / rate)
+                    return CGFloat(fabs(awayOffset) / rate)
                 } else {
                     return self.scrollDuration ?? 7.0
                 }
             }()
-
-            // Set sublabel frames
-            for sl in allSublabels() {
-                let dx: CGFloat = -awayLabelOffset * CGFloat(sl.tag - 700)
-                sl.frame = CGRectOffset(homeLabelFrame, dx, 0.0)
-            }
         
         case .RightLeft:
             homeLabelFrame = CGRectIntegral(CGRectMake(bounds.size.width - (expectedLabelSize.width + leadingBuffer), 0.0, expectedLabelSize.width, bounds.size.height))
-            awayLabelFrame = CGRectIntegral(CGRectMake(trailingBuffer, 0.0, expectedLabelSize.width, bounds.size.height))
+            //awayLabelFrame = CGRectIntegral(CGRectMake(trailingBuffer, 0.0, expectedLabelSize.width, bounds.size.height))
+            awayOffset = (expectedLabelSize.width + trailingBuffer)
             
             // Recompute the animation duration
             animationDuration = {
                 if let rate = self.scrollRate {
-                    return CGFloat(fabs(self.awayLabelFrame.origin.x - self.homeLabelFrame.origin.x) / rate)
+                    //return CGFloat(fabs(self.awayLabelFrame.origin.x - self.homeLabelFrame.origin.x) / rate)
+                    return fabs(awayOffset / rate)
                 } else {
                     return self.scrollDuration ?? 7.0
                 }
@@ -438,18 +432,21 @@ public class MarqueeLabel: UILabel {
             
             // Set frame and text
             sublabel.frame = homeLabelFrame
+            
+            // Remove any replication
+            self.repliLayer().instanceCount = 1
             
             // Enforce text alignment for this type
             sublabel.textAlignment = NSTextAlignment.Right
             
         case .LeftRight:
             homeLabelFrame = CGRectIntegral(CGRectMake(leadingBuffer, 0.0, expectedLabelSize.width, expectedLabelSize.height))
-            awayLabelFrame = CGRectIntegral(CGRectOffset(homeLabelFrame, bounds.size.width - (expectedLabelSize.width + leadingBuffer + trailingBuffer), 0.0))
+            awayOffset = -(trailingBuffer + expectedLabelSize.width)
             
             // Recompute the animation duration
             animationDuration = {
                 if let rate = self.scrollRate {
-                    return CGFloat(fabs(self.awayLabelFrame.origin.x - self.homeLabelFrame.origin.x) / rate)
+                    return fabs(awayOffset / rate)
                 } else {
                     return self.scrollDuration ?? 7.0
                 }
@@ -457,6 +454,9 @@ public class MarqueeLabel: UILabel {
             
             // Set frame and text
             sublabel.frame = homeLabelFrame
+            
+            // Remove any replication
+            self.repliLayer().instanceCount = 1
             
             // Enforce text alignment for this type
             sublabel.textAlignment = NSTextAlignment.Left
@@ -472,7 +472,6 @@ public class MarqueeLabel: UILabel {
     func sublabelSize() -> CGSize {
         // Bound the expected size
         let maximumLabelSize = CGSizeMake(CGFloat.max, CGFloat.max)
-        
         // Calculate the expected size
         var expectedLabelSize = sublabel.sizeThatFits(maximumLabelSize)
         // Sanitize width to 8192 (largest width a UILabel will draw)
@@ -637,14 +636,16 @@ public class MarqueeLabel: UILabel {
     
     private func scrollAway(interval: CGFloat, delay: CGFloat = 0.0) {
         // Create scroller, which defines the animation to perform
+        let homeOrigin = self.homeLabelFrame.origin
+        let awayOrigin = self.offsetCGPoint(self.homeLabelFrame.origin, offset: awayOffset)
         let scroller = { (interval: CGFloat, delay: CGFloat) -> [(layer: CALayer, anim: CAKeyframeAnimation)] in
             // Create animation for position
             let values: [NSValue] = [
-                NSValue(CGPoint: self.homeLabelFrame.origin), // Start at home
-                NSValue(CGPoint: self.homeLabelFrame.origin), // Stay at home for delay
-                NSValue(CGPoint: self.awayLabelFrame.origin), // Move to away
-                NSValue(CGPoint: self.awayLabelFrame.origin), // Stay at away for delay
-                NSValue(CGPoint: self.homeLabelFrame.origin)  // Move back to home
+                NSValue(CGPoint: homeOrigin), // Start at home
+                NSValue(CGPoint: homeOrigin), // Stay at home for delay
+                NSValue(CGPoint: awayOrigin), // Move to away
+                NSValue(CGPoint: awayOrigin), // Stay at away for delay
+                NSValue(CGPoint: homeOrigin)  // Move back to home
             ]
             
             let layer = self.sublabel.layer
@@ -662,30 +663,23 @@ public class MarqueeLabel: UILabel {
 
     
     private func scrollContinuous(interval: CGFloat, delay: CGFloat) {
+        // Create scroller, which defines the animation to perform
+        let homeOrigin = self.homeLabelFrame.origin
+        let awayOrigin = self.offsetCGPoint(self.homeLabelFrame.origin, offset: awayOffset)
         let scroller = { (interval: CGFloat, delay: CGFloat) -> [(layer: CALayer, anim: CAKeyframeAnimation)] in
-            // Create animation for positions
-            var offset: CGFloat = 0.0
-            var scrolls: [(layer: CALayer, anim: CAKeyframeAnimation)] = []
-            for sl in self.allSublabels() {
-                // Create values, bumped by the offset
-                let values: [NSValue] = [
-                    NSValue(CGPoint: self.offsetCGPoint(self.homeLabelFrame.origin, offset: offset)), // Start at home
-                    NSValue(CGPoint: self.offsetCGPoint(self.homeLabelFrame.origin, offset: offset)), // Stay at home for delay
-                    NSValue(CGPoint: self.offsetCGPoint(self.awayLabelFrame.origin, offset: offset))  // Move to away
-                ]
-                
-                // Generate animation
-                let layer = sl.layer
-                let anim = self.keyFrameAnimationForProperty("position", values: values, interval: interval, delay: delay)
-                
-                // Add to scrolls
-                scrolls += [(layer: layer, anim: anim)]
-                
-                // Increment offset
-                offset += (self.homeLabelFrame.origin.x - self.awayLabelFrame.origin.x)
-            }
+            // Create animation for position
+            let values: [NSValue] = [
+                NSValue(CGPoint: homeOrigin), // Start at home
+                NSValue(CGPoint: homeOrigin), // Stay at home for delay
+                NSValue(CGPoint: awayOrigin)  // Move to away
+            ]
             
-            return scrolls
+            // Generate animation
+            let layer = self.sublabel.layer
+            let anim = self.keyFrameAnimationForProperty("position", values: values, interval: interval, delay: delay)
+            
+            
+            return [(layer: layer, anim: anim)]
         }
         
         // Create curried function for callback
@@ -815,7 +809,7 @@ public class MarqueeLabel: UILabel {
             let totalDuration = delay + interval
             
             // Find when the lead label will be totally offscreen
-            let offsetDistance = (awayLabelFrame.origin.x - homeLabelFrame.origin.x)
+            let offsetDistance = awayOffset
             let startFadeFraction = fabs(sublabel.bounds.size.width / offsetDistance)
             // Find when the animation will hit that point
             let startFadeTimeFraction = timingFunction.durationPercentageForPositionPercentage(startFadeFraction, duration: totalDuration)
@@ -997,7 +991,7 @@ public class MarqueeLabel: UILabel {
     public func resetLabel() {
         returnLabelToHome()
         homeLabelFrame = CGRect.nullRect
-        awayLabelFrame = CGRect.nullRect
+        awayOffset = 0.0
     }
     
     public func shutdownLabel() {

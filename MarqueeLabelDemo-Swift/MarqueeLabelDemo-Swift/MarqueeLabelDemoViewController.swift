@@ -62,7 +62,7 @@ class MarqueeLabelDemoViewController : UIViewController {
         demoLabel2.type = .ContinuousReverse
         demoLabel2.scrollDuration = 8.0
         demoLabel2.fadeLength = 15.0
-        demoLabel2.leadingBuffer = 40.0;
+        demoLabel2.leadingBuffer = 40.0
         
         let attributedString2 = NSMutableAttributedString(string:"This is a long string, that's also an attributed string, which works just as well!")
         attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "Helvetica-Bold", size: 18)!, range: NSMakeRange(0, 21))
