@@ -374,7 +374,7 @@ public class MarqueeLabel: UILabel {
             awayOffset = 0.0
             
             // Remove an additional sublabels (for continuous types)
-            removeSecondarySublabels()
+            repliLayer().instanceCount = 1;
             
             // Set the sublabel frame to calculated labelFrame
             sublabel.frame = labelFrame
