@@ -415,13 +415,11 @@ public class MarqueeLabel: UILabel {
         
         case .RightLeft:
             homeLabelFrame = CGRectIntegral(CGRectMake(bounds.size.width - (expectedLabelSize.width + leadingBuffer), 0.0, expectedLabelSize.width, bounds.size.height))
-            //awayLabelFrame = CGRectIntegral(CGRectMake(trailingBuffer, 0.0, expectedLabelSize.width, bounds.size.height))
-            awayOffset = (expectedLabelSize.width + trailingBuffer)
+            awayOffset = (expectedLabelSize.width + trailingBuffer + leadingBuffer) - bounds.size.width
             
             // Recompute the animation duration
             animationDuration = {
                 if let rate = self.scrollRate {
-                    //return CGFloat(fabs(self.awayLabelFrame.origin.x - self.homeLabelFrame.origin.x) / rate)
                     return fabs(awayOffset / rate)
                 } else {
                     return self.scrollDuration ?? 7.0
@@ -439,7 +437,7 @@ public class MarqueeLabel: UILabel {
             
         case .LeftRight:
             homeLabelFrame = CGRectIntegral(CGRectMake(leadingBuffer, 0.0, expectedLabelSize.width, expectedLabelSize.height))
-            awayOffset = -(trailingBuffer + expectedLabelSize.width)
+            awayOffset = bounds.size.width - (expectedLabelSize.width + leadingBuffer + trailingBuffer)
             
             // Recompute the animation duration
             animationDuration = {
@@ -476,7 +474,6 @@ public class MarqueeLabel: UILabel {
         expectedLabelSize.width = ceil(min(expectedLabelSize.width, 8192.0))
         // Adjust to own height (make text baseline match normal label)
         expectedLabelSize.height = bounds.size.height
-        
         return expectedLabelSize
     }
     
@@ -503,7 +500,7 @@ public class MarqueeLabel: UILabel {
         }
         
         // Check if the label string fits
-        let labelTooLarge = sublabelSize().width > self.bounds.size.width
+        let labelTooLarge = (sublabelSize().width + leadingBuffer) > self.bounds.size.width
         return (!labelize && labelTooLarge)
     }
     
@@ -806,7 +803,7 @@ public class MarqueeLabel: UILabel {
             
             // Find when the lead label will be totally offscreen
             let offsetDistance = awayOffset
-            let startFadeFraction = fabs(sublabel.bounds.size.width / offsetDistance)
+            let startFadeFraction = fabs((sublabel.bounds.size.width + leadingBuffer) / offsetDistance)
             // Find when the animation will hit that point
             let startFadeTimeFraction = timingFunction.durationPercentageForPositionPercentage(startFadeFraction, duration: totalDuration)
             let startFadeTime = delay + CGFloat(startFadeTimeFraction) * interval
