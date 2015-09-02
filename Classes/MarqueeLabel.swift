@@ -547,9 +547,7 @@ public class MarqueeLabel: UILabel {
         layer.mask?.removeAllAnimations()
         
         // Remove all sublabel position animations
-        for sl in allSublabels() {
-            sl.layer.removeAllAnimations()
-        }
+        sublabel.layer.removeAllAnimations()
     }
     
     private func awayFromHome() -> Bool {
@@ -998,11 +996,10 @@ public class MarqueeLabel: UILabel {
     
     public func pauseLabel() {
         // Pause sublabel position animations
-        for sl in allSublabels() {
-            let labelPauseTime = sl.layer.convertTime(CACurrentMediaTime(), fromLayer: nil)
-            sl.layer.speed = 0.0
-            sl.layer.timeOffset = labelPauseTime
-        }
+        let labelPauseTime = sublabel.layer.convertTime(CACurrentMediaTime(), fromLayer: nil)
+        sublabel.layer.speed = 0.0
+        sublabel.layer.timeOffset = labelPauseTime
+        
         // Pause gradient fade animation
         let gradientPauseTime = layer.mask?.convertTime(CACurrentMediaTime(), fromLayer:nil)
         self.layer.mask?.speed = 0.0
@@ -1011,19 +1008,18 @@ public class MarqueeLabel: UILabel {
     
     public func unpauseLabel() {
         // Unpause sublabel position animations
-        for sl in allSublabels() {
-            let labelPausedTime = sl.layer.timeOffset
-            sl.layer.speed = 1.0
-            sl.layer.timeOffset = 0.0
-            sl.layer.beginTime = 0.0
-            sl.layer.beginTime = sl.layer.convertTime(CACurrentMediaTime(), fromLayer:nil) - labelPausedTime
-        }
+        let labelPausedTime = sublabel.layer.timeOffset
+        sublabel.layer.speed = 1.0
+        sublabel.layer.timeOffset = 0.0
+        sublabel.layer.beginTime = 0.0
+        sublabel.layer.beginTime = sublabel.layer.convertTime(CACurrentMediaTime(), fromLayer:nil) - labelPausedTime
+        
         // Unpause gradient fade animation
-        let gradientPauseTime = self.layer.mask?.timeOffset
-        self.layer.mask?.speed = 1.0
-        self.layer.mask?.timeOffset = 0.0
-        self.layer.mask?.beginTime = 0.0
-        self.layer.mask?.beginTime = self.layer.mask!.convertTime(CACurrentMediaTime(), fromLayer:nil) - gradientPauseTime!
+        let gradientPauseTime = layer.mask?.timeOffset
+        layer.mask?.speed = 1.0
+        layer.mask?.timeOffset = 0.0
+        layer.mask?.beginTime = 0.0
+        layer.mask?.beginTime = layer.mask!.convertTime(CACurrentMediaTime(), fromLayer:nil) - gradientPauseTime!
     }
     
     private func labelWasTapped(recognizer: UIGestureRecognizer) {
@@ -1106,7 +1102,7 @@ public class MarqueeLabel: UILabel {
         }
         
         set {
-            updateSublabelsForKey("textColor", value: newValue)
+            sublabel.textColor = newValue
             super.textColor = newValue
         }
     }
@@ -1117,7 +1113,7 @@ public class MarqueeLabel: UILabel {
         }
         
         set {
-            updateSublabelsForKey("backgroundColor", value: newValue)
+            sublabel.backgroundColor = newValue
             super.backgroundColor = newValue
         }
     }
@@ -1128,7 +1124,7 @@ public class MarqueeLabel: UILabel {
         }
         
         set {
-            updateSublabelsForKey("shadowColor", value: newValue)
+            sublabel.shadowColor = newValue
             super.shadowColor = newValue
         }
     }
@@ -1139,7 +1135,7 @@ public class MarqueeLabel: UILabel {
         }
         
         set {
-            updateSublabelsForKey("shadowOffset", value: NSValue(CGSize: newValue))
+            sublabel.shadowOffset = newValue
             super.shadowOffset = newValue
         }
     }
@@ -1150,7 +1146,7 @@ public class MarqueeLabel: UILabel {
         }
         
         set {
-            updateSublabelsForKey("highlightedTextColor", value: newValue)
+            sublabel.highlightedTextColor = newValue
             super.highlightedTextColor = newValue
         }
     }
@@ -1161,7 +1157,7 @@ public class MarqueeLabel: UILabel {
         }
         
         set {
-            updateSublabelsForKey("highlighted", value: newValue)
+            sublabel.highlighted = newValue
             super.highlighted = newValue
         }
     }
@@ -1172,7 +1168,7 @@ public class MarqueeLabel: UILabel {
         }
         
         set {
-            updateSublabelsForKey("enabled", value: newValue)
+            sublabel.enabled = newValue
             super.enabled = newValue
         }
     }
@@ -1215,7 +1211,7 @@ public class MarqueeLabel: UILabel {
         }
         
         set {
-            updateSublabelsForKey("baselineAdjustment", value: newValue.rawValue)
+            sublabel.baselineAdjustment = newValue
             super.baselineAdjustment = newValue
         }
     }
@@ -1239,32 +1235,10 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    private func updateSublabelsForKey(key: String, value: AnyObject?) {
-        for sl in allSublabels() {
-            sl.setValue(value, forKeyPath: key)
-        }
-    }
-    
 
     //
     // MARK: - Support
     //
-    
-    private func allSublabels() -> [UILabel] {
-        let sublabels: [UILabel] = self.subviews.filter({ (sl: AnyObject) -> Bool in
-            return sl.tag >= 700
-        }) as! [UILabel]
-        
-        return sublabels
-    }
-    
-    private func removeSecondarySublabels() {
-        for sl in allSublabels() {
-            if sl != sublabel {
-                sl.removeFromSuperview()
-            }
-        }
-    }
     
     private func offsetCGPoint(point: CGPoint, offset: CGFloat) -> CGPoint {
         return CGPointMake(point.x + offset, point.y)
