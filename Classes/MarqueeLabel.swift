@@ -1,6 +1,5 @@
 //
-//  MarqueeLabel-Swift.swift
-//  MarqueeLabelDemo-Swift
+//  MarqueeLabel.swift
 //
 //  Created by Charles Powell on 8/6/14.
 //  Copyright (c) 2015 Charles Powell. All rights reserved.
@@ -48,7 +47,7 @@ public class MarqueeLabel: UILabel {
             if type == oldValue {
                 return
             }
-            removeSecondarySublabels()
+            updateAndScroll()
         }
     }
     
@@ -57,7 +56,7 @@ public class MarqueeLabel: UILabel {
     public var labelize: Bool = false {
         didSet {
             if labelize != oldValue {
-                updateAndScroll(true)
+                updateAndScroll()
             }
         }
     }
@@ -171,7 +170,7 @@ public class MarqueeLabel: UILabel {
     private var sublabel = UILabel()
     private var animationDuration: CGFloat = 0.0
     
-    private var homeLabelFrame = CGRect.zeroRect
+    private var homeLabelFrame = CGRect.zero
     private var awayOffset: CGFloat = 0.0
     
     override public class func layerClass() -> AnyClass {
@@ -261,7 +260,7 @@ public class MarqueeLabel: UILabel {
         // Create sublabel
         sublabel = UILabel(frame: self.bounds)
         sublabel.tag = 700
-        sublabel.layer.anchorPoint = CGPoint.zeroPoint
+        sublabel.layer.anchorPoint = CGPoint.zero
 
         // Add sublabel
         addSubview(sublabel)
@@ -361,13 +360,12 @@ public class MarqueeLabel: UILabel {
             sublabel.textAlignment = super.textAlignment
             sublabel.lineBreakMode = super.lineBreakMode
             
-            var unusedFrame = CGRect.zeroRect
-            var labelFrame = CGRect.zeroRect
+            var unusedFrame = CGRect.zero
+            var labelFrame = CGRect.zero
             
             switch type {
             case .ContinuousReverse, .RightLeft:
                 CGRectDivide(bounds, &unusedFrame, &labelFrame, leadingBuffer, CGRectEdge.MaxXEdge)
-                labelFrame = CGRectIntegral(labelFrame)
             default:
                 labelFrame = CGRectIntegral(CGRectMake(leadingBuffer, 0.0, bounds.size.width - leadingBuffer, bounds.size.height))
             }
@@ -378,8 +376,8 @@ public class MarqueeLabel: UILabel {
             // Remove an additional sublabels (for continuous types)
             removeSecondarySublabels()
             
-            // Set the sublabel frame to own bounds
-            sublabel.frame = self.bounds
+            // Set the sublabel frame to calculated labelFrame
+            sublabel.frame = labelFrame
             
             return
         }
@@ -394,7 +392,7 @@ public class MarqueeLabel: UILabel {
             if (type == .Continuous) {
                 homeLabelFrame = CGRectIntegral(CGRectMake(leadingBuffer, 0.0, expectedLabelSize.width, bounds.size.height))
                 awayOffset = -(homeLabelFrame.size.width + minTrailing)
-            } else {
+            } else { // .ContinuousReverse
                 homeLabelFrame = CGRectIntegral(CGRectMake(bounds.size.width - (expectedLabelSize.width + leadingBuffer), 0.0, expectedLabelSize.width, bounds.size.height))
                 awayOffset = (homeLabelFrame.size.width + minTrailing)
             }
@@ -403,8 +401,8 @@ public class MarqueeLabel: UILabel {
             sublabel.frame = homeLabelFrame
             
             // Configure replication
-            self.repliLayer().instanceCount = 2
-            self.repliLayer().instanceTransform = CATransform3DMakeTranslation(-awayOffset, 0.0, 0.0)
+            repliLayer().instanceCount = 2
+            repliLayer().instanceTransform = CATransform3DMakeTranslation(-awayOffset, 0.0, 0.0)
             
             // Recompute the animation duration
             animationDuration = {
@@ -546,7 +544,7 @@ public class MarqueeLabel: UILabel {
     
     private func returnLabelToHome() {
         // Remove any gradient animation
-        self.layer.mask?.removeAllAnimations()
+        layer.mask?.removeAllAnimations()
         
         // Remove all sublabel position animations
         for sl in allSublabels() {
@@ -990,7 +988,7 @@ public class MarqueeLabel: UILabel {
     
     public func resetLabel() {
         returnLabelToHome()
-        homeLabelFrame = CGRect.nullRect
+        homeLabelFrame = CGRect.null
         awayOffset = 0.0
     }
     
@@ -1006,7 +1004,7 @@ public class MarqueeLabel: UILabel {
             sl.layer.timeOffset = labelPauseTime
         }
         // Pause gradient fade animation
-        let gradientPauseTime = self.layer.mask?.convertTime(CACurrentMediaTime(), fromLayer:nil)
+        let gradientPauseTime = layer.mask?.convertTime(CACurrentMediaTime(), fromLayer:nil)
         self.layer.mask?.speed = 0.0
         self.layer.mask?.timeOffset = gradientPauseTime!
     }
