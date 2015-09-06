@@ -1019,7 +1019,7 @@ public class MarqueeLabel: UILabel {
         layer.mask?.beginTime = layer.mask!.convertTime(CACurrentMediaTime(), fromLayer:nil) - gradientPauseTime!
     }
     
-    private func labelWasTapped(recognizer: UIGestureRecognizer) {
+    public func labelWasTapped(recognizer: UIGestureRecognizer) {
         if labelShouldScroll() {
             beginScroll(true)
         }
