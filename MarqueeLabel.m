@@ -352,7 +352,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         case MLContinuous:
         case MLContinuousReverse:
         {
-            CGFloat awayLabelOffset;
             if (self.marqueeType == MLContinuous) {
                 self.homeLabelFrame = CGRectIntegral(CGRectMake(self.leadingBuffer, 0.0f, expectedLabelSize.width, self.bounds.size.height));
                 self.awayOffset = -(self.homeLabelFrame.size.width + minTrailing);
@@ -368,7 +367,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
             self.repliLayer.instanceTransform = CATransform3DMakeTranslation(-self.awayOffset, 0.0, 0.0);
             
             // Recompute the animation duration
-            self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(awayLabelOffset) / self.rate) : (self.scrollDuration);
+            self.animationDuration = (self.rate != 0) ? ((NSTimeInterval) fabs(self.awayOffset) / self.rate) : (self.scrollDuration);
             
             break;
         }
