@@ -504,10 +504,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     [self.layer.mask removeAllAnimations];
     
     // Remove sublabel position animations
-    NSArray *labels = [self allSubLabels];
-    for (UILabel *sl in labels) {
-        [sl.layer removeAllAnimations];
-    }
+    [self.subLabel.layer removeAllAnimations];
 }
 
 - (void)scrollAwayWithInterval:(NSTimeInterval)interval {
@@ -971,13 +968,10 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 -(void)pauseLabel
 {
     if (!self.isPaused) {
-        // Pause sublabel position animations
-        NSArray *labels = [self allSubLabels];
-        for (UILabel *sl in labels) {
-            CFTimeInterval labelPauseTime = [sl.layer convertTime:CACurrentMediaTime() fromLayer:nil];
-            sl.layer.speed = 0.0;
-            sl.layer.timeOffset = labelPauseTime;
-        }
+        // Pause sublabel position animation
+        CFTimeInterval labelPauseTime = [self.subLabel.layer convertTime:CACurrentMediaTime() fromLayer:nil];
+        self.subLabel.layer.speed = 0.0;
+        self.subLabel.layer.timeOffset = labelPauseTime;
         // Pause gradient fade animation
         CFTimeInterval gradientPauseTime = [self.layer.mask convertTime:CACurrentMediaTime() fromLayer:nil];
         self.layer.mask.speed = 0.0;
@@ -990,15 +984,12 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 -(void)unpauseLabel
 {
     if (self.isPaused) {
-        // Unpause sublabel position animations
-        NSArray *labels = [self allSubLabels];
-        for (UILabel *sl in labels) {
-            CFTimeInterval labelPausedTime = sl.layer.timeOffset;
-            sl.layer.speed = 1.0;
-            sl.layer.timeOffset = 0.0;
-            sl.layer.beginTime = 0.0;
-            sl.layer.beginTime = [sl.layer convertTime:CACurrentMediaTime() fromLayer:nil] - labelPausedTime;
-        }
+        // Unpause sublabel position animation
+        CFTimeInterval labelPausedTime = self.subLabel.layer.timeOffset;
+        self.subLabel.layer.speed = 1.0;
+        self.subLabel.layer.timeOffset = 0.0;
+        self.subLabel.layer.beginTime = 0.0;
+        self.subLabel.layer.beginTime = [self.subLabel.layer convertTime:CACurrentMediaTime() fromLayer:nil] - labelPausedTime;
         // Unpause gradient fade animation
         CFTimeInterval gradientPauseTime = self.layer.mask.timeOffset;
         self.layer.mask.speed = 1.0;
@@ -1104,7 +1095,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)setTextColor:(UIColor *)textColor {
-    [self updateSubLabelsForKey:@"textColor" withValue:textColor];
+    self.subLabel.textColor = textColor;
     super.textColor = textColor;
 }
 
@@ -1113,7 +1104,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
-    [self updateSubLabelsForKey:@"backgroundColor" withValue:backgroundColor];
+    self.subLabel.backgroundColor = backgroundColor;
     super.backgroundColor = backgroundColor;
 }
 
@@ -1122,7 +1113,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)setShadowColor:(UIColor *)shadowColor {
-    [self updateSubLabelsForKey:@"shadowColor" withValue:shadowColor];
+    self.subLabel.shadowColor = shadowColor;
     super.shadowColor = shadowColor;
 }
 
@@ -1131,7 +1122,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)setShadowOffset:(CGSize)shadowOffset {
-    [self updateSubLabelsForKey:@"shadowOffset" withValue:[NSValue valueWithCGSize:shadowOffset]];
+    self.subLabel.shadowOffset = shadowOffset;
     super.shadowOffset = shadowOffset;
 }
 
@@ -1140,7 +1131,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)setHighlightedTextColor:(UIColor *)highlightedTextColor {
-    [self updateSubLabelsForKey:@"highlightedTextColor" withValue:highlightedTextColor];
+    self.subLabel.highlightedTextColor = highlightedTextColor;
     super.highlightedTextColor = highlightedTextColor;
 }
 
@@ -1149,7 +1140,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)setHighlighted:(BOOL)highlighted {
-    [self updateSubLabelsForKey:@"highlighted" withValue:@(highlighted)];
+    self.subLabel.highlighted = highlighted;
     super.highlighted = highlighted;
 }
 
@@ -1158,7 +1149,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)setEnabled:(BOOL)enabled {
-    [self updateSubLabelsForKey:@"enabled" withValue:@(enabled)];
+    self.subLabel.enabled = enabled;
     super.enabled = enabled;
 }
 
@@ -1181,7 +1172,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)setBaselineAdjustment:(UIBaselineAdjustment)baselineAdjustment {
-    [self updateSubLabelsForKey:@"baselineAdjustment" withValue:@(baselineAdjustment)];
+    self.subLabel.baselineAdjustment = baselineAdjustment;
     super.baselineAdjustment = baselineAdjustment;
 }
 
@@ -1198,36 +1189,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     [super setMinimumScaleFactor:0.0f];
 }
 
-- (void)refreshSubLabels:(NSArray *)subLabels {
-    for (UILabel *sl in subLabels) {
-        if (sl.tag == 700) {
-            // Do not overwrite base subLabel properties
-            continue;
-        }
-        sl.backgroundColor = self.backgroundColor;
-        sl.textColor = self.textColor;
-        sl.shadowColor = self.shadowColor;
-        sl.shadowOffset = self.shadowOffset;
-        sl.textAlignment = NSTextAlignmentLeft;
-        sl.attributedText = self.attributedText;
-    }
-}
-
-- (void)updateSubLabelsForKey:(NSString *)key withValue:(id)value {
-    NSArray *labels = [self allSubLabels];
-    for (UILabel *sl in labels) {
-        [sl setValue:value forKeyPath:key];
-    }
-}
-
-- (void)updateSubLabelsForKeysWithValues:(NSDictionary *)dictionary {
-    NSArray *labels = [self allSubLabels];
-    for (UILabel *sl in labels) {
-        for (NSString *key in dictionary) {
-            [sl setValue:[dictionary objectForKey:key] forKey:key];
-        }
-    }
-}
 
 #pragma mark - Custom Getters and Setters
 
@@ -1326,18 +1287,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     _marqueeType = marqueeType;
     
-    if (_marqueeType == MLContinuous) {
-        
-    } else {
-        // Remove any second text layers
-        NSArray *labels = [self allSubLabels];
-        for (UILabel *sl in labels) {
-            if (sl != self.subLabel) {
-                [sl removeFromSuperview];
-            }
-        }
-    }
-    
     [self updateSublabelAndLocations];
 }
 
@@ -1380,18 +1329,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         _gradientColors = [NSArray arrayWithObjects: transparent, opaque, opaque, transparent, nil];
     }
     return _gradientColors;
-}
-
-- (NSArray *)allSubLabels {
-    return [self allSubLabels:YES];
-}
-
-- (NSArray *)secondarySubLabels {
-    return [self allSubLabels:NO];
-}
-
-- (NSArray *)allSubLabels:(BOOL)includePrimary {
-    return [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tag >= %i", (includePrimary ? 700 : 701)]];
 }
 
 #pragma mark -
