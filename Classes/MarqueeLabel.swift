@@ -366,6 +366,7 @@ public class MarqueeLabel: UILabel {
             switch type {
             case .ContinuousReverse, .RightLeft:
                 CGRectDivide(bounds, &unusedFrame, &labelFrame, leadingBuffer, CGRectEdge.MaxXEdge)
+                labelFrame = CGRectIntegral(labelFrame)
             default:
                 labelFrame = CGRectIntegral(CGRectMake(leadingBuffer, 0.0, bounds.size.width - leadingBuffer, bounds.size.height))
             }
@@ -430,7 +431,7 @@ public class MarqueeLabel: UILabel {
             sublabel.frame = homeLabelFrame
             
             // Remove any replication
-            self.repliLayer().instanceCount = 1
+            repliLayer().instanceCount = 1
             
             // Enforce text alignment for this type
             sublabel.textAlignment = NSTextAlignment.Right
@@ -629,8 +630,8 @@ public class MarqueeLabel: UILabel {
     
     private func scrollAway(interval: CGFloat, delay: CGFloat = 0.0) {
         // Create scroller, which defines the animation to perform
-        let homeOrigin = self.homeLabelFrame.origin
-        let awayOrigin = self.offsetCGPoint(self.homeLabelFrame.origin, offset: awayOffset)
+        let homeOrigin = homeLabelFrame.origin
+        let awayOrigin = offsetCGPoint(homeLabelFrame.origin, offset: awayOffset)
         let scroller = { (interval: CGFloat, delay: CGFloat) -> [(layer: CALayer, anim: CAKeyframeAnimation)] in
             // Create animation for position
             let values: [NSValue] = [
