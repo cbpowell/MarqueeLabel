@@ -8,7 +8,7 @@ MarqueeLabel is a UILabel subclass adds a scrolling marquee effect when the text
 If you're implementing a project in Swift, be sure to check out the [Swift version of MarqueeLabel](https://github.com/cbpowell/MarqueeLabel-Swift)!
 
 ## Check it out!
-![GIF of MarqueeLabelDemo in action](https://raw.github.com/username/projectname/branch/MarqueeLabelDemo.gif)
+![GIF of MarqueeLabelDemo in action](https://raw.githubusercontent.com/cbpowell/MarqueeLabel/master/MarqueeLabelDemo.gif)
 
 ## How To Get Started
 
