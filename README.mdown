@@ -7,6 +7,9 @@ MarqueeLabel is a UILabel subclass adds a scrolling marquee effect when the text
 
 If you're implementing a project in Swift, be sure to check out the [Swift version of MarqueeLabel](https://github.com/cbpowell/MarqueeLabel-Swift)!
 
+## Check it out!
+![GIF of MarqueeLabelDemo in action](https://raw.github.com/username/projectname/branch/MarqueeLabelDemo.gif)
+
 ## How To Get Started
 
 1. Clone MarqueeLabel from GitHub, and check out the demo project.
@@ -14,14 +17,6 @@ If you're implementing a project in Swift, be sure to check out the [Swift versi
 3. Take a look at the [special notes](https://github.com/cbpowell/MarqueeLabel/blob/master/README.mdown#special-notes) section to be aware of any gotchas.
 4. Drop in MarqueeLabel as a replacement to your lengthy UILabels!
 5. Help out with bug fixes and new features.
-
-#### Important: MarqueeLabel and iOS 8.0.x
-
-Unfortunately, iOS 8.0.x shipped with a bug - the `layoutSubviews` method of UILabel subclasses is _never_ called. MarqueeLabel [version 2.1.0](https://github.com/cbpowell/MarqueeLabel/releases/tag/2.1.0) (and 2.0.9) attempt to fix this for iOS 8.0.x __only__. Fortunately, this issue was fixed in iOS 8.1!
-
-## MarqueeLabel v2.x
-
-MarqueeLabel v2.0 and v2.1 makes some important changes! If you're upgrading from an older version, check out the [release notes for v2.0.0](https://github.com/cbpowell/MarqueeLabel/releases/tag/2.0.0) and [for v2.1.0](https://github.com/cbpowell/MarqueeLabel/releases/tag/2.1.0) to understand what this means for your app!
 
 ### Installation with Cocoapods
 
@@ -44,12 +39,14 @@ pod 'MarqueeLabel'
 
 ## Usage
 
-MarqueeLabel supports scrolling the label, at either a defined rate (points per second) or over a duration (seconds), whenever the length of the label's text exceeds the space available given the label's frame. There are several options for the marquee type, and the default is `MLContinuous` (which looks just like what Apple typically uses). The animation curve of this scroll can be defined, and defaults to `UIViewAnimationOptionCurveLinear`. MarqueeLabel also features an optional fade at the left and right side view borders, in order to fade the label text into the background rather than simply being chopped off.
+MarqueeLabel supports scrolling the label, at either a defined rate (points per second) or over a duration (seconds), whenever the length of the label's text exceeds the space available given the label's frame. There are several options for the marquee type, and the default is `MLContinuous` (which looks just like what Apple typically uses). The animation curve of this scroll can be defined, and defaults to `UIViewAnimationOptionCurveLinear`. MarqueeLabel also features an optional fade at the left and right edges of the view, in order to fade the label text into the background rather than simply being clipped off.
+
+#### Code
 
 To use MarqueeLabel, replace:
 
 	UILabel *lengthyLabel = [[UILabel alloc] initWithFrame:labelCGRectFrame];
-		
+
 With:
 
 	MarqueeLabel *scrollyLabel = [[MarqueeLabel alloc] initWithFrame:labelCGRectFrame duration:8.0 andFadeLength:10.0f];
@@ -59,6 +56,12 @@ This creates a MarqueeLabel that will scroll across its content in 8.0 seconds, 
 If you'd rather have a label that scrolls at a specific rate (points per second), instead of completing the scroll in a specific time frame, you can use this instead:
 
 	MarqueeLabel *scrollyLabel = [[MarqueeLabel alloc] initWithFrame:labelCGRectFrame rate:50.0 andFadeLength:10.0f];
+
+#### Storyboards
+If you're using Storyboards/Interface Builder you can create a MarqueeLabel instance by adding a normal UILabel view to your Storyboard, and then manually changing the view's class to `MarqueeLabel` in the "Custom Class" field of the Identity Inspector tab of Xcode's Utilities panel (the right-side panel).
+_Note:_ If you forget to change the Custom Class field to `MarqueeLabel` and then try to access/set MarqueeLabel-specific properties in your code, you will get crashes!
+
+You can then configure the normal UILabel properties, as well as most of the MarqueeLabel configuration properties, via the Attributes tab of the Utility panel!
 
 ### Even More
 
