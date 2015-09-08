@@ -1021,7 +1021,7 @@ public class MarqueeLabel: UILabel {
     }
     
     public func labelWasTapped(recognizer: UIGestureRecognizer) {
-        if labelShouldScroll() {
+        if labelShouldScroll() && !awayFromHome() {
             beginScroll(true)
         }
     }
