@@ -1306,7 +1306,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     _holdScrolling = holdScrolling;
     
-    if (!holdScrolling && !self.awayFromHome) {
+    if (!holdScrolling && !(self.awayFromHome || self.labelize || self.tapToScroll)) {
         [self beginScroll];
     }
 }
