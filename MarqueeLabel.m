@@ -1001,7 +1001,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)labelWasTapped:(UITapGestureRecognizer *)recognizer {
-    if (self.labelShouldScroll) {
+    if (self.labelShouldScroll && !self.awayFromHome) {
         [self beginScrollWithDelay:NO];
     }
 }
