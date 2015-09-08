@@ -76,6 +76,7 @@
     
     // Right/left example, with tap to scroll
     self.demoLabel4.tag = 401;
+    self.demoLabel4.animationDelay = 0.0f;
     self.demoLabel4.marqueeType = MLRightLeft;
     self.demoLabel4.tapToScroll = YES;
     self.demoLabel4.trailingBuffer = 20.0f;
