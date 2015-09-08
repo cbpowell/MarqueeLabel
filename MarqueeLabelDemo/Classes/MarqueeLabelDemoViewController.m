@@ -47,11 +47,11 @@
     self.demoLabel1.trailingBuffer = 20.0f;
     // Text string for this label is set via Interface Builder!
     
-    
     // Reverse Continuous Type, with attributed string
     self.demoLabel2.tag = 201;
     self.demoLabel2.marqueeType = MLContinuousReverse;
     self.demoLabel2.textAlignment = NSTextAlignmentRight;
+    self.demoLabel2.lineBreakMode = NSLineBreakByTruncatingHead;
     self.demoLabel2.scrollDuration = 8.0;
     self.demoLabel2.fadeLength = 15.0f;
     self.demoLabel2.leadingBuffer = 40.0f;
@@ -63,7 +63,6 @@
     [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Light" size:18.0f] range:NSMakeRange(21, attributedString.length - 21)];
     self.demoLabel2.attributedText = attributedString;
     
-    
     // Left/right example, with rate usage
     self.demoLabel3.tag = 301;
     self.demoLabel3.marqueeType = MLLeftRight;
@@ -73,12 +72,12 @@
     self.demoLabel3.trailingBuffer = 20.0f;
     self.demoLabel3.textAlignment = NSTextAlignmentCenter;
     self.demoLabel3.text = @"This is another long label that scrolls at a specific rate, rather than scrolling its length in a defined time window!";
-     
     
     // Right/left example, with tap to scroll
     self.demoLabel4.tag = 401;
     self.demoLabel4.marqueeType = MLRightLeft;
     self.demoLabel4.textAlignment = NSTextAlignmentRight;
+    self.demoLabel4.lineBreakMode = NSLineBreakByTruncatingHead;
     self.demoLabel4.tapToScroll = YES;
     self.demoLabel4.animationDelay = 0.0f;
     self.demoLabel4.trailingBuffer = 20.0f;
