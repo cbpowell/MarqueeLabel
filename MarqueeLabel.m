@@ -313,8 +313,8 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     // The holdScrolling property does NOT affect this
     if (!self.labelShouldScroll) {
         // Set text alignment and break mode to act like normal label
-        [self.subLabel setTextAlignment:[super textAlignment]];
-        [self.subLabel setLineBreakMode:[super lineBreakMode]];
+        self.subLabel.textAlignment = [super textAlignment];
+        self.subLabel.lineBreakMode = [super lineBreakMode];
         
         CGRect labelFrame, unusedFrame;
         switch (self.marqueeType) {
