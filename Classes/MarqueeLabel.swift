@@ -64,7 +64,7 @@ public class MarqueeLabel: UILabel {
     public var holdScrolling: Bool = false {
         didSet {
             if holdScrolling != oldValue {
-                if oldValue == true && !awayFromHome() {
+                if oldValue == true && !(awayFromHome() || labelize || tapToScroll ){
                     beginScroll()
                 }
             }
