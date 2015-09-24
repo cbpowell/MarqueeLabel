@@ -13,6 +13,10 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		28D7ACF80DDB3853001CB0EB /* MarqueeLabelDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MarqueeLabelDemoViewController.m */; };
+		46EB5C141BB316DF005D2672 /* MarqueeLabel_Umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 46EB5C131BB316DF005D2672 /* MarqueeLabel_Umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		46EB5C191BB316FE005D2672 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */; settings = {ASSET_TAGS = (); }; };
+		46EB5C241BB31A69005D2672 /* MarqueeLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = EA646A1212F7A5B000F31B16 /* MarqueeLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		46EB5C2A1BB31D90005D2672 /* module.map in Resources */ = {isa = PBXBuildFile; fileRef = 46EB5C291BB31D90005D2672 /* module.map */; settings = {ASSET_TAGS = (); }; };
 		EA0E9AD41974C20200033CD7 /* MarqueeLabel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA0E9AD31974C20200033CD7 /* MarqueeLabel.storyboard */; };
 		EA646A1412F7A5B000F31B16 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */; };
 		EABFD31A150D55CC00216FCE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABFD319150D55CC00216FCE /* QuartzCore.framework */; };
@@ -29,6 +33,10 @@
 		28D7ACF70DDB3853001CB0EB /* MarqueeLabelDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarqueeLabelDemoViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* MarqueeLabelDemo_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarqueeLabelDemo_Prefix.pch; sourceTree = "<group>"; };
+		46EB5C111BB316DF005D2672 /* MarqueeLabel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MarqueeLabel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		46EB5C131BB316DF005D2672 /* MarqueeLabel_Umbrella.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MarqueeLabel_Umbrella.h; sourceTree = "<group>"; };
+		46EB5C151BB316DF005D2672 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		46EB5C291BB31D90005D2672 /* module.map */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.map; sourceTree = "<group>"; };
 		8B660C7D16BCFEEF007F9463 /* MarqueeLabelDemoNibs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MarqueeLabelDemoNibs-Info.plist"; path = "/Users/cbpowell/Projects/MarqueeLabel/MarqueeLabelDemo/MarqueeLabelDemoNibs-Info.plist"; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* MarqueeLabelDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MarqueeLabelDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		EA0E9AD31974C20200033CD7 /* MarqueeLabel.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MarqueeLabel.storyboard; sourceTree = "<group>"; };
@@ -50,6 +58,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		46EB5C0D1BB316DF005D2672 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -68,6 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				1D6058910D05DD3D006BFB54 /* MarqueeLabelDemo.app */,
+				46EB5C111BB316DF005D2672 /* MarqueeLabel.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -80,6 +96,7 @@
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
+				46EB5C121BB316DF005D2672 /* MarqueeLabel */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -116,6 +133,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		46EB5C121BB316DF005D2672 /* MarqueeLabel */ = {
+			isa = PBXGroup;
+			children = (
+				46EB5C131BB316DF005D2672 /* MarqueeLabel_Umbrella.h */,
+				46EB5C151BB316DF005D2672 /* Info.plist */,
+				46EB5C291BB31D90005D2672 /* module.map */,
+			);
+			path = MarqueeLabel;
+			sourceTree = "<group>";
+		};
 		EA0E9AD51974C2AA00033CD7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -126,6 +153,18 @@
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		46EB5C0E1BB316DF005D2672 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46EB5C141BB316DF005D2672 /* MarqueeLabel_Umbrella.h in Headers */,
+				46EB5C241BB31A69005D2672 /* MarqueeLabel.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		1D6058900D05DD3D006BFB54 /* MarqueeLabelDemo */ = {
@@ -145,6 +184,24 @@
 			productReference = 1D6058910D05DD3D006BFB54 /* MarqueeLabelDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
+		46EB5C101BB316DF005D2672 /* MarqueeLabel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 46EB5C181BB316DF005D2672 /* Build configuration list for PBXNativeTarget "MarqueeLabel" */;
+			buildPhases = (
+				46EB5C0C1BB316DF005D2672 /* Sources */,
+				46EB5C0D1BB316DF005D2672 /* Frameworks */,
+				46EB5C0E1BB316DF005D2672 /* Headers */,
+				46EB5C0F1BB316DF005D2672 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MarqueeLabel;
+			productName = MarqueeLabel;
+			productReference = 46EB5C111BB316DF005D2672 /* MarqueeLabel.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -152,6 +209,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0700;
+				TargetAttributes = {
+					46EB5C101BB316DF005D2672 = {
+						CreatedOnToolsVersion = 7.0;
+					};
+				};
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "MarqueeLabelDemo" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -168,6 +230,7 @@
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* MarqueeLabelDemo */,
+				46EB5C101BB316DF005D2672 /* MarqueeLabel */,
 			);
 		};
 /* End PBXProject section */
@@ -178,6 +241,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA0E9AD41974C20200033CD7 /* MarqueeLabel.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		46EB5C0F1BB316DF005D2672 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46EB5C2A1BB31D90005D2672 /* module.map in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,6 +263,14 @@
 				1D3623260D0F684500981E51 /* MarqueeLabelDemoAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* MarqueeLabelDemoViewController.m in Sources */,
 				EA646A1412F7A5B000F31B16 /* MarqueeLabel.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		46EB5C0C1BB316DF005D2672 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46EB5C191BB316FE005D2672 /* MarqueeLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,6 +310,109 @@
 			};
 			name = Release;
 		};
+		46EB5C161BB316DF005D2672 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = MarqueeLabel/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "$(PRODUCT_NAME)/module.map";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.charlespowell.MarqueeLabel;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		46EB5C171BB316DF005D2672 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = MarqueeLabel/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "$(PRODUCT_NAME)/module.map";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.charlespowell.MarqueeLabel;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -266,6 +448,15 @@
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		46EB5C181BB316DF005D2672 /* Build configuration list for PBXNativeTarget "MarqueeLabel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				46EB5C161BB316DF005D2672 /* Debug */,
+				46EB5C171BB316DF005D2672 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
