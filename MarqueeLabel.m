@@ -1423,6 +1423,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset) {
         df0 = [self derivativeYValueForCurveAt:t0 withControlPoints:controlPoints];
         // Check if derivative is small or zero ( http://en.wikipedia.org/wiki/Newton's_method#Failure_analysis )
         if (fabs(df0) < 1e-6) {
+            NSLog(@"MarqueeLabel: Newton's Method failure, small/zero derivative!");
             break;
         }
         // Else recalculate t1
@@ -1442,9 +1443,9 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset) {
     
     // Per http://en.wikipedia.org/wiki/Bezier_curve#Cubic_B.C3.A9zier_curves
     return  powf((1 - t),3) * P0.y +
-            3.0f * powf(1 - t, 2) * t * P1.y +
-            3.0f * (1 - t) * powf(t, 2) * P2.y +
-            powf(t, 3) * P3.y;
+    3.0f * powf(1 - t, 2) * t * P1.y +
+    3.0f * (1 - t) * powf(t, 2) * P2.y +
+    powf(t, 3) * P3.y;
     
 }
 
@@ -1457,9 +1458,9 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset) {
     
     // Per http://en.wikipedia.org/wiki/Bezier_curve#Cubic_B.C3.A9zier_curves
     return  powf((1 - t),3) * P0.x +
-            3.0f * powf(1 - t, 2) * t * P1.x +
-            3.0f * (1 - t) * powf(t, 2) * P2.x +
-            powf(t, 3) * P3.x;
+    3.0f * powf(1 - t, 2) * t * P1.x +
+    3.0f * (1 - t) * powf(t, 2) * P2.x +
+    powf(t, 3) * P3.x;
     
 }
 
@@ -1471,8 +1472,8 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset) {
     CGPoint P3 = [controlPoints[3] CGPointValue];
     
     return  powf(t, 2) * (-3.0f * P0.y - 9.0f * P1.y - 9.0f * P2.y + 3.0f * P3.y) +
-            t * (6.0f * P0.y + 6.0f * P2.y) +
-            (-3.0f * P0.y + 3.0f * P1.y);
+    t * (6.0f * P0.y + 6.0f * P2.y) +
+    (-3.0f * P0.y + 3.0f * P1.y);
 }
 
 - (NSArray *)controlPoints
