@@ -1,7 +1,7 @@
 
 //
 //  MarqueeLabel.m
-//  
+//
 //  Created by Charles Powell on 1/31/11.
 //  Copyright (c) 2011-2015 Charles Powell. All rights reserved.
 //
@@ -270,7 +270,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 -(void)didMoveToSuperview {
-    [self updateSublabelAndLocations];
+    [self updateSublabel];
 }
 
 #pragma mark - MarqueeLabel Heavy Lifting
@@ -279,7 +279,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 {
     [super layoutSubviews];
     
-    [self updateSublabelAndLocations];
+    [self updateSublabel];
 }
 
 - (void)willMoveToWindow:(UIWindow *)newWindow {
@@ -290,15 +290,15 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (void)didMoveToWindow {
     if (self.window) {
-        [self updateSublabelAndLocations];
+        [self updateSublabel];
     }
 }
 
-- (void)updateSublabelAndLocations {
-    [self updateSublabelAndLocationsAndBeginScroll:YES];
+- (void)updateSublabel {
+    [self updateSublabelAndBeginScroll:YES];
 }
 
-- (void)updateSublabelAndLocationsAndBeginScroll:(BOOL)beginScroll {
+- (void)updateSublabelAndBeginScroll:(BOOL)beginScroll {
     if (!self.subLabel.text || !self.superview) {
         return;
     }
@@ -399,7 +399,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
             
             break;
         }
-        
+            
         case MLLeftRight:
         {
             self.homeLabelFrame = CGRectIntegral(CGRectMake(self.leadingBuffer, 0.0f, expectedLabelSize.width, expectedLabelSize.height));
@@ -419,7 +419,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
             
             break;
         }
-        
+            
         default:
         {
             // Something strange has happened
@@ -539,7 +539,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     // Set Duration
     [CATransaction setAnimationDuration:(2.0 * (delayAmount + interval))];
-
+    
     // Create animation for gradient, if needed
     if (self.fadeLength != 0.0f) {
         CAKeyframeAnimation *gradAnim = [self keyFrameAnimationForGradientFadeLength:self.fadeLength
@@ -568,7 +568,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         }
     };
     
-
+    
     // Create animation for position
     CGPoint homeOrigin = self.homeLabelFrame.origin;
     CGPoint awayOrigin = MLOffsetCGPoint(self.homeLabelFrame.origin, self.awayOffset);
@@ -858,7 +858,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
                        @[transp, opaque, opaque, transp],           // 7)
                        @[transp, opaque, opaque, transp],           // 8)
                        @[opaque, opaque, opaque, transp]            // 9)
-                     ];
+                       ];
             break;
     }
     
@@ -1038,7 +1038,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     // Check if device is running iOS 8.0.X
     if(SYSTEM_VERSION_IS_8_0_X) {
         // If so, force update because layoutSubviews is not called
-        [self updateSublabelAndLocations];
+        [self updateSublabel];
     }
 }
 
@@ -1048,7 +1048,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     // Check if device is running iOS 8.0.X
     if(SYSTEM_VERSION_IS_8_0_X) {
         // If so, force update because layoutSubviews is not called
-        [self updateSublabelAndLocations];
+        [self updateSublabel];
     }
     
 }
@@ -1069,8 +1069,8 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         return;
     }
     self.subLabel.text = text;
-    [self updateSublabelAndLocations];
     super.text = text;
+    [self updateSublabel];
 }
 
 - (NSAttributedString *)attributedText {
@@ -1082,8 +1082,8 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         return;
     }
     self.subLabel.attributedText = attributedText;
-    [self updateSublabelAndLocations];
     super.attributedText = attributedText;
+    [self updateSublabel];
 }
 
 - (UIFont *)font {
@@ -1096,7 +1096,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     }
     self.subLabel.font = font;
     super.font = font;
-    [self updateSublabelAndLocations];
+    [self updateSublabel];
 }
 
 - (UIColor *)textColor {
@@ -1208,7 +1208,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     _scrollDuration = 0.0f;
     _rate = rate;
-    [self updateSublabelAndLocations];
+    [self updateSublabel];
 }
 
 - (void)setScrollDuration:(CGFloat)lengthOfScroll {
@@ -1218,7 +1218,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     _rate = 0.0f;
     _scrollDuration = lengthOfScroll;
-    [self updateSublabelAndLocations];
+    [self updateSublabel];
 }
 
 - (void)setAnimationCurve:(UIViewAnimationOptions)animationCurve {
@@ -1239,7 +1239,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     // Do not allow negative values
     _leadingBuffer = fabs(leadingBuffer);
-    [self updateSublabelAndLocations];
+    [self updateSublabel];
 }
 
 - (void)setTrailingBuffer:(CGFloat)trailingBuffer {
@@ -1249,7 +1249,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     // Do not allow negative values
     _trailingBuffer = fabs(trailingBuffer);
-    [self updateSublabelAndLocations];
+    [self updateSublabel];
 }
 
 - (void)setContinuousMarqueeExtraBuffer:(CGFloat)continuousMarqueeExtraBuffer {
@@ -1267,7 +1267,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     _fadeLength = fadeLength;
     
-    [self updateSublabelAndLocations];
+    [self updateSublabel];
 }
 
 - (void)setTapToScroll:(BOOL)tapToScroll {
@@ -1296,7 +1296,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     _marqueeType = marqueeType;
     
-    [self updateSublabelAndLocations];
+    [self updateSublabel];
 }
 
 - (void)setLabelize:(BOOL)labelize {
@@ -1306,7 +1306,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     _labelize = labelize;
     
-    [self updateSublabelAndLocationsAndBeginScroll:YES];
+    [self updateSublabelAndBeginScroll:YES];
 }
 
 - (void)setHoldScrolling:(BOOL)holdScrolling {
