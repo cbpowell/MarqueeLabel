@@ -165,7 +165,18 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     return (CAReplicatorLayer *)self.layer;
 }
 
+- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx {
+    // Do NOT call super, to prevent UILabel superclass from drawing into context
+    // Label drawing is handled by sublabel and CAReplicatorLayer layer class
+}
+
 - (void)forwardPropertiesToSubLabel {
+    /*
+     Note that this method is currently ONLY called from awakeFromNib, i.e. when
+     text properties are set via a Storyboard. As the Storyboard/IB doesn't currently
+     support attributed strings, there's no need to "forward" the super attributedString value.
+     */
+    
     // Since we're a UILabel, we actually do implement all of UILabel's properties.
     // We don't care about these values, we just want to forward them on to our sublabel.
     NSArray *properties = @[@"baselineAdjustment", @"enabled", @"highlighted", @"highlightedTextColor",
@@ -183,9 +194,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         id val = [super valueForKey:property];
         [self.subLabel setValue:val forKey:property];
     }
-    
-    // Clear super to prevent double-drawing
-    super.attributedText = nil;
 }
 
 - (void)setupLabel {
@@ -1062,6 +1070,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     }
     self.subLabel.text = text;
     [self updateSublabelAndLocations];
+    super.text = text;
 }
 
 - (NSAttributedString *)attributedText {
@@ -1074,6 +1083,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     }
     self.subLabel.attributedText = attributedText;
     [self updateSublabelAndLocations];
+    super.attributedText = attributedText;
 }
 
 - (UIFont *)font {
