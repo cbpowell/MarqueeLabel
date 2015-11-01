@@ -60,6 +60,8 @@ class MarqueeLabelDemoViewController : UIViewController {
         // Reverse Continuous Type, with attributed string
         demoLabel2.tag = 201
         demoLabel2.type = .ContinuousReverse
+        demoLabel2.textAlignment = .Right
+        demoLabel2.lineBreakMode = .ByTruncatingHead
         demoLabel2.scrollDuration = 8.0
         demoLabel2.fadeLength = 15.0
         demoLabel2.leadingBuffer = 40.0
@@ -75,17 +77,19 @@ class MarqueeLabelDemoViewController : UIViewController {
         // Left/right example, with rate usage
         demoLabel3.tag = 301
         demoLabel3.type = .LeftRight
-        demoLabel3.scrollRate = 30.0
+        demoLabel3.scrollRate = 60.0
         demoLabel3.fadeLength = 10.0
         demoLabel3.leadingBuffer = 30.0
         demoLabel3.trailingBuffer = 20.0
         demoLabel3.textAlignment = .Center
-        demoLabel3.text = "This is another long label that scrolls at a specific rate, rather than scrolling its length in a specific time window!"
+        demoLabel3.text = "This is another long label that scrolls at a specific rate, rather than scrolling its length in a defined time window!"
         
         
         // Right/left example, with tap to scroll
         demoLabel4.tag = 401
         demoLabel4.type = .RightLeft
+        demoLabel4.textAlignment = .Right
+        demoLabel4.lineBreakMode = .ByTruncatingHead
         demoLabel4.tapToScroll = true
         demoLabel4.trailingBuffer = 20.0
         demoLabel4.text = "This label will not scroll until tapped, and then it performs its scroll cycle only once. Tap me!"
@@ -168,7 +172,7 @@ class MarqueeLabelDemoViewController : UIViewController {
             demoLabel1.tag = 102;
         } else {
             demoLabel1.text = "This is a test of MarqueeLabel - the text is long enough that it needs to scroll to see the whole thing.";
-            demoLabel3.text = "That also scrolls continuously rather than scrolling back and forth!";
+            demoLabel3.text = "That also scrolls left, then right, rather than in a continuous loop!"
             
             let attributedString2 = NSMutableAttributedString(string: "This is a long string, that's also an attributed string, which works just as well!")
             attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "Helvetica-Bold", size:18.0)!, range:NSMakeRange(0, 21))
