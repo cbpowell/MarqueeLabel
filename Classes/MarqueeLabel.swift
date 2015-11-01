@@ -181,6 +181,11 @@ public class MarqueeLabel: UILabel {
         return self.layer as! CAReplicatorLayer
     }
     
+    override public func drawLayer(layer: CALayer, inContext ctx: CGContext) {
+        // Do NOT call super, to prevent UILabel superclass from drawing into context
+        // Label drawing is handled by sublabel and CAReplicatorLayer layer class
+    }
+    
     class private func notifyController(controller: UIViewController, message: MarqueeKeys) {
         NSNotificationCenter.defaultCenter().postNotificationName(message.rawValue, object: nil, userInfo: [controller : "controller"])
     }
@@ -287,6 +292,12 @@ public class MarqueeLabel: UILabel {
     }
     
     private func forwardPropertiesToSublabel() {
+        /*
+        Note that this method is currently ONLY called from awakeFromNib, i.e. when
+        text properties are set via a Storyboard. As the Storyboard/IB doesn't currently
+        support attributed strings, there's no need to "forward" the super attributedString value.
+        */
+        
         // Since we're a UILabel, we actually do implement all of UILabel's properties.
         // We don't care about these values, we just want to forward them on to our sublabel.
         let properties = ["baselineAdjustment", "enabled", "highlighted", "highlightedTextColor",
@@ -300,13 +311,11 @@ public class MarqueeLabel: UILabel {
         sublabel.textColor = super.textColor
         sublabel.backgroundColor = super.backgroundColor ?? UIColor.clearColor()
         sublabel.shadowColor = super.shadowColor
+        sublabel.shadowOffset = super.shadowOffset;
         for prop in properties {
             let value: AnyObject! = super.valueForKey(prop)
             sublabel.setValue(value, forKeyPath: prop)
         }
-        
-        // Clear super to prevent double-drawing
-        super.attributedText = nil
     }
     
     //
@@ -471,8 +480,9 @@ public class MarqueeLabel: UILabel {
         let maximumLabelSize = CGSizeMake(CGFloat.max, CGFloat.max)
         // Calculate the expected size
         var expectedLabelSize = sublabel.sizeThatFits(maximumLabelSize)
-        // Sanitize width to 8192 (largest width a UILabel will draw)
-        expectedLabelSize.width = ceil(min(expectedLabelSize.width, 8192.0))
+        // Sanitize width to 5461.0 (largest width a UILabel will draw on an iPhone 6S Plus)
+        expectedLabelSize.width = ceil(min(expectedLabelSize.width, 5461.0));
+
         // Adjust to own height (make text baseline match normal label)
         expectedLabelSize.height = bounds.size.height
         return expectedLabelSize
@@ -1061,6 +1071,7 @@ public class MarqueeLabel: UILabel {
             }
             sublabel.text = newValue
             updateAndScroll()
+            super.text = text
         }
     }
     
@@ -1075,6 +1086,7 @@ public class MarqueeLabel: UILabel {
             }
             sublabel.attributedText = newValue
             updateAndScroll()
+            super.attributedText = attributedText
         }
     }
     
@@ -1216,21 +1228,6 @@ public class MarqueeLabel: UILabel {
     
     public override func intrinsicContentSize() -> CGSize {
         return sublabel.intrinsicContentSize()
-    }
-    
-    private func refreshSublabels(labels: [UILabel]) {
-        for sl in labels {
-            if sl.tag == 700 {
-                // Do not overwrite base subLabel properties
-                continue
-            }
-            sl.backgroundColor = self.backgroundColor
-            sl.textColor = self.textColor
-            sl.shadowColor = self.shadowColor
-            sl.shadowOffset = self.shadowOffset
-            sl.textAlignment = .Left
-            sl.attributedText = self.attributedText
-        }
     }
     
 
