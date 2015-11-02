@@ -6,7 +6,8 @@ Pod::Spec.new do |s|
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { "Charles Powell" => "cbpowell@gmail.com" }
   s.source       = { :git => "https://github.com/cbpowell/MarqueeLabel.git", :tag => s.version.to_s }
-  s.platform     = :ios, '6.0'
+  s.ios.deployment_target = '6.0'
+  s.tvos.deployment_target = '9.0'
   s.source_files = 'MarqueeLabel.{h,m}'
   s.frameworks   = 'QuartzCore'
   s.requires_arc = true
