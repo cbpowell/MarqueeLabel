@@ -1050,11 +1050,12 @@ public class MarqueeLabel: UILabel {
     // MARK: - Modified UILabel Functions/Getters/Setters
     //
     
-
+    #if os(iOS)
     override public func viewForBaselineLayout() -> UIView {
         // Use subLabel view for handling baseline layouts
         return sublabel
     }
+    #endif
 
     override public func drawRect(rect: CGRect) {
         // Draw NOTHING to prevent superclass drawing
