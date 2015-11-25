@@ -175,8 +175,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  */
 
 
-@property (nonatomic, assign) MarqueeType marqueeType;
-
+@property (nonatomic, assign) IBInspectable NSInteger marqueeType;
 
 /** Defines the duration of the scrolling animation.
  
