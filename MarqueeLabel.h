@@ -174,8 +174,11 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  @see textAlignment
  */
 
-
+#if TARGET_INTERFACE_BUILDER
 @property (nonatomic, assign) IBInspectable NSInteger marqueeType;
+#else
+@property (nonatomic, assign) MarqueeType marqueeType;
+#endif
 
 /** Defines the duration of the scrolling animation.
  
