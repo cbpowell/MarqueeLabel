@@ -958,6 +958,9 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 #pragma mark - Label Control
 
 - (void)restartLabel {
+    // Shutdown the label
+    [self shutdownLabel];
+    // Restart scrolling if appropriate
     if (self.labelShouldScroll && !self.tapToScroll && !self.holdScrolling) {
         [self beginScroll];
     }
