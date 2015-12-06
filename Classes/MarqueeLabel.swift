@@ -982,8 +982,9 @@ public class MarqueeLabel: UILabel {
     }
     
     public func restartLabel() {
-        applyGradientMask(fadeLength, animated: false)
-        
+        // Shutdown the label
+        shutdownLabel()
+        // Restart scrolling if appropriate
         if labelShouldScroll() && !tapToScroll && !holdScrolling {
             beginScroll()
         }
@@ -996,7 +997,10 @@ public class MarqueeLabel: UILabel {
     }
     
     public func shutdownLabel() {
+        // Bring label to home location
         returnLabelToHome()
+        // Apply gradient mask for home location
+        applyGradientMask(fadeLength, animated: false)
     }
     
     public func pauseLabel() {
