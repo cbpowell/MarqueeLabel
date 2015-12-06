@@ -970,7 +970,10 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)shutdownLabel {
+    // Bring label to home location
     [self returnLabelToOriginImmediately];
+    // Apply gradient mask for home location
+    [self applyGradientMaskForFadeLength:self.fadeLength animated:false];
 }
 
 -(void)pauseLabel
