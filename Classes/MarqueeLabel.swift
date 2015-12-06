@@ -709,18 +709,15 @@ public class MarqueeLabel: UILabel {
         let transparent = UIColor.clearColor().CGColor
         let opaque = UIColor.blackColor().CGColor
         
+        // Set mask
+        self.layer.mask = gradientMask
+        
         gradientMask.bounds = self.layer.bounds
         gradientMask.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
         gradientMask.shouldRasterize = true
         gradientMask.rasterizationScale = UIScreen.mainScreen().scale
         gradientMask.startPoint = CGPointMake(0.0, 0.5)
         gradientMask.endPoint = CGPointMake(1.0, 0.5)
-        // Start with default (no fade) locations
-        gradientMask.colors = [opaque, opaque, opaque, opaque]
-        gradientMask.locations = [0.0, 0.0, 1.0, 1.0]
-        
-        // Set mask
-        self.layer.mask = gradientMask
         
         let leftFadeStop = fadeLength/self.bounds.size.width
         let rightFadeStop = fadeLength/self.bounds.size.width
