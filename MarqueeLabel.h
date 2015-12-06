@@ -277,7 +277,7 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 /// @name Animation control
 ////////////////////////////////////////////////////////////////////////////////
 
-/** Immediately resets the label to the home position, and restarts the scroll animation if the appropriate conditions are met.
+/** Immediately resets the label to the home position, cancelling any in-flight scroll animation, and restarts the scroll animation if the appropriate conditions are met.
  
  @see resetLabel
  @see triggerScrollStart
