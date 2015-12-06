@@ -286,6 +286,20 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 - (void)restartLabel;
 
 
+/** Immediately resets the label to the home position, cancelling any in-flight scroll animation.
+ 
+ The text is immediately returned to the home position. Scrolling will not resume automatically after a call to this method. 
+ To re-initiate scrolling use a call to `restartLabel` or `triggerScrollStart`, or make a change to a UILabel property such as text, bounds/frame,
+ font, font size, etc.
+ 
+ @see restartLabel
+ @see triggerScrollStart
+ @since Available in 2.4.0 and later.
+ */
+
+- (void)shutdownLabel;
+
+
 /** Resets the label text, recalculating the scroll animation.
  
  The text is immediately returned to the home position, and the scroll animation positions are cleared. Scrolling will not resume automatically after
