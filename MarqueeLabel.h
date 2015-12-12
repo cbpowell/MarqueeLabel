@@ -312,15 +312,18 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
 - (void)resetLabel;
 
 
-/** Pauses the text scrolling animation, at any point during the animation.
+/** Pauses the text scrolling animation, at any point during an in-progress animation.
  
+ @note This method has no effect if a scroll animation is NOT already in progress. To prevent automatic scrolling on a newly-initialized label prior to its presentation onscreen, see the `holdScrolling` property.
+ 
+ @see holdScrolling
  @see unpauseLabel
  */
 
 - (void)pauseLabel;
 
 
-/** Un-pauses a previously paused text scrolling animation
+/** Un-pauses a previously paused text scrolling animation. This method has no effect if the label was not previously paused using `pauseLabel`.
  
  @see pauseLabel
  */
