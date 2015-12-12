@@ -1004,6 +1004,11 @@ public class MarqueeLabel: UILabel {
     }
     
     public func pauseLabel() {
+        // Prevent pausing label while not in scrolling animation, or when already paused
+        guard (!isPaused && awayFromHome()) else {
+            return
+        }
+        
         // Pause sublabel position animations
         let labelPauseTime = sublabel.layer.convertTime(CACurrentMediaTime(), fromLayer: nil)
         sublabel.layer.speed = 0.0
@@ -1016,6 +1021,11 @@ public class MarqueeLabel: UILabel {
     }
     
     public func unpauseLabel() {
+        // Only unpause if label was previously paused
+        guard (isPaused) else {
+            return
+        }
+        
         // Unpause sublabel position animations
         let labelPausedTime = sublabel.layer.timeOffset
         sublabel.layer.speed = 1.0
