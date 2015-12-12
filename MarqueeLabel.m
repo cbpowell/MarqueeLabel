@@ -981,7 +981,8 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 -(void)pauseLabel
 {
-    if (!self.isPaused) {
+    // Only pause if label is not already paused, and already in a scrolling animation
+    if (!self.isPaused && self.awayFromHome) {
         // Pause sublabel position animation
         CFTimeInterval labelPauseTime = [self.subLabel.layer convertTime:CACurrentMediaTime() fromLayer:nil];
         self.subLabel.layer.speed = 0.0;
