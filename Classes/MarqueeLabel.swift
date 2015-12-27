@@ -1295,7 +1295,7 @@ private extension UIResponder {
     }
 }
 
-extension CAMediaTimingFunction {
+private extension CAMediaTimingFunction {
     
     func durationPercentageForPositionPercentage(positionPercentage: CGFloat, duration: CGFloat) -> CGFloat {
         // Finds the animation duration percentage that corresponds with the given animation "position" percentage.
