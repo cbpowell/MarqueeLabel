@@ -95,16 +95,20 @@ public class MarqueeLabel: UILabel {
     public var scrollDuration: CGFloat? = 7.0 {
         didSet {
             if scrollDuration != oldValue {
-                scrollRate = nil
+                if scrollDuration != nil {
+                    scrollRate = nil
+                }
                 updateAndScroll()
             }
         }
     }
-    
+
     public var scrollRate: CGFloat? = nil {
         didSet {
             if scrollRate != oldValue {
-                scrollDuration = nil
+                if scrollRate != nil {
+                    scrollDuration = nil
+                }
                 updateAndScroll()
             }
         }
