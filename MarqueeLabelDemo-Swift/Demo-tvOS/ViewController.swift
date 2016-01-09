@@ -9,24 +9,28 @@
 import UIKit
 import MarqueeLabel
 
+let labels = [
+    "Hello Hello Hello World.",
+    "Hello Hello Hello Hello Hello World.",
+    "Hello Hello Hello Hello Hello Hello World.",
+    "Hello Hello Hello Hello Hello Hello Hello World.",
+    "Hello Hello Hello Hello Hello Hello Hello World.",
+    "Hello Hello Hello Hello Hello Hello Hello World.",
+    "Hello Hello Hello Hello Hello Hello Hello World."]
+
 class ViewController: UIViewController {
 
     @IBOutlet var tableview: UITableView!
+    @IBOutlet var defaultTableview: DefaultTableView!
     @IBOutlet weak var marquee1: MarqueeLabel!
 
-    var labels = [
-        "Hello Hello Hello World.",
-        "Hello Hello Hello Hello Hello World.",
-        "Hello Hello Hello Hello Hello Hello World.",
-        "Hello Hello Hello Hello Hello Hello Hello World.",
-        "Hello Hello Hello Hello Hello Hello Hello World.",
-        "Hello Hello Hello Hello Hello Hello Hello World.",
-        "Hello Hello Hello Hello Hello Hello Hello World."]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableview.dataSource = self
         tableview.delegate = self
+
+        defaultTableview.dataSource = defaultTableview
 
         marquee1.type = .Continuous
         marquee1.text = labels.last!
@@ -71,3 +75,19 @@ extension ViewController: UITableViewDelegate {
 class TableViewCell: UITableViewCell {
     @IBOutlet var marquee: MarqueeLabel!
 }
+
+class DefaultTableView: UITableView {
+}
+
+extension DefaultTableView: UITableViewDataSource {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return labels.count
+    }
+
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = self.dequeueReusableCellWithIdentifier("Default") as UITableViewCell!
+        cell.textLabel?.text = labels[indexPath.row]
+        return cell
+    }
+}
+
