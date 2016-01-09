@@ -64,12 +64,13 @@ extension ViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didUpdateFocusInContext context: UITableViewFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
         if let previouslyFocusedIndexPath = context.previouslyFocusedIndexPath {
             let previous = tableView.cellForRowAtIndexPath(previouslyFocusedIndexPath) as! CellType!
-            previous?.marquee.stopScrolling()
+            previous?.marquee.holdScrolling = true
+            previous?.marquee.restartLabel()
             print("\(previouslyFocusedIndexPath.row): stopScrolling")
         }
         if let nextFocusedIndexPath = context.nextFocusedIndexPath {
             let next = tableView.cellForRowAtIndexPath(nextFocusedIndexPath) as! CellType!
-            next?.marquee.startScrolling()
+            next?.marquee.holdScrolling = false
             print("\(nextFocusedIndexPath.row): startScrolling")
         }
     }
