@@ -105,7 +105,7 @@
 			path = "MarqueeLabel-tvOS";
 			sourceTree = "<group>";
 		};
-		1F8567B71C408EB6008088FF /* Demo-tvOS */ = {
+		1F8567B71C408EB6008088FF /* MarqueeLabelDemo-tvOS */ = {
 			isa = PBXGroup;
 			children = (
 				1F8567B81C408EB6008088FF /* AppDelegate.swift */,
@@ -114,6 +114,7 @@
 				1F8567BF1C408EB6008088FF /* Assets.xcassets */,
 				1F8567C11C408EB6008088FF /* Info.plist */,
 			);
+			name = "MarqueeLabelDemo-tvOS";
 			path = "Demo-tvOS";
 			sourceTree = "<group>";
 		};
@@ -125,7 +126,7 @@
 				EADD53291992FD5600E19A42 /* MarqueeLabelDemo-Swift */,
 				EADD533C1992FD5600E19A42 /* MarqueeLabelDemo-SwiftTests */,
 				1F8567AA1C408E63008088FF /* MarqueeLabel-tvOS */,
-				1F8567B71C408EB6008088FF /* Demo-tvOS */,
+				1F8567B71C408EB6008088FF /* MarqueeLabelDemo-tvOS */,
 				EADD53281992FD5600E19A42 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -568,6 +569,7 @@
 				1F8567AF1C408E63008088FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1F8567C21C408EB6008088FF /* Build configuration list for PBXNativeTarget "Demo-tvOS" */ = {
 			isa = XCConfigurationList;
@@ -576,6 +578,7 @@
 				1F8567C41C408EB6008088FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EADD53221992FD5600E19A42 /* Build configuration list for PBXProject "MarqueeLabelDemo-Swift" */ = {
 			isa = XCConfigurationList;
