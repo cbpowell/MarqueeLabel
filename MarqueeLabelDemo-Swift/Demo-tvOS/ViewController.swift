@@ -18,6 +18,8 @@ let labels = [
     "Hello Hello Hello Hello Hello Hello Hello World.",
     "Hello Hello Hello Hello Hello Hello Hello World."]
 
+let defaultScrollDuration: CGFloat = 20.0
+
 class ViewController: UIViewController {
 
     @IBOutlet var tableview: UITableView!
@@ -34,6 +36,7 @@ class ViewController: UIViewController {
 
         marquee1.type = .Continuous
         marquee1.text = labels.last!
+        marquee1.scrollDuration = defaultScrollDuration
         marquee1.lineBreakMode = .ByTruncatingHead
     }
 
@@ -50,7 +53,7 @@ extension ViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableview.dequeueReusableCellWithIdentifier("Cell") as! CellType!
         cell.marquee.text = labels[indexPath.row]
-        cell.marquee.scrollDuration = 10.0
+        cell.marquee.scrollDuration = defaultScrollDuration
         cell.marquee.holdScrolling = true
         cell.marquee.lineBreakMode = NSLineBreakMode(rawValue: indexPath.row % 6)!
         return cell
