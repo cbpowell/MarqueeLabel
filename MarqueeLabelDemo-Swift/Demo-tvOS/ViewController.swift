@@ -53,6 +53,7 @@ extension ViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableview.dequeueReusableCellWithIdentifier("Cell") as! CellType!
         cell.marquee.text = labels[indexPath.row]
+        cell.marquee.fadeLength = 7.0
         cell.marquee.scrollDuration = defaultScrollDuration
         cell.marquee.holdScrolling = true
         cell.marquee.lineBreakMode = NSLineBreakMode(rawValue: indexPath.row % 6)!
