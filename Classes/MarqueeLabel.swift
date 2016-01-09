@@ -60,6 +60,16 @@ public class MarqueeLabel: UILabel {
             }
         }
     }
+
+    /// Stop scrolling animation and back to `home` position
+    public func stopScrolling() {
+        updateAndScroll(false)
+    }
+
+    /// Start scrolling animation from `home` position
+    public func startScrolling() {
+        beginScroll()
+    }
     
     public var holdScrolling: Bool = false {
         didSet {
