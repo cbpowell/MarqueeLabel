@@ -456,7 +456,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (CGSize)sizeThatFits:(CGSize)size {
     CGSize fitSize = [self.subLabel sizeThatFits:size];
-    fitSize.width += 2.0f * self.fadeLength;
+    fitSize.width += self.leadingBuffer;
     return fitSize;
 }
 
@@ -1194,7 +1194,9 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (CGSize)intrinsicContentSize {
-    return self.subLabel.intrinsicContentSize;
+    CGSize contentSize = self.subLabel.intrinsicContentSize;
+    contentSize.width += self.leadingBuffer;
+    return contentSize;
 }
 
 - (void)setAdjustsLetterSpacingToFitWidth:(BOOL)adjustsLetterSpacingToFitWidth {
