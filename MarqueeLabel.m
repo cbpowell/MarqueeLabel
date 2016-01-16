@@ -699,7 +699,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     // Determine colors for non-scrolling label (i.e. at home)
     NSArray *adjustedColors;
-    BOOL trailingFadeNeeded = (!self.labelize || self.labelShouldScroll);
+    BOOL trailingFadeNeeded = self.labelShouldScroll;
     switch (self.marqueeType) {
         case MLContinuousReverse:
         case MLRightLeft:
