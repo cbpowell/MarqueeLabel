@@ -359,9 +359,6 @@ public class MarqueeLabel: UILabel {
         // Move label to home
         returnLabelToHome()
         
-        // Configure gradient for current condition
-        applyGradientMask(fadeLength, animated: true)
-        
         // Check if label should scroll
         // Note that the holdScrolling propery does not affect this
         if !labelShouldScroll() {
@@ -388,6 +385,9 @@ public class MarqueeLabel: UILabel {
             
             // Set the sublabel frame to calculated labelFrame
             sublabel.frame = labelFrame
+            
+            // Configure fade
+            applyGradientMask(fadeLength, animated: !labelize)
             
             return
         }
@@ -469,6 +469,9 @@ public class MarqueeLabel: UILabel {
             
         // Default case not required
         }
+        
+        // Configure gradient for current condition
+        applyGradientMask(fadeLength, animated: !self.labelize)
         
         if !tapToScroll && !holdScrolling && shouldBeginScroll {
             beginScroll()
