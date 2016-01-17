@@ -582,7 +582,6 @@ public class MarqueeLabel: UILabel {
         
         // Remove any animations
         sublabel.layer.removeAllAnimations()
-        self.layer.mask?.removeAllAnimations()
         
         // Call pre-animation hook
         labelWillBeginScroll()
@@ -595,7 +594,14 @@ public class MarqueeLabel: UILabel {
         // Create gradient animation, if needed
         if fadeLength != 0.0 {
             let gradientAnimation = keyFrameAnimationForGradient(fadeLength, interval: interval, delay: delay)
-            self.layer.mask!.addAnimation(gradientAnimation, forKey: "gradient")
+            // Remove any setup animation, but apply final values
+            if let finalColors = self.layer.mask?.animationForKey("setupColors")?.valueForKey("setupColors") as? [CGColorRef] {
+                let gradientMask = self.layer.mask as? CAGradientLayer
+                gradientMask?.colors = finalColors
+            }
+            self.layer.mask?.removeAnimationForKey("setupColors")
+            // Apply scrolling animation
+            self.layer.mask?.addAnimation(gradientAnimation, forKey: "gradient")
         }
         
         let completion = CompletionBlock<(Bool) -> ()>({ (finished: Bool) -> () in
@@ -697,6 +703,9 @@ public class MarqueeLabel: UILabel {
     }
     
     private func applyGradientMask(fadeLength: CGFloat, animated: Bool) {
+        // Remove any in-flight animations
+        self.layer.mask?.removeAllAnimations()
+        
         // Check for zero-length fade
         if (fadeLength <= 0.0) {
             removeGradientMask()
@@ -704,9 +713,6 @@ public class MarqueeLabel: UILabel {
         }
         
         let gradientMask: CAGradientLayer = (self.layer.mask as! CAGradientLayer?) ?? CAGradientLayer()
-
-        // Remove any in flight animations
-        gradientMask.removeAllAnimations()
         
         // Set up colors
         let transparent = UIColor.clearColor().CGColor
@@ -717,23 +723,21 @@ public class MarqueeLabel: UILabel {
         
         // Configure gradient mask without implicit animations
         CATransaction.begin()
-        CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
+        CATransaction.setDisableActions(true)
         gradientMask.bounds = self.layer.bounds
         gradientMask.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
         gradientMask.shouldRasterize = true
         gradientMask.rasterizationScale = UIScreen.mainScreen().scale
         gradientMask.startPoint = CGPointMake(0.0, 0.5)
         gradientMask.endPoint = CGPointMake(1.0, 0.5)
-        CATransaction.commit()
-        
-        let leftFadeStop = fadeLength/self.bounds.size.width
-        let rightFadeStop = fadeLength/self.bounds.size.width
         
         // Adjust stops based on fade length
-        let adjustedLocations = [0.0, leftFadeStop, (1.0 - rightFadeStop), 1.0]
+        let leftFadeStop = fadeLength/self.bounds.size.width
+        let rightFadeStop = fadeLength/self.bounds.size.width
+        gradientMask.locations = [0.0, leftFadeStop, (1.0 - rightFadeStop), 1.0]
         
         // Determine colors for non-scrolling label (i.e. at home)
-        var adjustedColors: [CGColorRef]
+        let adjustedColors: [CGColorRef]
         let trailingFadeNeeded = (!self.labelize || self.labelShouldScroll())
         
         switch (type) {
@@ -747,30 +751,19 @@ public class MarqueeLabel: UILabel {
         }
         
         if (animated) {
-            // Create animation for location change
-            let locationAnimation = CABasicAnimation(keyPath: "locations")
-            locationAnimation.fromValue = gradientMask.locations
-            locationAnimation.toValue = adjustedLocations
-            locationAnimation.duration = 0.25
+            // Finish transaction
+            CATransaction.commit()
             
-            // Create animation for location change
+            // Create animation for color change
             let colorAnimation = CABasicAnimation(keyPath: "colors")
-            colorAnimation.fromValue = gradientMask.locations
+            colorAnimation.fromValue = gradientMask.colors
             colorAnimation.toValue = adjustedColors
-            colorAnimation.duration = 0.25
-            
-            // Create animation group
-            let group = CAAnimationGroup()
-            group.animations = [locationAnimation, colorAnimation]
-            group.duration = 0.25
-            
-            gradientMask.addAnimation(group, forKey: colorAnimation.keyPath)
-            gradientMask.locations = adjustedLocations
-            gradientMask.colors = adjustedColors
+            colorAnimation.fillMode = kCAFillModeForwards
+            colorAnimation.removedOnCompletion = false
+            colorAnimation.delegate = self
+            colorAnimation.setValue(adjustedColors, forKey: "setupColors")
+            gradientMask.addAnimation(colorAnimation, forKey: "setupColors")
         } else {
-            CATransaction.begin()
-            CATransaction.setValue(kCFBooleanTrue, forKey: kCATransactionDisableActions)
-            gradientMask.locations = adjustedLocations
             gradientMask.colors = adjustedColors
             CATransaction.commit()
         }
@@ -782,8 +775,8 @@ public class MarqueeLabel: UILabel {
     
     private func keyFrameAnimationForGradient(fadeLength: CGFloat, interval: CGFloat, delay: CGFloat) -> CAKeyframeAnimation {
         // Setup
-        var values: [[CGColorRef]]
-        var keyTimes: [CGFloat]
+        let values: [[CGColorRef]]
+        let keyTimes: [CGFloat]
         let transp = UIColor.clearColor().CGColor
         let opaque = UIColor.blackColor().CGColor
         
@@ -835,10 +828,14 @@ public class MarqueeLabel: UILabel {
         }
         
         // Define values
+        // Get current layer values
+        let mask = self.layer.mask?.presentationLayer() as? CAGradientLayer
+        let currentValues = mask?.colors as? [CGColorRef]
+        
         switch (type) {
         case .ContinuousReverse:
             values = [
-                [transp, opaque, opaque, opaque],           // Initial gradient
+                currentValues ?? [transp, opaque, opaque, opaque],           // Initial gradient
                 [transp, opaque, opaque, opaque],           // Begin of fade in
                 [transp, opaque, opaque, transp],           // End of fade in, just as scroll away starts
                 [transp, opaque, opaque, transp],           // Begin of fade out, just before scroll home completes
@@ -849,7 +846,7 @@ public class MarqueeLabel: UILabel {
         
         case .RightLeft:
             values = [
-                [transp, opaque, opaque, opaque],           // 1)
+                currentValues ?? [transp, opaque, opaque, opaque],           // 1)
                 [transp, opaque, opaque, opaque],           // 2)
                 [transp, opaque, opaque, transp],           // 3)
                 [transp, opaque, opaque, transp],           // 4)
@@ -863,7 +860,7 @@ public class MarqueeLabel: UILabel {
             
         case .Continuous:
             values = [
-                [opaque, opaque, opaque, transp],           // Initial gradient
+                currentValues ?? [opaque, opaque, opaque, transp],           // Initial gradient
                 [opaque, opaque, opaque, transp],           // Begin of fade in
                 [transp, opaque, opaque, transp],           // End of fade in, just as scroll away starts
                 [transp, opaque, opaque, transp],           // Begin of fade out, just before scroll home completes
@@ -874,7 +871,7 @@ public class MarqueeLabel: UILabel {
             
         case .LeftRight:
             values = [
-                [opaque, opaque, opaque, transp],           // 1)
+                currentValues ?? [opaque, opaque, opaque, transp],           // 1)
                 [opaque, opaque, opaque, transp],           // 2)
                 [transp, opaque, opaque, transp],           // 3)
                 [transp, opaque, opaque, transp],           // 4)
@@ -974,8 +971,16 @@ public class MarqueeLabel: UILabel {
     }
     
     override public func animationDidStop(anim: CAAnimation, finished flag: Bool) {
-        let completion = anim.valueForKey(MarqueeKeys.CompletionClosure.rawValue) as? CompletionBlock<(Bool) -> ()>
-        completion?.f(flag)
+        if let finalColors = anim.valueForKey("setupColors") as? [CGColorRef] {
+            if flag {
+                let gradientMask = self.layer.mask as? CAGradientLayer
+                gradientMask?.colors = finalColors
+                self.layer.mask?.removeAnimationForKey("setupColors")
+            }
+        } else {
+            let completion = anim.valueForKey(MarqueeKeys.CompletionClosure.rawValue) as? CompletionBlock<(Bool) -> ()>
+            completion?.f(flag)
+        }
     }
     
     //
