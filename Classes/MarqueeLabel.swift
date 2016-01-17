@@ -493,8 +493,7 @@ public class MarqueeLabel: UILabel {
     
     override public func sizeThatFits(size: CGSize) -> CGSize {
         var fitSize = sublabel.sizeThatFits(size)
-        fitSize.width += 2.0 * fadeLength
-        
+        fitSize.width += leadingBuffer
         return fitSize
     }
     
@@ -1251,7 +1250,9 @@ public class MarqueeLabel: UILabel {
     }
     
     public override func intrinsicContentSize() -> CGSize {
-        return sublabel.intrinsicContentSize()
+        var content = sublabel.intrinsicContentSize()
+        content.width += leadingBuffer
+        return content
     }
     
 
