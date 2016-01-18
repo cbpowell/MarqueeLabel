@@ -737,7 +737,7 @@ public class MarqueeLabel: UILabel {
         
         // Determine colors for non-scrolling label (i.e. at home)
         let adjustedColors: [CGColorRef]
-        let trailingFadeNeeded = (!self.labelize || self.labelShouldScroll())
+        let trailingFadeNeeded = self.labelShouldScroll()
         
         switch (type) {
         case .ContinuousReverse, .RightLeft:
