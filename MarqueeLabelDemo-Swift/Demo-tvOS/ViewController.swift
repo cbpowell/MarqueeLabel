@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MarqueeLabel
 
 let labels = [
     "Hello Hello Hello World.",
