@@ -21,22 +21,18 @@ let defaultScrollDuration: CGFloat = 20.0
 
 class ViewController: UIViewController {
 
-    @IBOutlet var tableview: UITableView!
-    @IBOutlet var defaultTableview: DefaultTableView!
-    @IBOutlet weak var marquee1: MarqueeLabel!
+    @IBOutlet var marqueeTableView: UITableView!
+    @IBOutlet var labelTableview: LabelTableView!
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableview.dataSource = self
-        tableview.delegate = self
-
-        defaultTableview.dataSource = defaultTableview
-
-        marquee1.type = .Continuous
-        marquee1.text = labels.last!
-        marquee1.scrollDuration = defaultScrollDuration
-        marquee1.lineBreakMode = .ByTruncatingHead
+        // MarqueeLabel Tableview
+        marqueeTableView.dataSource = self
+        marqueeTableView.delegate = self
+        
+        // Basic UILabel Tableview
+        labelTableview.dataSource = labelTableview
     }
 
 }
@@ -80,10 +76,10 @@ class TableViewCell: UITableViewCell {
     @IBOutlet var marquee: MarqueeLabel!
 }
 
-class DefaultTableView: UITableView {
+class LabelTableView: UITableView {
 }
 
-extension DefaultTableView: UITableViewDataSource {
+extension LabelTableView: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return labels.count
     }
