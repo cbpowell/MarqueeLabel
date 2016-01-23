@@ -279,6 +279,7 @@
                         <outlet property="demoLabel6" destination="PYo-It-Lhw" id="FxT-7F-bTY"/>
                         <outlet property="holdLabelsSwitch" destination="5Hk-N1-s7W" id="xsB-ag-fs6"/>
                         <outlet property="labelizeSwitch" destination="MFZ-eI-lOI" id="sxq-av-WvK"/>
+                        <outlet property="pauseLabelsSwitch" destination="tmC-FS-iei" id="zL6-LG-1fs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5DW-r9-YTj" userLabel="First Responder" sceneMemberID="firstResponder"/>
