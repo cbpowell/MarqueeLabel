@@ -705,8 +705,8 @@ public class MarqueeLabel: UILabel {
         // Remove any in-flight animations
         self.layer.mask?.removeAllAnimations()
         
-        // Check for zero-length fade
-        if (fadeLength <= 0.0) {
+        // Check for zero-length fade, or labelization
+        if (fadeLength <= 0.0 || labelize) {
             removeGradientMask()
             return
         }
