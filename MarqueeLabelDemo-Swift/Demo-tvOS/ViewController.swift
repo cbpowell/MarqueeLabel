@@ -48,10 +48,10 @@ extension ViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = marqueeTableView.dequeueReusableCellWithIdentifier("Cell") as! CellType!
         cell.marquee.text = labels[indexPath.row % labels.count]
+        cell.marquee.labelize = true
         cell.marquee.fadeLength = 7.0
         cell.marquee.scrollDuration = defaultScrollDuration
-        cell.marquee.holdScrolling = true
-        cell.marquee.lineBreakMode = NSLineBreakMode(rawValue: indexPath.row % 6)!
+        cell.marquee.lineBreakMode = .ByTruncatingTail
         return cell
     }
 }
@@ -60,14 +60,11 @@ extension ViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didUpdateFocusInContext context: UITableViewFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
         if let previouslyFocusedIndexPath = context.previouslyFocusedIndexPath {
             let previous = tableView.cellForRowAtIndexPath(previouslyFocusedIndexPath) as! CellType!
-            previous?.marquee.holdScrolling = true
-            previous?.marquee.restartLabel()
-            print("\(previouslyFocusedIndexPath.row): stopScrolling")
+            previous?.marquee.labelize = true
         }
         if let nextFocusedIndexPath = context.nextFocusedIndexPath {
             let next = tableView.cellForRowAtIndexPath(nextFocusedIndexPath) as! CellType!
-            next?.marquee.holdScrolling = false
-            print("\(nextFocusedIndexPath.row): startScrolling")
+            next?.marquee.labelize = false
         }
     }
 }
