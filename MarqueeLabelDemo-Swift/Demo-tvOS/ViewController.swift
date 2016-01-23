@@ -42,12 +42,12 @@ typealias CellType = TableViewCell
 extension ViewController: UITableViewDataSource {
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return labels.count
+        return labels.count * 8
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableview.dequeueReusableCellWithIdentifier("Cell") as! CellType!
-        cell.marquee.text = labels[indexPath.row]
+        let cell = marqueeTableView.dequeueReusableCellWithIdentifier("Cell") as! CellType!
+        cell.marquee.text = labels[indexPath.row % labels.count]
         cell.marquee.fadeLength = 7.0
         cell.marquee.scrollDuration = defaultScrollDuration
         cell.marquee.holdScrolling = true
@@ -81,12 +81,13 @@ class LabelTableView: UITableView {
 
 extension LabelTableView: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return labels.count
+        return labels.count * 8
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.dequeueReusableCellWithIdentifier("Default") as UITableViewCell!
-        cell.textLabel?.text = labels[indexPath.row]
+        let ind = indexPath.row % labels.count
+        cell.textLabel?.text = labels[ind]
         return cell
     }
 }
