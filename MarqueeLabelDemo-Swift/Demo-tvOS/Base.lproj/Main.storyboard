@@ -31,11 +31,11 @@
                                                         <rect key="frame" x="0.0" y="54" width="515" height="66"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eKO-l2-ZzA" id="NjZ-hn-HBb">
-                                                            <rect key="frame" x="0.0" y="0.0" width="499" height="66"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="515" height="66"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolor sit amet." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DBL-yl-WdT" customClass="MarqueeLabel" customModule="MarqueeLabelDemo_tvOS" customModuleProvider="target">
-                                                                    <rect key="frame" x="8" y="8" width="494" height="46"/>
+                                                                    <rect key="frame" x="8" y="8" width="499" height="46"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -77,7 +77,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gB7-Ew-PKw" userLabel="Basic Container">
                                         <rect key="frame" x="815" y="0.0" width="515" height="1040"/>
                                         <subviews>
-                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="40" sectionFooterHeight="40" translatesAutoresizingMaskIntoConstraints="NO" id="60X-zb-Jho" customClass="LabelTableView" customModule="MarqueeLabelDemo_tvOS" customModuleProvider="target">
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="40" sectionFooterHeight="40" translatesAutoresizingMaskIntoConstraints="NO" id="60X-zb-Jho">
                                                 <rect key="frame" x="0.0" y="96" width="515" height="944"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <prototypes>
