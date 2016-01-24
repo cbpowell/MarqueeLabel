@@ -34,7 +34,7 @@
                                                         <rect key="frame" x="0.0" y="54" width="420" height="66"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eKO-l2-ZzA" id="NjZ-hn-HBb">
-                                                            <rect key="frame" x="0.0" y="0.0" width="420" height="66"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="404" height="66"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DBL-yl-WdT" customClass="MarqueeLabel" customModule="MarqueeLabelDemo_tvOS" customModuleProvider="target">
@@ -80,7 +80,7 @@
                                         <rect key="frame" x="820" y="0.0" width="420" height="1040"/>
                                         <subviews>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="40" sectionFooterHeight="40" translatesAutoresizingMaskIntoConstraints="NO" id="60X-zb-Jho" customClass="LabelTableView" customModule="MarqueeLabelDemo_tvOS" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="85" width="420" height="955"/>
+                                                <rect key="frame" x="0.0" y="96" width="420" height="944"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <prototypes>
                                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Default" id="Tz7-EY-Vy7">
@@ -97,7 +97,6 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="420" height="96"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="96" id="KF1-AS-Dda"/>
-                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="96" id="zcj-ms-0dO"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -111,7 +110,7 @@
                                             <constraint firstAttribute="trailing" secondItem="Bt4-3v-lLY" secondAttribute="trailing" id="HOJ-nk-7qI"/>
                                             <constraint firstAttribute="bottom" secondItem="60X-zb-Jho" secondAttribute="bottom" id="YAQ-Tv-061"/>
                                             <constraint firstItem="Bt4-3v-lLY" firstAttribute="top" secondItem="gB7-Ew-PKw" secondAttribute="top" id="YhY-l4-va6"/>
-                                            <constraint firstItem="60X-zb-Jho" firstAttribute="top" secondItem="Bt4-3v-lLY" secondAttribute="bottom" constant="-11" id="gN0-ig-uTc"/>
+                                            <constraint firstItem="60X-zb-Jho" firstAttribute="top" secondItem="Bt4-3v-lLY" secondAttribute="bottom" id="gN0-ig-uTc"/>
                                             <constraint firstItem="60X-zb-Jho" firstAttribute="leading" secondItem="gB7-Ew-PKw" secondAttribute="leading" id="iZW-5r-51G"/>
                                         </constraints>
                                     </view>
