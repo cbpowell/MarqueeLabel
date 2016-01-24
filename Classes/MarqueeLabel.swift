@@ -102,12 +102,12 @@ public class MarqueeLabel: UILabel {
         return (sublabel.layer.speed == 0.0)
     }
     
-    public enum speedLimit {
+    public enum SpeedLimit {
         case Rate(CGFloat)
         case Duration(CGFloat)
     }
     
-    public var speed: speedLimit = .Duration(7.0) {
+    public var speed: SpeedLimit = .Duration(7.0) {
         didSet {
             switch (speed, oldValue) {
             case (.Rate(let a), .Rate(let b)) where a == b:
