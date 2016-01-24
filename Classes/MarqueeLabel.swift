@@ -215,7 +215,7 @@ public class MarqueeLabel: UILabel {
         return CAReplicatorLayer.self
     }
     
-    private func repliLayer() -> CAReplicatorLayer {
+    private var repliLayer: CAReplicatorLayer {
         return self.layer as! CAReplicatorLayer
     }
     
@@ -421,7 +421,7 @@ public class MarqueeLabel: UILabel {
             awayOffset = 0.0
             
             // Remove an additional sublabels (for continuous types)
-            repliLayer().instanceCount = 1;
+            repliLayer.instanceCount = 1;
             
             // Set the sublabel frame to calculated labelFrame
             sublabel.frame = labelFrame
@@ -451,8 +451,8 @@ public class MarqueeLabel: UILabel {
             sublabel.frame = homeLabelFrame
             
             // Configure replication
-            repliLayer().instanceCount = 2
-            repliLayer().instanceTransform = CATransform3DMakeTranslation(-awayOffset, 0.0, 0.0)
+            repliLayer.instanceCount = 2
+            repliLayer.instanceTransform = CATransform3DMakeTranslation(-awayOffset, 0.0, 0.0)
         
         case .RightLeft:
             homeLabelFrame = CGRectIntegral(CGRectMake(bounds.size.width - (expectedLabelSize.width + leadingBuffer), 0.0, expectedLabelSize.width, bounds.size.height))
@@ -462,7 +462,7 @@ public class MarqueeLabel: UILabel {
             sublabel.frame = homeLabelFrame
             
             // Remove any replication
-            repliLayer().instanceCount = 1
+            repliLayer.instanceCount = 1
             
             // Enforce text alignment for this type
             sublabel.textAlignment = NSTextAlignment.Right
@@ -475,7 +475,7 @@ public class MarqueeLabel: UILabel {
             sublabel.frame = homeLabelFrame
             
             // Remove any replication
-            self.repliLayer().instanceCount = 1
+            self.repliLayer.instanceCount = 1
             
             // Enforce text alignment for this type
             sublabel.textAlignment = NSTextAlignment.Left
