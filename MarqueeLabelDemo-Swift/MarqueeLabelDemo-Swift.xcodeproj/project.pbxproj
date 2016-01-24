@@ -76,7 +76,6 @@
 		1F8567B71C408EB6008088FF /* MarqueeLabelDemo-tvOS */ = {
 			isa = PBXGroup;
 			children = (
-				EA08C81B1996DAEE00FB72B6 /* QuartzCore.framework */,
 				1F8567B81C408EB6008088FF /* AppDelegate.swift */,
 				1F8567BA1C408EB6008088FF /* ViewController.swift */,
 				1F8567BC1C408EB6008088FF /* Main.storyboard */,
@@ -95,6 +94,7 @@
 				1F8567B71C408EB6008088FF /* MarqueeLabelDemo-tvOS */,
 				EADD533C1992FD5600E19A42 /* MarqueeLabelDemo-SwiftTests */,
 				EADD53281992FD5600E19A42 /* Products */,
+				EA08C81B1996DAEE00FB72B6 /* QuartzCore.framework */,
 			);
 			sourceTree = "<group>";
 		};
