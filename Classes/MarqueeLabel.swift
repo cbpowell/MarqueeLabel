@@ -1301,13 +1301,13 @@ private extension UIResponder {
     
     func firstAvailableViewController() -> UIViewController? {
         // convenience function for casting and to "mask" the recursive function
-        return self.traverseResponderChainForFirstViewController() as! UIViewController?
+        return self.traverseResponderChainForFirstViewController()
     }
     
-    func traverseResponderChainForFirstViewController() -> AnyObject? {
+    func traverseResponderChainForFirstViewController() -> UIViewController? {
         if let nextResponder = self.nextResponder() {
             if nextResponder.isKindOfClass(UIViewController) {
-                return nextResponder
+                return nextResponder as? UIViewController
             } else if (nextResponder.isKindOfClass(UIView)) {
                 return nextResponder.traverseResponderChainForFirstViewController()
             } else {
