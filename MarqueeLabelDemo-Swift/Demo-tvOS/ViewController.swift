@@ -9,13 +9,13 @@
 import UIKit
 
 let labels = [
-    "Hello Hello Hello World.",
-    "Hello Hello Hello Hello Hello World.",
-    "Hello Hello Hello Hello Hello Hello World.",
-    "Hello Hello Hello Hello Hello Hello Hello World.",
-    "Hello Hello Hello Hello Hello Hello Hello World.",
-    "Hello Hello Hello Hello Hello Hello Hello World.",
-    "Hello Hello Hello Hello Hello Hello Hello World."]
+    "Lorem ipsum dolor sit amet.",
+    "Lorem ipsum dolor sit amet, consectetur.",
+    "Lorem ipsum dolor sit amet, consectetur adipiscing.",
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id.",
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id ultricies justo.",
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id ultricies justo. Praesent eleifend."]
 
 let defaultScrollDuration: CGFloat = 20.0
 
@@ -23,7 +23,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     @IBOutlet var marqueeTableView: UITableView!
     @IBOutlet var labelTableView: UITableView!
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +35,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return labels.count * 8
+        return labels.count * 10
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
