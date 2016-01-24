@@ -735,7 +735,28 @@ public class MarqueeLabel: UILabel {
             return
         }
         
-        let gradientMask: CAGradientLayer = (self.layer.mask as! CAGradientLayer?) ?? CAGradientLayer()
+        // Configure gradient mask without implicit animations
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        
+        let gradientMask: CAGradientLayer = { () -> CAGradientLayer in
+            if let currentMask = self.layer.mask as? CAGradientLayer {
+                // Mask layer already configured
+                return currentMask
+            } else {
+                // No mask exists, create new mask
+                let newMask = CAGradientLayer()
+                newMask.shouldRasterize = true
+                newMask.rasterizationScale = UIScreen.mainScreen().scale
+                newMask.startPoint = CGPointMake(0.0, 0.5)
+                newMask.endPoint = CGPointMake(1.0, 0.5)
+                // Adjust stops based on fade length
+                let leftFadeStop = fadeLength/self.bounds.size.width
+                let rightFadeStop = fadeLength/self.bounds.size.width
+                newMask.locations = [0.0, leftFadeStop, (1.0 - rightFadeStop), 1.0]
+                return newMask
+            }
+        }()
         
         // Set up colors
         let transparent = UIColor.clearColor().CGColor
@@ -744,20 +765,8 @@ public class MarqueeLabel: UILabel {
         // Set mask
         self.layer.mask = gradientMask
         
-        // Configure gradient mask without implicit animations
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
         gradientMask.bounds = self.layer.bounds
         gradientMask.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
-        gradientMask.shouldRasterize = true
-        gradientMask.rasterizationScale = UIScreen.mainScreen().scale
-        gradientMask.startPoint = CGPointMake(0.0, 0.5)
-        gradientMask.endPoint = CGPointMake(1.0, 0.5)
-        
-        // Adjust stops based on fade length
-        let leftFadeStop = fadeLength/self.bounds.size.width
-        let rightFadeStop = fadeLength/self.bounds.size.width
-        gradientMask.locations = [0.0, leftFadeStop, (1.0 - rightFadeStop), 1.0]
         
         // Determine colors for non-scrolling label (i.e. at home)
         let adjustedColors: [CGColorRef]

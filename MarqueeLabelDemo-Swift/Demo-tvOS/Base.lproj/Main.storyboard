@@ -17,28 +17,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="400" translatesAutoresizingMaskIntoConstraints="NO" id="f1z-w5-BYf">
-                                <rect key="frame" x="340" y="20" width="1240" height="1040"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="300" translatesAutoresizingMaskIntoConstraints="NO" id="f1z-w5-BYf">
+                                <rect key="frame" x="295" y="20" width="1330" height="1040"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ct-pB-n0y">
-                                        <rect key="frame" x="0.0" y="0.0" width="420" height="1040"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ct-pB-n0y" userLabel="Marquee Container">
+                                        <rect key="frame" x="0.0" y="0.0" width="515" height="1040"/>
                                         <subviews>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="40" sectionFooterHeight="40" translatesAutoresizingMaskIntoConstraints="NO" id="vFh-7H-vrQ">
-                                                <rect key="frame" x="0.0" y="96" width="420" height="944"/>
+                                                <rect key="frame" x="0.0" y="96" width="515" height="944"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="420" id="peq-WS-Gwz"/>
-                                                </constraints>
                                                 <prototypes>
-                                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="eKO-l2-ZzA" customClass="TableViewCell" customModule="MarqueeLabelDemo_tvOS" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="54" width="420" height="66"/>
+                                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="eKO-l2-ZzA" customClass="MarqueeCell" customModule="MarqueeLabelDemo_tvOS" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="54" width="515" height="66"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eKO-l2-ZzA" id="NjZ-hn-HBb">
-                                                            <rect key="frame" x="0.0" y="0.0" width="404" height="66"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="515" height="66"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DBL-yl-WdT" customClass="MarqueeLabel" customModule="MarqueeLabelDemo_tvOS" customModuleProvider="target">
-                                                                    <rect key="frame" x="8" y="8" width="404" height="46"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolor sit amet." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DBL-yl-WdT" customClass="MarqueeLabel" customModule="MarqueeLabelDemo_tvOS" customModuleProvider="target">
+                                                                    <rect key="frame" x="8" y="8" width="499" height="46"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -57,7 +54,7 @@
                                                 </prototypes>
                                             </tableView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MarqueeLabel" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9SY-Jy-DKX">
-                                                <rect key="frame" x="0.0" y="0.0" width="420" height="96"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="515" height="96"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="96" id="eeA-pS-atP"/>
                                                 </constraints>
@@ -70,31 +67,32 @@
                                             <constraint firstAttribute="trailing" secondItem="9SY-Jy-DKX" secondAttribute="trailing" id="2fH-7w-JR1"/>
                                             <constraint firstItem="9SY-Jy-DKX" firstAttribute="leading" secondItem="3ct-pB-n0y" secondAttribute="leading" id="EfM-14-GWt"/>
                                             <constraint firstAttribute="bottom" secondItem="vFh-7H-vrQ" secondAttribute="bottom" id="FDL-Rb-VEb"/>
+                                            <constraint firstAttribute="trailing" secondItem="vFh-7H-vrQ" secondAttribute="trailing" id="M1m-yI-Nq6"/>
                                             <constraint firstItem="vFh-7H-vrQ" firstAttribute="leading" secondItem="3ct-pB-n0y" secondAttribute="leading" id="Ppa-aN-tah"/>
                                             <constraint firstItem="vFh-7H-vrQ" firstAttribute="top" secondItem="9SY-Jy-DKX" secondAttribute="bottom" id="Z5b-Sf-PiN"/>
                                             <constraint firstItem="9SY-Jy-DKX" firstAttribute="top" secondItem="3ct-pB-n0y" secondAttribute="top" id="bO8-QJ-NIY"/>
-                                            <constraint firstAttribute="width" constant="420" id="d7t-NN-ZFn"/>
+                                            <constraint firstAttribute="width" constant="515" id="d7t-NN-ZFn"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gB7-Ew-PKw">
-                                        <rect key="frame" x="820" y="0.0" width="420" height="1040"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gB7-Ew-PKw" userLabel="Basic Container">
+                                        <rect key="frame" x="815" y="0.0" width="515" height="1040"/>
                                         <subviews>
-                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="40" sectionFooterHeight="40" translatesAutoresizingMaskIntoConstraints="NO" id="60X-zb-Jho" customClass="LabelTableView" customModule="MarqueeLabelDemo_tvOS" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="96" width="420" height="944"/>
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="66" sectionHeaderHeight="40" sectionFooterHeight="40" translatesAutoresizingMaskIntoConstraints="NO" id="60X-zb-Jho">
+                                                <rect key="frame" x="0.0" y="96" width="515" height="944"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <prototypes>
-                                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Default" id="Tz7-EY-Vy7">
-                                                        <rect key="frame" x="0.0" y="54" width="420" height="66"/>
+                                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="Tz7-EY-Vy7">
+                                                        <rect key="frame" x="0.0" y="54" width="515" height="66"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Tz7-EY-Vy7" id="pK8-3Y-8RC">
-                                                            <rect key="frame" x="0.0" y="0.0" width="404" height="66"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="499" height="66"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                         </tableViewCellContentView>
                                                     </tableViewCell>
                                                 </prototypes>
                                             </tableView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Basic UILabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bt4-3v-lLY">
-                                                <rect key="frame" x="0.0" y="0.0" width="420" height="96"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="515" height="96"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="96" id="KF1-AS-Dda"/>
                                                 </constraints>
@@ -105,7 +103,6 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="60X-zb-Jho" secondAttribute="trailing" id="06D-xU-wdy"/>
-                                            <constraint firstAttribute="width" constant="420" id="7CS-Z4-cg5"/>
                                             <constraint firstItem="Bt4-3v-lLY" firstAttribute="leading" secondItem="gB7-Ew-PKw" secondAttribute="leading" id="HG0-ay-aoy"/>
                                             <constraint firstAttribute="trailing" secondItem="Bt4-3v-lLY" secondAttribute="trailing" id="HOJ-nk-7qI"/>
                                             <constraint firstAttribute="bottom" secondItem="60X-zb-Jho" secondAttribute="bottom" id="YAQ-Tv-061"/>
@@ -115,6 +112,9 @@
                                         </constraints>
                                     </view>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="gB7-Ew-PKw" firstAttribute="width" secondItem="3ct-pB-n0y" secondAttribute="width" id="cg4-Hp-3Gc"/>
+                                </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -125,7 +125,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="labelTableview" destination="60X-zb-Jho" id="pBB-ws-vdv"/>
+                        <outlet property="labelTableView" destination="60X-zb-Jho" id="9po-k1-vdD"/>
                         <outlet property="marqueeTableView" destination="vFh-7H-vrQ" id="MDn-XT-dA3"/>
                     </connections>
                 </viewController>
