@@ -30,7 +30,7 @@
                                                     <constraint firstAttribute="width" constant="420" id="peq-WS-Gwz"/>
                                                 </constraints>
                                                 <prototypes>
-                                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="eKO-l2-ZzA" customClass="TableViewCell" customModule="MarqueeLabelDemo_tvOS" customModuleProvider="target">
+                                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="eKO-l2-ZzA" customClass="MarqueeCell" customModule="MarqueeLabelDemo_tvOS" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="54" width="420" height="66"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eKO-l2-ZzA" id="NjZ-hn-HBb">
@@ -83,7 +83,7 @@
                                                 <rect key="frame" x="0.0" y="96" width="420" height="944"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <prototypes>
-                                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Default" id="Tz7-EY-Vy7">
+                                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="Tz7-EY-Vy7">
                                                         <rect key="frame" x="0.0" y="54" width="420" height="66"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Tz7-EY-Vy7" id="pK8-3Y-8RC">
@@ -125,7 +125,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="labelTableview" destination="60X-zb-Jho" id="pBB-ws-vdv"/>
+                        <outlet property="labelTableView" destination="60X-zb-Jho" id="9po-k1-vdD"/>
                         <outlet property="marqueeTableView" destination="vFh-7H-vrQ" id="MDn-XT-dA3"/>
                     </connections>
                 </viewController>

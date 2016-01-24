@@ -19,10 +19,10 @@ let labels = [
 
 let defaultScrollDuration: CGFloat = 20.0
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet var marqueeTableView: UITableView!
-    @IBOutlet var labelTableview: LabelTableView!
+    @IBOutlet var labelTableView: UITableView!
 
 
     override func viewDidLoad() {
@@ -32,60 +32,65 @@ class ViewController: UIViewController {
         marqueeTableView.delegate = self
         
         // Basic UILabel Tableview
-        labelTableview.dataSource = labelTableview
+        labelTableView.dataSource = self
     }
-
-}
-
-typealias CellType = TableViewCell
-
-extension ViewController: UITableViewDataSource {
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return labels.count * 8
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = marqueeTableView.dequeueReusableCellWithIdentifier("Cell") as! CellType!
-        cell.marquee.text = labels[indexPath.row % labels.count]
-        cell.marquee.labelize = true
-        cell.marquee.fadeLength = 7.0
-        cell.marquee.scrollDuration = defaultScrollDuration
-        cell.marquee.lineBreakMode = .ByTruncatingTail
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+        cell.cellText = labels[indexPath.row % labels.count]
         return cell
     }
-}
-
-extension ViewController: UITableViewDelegate {
+    
     func tableView(tableView: UITableView, didUpdateFocusInContext context: UITableViewFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
-        if let previouslyFocusedIndexPath = context.previouslyFocusedIndexPath {
-            let previous = tableView.cellForRowAtIndexPath(previouslyFocusedIndexPath) as! CellType!
-            previous?.marquee.labelize = true
-        }
-        if let nextFocusedIndexPath = context.nextFocusedIndexPath {
-            let next = tableView.cellForRowAtIndexPath(nextFocusedIndexPath) as! CellType!
-            next?.marquee.labelize = false
+        if tableView == marqueeTableView {
+            if let previouslyFocusedIndexPath = context.previouslyFocusedIndexPath {
+                let previous = tableView.cellForRowAtIndexPath(previouslyFocusedIndexPath) as? MarqueeCell
+                previous?.marquee.labelize = true
+            }
+            if let nextFocusedIndexPath = context.nextFocusedIndexPath {
+                let next = tableView.cellForRowAtIndexPath(nextFocusedIndexPath) as? MarqueeCell
+                next?.marquee.labelize = false
+            }
         }
     }
 }
 
-class TableViewCell: UITableViewCell {
+protocol TextCell {
+    var cellText: String? { get set }
+}
+
+class MarqueeCell: UITableViewCell {
     @IBOutlet var marquee: MarqueeLabel!
-}
-
-class LabelTableView: UITableView {
-}
-
-extension LabelTableView: UITableViewDataSource {
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return labels.count * 8
+    
+    override func awakeFromNib() {
+        // Perform initial setup
+        marquee.labelize = true
+        marquee.fadeLength = 7.0
+        marquee.scrollDuration = defaultScrollDuration
+        marquee.lineBreakMode = .ByTruncatingTail
     }
-
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = self.dequeueReusableCellWithIdentifier("Default") as UITableViewCell!
-        let ind = indexPath.row % labels.count
-        cell.textLabel?.text = labels[ind]
-        return cell
+    
+    override var cellText: String? {
+        get {
+            return marquee.text
+        }
+        set {
+            marquee.text = newValue
+        }
     }
 }
 
+extension UITableViewCell: TextCell {
+    var cellText: String? {
+        get {
+            return textLabel?.text
+        }
+        set {
+            textLabel?.text = newValue
+        }
+    }
+}
