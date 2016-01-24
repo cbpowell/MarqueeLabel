@@ -14,6 +14,7 @@
 		EA08C81C1996DAEE00FB72B6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA08C81B1996DAEE00FB72B6 /* QuartzCore.framework */; };
 		EA73C7241C541C5700EDA671 /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADD534A1992FDF100E19A42 /* MarqueeLabel.swift */; };
 		EA7AF4B01AE5E46F00F31C40 /* MarqueeLabel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA7AF4AF1AE5E46F00F31C40 /* MarqueeLabel.storyboard */; };
+		EAB6795F1C54874900E34546 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA08C81B1996DAEE00FB72B6 /* QuartzCore.framework */; };
 		EADD532D1992FD5600E19A42 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADD532C1992FD5600E19A42 /* AppDelegate.swift */; };
 		EADD532F1992FD5600E19A42 /* MarqueeLabelDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADD532E1992FD5600E19A42 /* MarqueeLabelDemoViewController.swift */; };
 		EADD53341992FD5600E19A42 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EADD53331992FD5600E19A42 /* Images.xcassets */; };
@@ -57,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAB6795F1C54874900E34546 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +76,7 @@
 		1F8567B71C408EB6008088FF /* MarqueeLabelDemo-tvOS */ = {
 			isa = PBXGroup;
 			children = (
+				EA08C81B1996DAEE00FB72B6 /* QuartzCore.framework */,
 				1F8567B81C408EB6008088FF /* AppDelegate.swift */,
 				1F8567BA1C408EB6008088FF /* ViewController.swift */,
 				1F8567BC1C408EB6008088FF /* Main.storyboard */,
@@ -87,7 +90,6 @@
 		EADD531E1992FD5600E19A42 = {
 			isa = PBXGroup;
 			children = (
-				EA08C81B1996DAEE00FB72B6 /* QuartzCore.framework */,
 				EADD53491992FDDC00E19A42 /* Classes */,
 				EADD53291992FD5600E19A42 /* MarqueeLabelDemo-Swift */,
 				1F8567B71C408EB6008088FF /* MarqueeLabelDemo-tvOS */,
