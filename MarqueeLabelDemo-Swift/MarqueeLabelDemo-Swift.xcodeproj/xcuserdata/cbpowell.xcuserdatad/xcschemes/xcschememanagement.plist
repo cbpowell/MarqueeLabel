@@ -9,9 +9,24 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>MarqueeLabelDemo-tvOS.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>1F8567A81C408E63008088FF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1F8567B51C408EB6008088FF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>EADD53261992FD5600E19A42</key>
 		<dict>
 			<key>primary</key>

@@ -60,6 +60,16 @@ public class MarqueeLabel: UILabel {
             }
         }
     }
+
+    /// Stop scrolling animation and back to `home` position
+    public func stopScrolling() {
+        updateAndScroll(false)
+    }
+
+    /// Start scrolling animation from `home` position
+    public func startScrolling() {
+        beginScroll()
+    }
     
     public var holdScrolling: Bool = false {
         didSet {
@@ -605,13 +615,14 @@ public class MarqueeLabel: UILabel {
         
         // Create gradient animation, if needed
         if fadeLength != 0.0 {
-            let gradientAnimation = keyFrameAnimationForGradient(fadeLength, interval: interval, delay: delay)
             // Remove any setup animation, but apply final values
-            if let finalColors = self.layer.mask?.animationForKey("setupColors")?.valueForKey("setupColors") as? [CGColorRef] {
+            if let finalColors = self.layer.mask?.animationForKey("setupFade")?.valueForKey("setupFade") as? [CGColorRef] {
                 let gradientMask = self.layer.mask as? CAGradientLayer
                 gradientMask?.colors = finalColors
             }
-            self.layer.mask?.removeAnimationForKey("setupColors")
+            
+            let gradientAnimation = keyFrameAnimationForGradient(fadeLength, interval: interval, delay: delay)
+            self.layer.mask?.removeAnimationForKey("setupFade")
             // Apply scrolling animation
             self.layer.mask?.addAnimation(gradientAnimation, forKey: "gradient")
         }
@@ -773,8 +784,7 @@ public class MarqueeLabel: UILabel {
             colorAnimation.fillMode = kCAFillModeForwards
             colorAnimation.removedOnCompletion = false
             colorAnimation.delegate = self
-            colorAnimation.setValue(adjustedColors, forKey: "setupColors")
-            gradientMask.addAnimation(colorAnimation, forKey: "setupColors")
+            gradientMask.addAnimation(colorAnimation, forKey: "setupFade")
         } else {
             gradientMask.colors = adjustedColors
             CATransaction.commit()
@@ -983,11 +993,11 @@ public class MarqueeLabel: UILabel {
     }
     
     override public func animationDidStop(anim: CAAnimation, finished flag: Bool) {
-        if let finalColors = anim.valueForKey("setupColors") as? [CGColorRef] {
+        if let finalColors = anim.valueForKey("setupFade") as? [CGColorRef] {
             if flag {
                 let gradientMask = self.layer.mask as? CAGradientLayer
                 gradientMask?.colors = finalColors
-                self.layer.mask?.removeAnimationForKey("setupColors")
+                self.layer.mask?.removeAnimationForKey("setupFade")
             }
         } else {
             let completion = anim.valueForKey(MarqueeKeys.CompletionClosure.rawValue) as? CompletionBlock<(Bool) -> ()>
@@ -1304,13 +1314,13 @@ private extension UIResponder {
     
     func firstAvailableViewController() -> UIViewController? {
         // convenience function for casting and to "mask" the recursive function
-        return self.traverseResponderChainForFirstViewController() as! UIViewController?
+        return self.traverseResponderChainForFirstViewController()
     }
     
-    func traverseResponderChainForFirstViewController() -> AnyObject? {
+    func traverseResponderChainForFirstViewController() -> UIViewController? {
         if let nextResponder = self.nextResponder() {
             if nextResponder.isKindOfClass(UIViewController) {
-                return nextResponder
+                return nextResponder as? UIViewController
             } else if (nextResponder.isKindOfClass(UIView)) {
                 return nextResponder.traverseResponderChainForFirstViewController()
             } else {
