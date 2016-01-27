@@ -2,7 +2,7 @@
 //  MarqueeLabel-tvOS.h
 //  MarqueeLabel-tvOS
 //
-//  Created by toshi0383 on 1/9/16.
+//  Created by toshi0383 on 1/27/16.
 //  Copyright © 2016 Charles Powell. All rights reserved.
 //
 
