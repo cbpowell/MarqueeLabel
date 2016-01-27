@@ -45,10 +45,10 @@
 		1F8567BD1C408EB6008088FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1F8567BF1C408EB6008088FF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1F8567C11C408EB6008088FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1FD571CE1C5872AA00DC8574 /* MarqueeLabel-tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "MarqueeLabel-tvOS.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1FD571CE1C5872AA00DC8574 /* MarqueeLabel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MarqueeLabel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FD571D01C5872AA00DC8574 /* MarqueeLabel-tvOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MarqueeLabel-tvOS.h"; sourceTree = "<group>"; };
 		1FD571D21C5872AA00DC8574 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1FD571DB1C5872D700DC8574 /* MarqueeLabel-iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "MarqueeLabel-iOS.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1FD571DB1C5872D700DC8574 /* MarqueeLabel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MarqueeLabel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FD571DD1C5872D700DC8574 /* MarqueeLabel-iOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MarqueeLabel-iOS.h"; sourceTree = "<group>"; };
 		1FD571DF1C5872D700DC8574 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA08C81B1996DAEE00FB72B6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -147,8 +147,8 @@
 			children = (
 				EADD53271992FD5600E19A42 /* MarqueeLabelDemo-Swift.app */,
 				1F8567B61C408EB6008088FF /* MarqueeLabelDemo-tvOS.app */,
-				1FD571CE1C5872AA00DC8574 /* MarqueeLabel-tvOS.framework */,
-				1FD571DB1C5872D700DC8574 /* MarqueeLabel-iOS.framework */,
+				1FD571CE1C5872AA00DC8574 /* MarqueeLabel.framework */,
+				1FD571DB1C5872D700DC8574 /* MarqueeLabel.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -253,7 +253,7 @@
 			);
 			name = "MarqueeLabel-tvOS";
 			productName = "MarqueeLabel-tvOS";
-			productReference = 1FD571CE1C5872AA00DC8574 /* MarqueeLabel-tvOS.framework */;
+			productReference = 1FD571CE1C5872AA00DC8574 /* MarqueeLabel.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		1FD571DA1C5872D700DC8574 /* MarqueeLabel-iOS */ = {
@@ -271,7 +271,7 @@
 			);
 			name = "MarqueeLabel-iOS";
 			productName = "MarqueeLabel-iOS";
-			productReference = 1FD571DB1C5872D700DC8574 /* MarqueeLabel-iOS.framework */;
+			productReference = 1FD571DB1C5872D700DC8574 /* MarqueeLabel.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		EADD53261992FD5600E19A42 /* MarqueeLabelDemo-Swift */ = {
@@ -480,7 +480,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.charlespowell.MarqueeLabel-tvOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = MarqueeLabel;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -505,7 +505,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.charlespowell.MarqueeLabel-tvOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = MarqueeLabel;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -530,7 +530,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.charlespowell.MarqueeLabel-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = MarqueeLabel;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -554,7 +554,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.charlespowell.MarqueeLabel-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = MarqueeLabel;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
