@@ -191,7 +191,7 @@ public class MarqueeLabel: UILabel {
     }
     
     class private func notifyController(controller: UIViewController, message: MarqueeKeys) {
-        NSNotificationCenter.defaultCenter().postNotificationName(message.rawValue, object: nil, userInfo: [controller : "controller"])
+        NSNotificationCenter.defaultCenter().postNotificationName(message.rawValue, object: nil, userInfo: ["controller" : controller])
     }
     
     private func restartForViewController(notification: NSNotification) {
