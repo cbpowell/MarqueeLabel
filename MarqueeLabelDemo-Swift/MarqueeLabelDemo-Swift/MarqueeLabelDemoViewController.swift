@@ -199,10 +199,10 @@ class MarqueeLabelDemoViewController : UIViewController {
     }
     
     @IBAction func labelizeSwitched(sender: UISwitch) {
-        for pv in view.subviews as [UIView] {
-            if let v = pv as? MarqueeLabel {
-                v.labelize = sender.on
-            }
+        if sender.on {
+            MarqueeLabel.controllerLabelsLabelize(self)
+        } else {
+            MarqueeLabel.controllerLabelsAnimate(self)
         }
     }
     
