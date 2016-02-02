@@ -128,6 +128,15 @@
 			path = "MarqueeLabel-iOS";
 			sourceTree = "<group>";
 		};
+		EA1C4BA81C60232A001F5D27 /* Carthage Support */ = {
+			isa = PBXGroup;
+			children = (
+				1FD571DC1C5872D700DC8574 /* MarqueeLabel-iOS */,
+				1FD571CF1C5872AA00DC8574 /* MarqueeLabel-tvOS */,
+			);
+			name = "Carthage Support";
+			sourceTree = "<group>";
+		};
 		EADD531E1992FD5600E19A42 = {
 			isa = PBXGroup;
 			children = (
@@ -135,8 +144,7 @@
 				EADD53291992FD5600E19A42 /* MarqueeLabelDemo-Swift */,
 				1F8567B71C408EB6008088FF /* MarqueeLabelDemo-tvOS */,
 				EADD533C1992FD5600E19A42 /* MarqueeLabelDemo-SwiftTests */,
-				1FD571CF1C5872AA00DC8574 /* MarqueeLabel-tvOS */,
-				1FD571DC1C5872D700DC8574 /* MarqueeLabel-iOS */,
+				EA1C4BA81C60232A001F5D27 /* Carthage Support */,
 				EADD53281992FD5600E19A42 /* Products */,
 				EA08C81B1996DAEE00FB72B6 /* QuartzCore.framework */,
 			);
@@ -681,6 +689,7 @@
 				1FD571D41C5872AA00DC8574 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1FD571E01C5872D700DC8574 /* Build configuration list for PBXNativeTarget "MarqueeLabel-iOS" */ = {
 			isa = XCConfigurationList;
@@ -689,6 +698,7 @@
 				1FD571E21C5872D700DC8574 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EADD53221992FD5600E19A42 /* Build configuration list for PBXProject "MarqueeLabelDemo-Swift" */ = {
 			isa = XCConfigurationList;
