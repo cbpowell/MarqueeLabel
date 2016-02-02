@@ -217,26 +217,7 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    public func observedViewControllerChange(notification: NSNotification) {
-        if let userInfo = notification.userInfo {
-            let fromController = userInfo["UINavigationControllerLastVisibleViewController"] as? UIViewController
-            
-            if let ownController = self.firstAvailableViewController() {
-                if let fromController = fromController {
-                    if ownController === fromController {
-                        shutdownLabel()
-                    }
-                }
-                if let fromController = fromController {
-                    if ownController === fromController {
-                        restartLabel()
-                    }
-                }
-            }
-        }
-    }
-    
-    
+
     //
     // MARK: - Initialization
     //
@@ -283,7 +264,6 @@ public class MarqueeLabel: UILabel {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "restartForViewController:", name: MarqueeKeys.Restart.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "labelizeForController:", name: MarqueeKeys.Labelize.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "animateForController:", name: MarqueeKeys.Animate.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "observedViewControllerChange:", name:"UINavigationControllerDidShowViewControllerNotification", object:nil)
         // UIApplication state notifications
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "restartLabel", name: UIApplicationDidBecomeActiveNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "shutdownLabel", name: UIApplicationDidEnterBackgroundNotification, object: nil)
@@ -338,7 +318,9 @@ public class MarqueeLabel: UILabel {
     }
     
     override public func didMoveToWindow() {
-        if self.window != nil {
+        if self.window == nil {
+            shutdownLabel()
+        } else {
             updateAndScroll()
         }
     }
