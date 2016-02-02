@@ -161,7 +161,6 @@ public class MarqueeLabel: UILabel {
         MarqueeLabel.notifyController(controller, message: .Labelize)
     }
 
-
     class func controllerLabelsAnimate(controller: UIViewController) {
         MarqueeLabel.notifyController(controller, message: .Animate)
     }
@@ -194,7 +193,7 @@ public class MarqueeLabel: UILabel {
         NSNotificationCenter.defaultCenter().postNotificationName(message.rawValue, object: nil, userInfo: ["controller" : controller])
     }
     
-    private func restartForViewController(notification: NSNotification) {
+    public func restartForViewController(notification: NSNotification) {
         if let controller = notification.userInfo?["controller"] as? UIViewController {
             if controller === self.firstAvailableViewController() {
                 self.restartLabel()
@@ -202,7 +201,7 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    private func labelizeForController(notification: NSNotification) {
+    public func labelizeForController(notification: NSNotification) {
         if let controller = notification.userInfo?["controller"] as? UIViewController {
             if controller === self.firstAvailableViewController() {
                 self.labelize = true
@@ -210,7 +209,7 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    private func animateForController(notification: NSNotification) {
+    public func animateForController(notification: NSNotification) {
         if let controller = notification.userInfo?["controller"] as? UIViewController {
             if controller === self.firstAvailableViewController() {
                 self.labelize = false
@@ -218,7 +217,7 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    private func observedViewControllerChange(notification: NSNotification) {
+    public func observedViewControllerChange(notification: NSNotification) {
         if let userInfo = notification.userInfo {
             let fromController = userInfo["UINavigationControllerLastVisibleViewController"] as? UIViewController
             
