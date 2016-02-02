@@ -92,20 +92,52 @@ public class MarqueeLabel: UILabel {
         return (sublabel.layer.speed == 0.0)
     }
     
-    @IBInspectable public var scrollDuration: CGFloat? = 7.0 {
+    public enum SpeedLimit {
+        case Rate(CGFloat)
+        case Duration(CGFloat)
+    }
+    
+    public var speed: SpeedLimit = .Duration(7.0) {
         didSet {
-            if scrollDuration != oldValue {
-                scrollRate = nil
+            switch (speed, oldValue) {
+            case (.Rate(let a), .Rate(let b)) where a == b:
+                return
+            case (.Duration(let a), .Duration(let b)) where a == b:
+                return
+            default:
                 updateAndScroll()
             }
         }
     }
     
-    @IBInspectable public var scrollRate: CGFloat? = nil {
-        didSet {
-            if scrollRate != oldValue {
-                scrollDuration = nil
-                updateAndScroll()
+    // @available attribute seems to cause SourceKit to crash right now
+    // @available(*, deprecated = 2.6, message = "Use speed property instead")
+    public var scrollDuration: CGFloat? {
+        get {
+            switch speed {
+            case .Duration(let duration): return duration
+            case .Rate(_): return nil
+            }
+        }
+        set {
+            if let duration = newValue {
+                speed = .Duration(duration)
+            }
+        }
+    }
+    
+    // @available attribute seems to cause SourceKit to crash right now
+    // @available(*, deprecated = 2.6, message = "Use speed property instead")
+    public var scrollRate: CGFloat? {
+        get {
+            switch speed {
+            case .Duration(_): return nil
+            case .Rate(let rate): return rate
+            }
+        }
+        set {
+            if let rate = newValue {
+                speed = .Rate(rate)
             }
         }
     }
@@ -157,7 +189,6 @@ public class MarqueeLabel: UILabel {
         MarqueeLabel.notifyController(controller, message: .Labelize)
     }
 
-
     class func controllerLabelsAnimate(controller: UIViewController) {
         MarqueeLabel.notifyController(controller, message: .Animate)
     }
@@ -177,7 +208,7 @@ public class MarqueeLabel: UILabel {
         return CAReplicatorLayer.self
     }
     
-    private func repliLayer() -> CAReplicatorLayer {
+    private var repliLayer: CAReplicatorLayer {
         return self.layer as! CAReplicatorLayer
     }
     
@@ -187,10 +218,10 @@ public class MarqueeLabel: UILabel {
     }
     
     class private func notifyController(controller: UIViewController, message: MarqueeKeys) {
-        NSNotificationCenter.defaultCenter().postNotificationName(message.rawValue, object: nil, userInfo: [controller : "controller"])
+        NSNotificationCenter.defaultCenter().postNotificationName(message.rawValue, object: nil, userInfo: ["controller" : controller])
     }
     
-    private func restartForViewController(notification: NSNotification) {
+    public func restartForViewController(notification: NSNotification) {
         if let controller = notification.userInfo?["controller"] as? UIViewController {
             if controller === self.firstAvailableViewController() {
                 self.restartLabel()
@@ -198,7 +229,7 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    private func labelizeForController(notification: NSNotification) {
+    public func labelizeForController(notification: NSNotification) {
         if let controller = notification.userInfo?["controller"] as? UIViewController {
             if controller === self.firstAvailableViewController() {
                 self.labelize = true
@@ -206,7 +237,7 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    private func animateForController(notification: NSNotification) {
+    public func animateForController(notification: NSNotification) {
         if let controller = notification.userInfo?["controller"] as? UIViewController {
             if controller === self.firstAvailableViewController() {
                 self.labelize = false
@@ -214,39 +245,20 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    private func observedViewControllerChange(notification: NSNotification) {
-        if let userInfo = notification.userInfo {
-            let fromController = userInfo["UINavigationControllerLastVisibleViewController"] as? UIViewController
-            
-            if let ownController = self.firstAvailableViewController() {
-                if let fromController = fromController {
-                    if ownController === fromController {
-                        shutdownLabel()
-                    }
-                }
-                if let fromController = fromController {
-                    if ownController === fromController {
-                        restartLabel()
-                    }
-                }
-            }
-        }
-    }
-    
-    
+
     //
     // MARK: - Initialization
     //
     
     init(frame: CGRect, rate: CGFloat, fadeLength fade: CGFloat) {
-        scrollRate = rate
+        speed = .Rate(rate)
         fadeLength = CGFloat(min(fade, frame.size.width/2.0))
         super.init(frame: frame)
         setup()
     }
     
     init(frame: CGRect, duration: CGFloat, fadeLength fade: CGFloat) {
-        scrollDuration = duration
+        speed = .Duration(duration)
         fadeLength = CGFloat(min(fade, frame.size.width/2.0))
         super.init(frame: frame)
         setup()
@@ -277,10 +289,9 @@ public class MarqueeLabel: UILabel {
         
         // Add notification observers
         // Custom class notifications
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "labelsShouldRestart:", name: MarqueeKeys.Restart.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "labelsShouldLabelize:", name: MarqueeKeys.Labelize.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "labelsShouldAnimate:", name: MarqueeKeys.Animate.rawValue, object: nil)
-        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "restartForViewController:", name: MarqueeKeys.Restart.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "labelizeForController:", name: MarqueeKeys.Labelize.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "animateForController:", name: MarqueeKeys.Animate.rawValue, object: nil)
         // UIApplication state notifications
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "restartLabel", name: UIApplicationDidBecomeActiveNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "shutdownLabel", name: UIApplicationDidEnterBackgroundNotification, object: nil)
@@ -335,7 +346,9 @@ public class MarqueeLabel: UILabel {
     }
     
     override public func didMoveToWindow() {
-        if self.window != nil {
+        if self.window == nil {
+            shutdownLabel()
+        } else {
             updateAndScroll()
         }
     }
@@ -381,7 +394,7 @@ public class MarqueeLabel: UILabel {
             awayOffset = 0.0
             
             // Remove an additional sublabels (for continuous types)
-            repliLayer().instanceCount = 1;
+            repliLayer.instanceCount = 1;
             
             // Set the sublabel frame to calculated labelFrame
             sublabel.frame = labelFrame
@@ -411,36 +424,18 @@ public class MarqueeLabel: UILabel {
             sublabel.frame = homeLabelFrame
             
             // Configure replication
-            repliLayer().instanceCount = 2
-            repliLayer().instanceTransform = CATransform3DMakeTranslation(-awayOffset, 0.0, 0.0)
-            
-            // Recompute the animation duration
-            animationDuration = {
-                if let rate = self.scrollRate {
-                    return CGFloat(fabs(awayOffset) / rate)
-                } else {
-                    return self.scrollDuration ?? 7.0
-                }
-            }()
+            repliLayer.instanceCount = 2
+            repliLayer.instanceTransform = CATransform3DMakeTranslation(-awayOffset, 0.0, 0.0)
         
         case .RightLeft:
             homeLabelFrame = CGRectIntegral(CGRectMake(bounds.size.width - (expectedLabelSize.width + leadingBuffer), 0.0, expectedLabelSize.width, bounds.size.height))
             awayOffset = (expectedLabelSize.width + trailingBuffer + leadingBuffer) - bounds.size.width
             
-            // Recompute the animation duration
-            animationDuration = {
-                if let rate = self.scrollRate {
-                    return fabs(awayOffset / rate)
-                } else {
-                    return self.scrollDuration ?? 7.0
-                }
-                }()
-            
             // Set frame and text
             sublabel.frame = homeLabelFrame
             
             // Remove any replication
-            repliLayer().instanceCount = 1
+            repliLayer.instanceCount = 1
             
             // Enforce text alignment for this type
             sublabel.textAlignment = NSTextAlignment.Right
@@ -449,26 +444,27 @@ public class MarqueeLabel: UILabel {
             homeLabelFrame = CGRectIntegral(CGRectMake(leadingBuffer, 0.0, expectedLabelSize.width, expectedLabelSize.height))
             awayOffset = bounds.size.width - (expectedLabelSize.width + leadingBuffer + trailingBuffer)
             
-            // Recompute the animation duration
-            animationDuration = {
-                if let rate = self.scrollRate {
-                    return fabs(awayOffset / rate)
-                } else {
-                    return self.scrollDuration ?? 7.0
-                }
-                }()
-            
             // Set frame and text
             sublabel.frame = homeLabelFrame
             
             // Remove any replication
-            self.repliLayer().instanceCount = 1
+            self.repliLayer.instanceCount = 1
             
             // Enforce text alignment for this type
             sublabel.textAlignment = NSTextAlignment.Left
             
         // Default case not required
         }
+        
+        // Recompute the animation duration
+        animationDuration = {
+            switch self.speed {
+            case .Rate(let rate):
+                return CGFloat(fabs(self.awayOffset) / rate)
+            case .Duration(let duration):
+                return duration
+            }
+        }()
         
         // Configure gradient for current condition
         applyGradientMask(fadeLength, animated: !self.labelize)

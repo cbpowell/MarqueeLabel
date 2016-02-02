@@ -69,7 +69,7 @@ class MarqueeCell: UITableViewCell {
         // Perform initial setup
         marquee.labelize = true
         marquee.fadeLength = 7.0
-        marquee.scrollDuration = defaultScrollDuration
+        marquee.speed = .Duration(defaultScrollDuration)
         marquee.lineBreakMode = .ByTruncatingTail
     }
     

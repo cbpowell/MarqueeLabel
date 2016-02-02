@@ -49,7 +49,7 @@ class MarqueeLabelDemoViewController : UIViewController {
         // Continuous Type
         demoLabel1.tag = 101
         demoLabel1.type = .Continuous
-        demoLabel1.scrollDuration = 15.0
+        demoLabel1.speed = .Duration(15)
         demoLabel1.animationCurve = .EaseInOut
         demoLabel1.fadeLength = 10.0
         demoLabel1.leadingBuffer = 30.0
@@ -62,7 +62,7 @@ class MarqueeLabelDemoViewController : UIViewController {
         demoLabel2.type = .ContinuousReverse
         demoLabel2.textAlignment = .Right
         demoLabel2.lineBreakMode = .ByTruncatingHead
-        demoLabel2.scrollDuration = 8.0
+        demoLabel2.speed = .Duration(8.0)
         demoLabel2.fadeLength = 15.0
         demoLabel2.leadingBuffer = 40.0
         
@@ -77,7 +77,7 @@ class MarqueeLabelDemoViewController : UIViewController {
         // Left/right example, with rate usage
         demoLabel3.tag = 301
         demoLabel3.type = .LeftRight
-        demoLabel3.scrollRate = 60.0
+        demoLabel3.speed = .Rate(60)
         demoLabel3.fadeLength = 10.0
         demoLabel3.leadingBuffer = 30.0
         demoLabel3.trailingBuffer = 20.0
@@ -98,7 +98,7 @@ class MarqueeLabelDemoViewController : UIViewController {
         // Continuous, with tap to pause
         demoLabel5.tag = 501
         demoLabel5.type = .Continuous
-        demoLabel5.scrollDuration = 10.0
+        demoLabel5.speed = .Duration(10)
         demoLabel5.fadeLength = 10.0
         demoLabel5.trailingBuffer = 30.0
         demoLabel5.text = "This text is long, and can be paused with a tap - handled via a UIGestureRecognizer!"
@@ -112,7 +112,7 @@ class MarqueeLabelDemoViewController : UIViewController {
         // Continuous, with attributed text
         demoLabel6.tag = 601
         demoLabel6.type = .Continuous
-        demoLabel6.scrollDuration = 15.0
+        demoLabel6.speed = .Duration(15.0)
         demoLabel6.fadeLength = 10.0
         demoLabel6.trailingBuffer = 30.0
         
@@ -199,10 +199,10 @@ class MarqueeLabelDemoViewController : UIViewController {
     }
     
     @IBAction func labelizeSwitched(sender: UISwitch) {
-        for pv in view.subviews as [UIView] {
-            if let v = pv as? MarqueeLabel {
-                v.labelize = sender.on
-            }
+        if sender.on {
+            MarqueeLabel.controllerLabelsLabelize(self)
+        } else {
+            MarqueeLabel.controllerLabelsAnimate(self)
         }
     }
     
