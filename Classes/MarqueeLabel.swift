@@ -53,7 +53,7 @@ public class MarqueeLabel: UILabel {
     
     public var animationCurve: UIViewAnimationCurve = .Linear
     
-    public var labelize: Bool = false {
+    @IBInspectable public var labelize: Bool = false {
         didSet {
             if labelize != oldValue {
                 updateAndScroll()
@@ -61,7 +61,7 @@ public class MarqueeLabel: UILabel {
         }
     }
 
-    public var holdScrolling: Bool = false {
+    @IBInspectable public var holdScrolling: Bool = false {
         didSet {
             if holdScrolling != oldValue {
                 if oldValue == true && !(awayFromHome() || labelize || tapToScroll ) && labelShouldScroll() {
@@ -71,7 +71,7 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    public var tapToScroll: Bool = false {
+    @IBInspectable public var tapToScroll: Bool = false {
         didSet {
             if tapToScroll != oldValue {
                 if tapToScroll {
@@ -142,7 +142,7 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    public var leadingBuffer: CGFloat = 0.0 {
+    @IBInspectable public var leadingBuffer: CGFloat = 0.0 {
         didSet {
             if leadingBuffer != oldValue {
                 updateAndScroll()
@@ -150,7 +150,7 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    public var trailingBuffer: CGFloat = 0.0 {
+    @IBInspectable public var trailingBuffer: CGFloat = 0.0 {
         didSet {
             if trailingBuffer != oldValue {
                 updateAndScroll()
@@ -158,7 +158,7 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    public var fadeLength: CGFloat = 0.0 {
+    @IBInspectable public var fadeLength: CGFloat = 0.0 {
         didSet {
             if fadeLength != oldValue {
                 applyGradientMask(fadeLength, animated: true)
@@ -167,7 +167,7 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    public var animationDelay: CGFloat = 1.0
+    @IBInspectable public var animationDelay: CGFloat = 1.0
 
     //
     // MARK: - Class Functions and Helpers
