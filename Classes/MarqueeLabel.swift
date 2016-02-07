@@ -95,6 +95,15 @@ public class MarqueeLabel: UILabel {
     public enum SpeedLimit {
         case Rate(CGFloat)
         case Duration(CGFloat)
+        
+        var value: CGFloat {
+            switch self {
+            case .Rate(let rate):
+                return rate
+            case .Duration(let duration):
+                return duration
+            }
+        }
     }
     
     public var speed: SpeedLimit = .Duration(7.0) {
