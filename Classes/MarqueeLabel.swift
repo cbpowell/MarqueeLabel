@@ -572,6 +572,8 @@ public class MarqueeLabel: UILabel {
         sublabel.layer.removeAllAnimations()
     }
     
+    // Define animation completion closure type
+    private typealias MLAnimationCompletion = (finished: Bool) -> ()
     
     private func scroll(interval: CGFloat,
         delay: CGFloat = 0.0,
@@ -609,7 +611,7 @@ public class MarqueeLabel: UILabel {
             self.layer.mask?.addAnimation(gradientAnimation, forKey: "gradient")
         }
         
-        let completion = CompletionBlock<(Bool) -> ()>({ (finished: Bool) -> () in
+        let completion = CompletionBlock<MLAnimationCompletion>({ (finished: Bool) -> () in
             if !finished {
                 // Do not continue into the next loop
                 return
@@ -991,8 +993,11 @@ public class MarqueeLabel: UILabel {
                 self.layer.mask?.removeAnimationForKey("setupFade")
             }
         } else {
-            let completion = anim.valueForKey(MarqueeKeys.CompletionClosure.rawValue) as? CompletionBlock<(Bool) -> ()>
-            completion?.f(flag)
+            let completion = anim.valueForKey(MarqueeKeys.CompletionClosure.rawValue) as? CompletionBlock<MLAnimationCompletion>
+            completion?.f(finished: flag)
+        }
+    }
+    
         }
     }
     
