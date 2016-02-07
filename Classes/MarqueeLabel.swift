@@ -64,7 +64,7 @@ public class MarqueeLabel: UILabel {
     @IBInspectable public var holdScrolling: Bool = false {
         didSet {
             if holdScrolling != oldValue {
-                if oldValue == true && !(awayFromHome() || labelize || tapToScroll ) && labelShouldScroll() {
+                if oldValue == true && !(awayFromHome || labelize || tapToScroll ) && labelShouldScroll() {
                     beginScroll()
                 }
             }
@@ -92,6 +92,13 @@ public class MarqueeLabel: UILabel {
         return (sublabel.layer.speed == 0.0)
     }
     
+    public var awayFromHome: Bool {
+        if let presentationLayer = sublabel.layer.presentationLayer() as? CALayer {
+            return !(presentationLayer.position.x == homeLabelFrame.origin.x)
+        }
+        
+        return false
+    }
     public enum SpeedLimit {
         case Rate(CGFloat)
         case Duration(CGFloat)
@@ -565,13 +572,6 @@ public class MarqueeLabel: UILabel {
         sublabel.layer.removeAllAnimations()
     }
     
-    private func awayFromHome() -> Bool {
-        if let presentationLayer = sublabel.layer.presentationLayer() as? CALayer {
-            return !(presentationLayer.position.x == homeLabelFrame.origin.x)
-        }
-        
-        return false
-    }
     
     private func scroll(interval: CGFloat,
         delay: CGFloat = 0.0,
@@ -1030,7 +1030,7 @@ public class MarqueeLabel: UILabel {
     
     public func pauseLabel() {
         // Prevent pausing label while not in scrolling animation, or when already paused
-        guard (!isPaused && awayFromHome()) else {
+        guard (!isPaused && awayFromHome) else {
             return
         }
         
@@ -1067,7 +1067,7 @@ public class MarqueeLabel: UILabel {
     }
     
     public func labelWasTapped(recognizer: UIGestureRecognizer) {
-        if labelShouldScroll() && !awayFromHome() {
+        if labelShouldScroll() && !awayFromHome {
             beginScroll(true)
         }
     }
