@@ -732,9 +732,6 @@ public class MarqueeLabel: UILabel {
             return
         }
         
-        // Remove any animations
-        sublabel.layer.removeAllAnimations()
-        
         // Call pre-animation hook
         labelWillBeginScroll()
         
