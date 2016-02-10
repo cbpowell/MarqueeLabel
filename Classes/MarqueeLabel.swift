@@ -747,9 +747,8 @@ public class MarqueeLabel: UILabel {
         var gradientAnimation: CAKeyframeAnimation? = nil
         if fadeLength > 0.0 {
             // Remove any setup animation, but apply final values
-            if let finalColors = self.layer.mask?.animationForKey("setupFade")?.valueForKey("setupFade") as? [CGColorRef] {
-                let gradientMask = self.layer.mask as? CAGradientLayer
-                gradientMask?.colors = finalColors
+            if let finalColors = maskLayer?.animationForKey("setupFade")?.valueForKey("setupFade") as? [CGColorRef] {
+                maskLayer?.colors = finalColors
             }
             maskLayer?.removeAnimationForKey("setupFade")
             
@@ -927,6 +926,7 @@ public class MarqueeLabel: UILabel {
             colorAnimation.fillMode = kCAFillModeForwards
             colorAnimation.removedOnCompletion = false
             colorAnimation.delegate = self
+            colorAnimation.setValue(adjustedColors, forKey: "setupFade")
             gradientMask.addAnimation(colorAnimation, forKey: "setupFade")
         } else {
             gradientMask.colors = adjustedColors
@@ -1136,12 +1136,12 @@ public class MarqueeLabel: UILabel {
     }
     
     override public func animationDidStop(anim: CAAnimation, finished flag: Bool) {
-        if let finalColors = anim.valueForKey("setupFade") as? [CGColorRef] {
-            if flag {
-                let gradientMask = self.layer.mask as? CAGradientLayer
-                gradientMask?.colors = finalColors
-                self.layer.mask?.removeAnimationForKey("setupFade")
+        if anim is GradientAnimation {
+            if let finalColors = anim.valueForKey("setupFade") as? [CGColorRef] {
+                maskLayer?.colors = finalColors
             }
+            // Remove regardless, since we set removeOnCompletion = false
+            maskLayer?.removeAnimationForKey("setupFade")
         } else {
             let completion = anim.valueForKey(MarqueeKeys.CompletionClosure.rawValue) as? CompletionBlock<MLAnimationCompletion>
             completion?.f(finished: flag)
