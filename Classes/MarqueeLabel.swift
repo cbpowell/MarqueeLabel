@@ -921,7 +921,7 @@ public class MarqueeLabel: UILabel {
             CATransaction.commit()
             
             // Create animation for color change
-            let colorAnimation = CABasicAnimation(keyPath: "colors")
+            let colorAnimation = GradientAnimation(keyPath: "colors")
             colorAnimation.fromValue = gradientMask.colors
             colorAnimation.toValue = adjustedColors
             colorAnimation.fillMode = kCAFillModeForwards
@@ -1582,6 +1582,10 @@ public class MarqueeLabel: UILabel {
 private class CompletionBlock<T> {
     let f : T
     init (_ f: T) { self.f = f }
+}
+
+private class GradientAnimation: CABasicAnimation {
+    
 }
 
 private struct Scroller {
