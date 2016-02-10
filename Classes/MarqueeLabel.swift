@@ -726,12 +726,7 @@ public class MarqueeLabel: UILabel {
     // Define animation completion closure type
     private typealias MLAnimationCompletion = (finished: Bool) -> ()
     
-    private func scroll(interval: CGFloat,
-        delay: CGFloat = 0.0,
-        scroller: (interval: CGFloat, delay: CGFloat) -> [(layer: CALayer, anim: CAKeyframeAnimation)],
-        callback: MarqueeLabel -> (interval: CGFloat, delay: CGFloat) -> ())
-    {
-        
+    private func scroll(interval: CGFloat, delay: CGFloat = 0.0, var scroller: Scroller, fader: CAKeyframeAnimation?) {
         // Check for conditions which would prevent scrolling
         if !labelReadyForScroll() {
             return
@@ -749,17 +744,26 @@ public class MarqueeLabel: UILabel {
         CATransaction.setAnimationDuration(transDuration)
         
         // Create gradient animation, if needed
-        if fadeLength != 0.0 {
+        var gradientAnimation: CAKeyframeAnimation? = nil
+        if fadeLength > 0.0 {
             // Remove any setup animation, but apply final values
             if let finalColors = self.layer.mask?.animationForKey("setupFade")?.valueForKey("setupFade") as? [CGColorRef] {
                 let gradientMask = self.layer.mask as? CAGradientLayer
                 gradientMask?.colors = finalColors
             }
-            
-            let gradientAnimation = keyFrameAnimationForGradient(fadeLength, interval: interval, delay: delay)
             self.layer.mask?.removeAnimationForKey("setupFade")
+            
+            // Generate animation if needed
+            gradientAnimation = {
+                if let previousAnimation = fader {
+                    return previousAnimation
+                } else {
+                    return keyFrameAnimationForGradient(fadeLength, interval: interval, delay: delay)
+                }
+            }()
+            
             // Apply scrolling animation
-            self.layer.mask?.addAnimation(gradientAnimation, forKey: "gradient")
+            self.layer.mask?.addAnimation(gradientAnimation!, forKey: "gradient")
         }
         
         let completion = CompletionBlock<MLAnimationCompletion>({ (finished: Bool) -> () in
@@ -770,6 +774,7 @@ public class MarqueeLabel: UILabel {
             
             // Call returned home function
             self.labelReturnedToHome(true)
+            
             // Check to ensure that:
             // 1) We don't double fire if an animation already exists
             // 2) The instance is still attached to a window - this completion block is called for
@@ -779,13 +784,13 @@ public class MarqueeLabel: UILabel {
                 // Begin again, if conditions met
                 if (self.labelShouldScroll() && !self.tapToScroll && !self.holdScrolling) {
                     // Perform completion callback
-                    callback(self)(interval: interval, delay: delay)
+                    self.scroll(interval, delay: delay, scroller: scroller, fader: gradientAnimation)
                 }
             }
         })
         
         // Call scroller
-        let scrolls = scroller(interval: interval, delay: delay)
+        let scrolls = scroller.generate(interval, delay: delay)
         
         // Perform all animations in scrolls
         for (index, scroll) in scrolls.enumerate() {
@@ -809,7 +814,7 @@ public class MarqueeLabel: UILabel {
         // Create scroller, which defines the animation to perform
         let homeOrigin = homeLabelFrame.origin
         let awayOrigin = offsetCGPoint(homeLabelFrame.origin, offset: awayOffset)
-        let scroller = { (interval: CGFloat, delay: CGFloat) -> [(layer: CALayer, anim: CAKeyframeAnimation)] in
+        let scroller = Scroller(generator: {(interval: CGFloat, delay: CGFloat) -> [(layer: CALayer, anim: CAKeyframeAnimation)] in
             // Create animation for position
             let values: [NSValue] = [
                 NSValue(CGPoint: homeOrigin), // Start at home
@@ -823,21 +828,18 @@ public class MarqueeLabel: UILabel {
             let anim = self.keyFrameAnimationForProperty("position", values: values, interval: interval, delay: delay)
             
             return [(layer: layer, anim: anim)]
-        }
-        
-        // Create curried function for callback
-        let callback = MarqueeLabel.scrollAway
+        })
         
         // Scroll
-        scroll(interval, delay: delay, scroller: scroller, callback: callback)
+        scroll(interval, delay: delay, scroller: scroller, fader: nil)
     }
 
     
     private func scrollContinuous(interval: CGFloat, delay: CGFloat) {
         // Create scroller, which defines the animation to perform
-        let homeOrigin = self.homeLabelFrame.origin
-        let awayOrigin = self.offsetCGPoint(self.homeLabelFrame.origin, offset: awayOffset)
-        let scroller = { (interval: CGFloat, delay: CGFloat) -> [(layer: CALayer, anim: CAKeyframeAnimation)] in
+        let homeOrigin = homeLabelFrame.origin
+        let awayOrigin = offsetCGPoint(homeLabelFrame.origin, offset: awayOffset)
+        let scroller = Scroller(generator: { (interval: CGFloat, delay: CGFloat) -> [(layer: CALayer, anim: CAKeyframeAnimation)] in
             // Create animation for position
             let values: [NSValue] = [
                 NSValue(CGPoint: homeOrigin), // Start at home
@@ -851,13 +853,10 @@ public class MarqueeLabel: UILabel {
             
             
             return [(layer: layer, anim: anim)]
-        }
-        
-        // Create curried function for callback
-        let callback = MarqueeLabel.scrollContinuous
+        })
         
         // Scroll
-        scroll(interval, delay: delay, scroller: scroller, callback: callback)
+        scroll(interval, delay: delay, scroller: scroller, fader: nil)
     }
     
     private func applyGradientMask(fadeLength: CGFloat, animated: Bool) {
@@ -1579,6 +1578,26 @@ public class MarqueeLabel: UILabel {
 class CompletionBlock<T> {
     let f : T
     init (_ f: T) { self.f = f }
+}
+
+private struct Scroller {
+    typealias Scroll = (layer: CALayer, anim: CAKeyframeAnimation)
+    
+    init(generator gen: (interval: CGFloat, delay: CGFloat) -> [Scroll], scrolls: [Scroll]? = nil) {
+        self.generator = gen
+    }
+    
+    let generator: (interval: CGFloat, delay: CGFloat) -> [Scroll]
+    var scrolls: [Scroll]? = nil
+    
+    mutating func generate(interval: CGFloat, delay: CGFloat) -> [Scroll] {
+        if let existing = scrolls {
+            return existing
+        } else {
+            scrolls = generator(interval: interval, delay: delay)
+            return scrolls!
+        }
+    }
 }
 
 private extension UIResponder {
