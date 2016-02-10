@@ -1575,7 +1575,7 @@ public class MarqueeLabel: UILabel {
 //
 
 // Solution from: http://stackoverflow.com/a/24760061/580913
-class CompletionBlock<T> {
+private class CompletionBlock<T> {
     let f : T
     init (_ f: T) { self.f = f }
 }
