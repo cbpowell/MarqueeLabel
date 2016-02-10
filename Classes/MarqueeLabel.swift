@@ -717,7 +717,7 @@ public class MarqueeLabel: UILabel {
     
     private func returnLabelToHome() {
         // Remove any gradient animation
-        layer.mask?.removeAllAnimations()
+        maskLayer?.removeAllAnimations()
         
         // Remove all sublabel position animations
         sublabel.layer.removeAllAnimations()
@@ -751,7 +751,7 @@ public class MarqueeLabel: UILabel {
                 let gradientMask = self.layer.mask as? CAGradientLayer
                 gradientMask?.colors = finalColors
             }
-            self.layer.mask?.removeAnimationForKey("setupFade")
+            maskLayer?.removeAnimationForKey("setupFade")
             
             // Generate animation if needed
             gradientAnimation = {
@@ -763,7 +763,7 @@ public class MarqueeLabel: UILabel {
             }()
             
             // Apply scrolling animation
-            self.layer.mask?.addAnimation(gradientAnimation!, forKey: "gradient")
+            maskLayer?.addAnimation(gradientAnimation!, forKey: "gradient")
         }
         
         let completion = CompletionBlock<MLAnimationCompletion>({ (finished: Bool) -> () in
@@ -861,7 +861,7 @@ public class MarqueeLabel: UILabel {
     
     private func applyGradientMask(fadeLength: CGFloat, animated: Bool) {
         // Remove any in-flight animations
-        self.layer.mask?.removeAllAnimations()
+        maskLayer?.removeAllAnimations()
         
         // Check for zero-length fade
         if (fadeLength <= 0.0) {
@@ -874,7 +874,7 @@ public class MarqueeLabel: UILabel {
         CATransaction.setDisableActions(true)
         
         let gradientMask: CAGradientLayer = { () -> CAGradientLayer in
-            if let currentMask = self.layer.mask as? CAGradientLayer {
+            if let currentMask = self.maskLayer {
                 // Mask layer already configured
                 return currentMask
             } else {
@@ -994,7 +994,7 @@ public class MarqueeLabel: UILabel {
         
         // Define values
         // Get current layer values
-        let mask = self.layer.mask?.presentationLayer() as? CAGradientLayer
+        let mask = maskLayer?.presentationLayer() as? CAGradientLayer
         let currentValues = mask?.colors as? [CGColorRef]
         
         switch (type) {
@@ -1167,6 +1167,10 @@ public class MarqueeLabel: UILabel {
         return self.layer as! CAReplicatorLayer
     }
     
+    private var maskLayer: CAGradientLayer? {
+        return self.layer.mask as! CAGradientLayer?
+    }
+    
     override public func drawLayer(layer: CALayer, inContext ctx: CGContext) {
         // Do NOT call super, to prevent UILabel superclass from drawing into context
         // Label drawing is handled by sublabel and CAReplicatorLayer layer class
@@ -1299,9 +1303,9 @@ public class MarqueeLabel: UILabel {
         sublabel.layer.timeOffset = labelPauseTime
         
         // Pause gradient fade animation
-        let gradientPauseTime = layer.mask?.convertTime(CACurrentMediaTime(), fromLayer:nil)
-        self.layer.mask?.speed = 0.0
-        self.layer.mask?.timeOffset = gradientPauseTime!
+        let gradientPauseTime = maskLayer?.convertTime(CACurrentMediaTime(), fromLayer:nil)
+        maskLayer?.speed = 0.0
+        maskLayer?.timeOffset = gradientPauseTime!
     }
     
     /**
@@ -1323,11 +1327,11 @@ public class MarqueeLabel: UILabel {
         sublabel.layer.beginTime = sublabel.layer.convertTime(CACurrentMediaTime(), fromLayer:nil) - labelPausedTime
         
         // Unpause gradient fade animation
-        let gradientPauseTime = layer.mask?.timeOffset
-        layer.mask?.speed = 1.0
-        layer.mask?.timeOffset = 0.0
-        layer.mask?.beginTime = 0.0
-        layer.mask?.beginTime = layer.mask!.convertTime(CACurrentMediaTime(), fromLayer:nil) - gradientPauseTime!
+        let gradientPauseTime = maskLayer?.timeOffset
+        maskLayer?.speed = 1.0
+        maskLayer?.timeOffset = 0.0
+        maskLayer?.beginTime = 0.0
+        maskLayer?.beginTime = maskLayer!.convertTime(CACurrentMediaTime(), fromLayer:nil) - gradientPauseTime!
     }
     
     public func labelWasTapped(recognizer: UIGestureRecognizer) {
