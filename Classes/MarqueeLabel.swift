@@ -741,7 +741,7 @@ public class MarqueeLabel: UILabel {
         CATransaction.setAnimationDuration(transDuration)
         
         // Create gradient animation, if needed
-        var gradientAnimation: CAKeyframeAnimation? = nil
+        let gradientAnimation: CAKeyframeAnimation?
         if fadeLength > 0.0 {
             // Remove any setup animation, but apply final values
             if let setupAnim = maskLayer?.animationForKey("setupFade") as? CABasicAnimation, finalColors = setupAnim.toValue as? [CGColorRef] {
@@ -750,16 +750,17 @@ public class MarqueeLabel: UILabel {
             maskLayer?.removeAnimationForKey("setupFade")
             
             // Generate animation if needed
-            gradientAnimation = {
-                if let previousAnimation = fader {
-                    return previousAnimation
-                } else {
-                    return keyFrameAnimationForGradient(fadeLength, interval: interval, delay: delay)
-                }
-            }()
+            if let previousAnimation = fader {
+                gradientAnimation = previousAnimation
+            } else {
+                gradientAnimation = keyFrameAnimationForGradient(fadeLength, interval: interval, delay: delay)
+            }
             
             // Apply scrolling animation
             maskLayer?.addAnimation(gradientAnimation!, forKey: "gradient")
+        } else {
+            // No animation needed
+            gradientAnimation = nil
         }
         
         let completion = CompletionBlock<MLAnimationCompletion>({ (finished: Bool) -> () in
@@ -869,24 +870,23 @@ public class MarqueeLabel: UILabel {
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         
-        let gradientMask: CAGradientLayer = { () -> CAGradientLayer in
-            if let currentMask = self.maskLayer {
-                // Mask layer already configured
-                return currentMask
-            } else {
-                // No mask exists, create new mask
-                let newMask = CAGradientLayer()
-                newMask.shouldRasterize = true
-                newMask.rasterizationScale = UIScreen.mainScreen().scale
-                newMask.startPoint = CGPointMake(0.0, 0.5)
-                newMask.endPoint = CGPointMake(1.0, 0.5)
-                // Adjust stops based on fade length
-                let leftFadeStop = fadeLength/self.bounds.size.width
-                let rightFadeStop = fadeLength/self.bounds.size.width
-                newMask.locations = [0.0, leftFadeStop, (1.0 - rightFadeStop), 1.0]
-                return newMask
-            }
-        }()
+        // Determine if gradient mask needs to be created
+        let gradientMask: CAGradientLayer
+        if let currentMask = self.maskLayer {
+            // Mask layer already configured
+            gradientMask = currentMask
+        } else {
+            // No mask exists, create new mask
+            gradientMask = CAGradientLayer()
+            gradientMask.shouldRasterize = true
+            gradientMask.rasterizationScale = UIScreen.mainScreen().scale
+            gradientMask.startPoint = CGPointMake(0.0, 0.5)
+            gradientMask.endPoint = CGPointMake(1.0, 0.5)
+            // Adjust stops based on fade length
+            let leftFadeStop = fadeLength/self.bounds.size.width
+            let rightFadeStop = fadeLength/self.bounds.size.width
+            gradientMask.locations = [0.0, leftFadeStop, (1.0 - rightFadeStop), 1.0]
+        }
         
         // Set up colors
         let transparent = UIColor.clearColor().CGColor
