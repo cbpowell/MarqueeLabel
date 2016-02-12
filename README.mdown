@@ -26,7 +26,7 @@ The demo project builds without warnings, and most things seem to work, but I ma
 
 MarqueeLabel v2.0.0 makes some important changes! Check out the [release notes for v2.0.0](https://github.com/cbpowell/MarqueeLabel/releases/tag/2.0.0) to understand what this means for your app!
 
-### Installation with Cocoapods
+### Installation with CocoaPods
 
 [CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries in your projects.
 
