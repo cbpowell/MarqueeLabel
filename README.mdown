@@ -18,7 +18,7 @@ If you're implementing a project in Swift, be sure to check out the [Swift versi
 4. Drop in MarqueeLabel as a replacement to your lengthy UILabels!
 5. Help out with bug fixes and new features.
 
-### Installation with Cocoapods
+### Installation with CocoaPods
 
 [CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries in your projects.
 
