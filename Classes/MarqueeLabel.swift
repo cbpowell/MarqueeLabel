@@ -764,7 +764,7 @@ public class MarqueeLabel: UILabel {
         }
         
         let completion = CompletionBlock<MLAnimationCompletion>({ (finished: Bool) -> () in
-            if !finished {
+            guard finished else {
                 // Do not continue into the next loop
                 return
             }
@@ -777,12 +777,18 @@ public class MarqueeLabel: UILabel {
             // 2) The instance is still attached to a window - this completion block is called for
             //    many reasons, including if the animation is removed due to the view being removed
             //    from the UIWindow (typically when the view controller is no longer the "top" view)
-            if (self.window != nil && self.sublabel.layer.animationForKey("position") == nil) {
-                // Begin again, if conditions met
-                if (self.labelShouldScroll() && !self.tapToScroll && !self.holdScrolling) {
-                    // Perform completion callback
-                    self.scroll(interval, delay: delay, scroller: scroller, fader: gradientAnimation)
-                }
+            guard self.window != nil else {
+                return
+            }
+            
+            guard self.sublabel.layer.animationForKey("position") == nil else {
+                return
+            }
+            
+            // Begin again, if conditions met
+            if (self.labelShouldScroll() && !self.tapToScroll && !self.holdScrolling) {
+                // Perform completion callback
+                self.scroll(interval, delay: delay, scroller: scroller, fader: gradientAnimation)
             }
         })
         
