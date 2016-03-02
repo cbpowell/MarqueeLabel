@@ -726,7 +726,8 @@ public class MarqueeLabel: UILabel {
     // Define animation completion closure type
     private typealias MLAnimationCompletion = (finished: Bool) -> ()
     
-    private func scroll(interval: CGFloat, delay: CGFloat = 0.0, var scroller: Scroller, fader: CAKeyframeAnimation?) {
+    private func scroll(interval: CGFloat, delay: CGFloat = 0.0, scroller: Scroller, fader: CAKeyframeAnimation?) {
+        var scroller = scroller
         // Check for conditions which would prevent scrolling
         if !labelReadyForScroll() {
             return
@@ -1652,7 +1653,7 @@ private extension CAMediaTimingFunction {
         var t1 = y_0
         var f0, df0: CGFloat
         
-        for (var i = 0; i < 15; i++) {
+        for _ in 0..<15 {
             // Base this iteration of t1 calculated from last iteration
             t0 = t1
             // Calculate f(t0)
@@ -1725,7 +1726,7 @@ private extension CAMediaTimingFunction {
         // Create point array to point to
         var point: [Float] = [0.0, 0.0]
         var pointArray = [CGPoint]()
-        for (var i: Int = 0; i <= 3; i++) {
+        for i in 0...3 {
             self.getControlPointAtIndex(i, values: &point)
             pointArray.append(CGPoint(x: CGFloat(point[0]), y: CGFloat(point[1])))
         }
