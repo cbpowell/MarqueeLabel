@@ -18,15 +18,19 @@ If you're implementing a project in Swift, be sure to check out the [Swift versi
 4. Drop in MarqueeLabel as a replacement to your lengthy UILabels!
 5. Help out with bug fixes and new features.
 
-### Installation with CocoaPods
+### Installation
+#### [CocoaPods](http://cocoapods.org)
 
-[CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries in your projects.
-
-#### Podfile
-
-If you use CocoaPods, you can install the latest release version of MarqueeLabel by adding the following to your project's Podfile:
+Add the following to your project's Podfile:
 ```ruby
 pod 'MarqueeLabel'
+```
+
+#### Carthage
+
+Add the following to your project's Cartfile:
+```ruby
+github "cbpowell/MarqueeLabel"
 ```
 
 #### Manual Installation
@@ -118,6 +122,5 @@ To combat this, MarqueeLabel provides a few class methods that allow easy "resta
 Charles Powell
 - [GitHub](http://github.com/cbpowell)
 - [Twitter](http://twitter.com/seventhcolumn)
-- [App.net](http://app.net/seventhcolumn)
 
 Give me a shout if you're using this in your project!
