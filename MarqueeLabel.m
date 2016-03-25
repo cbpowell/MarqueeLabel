@@ -578,6 +578,13 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)scrollContinuousWithInterval:(NSTimeInterval)interval after:(NSTimeInterval)delayAmount {
+    [self scrollContinuousWithInterval:interval after:delayAmount labelAnimation:nil gradientAnimation:nil];
+}
+
+- (void)scrollContinuousWithInterval:(NSTimeInterval)interval
+                               after:(NSTimeInterval)delayAmount
+                      labelAnimation:(CAKeyframeAnimation *)labelAnimation
+                   gradientAnimation:(CAKeyframeAnimation *)gradientAnimation {
     // Check for conditions which would prevent scrolling
     if (![self labelReadyForScroll]) {
         return;
@@ -597,10 +604,26 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     // Create animation for gradient, if needed
     if (self.fadeLength != 0.0f) {
-        CAKeyframeAnimation *gradAnim = [self keyFrameAnimationForGradientFadeLength:self.fadeLength
-                                                                            interval:interval
-                                                                               delay:delayAmount];
-        [self.layer.mask addAnimation:gradAnim forKey:@"gradient"];
+        if (!gradientAnimation) {
+            gradientAnimation = [self keyFrameAnimationForGradientFadeLength:self.fadeLength
+                                                                    interval:interval
+                                                                       delay:delayAmount];
+        }
+        [self.layer.mask addAnimation:gradientAnimation forKey:@"gradient"];
+    }
+    
+    // Create animation for sublabel positions, if needed
+    if (!labelAnimation) {
+        CGPoint homeOrigin = self.homeLabelFrame.origin;
+        CGPoint awayOrigin = MLOffsetCGPoint(self.homeLabelFrame.origin, self.awayOffset);
+        NSArray *values = @[[NSValue valueWithCGPoint:homeOrigin],      // Initial location, home
+                            [NSValue valueWithCGPoint:homeOrigin],      // Initial delay, at home
+                            [NSValue valueWithCGPoint:awayOrigin]];     // Animation to home
+        
+        labelAnimation = [self keyFrameAnimationForProperty:@"position"
+                                                     values:values
+                                                   interval:interval
+                                                      delay:delayAmount];
     }
     
     MLAnimationCompletionBlock completionBlock = ^(BOOL finished) {
@@ -618,27 +641,20 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         if (self.window && ![self.subLabel.layer animationForKey:@"position"]) {
             // Begin again, if conditions met
             if (self.labelShouldScroll && !self.tapToScroll && !self.holdScrolling) {
-                [self scrollContinuousWithInterval:interval after:delayAmount];
+                [self scrollContinuousWithInterval:interval
+                                             after:delayAmount
+                                    labelAnimation:labelAnimation
+                                 gradientAnimation:gradientAnimation];
             }
         }
     };
     
-    // Create animation for sublabel positions
-    CGPoint homeOrigin = self.homeLabelFrame.origin;
-    CGPoint awayOrigin = MLOffsetCGPoint(self.homeLabelFrame.origin, self.awayOffset);
-    NSArray *values = @[[NSValue valueWithCGPoint:homeOrigin],      // Initial location, home
-                        [NSValue valueWithCGPoint:homeOrigin],      // Initial delay, at home
-                        [NSValue valueWithCGPoint:awayOrigin]];     // Animation to home
     
-    CAKeyframeAnimation *awayAnim = [self keyFrameAnimationForProperty:@"position"
-                                                                values:values
-                                                              interval:interval
-                                                                 delay:delayAmount];
     // Attach completion block
-    [awayAnim setValue:completionBlock forKey:kMarqueeLabelAnimationCompletionBlock];
+    [labelAnimation setValue:completionBlock forKey:kMarqueeLabelAnimationCompletionBlock];
     
     // Add animation
-    [self.subLabel.layer addAnimation:awayAnim forKey:@"position"];
+    [self.subLabel.layer addAnimation:labelAnimation forKey:@"position"];
     
     [CATransaction commit];
 }
