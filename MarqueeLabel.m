@@ -229,26 +229,9 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(labelsShouldLabelize:) name:kMarqueeLabelShouldLabelizeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(labelsShouldAnimate:) name:kMarqueeLabelShouldAnimateNotification object:nil];
     
-    // UINavigationController view controller change notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(observedViewControllerChange:) name:@"UINavigationControllerDidShowViewControllerNotification" object:nil];
-    
     // UIApplication state notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartLabel) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shutdownLabel) name:UIApplicationDidEnterBackgroundNotification object:nil];
-}
-
-- (void)observedViewControllerChange:(NSNotification *)notification {
-    NSDictionary *userInfo = [notification userInfo];
-    id fromController = [userInfo objectForKey:@"UINavigationControllerLastVisibleViewController"];
-    id toController = [userInfo objectForKey:@"UINavigationControllerNextVisibleViewController"];
-    
-    id ownController = [self firstAvailableViewController];
-    if ([fromController isEqual:ownController]) {
-        [self shutdownLabel];
-    }
-    else if ([toController isEqual:ownController]) {
-        [self restartLabel];
-    }
 }
 
 - (void)minimizeLabelFrameWithMaximumSize:(CGSize)maxSize adjustHeight:(BOOL)adjustHeight {
@@ -290,7 +273,9 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)didMoveToWindow {
-    if (self.window) {
+    if (!self.window) {
+        [self shutdownLabel];
+    } else {
         [self updateSublabel];
     }
 }
