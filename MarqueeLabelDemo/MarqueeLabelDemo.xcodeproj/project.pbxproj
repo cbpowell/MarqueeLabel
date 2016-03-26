@@ -14,12 +14,15 @@
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		28D7ACF80DDB3853001CB0EB /* MarqueeLabelDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MarqueeLabelDemoViewController.m */; };
 		46EB5C141BB316DF005D2672 /* MarqueeLabel_Umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 46EB5C131BB316DF005D2672 /* MarqueeLabel_Umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		46EB5C191BB316FE005D2672 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */; settings = {ASSET_TAGS = (); }; };
+		46EB5C191BB316FE005D2672 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */; };
 		46EB5C241BB31A69005D2672 /* MarqueeLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = EA646A1212F7A5B000F31B16 /* MarqueeLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		46EB5C2A1BB31D90005D2672 /* module.map in Resources */ = {isa = PBXBuildFile; fileRef = 46EB5C291BB31D90005D2672 /* module.map */; settings = {ASSET_TAGS = (); }; };
+		46EB5C2A1BB31D90005D2672 /* module.map in Resources */ = {isa = PBXBuildFile; fileRef = 46EB5C291BB31D90005D2672 /* module.map */; };
 		EA0E9AD41974C20200033CD7 /* MarqueeLabel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA0E9AD31974C20200033CD7 /* MarqueeLabel.storyboard */; };
+		EA1BAE471CA7242D00D709A9 /* MLHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA1BAE461CA7242D00D709A9 /* MLHeader.xib */; };
 		EA646A1412F7A5B000F31B16 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */; };
 		EABFD31A150D55CC00216FCE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EABFD319150D55CC00216FCE /* QuartzCore.framework */; };
+		EAC1338E1CA501FD00E1A50D /* MarqueeLabelDemoPushController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC1338D1CA501FD00E1A50D /* MarqueeLabelDemoPushController.m */; };
+		EAC133911CA61CF300E1A50D /* MarqueeLabelTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC133901CA61CF300E1A50D /* MarqueeLabelTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,10 +43,15 @@
 		8B660C7D16BCFEEF007F9463 /* MarqueeLabelDemoNibs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MarqueeLabelDemoNibs-Info.plist"; path = "/Users/cbpowell/Projects/MarqueeLabel/MarqueeLabelDemo/MarqueeLabelDemoNibs-Info.plist"; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* MarqueeLabelDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MarqueeLabelDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		EA0E9AD31974C20200033CD7 /* MarqueeLabel.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MarqueeLabel.storyboard; sourceTree = "<group>"; };
+		EA1BAE461CA7242D00D709A9 /* MLHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MLHeader.xib; sourceTree = "<group>"; };
 		EA41461716D340B4004A3B02 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		EA646A1212F7A5B000F31B16 /* MarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MarqueeLabel.h; path = ../MarqueeLabel.h; sourceTree = SOURCE_ROOT; };
 		EA646A1312F7A5B000F31B16 /* MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MarqueeLabel.m; path = ../MarqueeLabel.m; sourceTree = SOURCE_ROOT; };
 		EABFD319150D55CC00216FCE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		EAC1338C1CA501FD00E1A50D /* MarqueeLabelDemoPushController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarqueeLabelDemoPushController.h; sourceTree = "<group>"; };
+		EAC1338D1CA501FD00E1A50D /* MarqueeLabelDemoPushController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarqueeLabelDemoPushController.m; sourceTree = "<group>"; };
+		EAC1338F1CA61CF300E1A50D /* MarqueeLabelTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarqueeLabelTableViewController.h; sourceTree = "<group>"; };
+		EAC133901CA61CF300E1A50D /* MarqueeLabelTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarqueeLabelTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +83,10 @@
 				28D7ACF70DDB3853001CB0EB /* MarqueeLabelDemoViewController.m */,
 				1D3623240D0F684500981E51 /* MarqueeLabelDemoAppDelegate.h */,
 				1D3623250D0F684500981E51 /* MarqueeLabelDemoAppDelegate.m */,
+				EAC1338C1CA501FD00E1A50D /* MarqueeLabelDemoPushController.h */,
+				EAC1338D1CA501FD00E1A50D /* MarqueeLabelDemoPushController.m */,
+				EAC1338F1CA61CF300E1A50D /* MarqueeLabelTableViewController.h */,
+				EAC133901CA61CF300E1A50D /* MarqueeLabelTableViewController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -117,6 +129,7 @@
 			children = (
 				8D1107310486CEB800E47090 /* MarqueeLabelDemo-Info.plist */,
 				8B660C7D16BCFEEF007F9463 /* MarqueeLabelDemoNibs-Info.plist */,
+				EA1BAE461CA7242D00D709A9 /* MLHeader.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -210,6 +223,9 @@
 			attributes = {
 				LastUpgradeCheck = 0700;
 				TargetAttributes = {
+					1D6058900D05DD3D006BFB54 = {
+						DevelopmentTeam = K573DL86KG;
+					};
 					46EB5C101BB316DF005D2672 = {
 						CreatedOnToolsVersion = 7.0;
 					};
@@ -241,6 +257,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA0E9AD41974C20200033CD7 /* MarqueeLabel.storyboard in Resources */,
+				EA1BAE471CA7242D00D709A9 /* MLHeader.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,6 +279,8 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* MarqueeLabelDemoAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* MarqueeLabelDemoViewController.m in Sources */,
+				EAC133911CA61CF300E1A50D /* MarqueeLabelTableViewController.m in Sources */,
+				EAC1338E1CA501FD00E1A50D /* MarqueeLabelDemoPushController.m in Sources */,
 				EA646A1412F7A5B000F31B16 /* MarqueeLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,6 +301,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -291,6 +312,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.charlespowell.MarqueeLabelDemo;
 				PRODUCT_NAME = MarqueeLabelDemo;
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -299,6 +321,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MarqueeLabelDemo_Prefix.pch;
@@ -306,6 +330,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.charlespowell.MarqueeLabelDemo;
 				PRODUCT_NAME = MarqueeLabelDemo;
+				PROVISIONING_PROFILE = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

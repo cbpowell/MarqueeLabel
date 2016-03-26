@@ -19,9 +19,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MarqueeLabel" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xyi-Hz-Wpw">
-                                <rect key="frame" x="232" y="25" width="135" height="26"/>
+                                <rect key="frame" x="232" y="26" width="135" height="26"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="22"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Continuous scrolling" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ANf-ic-jGg">
@@ -30,7 +30,7 @@
                                     <constraint firstAttribute="height" constant="16" id="pTl-px-F42"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="10"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is a test of MarqueeLabel, with a somewhat long string." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6NK-iy-G1b" customClass="MarqueeLabel">
@@ -39,7 +39,7 @@
                                     <constraint firstAttribute="height" constant="21" id="9yL-Xa-Dot"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Right-to-left continuous scrolling" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jUJ-R7-Zaq">
@@ -48,7 +48,7 @@
                                     <constraint firstAttribute="height" constant="16" id="QY3-s6-p9b"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="10"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MLContinuousReverse" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Y7-BD-j5i" customClass="MarqueeLabel">
@@ -57,7 +57,7 @@
                                     <constraint firstAttribute="height" constant="21" id="Vqi-7d-k3S"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Left-to-right auto-reversing scrolling, with IB-set text styling" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EWF-s2-CJI">
@@ -66,7 +66,7 @@
                                     <constraint firstAttribute="height" constant="16" id="UyQ-bm-JZd"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="10"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MLLeftToRight" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dkc-QT-Fyf" customClass="MarqueeLabel">
@@ -84,7 +84,7 @@
                                     <constraint firstAttribute="height" constant="16" id="jE6-g3-0ge"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="10"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MLRightToLeft" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PJ1-ao-mBM" customClass="MarqueeLabel">
@@ -93,7 +93,7 @@
                                     <constraint firstAttribute="height" constant="21" id="tM8-bU-ejD"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Continuous scrolling, with pause/unpause (via tap)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FAD-WX-7fw">
@@ -102,7 +102,7 @@
                                     <constraint firstAttribute="height" constant="16" id="wcK-wd-yq9"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="10"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MLContinuous, with tap" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FNY-Yp-i3E" customClass="MarqueeLabel">
@@ -112,7 +112,7 @@
                                     <constraint firstAttribute="height" constant="21" id="dL3-CY-UCI"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="MFZ-eI-lOI" userLabel="Labelize Switch">
@@ -130,13 +130,13 @@
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hold scrolling" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CjG-zz-dFM">
                                 <rect key="frame" x="77" y="419" width="99" height="20.5"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pause scrolling" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ktf-8o-rs7">
                                 <rect key="frame" x="77" y="458" width="110" height="20.5"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q5E-kb-AFb">
@@ -151,7 +151,7 @@
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Labelize" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H8W-VM-YX4">
                                 <rect key="frame" x="77" y="380" width="60" height="20.5"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="tmC-FS-iei" userLabel="Pause Switch">
@@ -170,12 +170,12 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Auto Layout" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SzN-MY-AgP">
-                                <rect key="frame" x="314" y="47" width="52.5" height="16"/>
+                                <rect key="frame" x="309" y="48" width="58" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="bHy-Aq-zIY"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="10"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="11"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Continuous scrolling, with attributed text" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V7a-Ah-SP6">
@@ -185,7 +185,7 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="wct-GJ-BsL"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="10"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -200,7 +200,7 @@
                                     <constraint firstAttribute="width" constant="280" id="s3r-Ra-tZo"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -253,7 +253,7 @@
                             <constraint firstAttribute="trailing" secondItem="ANf-ic-jGg" secondAttribute="trailing" constant="20" id="ejx-fo-8hw"/>
                             <constraint firstItem="CjG-zz-dFM" firstAttribute="centerY" secondItem="5Hk-N1-s7W" secondAttribute="centerY" constant="-0.25" id="fiZ-uc-Qyl"/>
                             <constraint firstItem="FNY-Yp-i3E" firstAttribute="leading" secondItem="0j2-Mv-s6q" secondAttribute="leading" constant="20" id="gVw-hQ-3RA"/>
-                            <constraint firstItem="xyi-Hz-Wpw" firstAttribute="top" secondItem="qE4-qy-Bkm" secondAttribute="bottom" constant="5" id="i2L-BP-ZxD"/>
+                            <constraint firstItem="xyi-Hz-Wpw" firstAttribute="top" secondItem="qE4-qy-Bkm" secondAttribute="bottom" constant="6" id="i2L-BP-ZxD"/>
                             <constraint firstItem="ktf-8o-rs7" firstAttribute="leading" secondItem="tmC-FS-iei" secondAttribute="trailing" constant="8" id="iG6-Hu-48t"/>
                             <constraint firstItem="5Hk-N1-s7W" firstAttribute="leading" secondItem="0j2-Mv-s6q" secondAttribute="leading" constant="20" id="kxT-F1-BcI"/>
                             <constraint firstItem="SzN-MY-AgP" firstAttribute="trailing" secondItem="xyi-Hz-Wpw" secondAttribute="trailing" id="oqZ-Yd-EWk"/>
@@ -288,57 +288,41 @@
         <!--Table View-->
         <scene sceneID="dbp-lk-BJg">
             <objects>
-                <tableViewController title="Table View" id="4fz-Lg-9r1" sceneMemberID="viewController">
+                <tableViewController title="Table View" id="4fz-Lg-9r1" customClass="MarqueeLabelTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="52" sectionHeaderHeight="22" sectionFooterHeight="22" id="vxg-r1-G2N">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="nYr-kP-yWM">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="71"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MarqueeLabel" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iak-Jq-1BK">
-                                    <rect key="frame" x="233" y="25" width="135" height="26"/>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="22"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Table View (coming soon)" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7u1-To-biG">
-                                    <rect key="frame" x="258.5" y="47" width="109.5" height="12"/>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="10"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstItem="7u1-To-biG" firstAttribute="top" secondItem="Iak-Jq-1BK" secondAttribute="bottom" constant="-4" id="T8D-9Q-Omu"/>
-                                <constraint firstItem="Iak-Jq-1BK" firstAttribute="top" secondItem="nYr-kP-yWM" secondAttribute="top" constant="25" id="TKH-2h-ngx"/>
-                                <constraint firstItem="7u1-To-biG" firstAttribute="trailing" secondItem="Iak-Jq-1BK" secondAttribute="trailing" id="jWC-gE-fO2"/>
-                                <constraint firstAttribute="centerX" secondItem="Iak-Jq-1BK" secondAttribute="centerX" id="xAo-I3-VyL"/>
-                            </constraints>
-                        </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MLCell" id="M3R-NS-1Q1">
-                                <rect key="frame" x="0.0" y="93" width="600" height="52"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MLCell" id="M3R-NS-1Q1" customClass="MLCell">
+                                <rect key="frame" x="0.0" y="22" width="600" height="52"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="M3R-NS-1Q1" id="UvS-6a-1i3">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="51.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BXW-4n-8c7" customClass="MarqueeLabel">
-                                            <rect key="frame" x="20" y="15" width="280" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BXW-4n-8c7" customClass="MarqueeLabel">
+                                            <rect key="frame" x="0.0" y="15" width="600" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="BXW-4n-8c7" secondAttribute="trailing" id="AQI-DZ-uOJ"/>
+                                        <constraint firstAttribute="leading" secondItem="BXW-4n-8c7" secondAttribute="leading" id="OBl-lI-RmB"/>
+                                        <constraint firstItem="BXW-4n-8c7" firstAttribute="top" secondItem="UvS-6a-1i3" secondAttribute="topMargin" constant="7" id="qxz-5W-Zhg"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="label" destination="BXW-4n-8c7" id="PhO-BF-2RC"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
-                            <outlet property="dataSource" destination="4fz-Lg-9r1" id="eM0-yF-fYS"/>
-                            <outlet property="delegate" destination="4fz-Lg-9r1" id="nHN-qE-lRW"/>
+                            <outlet property="dataSource" destination="4fz-Lg-9r1" id="iJx-vu-pN2"/>
+                            <outlet property="delegate" destination="4fz-Lg-9r1" id="XJf-vE-J0D"/>
                         </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Table View" id="a5f-OS-S7w"/>
@@ -346,6 +330,114 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PeJ-pj-1dl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="917" y="1759"/>
+        </scene>
+        <!--Navigation-->
+        <scene sceneID="w0F-WA-Kar">
+            <objects>
+                <navigationController id="WhA-Ms-jmb" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Navigation" id="wjf-nS-0rx"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="LVv-Ou-Vxz">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="62K-nX-ZFv" kind="relationship" relationship="rootViewController" id="keC-9K-505"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YP8-Nt-pJC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="917" y="2423"/>
+        </scene>
+        <!--MarqueeLabel-->
+        <scene sceneID="Mgf-SU-9PK">
+            <objects>
+                <viewController id="62K-nX-ZFv" customClass="MarqueeLabelDemoPushController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pZJ-Wy-VNd"/>
+                        <viewControllerLayoutGuide type="bottom" id="OtG-Jd-meM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3JQ-xe-Ms6">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Continuous scrolling" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SrV-q0-UjC">
+                                <rect key="frame" x="20" y="80" width="560" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="8i2-Gy-l3I"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="10"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is a test of MarqueeLabel, with a somewhat long string." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CG3-Ca-wbs" customClass="MarqueeLabel">
+                                <rect key="frame" x="0.0" y="96" width="600" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="iyt-fd-b51"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="leadingBuffer">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="trailingBuffer">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="fadeLength">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="animationDelay">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="scrollDuration">
+                                        <real key="value" value="12"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="marqueeType">
+                                        <integer key="value" value="2"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="CG3-Ca-wbs" firstAttribute="top" secondItem="SrV-q0-UjC" secondAttribute="bottom" id="0Cn-ve-jTD"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="SrV-q0-UjC" secondAttribute="leading" id="CuU-r2-7SQ"/>
+                            <constraint firstAttribute="leading" secondItem="CG3-Ca-wbs" secondAttribute="leading" id="Gp8-uW-Idp"/>
+                            <constraint firstAttribute="trailing" secondItem="CG3-Ca-wbs" secondAttribute="trailing" id="MVY-c6-bRE"/>
+                            <constraint firstItem="CG3-Ca-wbs" firstAttribute="leading" secondItem="SrV-q0-UjC" secondAttribute="leading" id="aj4-cy-ElO"/>
+                            <constraint firstItem="SrV-q0-UjC" firstAttribute="top" secondItem="pZJ-Wy-VNd" secondAttribute="bottom" constant="16" id="b2Z-c3-nfs"/>
+                            <constraint firstItem="SrV-q0-UjC" firstAttribute="centerX" secondItem="3JQ-xe-Ms6" secondAttribute="centerX" id="oWJ-Nx-g5V"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="aj4-cy-ElO"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="MarqueeLabel" id="RC6-aB-onQ">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="acJ-YT-Hb3"/>
+                        <barButtonItem key="rightBarButtonItem" id="00A-KX-Wre">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="I03-oH-Gks">
+                                <rect key="frame" x="500" y="7" width="80" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="U4F-61-yRV"/>
+                                </constraints>
+                                <state key="normal" title="Next"/>
+                                <connections>
+                                    <segue destination="62K-nX-ZFv" kind="show" id="uDf-qB-fmJ"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="demoLabel" destination="CG3-Ca-wbs" id="PH8-47-4Gk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fr6-R5-Jcq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1694" y="2423"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="ZF3-H2-lsz">
@@ -362,11 +454,12 @@
                     <connections>
                         <segue destination="4MI-rG-Qz8" kind="relationship" relationship="viewControllers" id="rfu-NN-Ih8"/>
                         <segue destination="4fz-Lg-9r1" kind="relationship" relationship="viewControllers" id="Aba-fE-FPl"/>
+                        <segue destination="WhA-Ms-jmb" kind="relationship" relationship="viewControllers" id="Tp3-gb-wUL"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="olJ-1Z-5Qu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="177" y="1385"/>
+            <point key="canvasLocation" x="151" y="1881"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="aPA-3r-14T">
@@ -404,4 +497,7 @@
             <point key="canvasLocation" x="1694" y="1073"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="keC-9K-505"/>
+    </inferredMetricsTieBreakers>
 </document>
