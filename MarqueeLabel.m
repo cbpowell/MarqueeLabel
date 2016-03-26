@@ -168,6 +168,10 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx {
     // Do NOT call super, to prevent UILabel superclass from drawing into context
     // Label drawing is handled by sublabel and CAReplicatorLayer layer class
+    
+    // Draw only background color
+    CGContextSetFillColorWithColor(ctx, self.backgroundColor.CGColor);
+    CGContextFillRect(ctx, layer.bounds);
 }
 
 - (void)forwardPropertiesToSubLabel {
