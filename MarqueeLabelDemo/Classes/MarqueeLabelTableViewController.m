@@ -25,10 +25,10 @@
                      @"My favorite things in life don't cost any money. It's really clear that the most precious resource we all have is time.",
                      @"Be a yardstick of quality. Some people aren't used to an environment where excellence is expected."];
     
-    UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.tabBarController.tabBar.frame), 0);
-    self.tableView.contentInset = adjustForTabbarInsets;
-    adjustForTabbarInsets.top = 84;
-    self.tableView.scrollIndicatorInsets = adjustForTabbarInsets;
+    UIEdgeInsets tabBarInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.tabBarController.tabBar.frame), 0);
+    self.tableView.contentInset = tabBarInsets;
+    tabBarInsets.top = 84;
+    self.tableView.scrollIndicatorInsets = tabBarInsets;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"MLHeader" bundle:nil] forHeaderFooterViewReuseIdentifier:@"MLHeader"];
 }
@@ -62,7 +62,7 @@
     // Labelize normally, to improve scrolling performance
     cell.label.labelize = YES;
     // Set background, to improve scrolling performance
-    cell.label.backgroundColor = [UIColor redColor];
+    cell.label.backgroundColor = [UIColor whiteColor];
     
     return cell;
 }
@@ -81,6 +81,7 @@
         cell.label.labelize = YES;
     }
     
+    // Animate border
     MLHeader *header = (MLHeader *)[self.tableView headerViewForSection:0];
     [UIView animateWithDuration:0.2f animations:^{
         header.border.alpha = (scrollView.contentOffset.y > 1.0f ? 1.0f : 0.0f);
