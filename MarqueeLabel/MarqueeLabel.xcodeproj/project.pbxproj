@@ -38,12 +38,12 @@
 		EAE4AC211CA8B756006C1ECC /* MarqueeLabelTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MarqueeLabelTableViewController.m; path = Support/MarqueeLabelTableViewController.m; sourceTree = SOURCE_ROOT; };
 		EAE4AC221CA8B756006C1ECC /* ModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ModalViewController.h; path = Support/ModalViewController.h; sourceTree = SOURCE_ROOT; };
 		EAE4AC231CA8B756006C1ECC /* ModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ModalViewController.m; path = Support/ModalViewController.m; sourceTree = SOURCE_ROOT; };
-		EAE4AC291CA8B76C006C1ECC /* MarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarqueeLabel.h; sourceTree = SOURCE_ROOT; };
+		EAE4AC291CA8B76C006C1ECC /* MarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MarqueeLabel.h; path = ../Classes/ObjC/MarqueeLabel.h; sourceTree = SOURCE_ROOT; };
 		EAE4AC2A1CA8B76C006C1ECC /* MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarqueeLabel.m; sourceTree = SOURCE_ROOT; };
 		EAE4AC2C1CA8B794006C1ECC /* MLHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MLHeader.xib; sourceTree = SOURCE_ROOT; };
 		EAE4AC531CA8B83D006C1ECC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
 		EAE4AC711CA8DCBB006C1ECC /* MarqueeLabel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MarqueeLabel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EAE4AC731CA8DCBB006C1ECC /* MarqueeLabel_Umbrella.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MarqueeLabel_Umbrella.h; path = ../MarqueeLabel_Umbrella.h; sourceTree = "<group>"; };
+		EAE4AC731CA8DCBB006C1ECC /* MarqueeLabel_Umbrella.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MarqueeLabel_Umbrella.h; sourceTree = "<group>"; };
 		EAE4AC751CA8DCBB006C1ECC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EAE4AC791CA8DE27006C1ECC /* module.map */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.map; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -413,6 +413,7 @@
 				INFOPLIST_FILE = MarqueeLabel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "$(PRODUCT_NAME)/module.map";
 				PRODUCT_BUNDLE_IDENTIFIER = com.charlespowell.MarqueeLabel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -433,6 +434,7 @@
 				INFOPLIST_FILE = MarqueeLabel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "$(PRODUCT_NAME)/module.map";
 				PRODUCT_BUNDLE_IDENTIFIER = com.charlespowell.MarqueeLabel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -470,6 +472,7 @@
 				EAE4AC781CA8DCBB006C1ECC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
