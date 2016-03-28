@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "EAE4AC7E1CA8DE70006C1ECC"
-               BuildableName = "MarqueeLabelSwift.framework"
-               BlueprintName = "MarqueeLabelSwift"
-               ReferencedContainer = "container:MarqueeLabelSwift/MarqueeLabelSwift.xcodeproj">
+               BlueprintIdentifier = "EAE4AC701CA8DCBB006C1ECC"
+               BuildableName = "MarqueeLabel.framework"
+               BlueprintName = "MarqueeLabel"
+               ReferencedContainer = "container:MarqueeLabel.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,10 +45,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "EAE4AC7E1CA8DE70006C1ECC"
-            BuildableName = "MarqueeLabelSwift.framework"
-            BlueprintName = "MarqueeLabelSwift"
-            ReferencedContainer = "container:MarqueeLabelSwift/MarqueeLabelSwift.xcodeproj">
+            BlueprintIdentifier = "EAE4AC701CA8DCBB006C1ECC"
+            BuildableName = "MarqueeLabel.framework"
+            BlueprintName = "MarqueeLabel"
+            ReferencedContainer = "container:MarqueeLabel.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -63,10 +63,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "EAE4AC7E1CA8DE70006C1ECC"
-            BuildableName = "MarqueeLabelSwift.framework"
-            BlueprintName = "MarqueeLabelSwift"
-            ReferencedContainer = "container:MarqueeLabelSwift/MarqueeLabelSwift.xcodeproj">
+            BlueprintIdentifier = "EAE4AC701CA8DCBB006C1ECC"
+            BuildableName = "MarqueeLabel.framework"
+            BlueprintName = "MarqueeLabel"
+            ReferencedContainer = "container:MarqueeLabel.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
