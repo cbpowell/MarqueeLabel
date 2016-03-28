@@ -17,6 +17,7 @@
 		EAE4AC691CA8DBDC006C1ECC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAE4AC671CA8DBDC006C1ECC /* LaunchScreen.storyboard */; };
 		EAE4AC6B1CA8DC10006C1ECC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAE4AC6A1CA8DC10006C1ECC /* Assets.xcassets */; };
 		EAE4AC821CA8DE70006C1ECC /* MarqueeLabelSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = EAE4AC811CA8DE70006C1ECC /* MarqueeLabelSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EAE4AC881CA8E195006C1ECC /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE4AC621CA8DB09006C1ECC /* MarqueeLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -258,6 +259,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAE4AC881CA8E195006C1ECC /* MarqueeLabel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,6 +450,7 @@
 				EAE4AC861CA8DE70006C1ECC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
