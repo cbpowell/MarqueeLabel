@@ -18,4 +18,5 @@ profile
 # Exclude OS X folder attributes
 .DS_Store
 
-Carthage/
+# Excluse Carthage build artifacts
+Carthage
