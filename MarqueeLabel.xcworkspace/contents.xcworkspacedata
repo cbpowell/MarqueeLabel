@@ -10,4 +10,7 @@
    <FileRef
       location = "group:MarqueeLabelSwift/MarqueeLabelSwift.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:MarqueeLabelTV/MarqueeLabelTV.xcodeproj">
+   </FileRef>
 </Workspace>
