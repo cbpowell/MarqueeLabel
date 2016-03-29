@@ -8,11 +8,12 @@ MarqueeLabelDemo/build/*
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
-*.xcworkspace
-!default.xcworkspace
-xcuserdata/
+xcuserdata
 profile
 *.moved-aside
+*.xccheckout
+*.moved-aside
+*.xcuserstate
 
 # Exclude OS X folder attributes
 .DS_Store
