@@ -12,11 +12,11 @@
 		EAE4AC5F1CA8DAFB006C1ECC /* MarqueeLabelDemoPushController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE4AC5C1CA8DAFB006C1ECC /* MarqueeLabelDemoPushController.swift */; };
 		EAE4AC601CA8DAFB006C1ECC /* MarqueeLabelDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE4AC5D1CA8DAFB006C1ECC /* MarqueeLabelDemoViewController.swift */; };
 		EAE4AC611CA8DAFB006C1ECC /* MarqueeLabelTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE4AC5E1CA8DAFB006C1ECC /* MarqueeLabelTableViewController.swift */; };
-		EAE4AC631CA8DB09006C1ECC /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE4AC621CA8DB09006C1ECC /* MarqueeLabel.swift */; };
 		EAE4AC661CA8DBBA006C1ECC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE4AC651CA8DBBA006C1ECC /* AppDelegate.swift */; };
 		EAE4AC691CA8DBDC006C1ECC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAE4AC671CA8DBDC006C1ECC /* LaunchScreen.storyboard */; };
 		EAE4AC6B1CA8DC10006C1ECC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAE4AC6A1CA8DC10006C1ECC /* Assets.xcassets */; };
-		EAE4AC881CA8E195006C1ECC /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE4AC621CA8DB09006C1ECC /* MarqueeLabel.swift */; };
+		EAE4ACCF1CAA2495006C1ECC /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE4ACCE1CAA2495006C1ECC /* MarqueeLabel.swift */; };
+		EAE4ACD01CAA2495006C1ECC /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE4ACCE1CAA2495006C1ECC /* MarqueeLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,12 +27,12 @@
 		EAE4AC5C1CA8DAFB006C1ECC /* MarqueeLabelDemoPushController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarqueeLabelDemoPushController.swift; sourceTree = SOURCE_ROOT; };
 		EAE4AC5D1CA8DAFB006C1ECC /* MarqueeLabelDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarqueeLabelDemoViewController.swift; sourceTree = SOURCE_ROOT; };
 		EAE4AC5E1CA8DAFB006C1ECC /* MarqueeLabelTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarqueeLabelTableViewController.swift; sourceTree = SOURCE_ROOT; };
-		EAE4AC621CA8DB09006C1ECC /* MarqueeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarqueeLabel.swift; sourceTree = SOURCE_ROOT; };
 		EAE4AC651CA8DBBA006C1ECC /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = SOURCE_ROOT; };
 		EAE4AC681CA8DBDC006C1ECC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
 		EAE4AC6A1CA8DC10006C1ECC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		EAE4AC7F1CA8DE70006C1ECC /* MarqueeLabelSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MarqueeLabelSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAE4AC831CA8DE70006C1ECC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EAE4ACCE1CAA2495006C1ECC /* MarqueeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MarqueeLabel.swift; path = ../../Classes/Swift/MarqueeLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,7 +86,7 @@
 		EAE4AC551CA8DAA1006C1ECC /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				EAE4AC621CA8DB09006C1ECC /* MarqueeLabel.swift */,
+				EAE4ACCE1CAA2495006C1ECC /* MarqueeLabel.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -243,7 +243,7 @@
 			files = (
 				EAE4AC5F1CA8DAFB006C1ECC /* MarqueeLabelDemoPushController.swift in Sources */,
 				EAE4AC601CA8DAFB006C1ECC /* MarqueeLabelDemoViewController.swift in Sources */,
-				EAE4AC631CA8DB09006C1ECC /* MarqueeLabel.swift in Sources */,
+				EAE4ACCF1CAA2495006C1ECC /* MarqueeLabel.swift in Sources */,
 				EAE4AC661CA8DBBA006C1ECC /* AppDelegate.swift in Sources */,
 				EAE4AC611CA8DAFB006C1ECC /* MarqueeLabelTableViewController.swift in Sources */,
 			);
@@ -253,7 +253,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAE4AC881CA8E195006C1ECC /* MarqueeLabel.swift in Sources */,
+				EAE4ACD01CAA2495006C1ECC /* MarqueeLabel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

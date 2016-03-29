@@ -16,10 +16,12 @@
 		EAE4AC251CA8B756006C1ECC /* MarqueeLabelDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE4AC1F1CA8B756006C1ECC /* MarqueeLabelDemoViewController.m */; };
 		EAE4AC261CA8B756006C1ECC /* MarqueeLabelTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE4AC211CA8B756006C1ECC /* MarqueeLabelTableViewController.m */; };
 		EAE4AC271CA8B756006C1ECC /* ModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE4AC231CA8B756006C1ECC /* ModalViewController.m */; };
-		EAE4AC2B1CA8B76C006C1ECC /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE4AC2A1CA8B76C006C1ECC /* MarqueeLabel.m */; };
 		EAE4AC2D1CA8B794006C1ECC /* MLHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAE4AC2C1CA8B794006C1ECC /* MLHeader.xib */; };
 		EAE4AC541CA8B83D006C1ECC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAE4AC521CA8B83D006C1ECC /* LaunchScreen.storyboard */; };
 		EAE4AC741CA8DCBB006C1ECC /* MarqueeLabel_Umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = EAE4AC731CA8DCBB006C1ECC /* MarqueeLabel_Umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EAE4ACD31CAA24E2006C1ECC /* MarqueeLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = EAE4ACD11CAA24E2006C1ECC /* MarqueeLabel.h */; };
+		EAE4ACD41CAA24E2006C1ECC /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE4ACD21CAA24E2006C1ECC /* MarqueeLabel.m */; };
+		EAE4ACD51CAA24E2006C1ECC /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE4ACD21CAA24E2006C1ECC /* MarqueeLabel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,14 +40,14 @@
 		EAE4AC211CA8B756006C1ECC /* MarqueeLabelTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MarqueeLabelTableViewController.m; path = Support/MarqueeLabelTableViewController.m; sourceTree = SOURCE_ROOT; };
 		EAE4AC221CA8B756006C1ECC /* ModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ModalViewController.h; path = Support/ModalViewController.h; sourceTree = SOURCE_ROOT; };
 		EAE4AC231CA8B756006C1ECC /* ModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ModalViewController.m; path = Support/ModalViewController.m; sourceTree = SOURCE_ROOT; };
-		EAE4AC291CA8B76C006C1ECC /* MarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MarqueeLabel.h; path = ../Classes/ObjC/MarqueeLabel.h; sourceTree = SOURCE_ROOT; };
-		EAE4AC2A1CA8B76C006C1ECC /* MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarqueeLabel.m; sourceTree = SOURCE_ROOT; };
 		EAE4AC2C1CA8B794006C1ECC /* MLHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MLHeader.xib; sourceTree = SOURCE_ROOT; };
 		EAE4AC531CA8B83D006C1ECC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
 		EAE4AC711CA8DCBB006C1ECC /* MarqueeLabel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MarqueeLabel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAE4AC731CA8DCBB006C1ECC /* MarqueeLabel_Umbrella.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MarqueeLabel_Umbrella.h; sourceTree = "<group>"; };
 		EAE4AC751CA8DCBB006C1ECC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EAE4AC791CA8DE27006C1ECC /* module.map */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.map; sourceTree = "<group>"; };
+		EAE4ACD11CAA24E2006C1ECC /* MarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MarqueeLabel.h; path = ../../Classes/ObjC/MarqueeLabel.h; sourceTree = "<group>"; };
+		EAE4ACD21CAA24E2006C1ECC /* MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MarqueeLabel.m; path = ../../Classes/ObjC/MarqueeLabel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,8 +128,8 @@
 		EAE4AC281CA8B75E006C1ECC /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				EAE4AC291CA8B76C006C1ECC /* MarqueeLabel.h */,
-				EAE4AC2A1CA8B76C006C1ECC /* MarqueeLabel.m */,
+				EAE4ACD11CAA24E2006C1ECC /* MarqueeLabel.h */,
+				EAE4ACD21CAA24E2006C1ECC /* MarqueeLabel.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -160,6 +162,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAE4ACD31CAA24E2006C1ECC /* MarqueeLabel.h in Headers */,
 				EAE4AC741CA8DCBB006C1ECC /* MarqueeLabel_Umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -268,7 +271,7 @@
 				EAE4AC0A1CA8B5D0006C1ECC /* main.m in Sources */,
 				EAE4AC261CA8B756006C1ECC /* MarqueeLabelTableViewController.m in Sources */,
 				EAE4AC271CA8B756006C1ECC /* ModalViewController.m in Sources */,
-				EAE4AC2B1CA8B76C006C1ECC /* MarqueeLabel.m in Sources */,
+				EAE4ACD41CAA24E2006C1ECC /* MarqueeLabel.m in Sources */,
 				EAE4AC071CA8B5A6006C1ECC /* AppDelegate.m in Sources */,
 				EAE4AC251CA8B756006C1ECC /* MarqueeLabelDemoViewController.m in Sources */,
 				EAE4AC241CA8B756006C1ECC /* MarqueeLabelDemoPushController.m in Sources */,
@@ -279,6 +282,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAE4ACD51CAA24E2006C1ECC /* MarqueeLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
