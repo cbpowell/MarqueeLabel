@@ -1177,6 +1177,12 @@ public class MarqueeLabel: UILabel {
     override public func drawLayer(layer: CALayer, inContext ctx: CGContext) {
         // Do NOT call super, to prevent UILabel superclass from drawing into context
         // Label drawing is handled by sublabel and CAReplicatorLayer layer class
+        
+        // Draw only background color
+        if let bgColor = backgroundColor {
+            CGContextSetFillColorWithColor(ctx, bgColor.CGColor);
+            CGContextFillRect(ctx, layer.bounds);
+        }
     }
     
     private enum MarqueeKeys: String {
@@ -1381,8 +1387,6 @@ public class MarqueeLabel: UILabel {
     }
     #endif
 
-    override public func drawRect(rect: CGRect) {
-        // Draw NOTHING to prevent superclass drawing
     }
 
     public override var text: String? {
