@@ -1601,7 +1601,7 @@ private class GradientAnimation: CABasicAnimation {
 private struct Scroller {
     typealias Scroll = (layer: CALayer, anim: CAKeyframeAnimation)
     
-    init(generator gen: (interval: CGFloat, delay: CGFloat) -> [Scroll], scrolls: [Scroll]? = nil) {
+    init(generator gen: (interval: CGFloat, delay: CGFloat) -> [Scroll]) {
         self.generator = gen
     }
     
