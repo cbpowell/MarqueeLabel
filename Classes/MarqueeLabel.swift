@@ -1385,9 +1385,12 @@ public class MarqueeLabel: UILabel {
         // Use subLabel view for handling baseline layouts
         return sublabel
     }
-    #endif
-
+    
+    public override var viewForLastBaselineLayout: UIView {
+        // Use subLabel view for handling baseline layouts
+        return sublabel
     }
+    #endif
 
     public override var text: String? {
         get {
