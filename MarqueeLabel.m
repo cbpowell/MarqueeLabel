@@ -1073,6 +1073,16 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     return self.subLabel;
 }
 
+- (UIView *)viewForLastBaselineLayout {
+    // Use subLabel view for handling baseline layouts
+    return self.subLabel;
+}
+
+- (UIView *)viewForFirstBaselineLayout {
+    // Use subLabel view for handling baseline layouts
+    return self.subLabel;
+}
+
 - (NSString *)text {
     return self.subLabel.text;
 }
