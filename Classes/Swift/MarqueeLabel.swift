@@ -450,7 +450,6 @@ public class MarqueeLabel: UILabel {
         addSubview(sublabel)
         
         // Configure self
-        super.backgroundColor = UIColor.clearColor()
         super.clipsToBounds = true
         super.numberOfLines = 1
         
@@ -489,7 +488,7 @@ public class MarqueeLabel: UILabel {
         sublabel.textColor = super.textColor
         sublabel.backgroundColor = super.backgroundColor ?? UIColor.clearColor()
         sublabel.shadowColor = super.shadowColor
-        sublabel.shadowOffset = super.shadowOffset;
+        sublabel.shadowOffset = super.shadowOffset
         for prop in properties {
             let value: AnyObject! = super.valueForKey(prop)
             sublabel.setValue(value, forKeyPath: prop)
@@ -1177,6 +1176,12 @@ public class MarqueeLabel: UILabel {
     override public func drawLayer(layer: CALayer, inContext ctx: CGContext) {
         // Do NOT call super, to prevent UILabel superclass from drawing into context
         // Label drawing is handled by sublabel and CAReplicatorLayer layer class
+        
+        // Draw only background color
+        if let bgColor = backgroundColor {
+            CGContextSetFillColorWithColor(ctx, bgColor.CGColor);
+            CGContextFillRect(ctx, layer.bounds);
+        }
     }
     
     private enum MarqueeKeys: String {
@@ -1379,11 +1384,12 @@ public class MarqueeLabel: UILabel {
         // Use subLabel view for handling baseline layouts
         return sublabel
     }
-    #endif
-
-    override public func drawRect(rect: CGRect) {
-        // Draw NOTHING to prevent superclass drawing
+    
+    public override var viewForLastBaselineLayout: UIView {
+        // Use subLabel view for handling baseline layouts
+        return sublabel
     }
+    #endif
 
     public override var text: String? {
         get {
