@@ -450,7 +450,6 @@ public class MarqueeLabel: UILabel {
         addSubview(sublabel)
         
         // Configure self
-        super.backgroundColor = UIColor.clearColor()
         super.clipsToBounds = true
         super.numberOfLines = 1
         
@@ -489,7 +488,7 @@ public class MarqueeLabel: UILabel {
         sublabel.textColor = super.textColor
         sublabel.backgroundColor = super.backgroundColor ?? UIColor.clearColor()
         sublabel.shadowColor = super.shadowColor
-        sublabel.shadowOffset = super.shadowOffset;
+        sublabel.shadowOffset = super.shadowOffset
         for prop in properties {
             let value: AnyObject! = super.valueForKey(prop)
             sublabel.setValue(value, forKeyPath: prop)
