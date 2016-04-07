@@ -54,6 +54,7 @@ class MarqueeLabelDemoViewController : UIViewController {
         demoLabel1.fadeLength = 10.0
         demoLabel1.leadingBuffer = 30.0
         demoLabel1.trailingBuffer = 20.0
+        //demoLabel1.backgroundColor = UIColor.redColor()
         // Text string for this label is set via Interface Builder!
         
         
@@ -104,7 +105,7 @@ class MarqueeLabelDemoViewController : UIViewController {
         demoLabel5.text = "This text is long, and can be paused with a tap - handled via a UIGestureRecognizer!"
         
         demoLabel5.userInteractionEnabled = true // Don't forget this, otherwise the gesture recognizer will fail (UILabel has this as NO by default)
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: "pauseTap:")
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(MarqueeLabelDemoViewController.pauseTap(_:)))
         tapRecognizer.numberOfTapsRequired = 1
         tapRecognizer.numberOfTouchesRequired = 1
         demoLabel5.addGestureRecognizer(tapRecognizer)
