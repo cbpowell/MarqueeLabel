@@ -215,6 +215,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     [self addSubview:self.subLabel];
     
     // Setup default values
+    _marqueeType = MLContinuous;
     _awayOffset = 0.0f;
     _animationCurve = UIViewAnimationOptionCurveLinear;
     _labelize = NO;
