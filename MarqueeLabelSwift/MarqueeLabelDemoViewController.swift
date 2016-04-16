@@ -49,12 +49,9 @@ class MarqueeLabelDemoViewController : UIViewController {
         // Continuous Type
         demoLabel1.tag = 101
         demoLabel1.type = .Continuous
-        demoLabel1.speed = .Duration(15)
         demoLabel1.animationCurve = .EaseInOut
-        demoLabel1.fadeLength = 10.0
-        demoLabel1.leadingBuffer = 30.0
-        demoLabel1.trailingBuffer = 20.0
-        // Text string for this label is set via Interface Builder!
+        // Text string, fade length, leading buffer, trailing buffer, and scroll
+        // duration for this label are set via Interface Builder's Attributes Inspector!
         
         
         // Reverse Continuous Type, with attributed string

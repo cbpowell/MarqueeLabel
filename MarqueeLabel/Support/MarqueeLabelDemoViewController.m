@@ -40,12 +40,9 @@
     // Continuous Type
     self.demoLabel1.tag = 101;
     self.demoLabel1.marqueeType = MLContinuous;
-    self.demoLabel1.scrollDuration = 15.0;
     self.demoLabel1.animationCurve = UIViewAnimationOptionCurveEaseInOut;
-    self.demoLabel1.fadeLength = 10.0f;
-    self.demoLabel1.leadingBuffer = 30.0f;
-    self.demoLabel1.trailingBuffer = 20.0f;
-    // Text string for this label is set via Interface Builder!
+    // Text string, fade length, leading buffer, trailing buffer, and scroll
+    // duration for this label are set via Interface Builder's Attributes Inspector!
     
     // Reverse Continuous Type, with attributed string
     self.demoLabel2.tag = 201;
