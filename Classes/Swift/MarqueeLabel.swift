@@ -211,35 +211,29 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    // @available attribute seems to cause SourceKit to crash right now
-    // @available(*, deprecated = 2.6, message = "Use speed property instead")
-    @IBInspectable public var scrollDuration: CGFloat? {
+    @available(*, deprecated = 2.6, message = "Use speed property instead")
+    @IBInspectable public var scrollDuration: CGFloat {
         get {
             switch speed {
             case .Duration(let duration): return duration
-            case .Rate(_): return nil
+            case .Rate(_): return 0.0
             }
         }
         set {
-            if let duration = newValue {
-                speed = .Duration(duration)
-            }
+            speed = .Duration(newValue)
         }
     }
     
-    // @available attribute seems to cause SourceKit to crash right now
-    // @available(*, deprecated = 2.6, message = "Use speed property instead")
-    @IBInspectable public var scrollRate: CGFloat? {
+    @available(*, deprecated = 2.6, message = "Use speed property instead")
+    @IBInspectable public var scrollRate: CGFloat {
         get {
             switch speed {
-            case .Duration(_): return nil
+            case .Duration(_): return 0.0
             case .Rate(let rate): return rate
             }
         }
         set {
-            if let rate = newValue {
-                speed = .Rate(rate)
-            }
+            speed = .Rate(newValue)
         }
     }
     
