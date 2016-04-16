@@ -913,7 +913,7 @@ public class MarqueeLabel: UILabel {
         case .ContinuousReverse, .RightLeft:
             adjustedColors = [(trailingFadeNeeded ? transparent : opaque), opaque, opaque, opaque]
         
-        // .MLContinuous, .MLLeftRight
+        // .Continuous, .LeftRight
         default:
             adjustedColors = [opaque, opaque, opaque, (trailingFadeNeeded ? transparent : opaque)]
             break
