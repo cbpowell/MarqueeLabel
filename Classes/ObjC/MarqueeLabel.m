@@ -157,6 +157,11 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     [self forwardPropertiesToSubLabel];
 }
 
+- (void)prepareForInterfaceBuilder {
+    [super prepareForInterfaceBuilder];
+    [self forwardPropertiesToSubLabel];
+}
+
 + (Class)layerClass {
     return [CAReplicatorLayer class];
 }
