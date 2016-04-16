@@ -10,7 +10,6 @@
 		EAE4AC071CA8B5A6006C1ECC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE4AC051CA8B5A6006C1ECC /* AppDelegate.m */; };
 		EAE4AC081CA8B5A6006C1ECC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAE4AC061CA8B5A6006C1ECC /* Assets.xcassets */; };
 		EAE4AC0A1CA8B5D0006C1ECC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE4AC091CA8B5D0006C1ECC /* main.m */; };
-		EAE4AC0C1CA8B5D5006C1ECC /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EAE4AC0B1CA8B5D5006C1ECC /* Info.plist */; };
 		EAE4AC0E1CA8B5DD006C1ECC /* MarqueeLabel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAE4AC0D1CA8B5DD006C1ECC /* MarqueeLabel.storyboard */; };
 		EAE4AC241CA8B756006C1ECC /* MarqueeLabelDemoPushController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE4AC1D1CA8B756006C1ECC /* MarqueeLabelDemoPushController.m */; };
 		EAE4AC251CA8B756006C1ECC /* MarqueeLabelDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE4AC1F1CA8B756006C1ECC /* MarqueeLabelDemoViewController.m */; };
@@ -248,7 +247,6 @@
 			files = (
 				EAE4AC081CA8B5A6006C1ECC /* Assets.xcassets in Resources */,
 				EAE4AC0E1CA8B5DD006C1ECC /* MarqueeLabel.storyboard in Resources */,
-				EAE4AC0C1CA8B5D5006C1ECC /* Info.plist in Resources */,
 				EAE4AC541CA8B83D006C1ECC /* LaunchScreen.storyboard in Resources */,
 				EAE4AC2D1CA8B794006C1ECC /* MLHeader.xib in Resources */,
 			);
