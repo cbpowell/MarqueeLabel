@@ -1532,7 +1532,7 @@ public class MarqueeLabel: UILabel {
         
         set {
             // By the nature of MarqueeLabel, this is false
-            self.adjustsFontSizeToFitWidth = false
+            super.adjustsFontSizeToFitWidth = false
         }
     }
     
@@ -1542,7 +1542,7 @@ public class MarqueeLabel: UILabel {
         }
         
         set {
-            self.minimumScaleFactor = 0.0
+            super.minimumScaleFactor = 0.0
         }
     }
     
