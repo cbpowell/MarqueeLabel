@@ -8,6 +8,7 @@
 import UIKit
 import QuartzCore
 
+@IBDesignable
 
 public class MarqueeLabel: UILabel {
     
@@ -465,6 +466,11 @@ public class MarqueeLabel: UILabel {
     
     override public func awakeFromNib() {
         super.awakeFromNib()
+        forwardPropertiesToSublabel()
+    }
+    
+    public override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
         forwardPropertiesToSublabel()
     }
     
