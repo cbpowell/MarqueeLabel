@@ -45,8 +45,8 @@
 		EAE4AC731CA8DCBB006C1ECC /* MarqueeLabel_Umbrella.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MarqueeLabel_Umbrella.h; sourceTree = "<group>"; };
 		EAE4AC751CA8DCBB006C1ECC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EAE4AC791CA8DE27006C1ECC /* module.map */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.map; sourceTree = "<group>"; };
-		EAE4ACD11CAA24E2006C1ECC /* MarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MarqueeLabel.h; path = ../../Classes/ObjC/MarqueeLabel.h; sourceTree = "<group>"; };
-		EAE4ACD21CAA24E2006C1ECC /* MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MarqueeLabel.m; path = ../../Classes/ObjC/MarqueeLabel.m; sourceTree = "<group>"; };
+		EAE4ACD11CAA24E2006C1ECC /* MarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MarqueeLabel.h; path = ../../Sources/ObjC/MarqueeLabel.h; sourceTree = "<group>"; };
+		EAE4ACD21CAA24E2006C1ECC /* MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MarqueeLabel.m; path = ../../Sources/ObjC/MarqueeLabel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

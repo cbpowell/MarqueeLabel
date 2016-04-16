@@ -32,7 +32,7 @@
 		EAE4AC6A1CA8DC10006C1ECC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		EAE4AC7F1CA8DE70006C1ECC /* MarqueeLabelSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MarqueeLabelSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAE4AC831CA8DE70006C1ECC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EAE4ACCE1CAA2495006C1ECC /* MarqueeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MarqueeLabel.swift; path = ../../Classes/Swift/MarqueeLabel.swift; sourceTree = "<group>"; };
+		EAE4ACCE1CAA2495006C1ECC /* MarqueeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MarqueeLabel.swift; path = ../../Sources/Swift/MarqueeLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
