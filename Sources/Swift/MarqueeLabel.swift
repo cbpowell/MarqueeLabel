@@ -83,7 +83,7 @@ public class MarqueeLabel: UILabel {
      
      - SeeAlso: holdScrolling
      - SeeAlso: lineBreakMode
-     @warning The label will not automatically scroll when this property is set to `YES`.
+     @warning The label will not automatically scroll when this property is set to `true`.
      @warning The UILabel default setting for the `lineBreakMode` property is `NSLineBreakByTruncatingTail`, which truncates
      the text adds an ellipsis glyph (...). Set the `lineBreakMode` property to `NSLineBreakByClipping` in order to avoid the
      ellipsis, especially if using an edge transparency fade.
@@ -107,7 +107,7 @@ public class MarqueeLabel: UILabel {
      Defaults to `false`.
      
      - SeeAlso: labelize
-     @warning The label will not automatically scroll when this property is set to `YES`.
+     @warning The label will not automatically scroll when this property is set to `true`.
      */
     @IBInspectable public var holdScrolling: Bool = false {
         didSet {
@@ -924,7 +924,7 @@ public class MarqueeLabel: UILabel {
             CATransaction.commit()
             
             // Create animation for color change
-            let colorAnimation = GradientAnimation(keyPath: "colors")
+            let colorAnimation = GradientSetupAnimation(keyPath: "colors")
             colorAnimation.fromValue = gradientMask.colors
             colorAnimation.toValue = adjustedColors
             colorAnimation.fillMode = kCAFillModeForwards
@@ -1139,7 +1139,7 @@ public class MarqueeLabel: UILabel {
     }
     
     override public func animationDidStop(anim: CAAnimation, finished flag: Bool) {
-        if anim is GradientAnimation {
+        if anim is GradientSetupAnimation {
             if let setupAnim = maskLayer?.animationForKey("setupFade") as? CABasicAnimation, finalColors = setupAnim.toValue as? [CGColorRef] {
                 maskLayer?.colors = finalColors
             }
@@ -1592,10 +1592,7 @@ public class MarqueeLabel: UILabel {
 // Define animation completion closure type
 private typealias MLAnimationCompletionBlock = (finished: Bool) -> ()
 
-}
-
-private class GradientAnimation: CABasicAnimation {
-    
+private class GradientSetupAnimation: CABasicAnimation {
 }
 
 private struct Scroller {
