@@ -560,7 +560,7 @@ public class MarqueeLabel: UILabel {
             awayOffset = 0.0
             
             // Remove an additional sublabels (for continuous types)
-            repliLayer.instanceCount = 1;
+            repliLayer?.instanceCount = 1;
             
             // Set the sublabel frame to calculated labelFrame
             sublabel.frame = labelFrame
@@ -590,8 +590,8 @@ public class MarqueeLabel: UILabel {
             sublabel.frame = homeLabelFrame
             
             // Configure replication
-            repliLayer.instanceCount = 2
-            repliLayer.instanceTransform = CATransform3DMakeTranslation(-awayOffset, 0.0, 0.0)
+            repliLayer?.instanceCount = 2
+            repliLayer?.instanceTransform = CATransform3DMakeTranslation(-awayOffset, 0.0, 0.0)
         
         case .RightLeft:
             homeLabelFrame = CGRectIntegral(CGRectMake(bounds.size.width - (expectedLabelSize.width + leadingBuffer), 0.0, expectedLabelSize.width, bounds.size.height))
@@ -601,7 +601,7 @@ public class MarqueeLabel: UILabel {
             sublabel.frame = homeLabelFrame
             
             // Remove any replication
-            repliLayer.instanceCount = 1
+            repliLayer?.instanceCount = 1
             
             // Enforce text alignment for this type
             sublabel.textAlignment = NSTextAlignment.Right
@@ -614,7 +614,7 @@ public class MarqueeLabel: UILabel {
             sublabel.frame = homeLabelFrame
             
             // Remove any replication
-            self.repliLayer.instanceCount = 1
+            repliLayer?.instanceCount = 1
             
             // Enforce text alignment for this type
             sublabel.textAlignment = NSTextAlignment.Left
@@ -770,26 +770,30 @@ public class MarqueeLabel: UILabel {
                 return
             }
             
+            guard (self != nil) else {
+                return
+            }
+            
             // Call returned home function
-            self.labelReturnedToHome(true)
+            self!.labelReturnedToHome(true)
             
             // Check to ensure that:
             // 1) We don't double fire if an animation already exists
             // 2) The instance is still attached to a window - this completion block is called for
             //    many reasons, including if the animation is removed due to the view being removed
             //    from the UIWindow (typically when the view controller is no longer the "top" view)
-            guard self.window != nil else {
+            guard self!.window != nil else {
                 return
             }
             
-            guard self.sublabel.layer.animationForKey("position") == nil else {
+            guard self!.sublabel.layer.animationForKey("position") == nil else {
                 return
             }
             
             // Begin again, if conditions met
-            if (self.labelShouldScroll() && !self.tapToScroll && !self.holdScrolling) {
+            if (self!.labelShouldScroll() && !self!.tapToScroll && !self!.holdScrolling) {
                 // Perform completion callback
-                self.scroll(interval, delay: delay, scroller: scroller, fader: gradientAnimation)
+                self!.scroll(interval, delay: delay, scroller: scroller, fader: gradientAnimation)
             }
         })
         
@@ -818,7 +822,7 @@ public class MarqueeLabel: UILabel {
         // Create scroller, which defines the animation to perform
         let homeOrigin = homeLabelFrame.origin
         let awayOrigin = offsetCGPoint(homeLabelFrame.origin, offset: awayOffset)
-        let scroller = Scroller(generator: {(interval: CGFloat, delay: CGFloat) -> [(layer: CALayer, anim: CAKeyframeAnimation)] in
+        let scroller = Scroller(generator: { [unowned self] (interval: CGFloat, delay: CGFloat) -> [(layer: CALayer, anim: CAKeyframeAnimation)] in
             // Create animation for position
             let values: [NSValue] = [
                 NSValue(CGPoint: homeOrigin), // Start at home
@@ -843,7 +847,7 @@ public class MarqueeLabel: UILabel {
         // Create scroller, which defines the animation to perform
         let homeOrigin = homeLabelFrame.origin
         let awayOrigin = offsetCGPoint(homeLabelFrame.origin, offset: awayOffset)
-        let scroller = Scroller(generator: { (interval: CGFloat, delay: CGFloat) -> [(layer: CALayer, anim: CAKeyframeAnimation)] in
+        let scroller = Scroller(generator: { [unowned self] (interval: CGFloat, delay: CGFloat) -> [(layer: CALayer, anim: CAKeyframeAnimation)] in
             // Create animation for position
             let values: [NSValue] = [
                 NSValue(CGPoint: homeOrigin), // Start at home
@@ -1166,11 +1170,11 @@ public class MarqueeLabel: UILabel {
         return CAReplicatorLayer.self
     }
     
-    private var repliLayer: CAReplicatorLayer {
-        return self.layer as! CAReplicatorLayer
+    private weak var repliLayer: CAReplicatorLayer? {
+        return self.layer as? CAReplicatorLayer
     }
     
-    private var maskLayer: CAGradientLayer? {
+    private weak var maskLayer: CAGradientLayer? {
         return self.layer.mask as! CAGradientLayer?
     }
     
