@@ -723,9 +723,6 @@ public class MarqueeLabel: UILabel {
         sublabel.layer.removeAllAnimations()
     }
     
-    // Define animation completion closure type
-    private typealias MLAnimationCompletion = (finished: Bool) -> ()
-    
     private func scroll(interval: CGFloat, delay: CGFloat = 0.0, scroller: Scroller, fader: CAKeyframeAnimation?) {
         var scroller = scroller
         // Check for conditions which would prevent scrolling
@@ -764,7 +761,7 @@ public class MarqueeLabel: UILabel {
             gradientAnimation = nil
         }
         
-        let completion = CompletionBlock<MLAnimationCompletion>({ (finished: Bool) -> () in
+        scrollCompletionBlock = { [weak self] (finished: Bool) -> () in
             guard finished else {
                 // Do not continue into the next loop
                 return
@@ -795,7 +792,7 @@ public class MarqueeLabel: UILabel {
                 // Perform completion callback
                 self!.scroll(interval, delay: delay, scroller: scroller, fader: gradientAnimation)
             }
-        })
+        }
         
         // Call scroller
         let scrolls = scroller.generate(interval, delay: delay)
@@ -807,7 +804,7 @@ public class MarqueeLabel: UILabel {
             
             // Add callback to single animation
             if index == 0 {
-                anim.setValue(completion as AnyObject, forKey: MarqueeKeys.CompletionClosure.rawValue)
+                anim.setValue(true, forKey: MarqueeKeys.CompletionClosure.rawValue)
                 anim.delegate = self
             }
             
@@ -858,7 +855,6 @@ public class MarqueeLabel: UILabel {
             // Generate animation
             let layer = self.sublabel.layer
             let anim = self.keyFrameAnimationForProperty("position", values: values, interval: interval, delay: delay)
-            
             
             return [(layer: layer, anim: anim)]
         })
@@ -1150,8 +1146,8 @@ public class MarqueeLabel: UILabel {
             // Remove regardless, since we set removeOnCompletion = false
             maskLayer?.removeAnimationForKey("setupFade")
         } else {
-            let completion = anim.valueForKey(MarqueeKeys.CompletionClosure.rawValue) as? CompletionBlock<MLAnimationCompletion>
-            completion?.f(finished: flag)
+            scrollCompletionBlock?(finished: flag)
+            scrollCompletionBlock = nil;
         }
     }
     
@@ -1177,6 +1173,8 @@ public class MarqueeLabel: UILabel {
     private weak var maskLayer: CAGradientLayer? {
         return self.layer.mask as! CAGradientLayer?
     }
+    
+    private var scrollCompletionBlock: MLAnimationCompletionBlock?
     
     override public func drawLayer(layer: CALayer, inContext ctx: CGContext) {
         // Do NOT call super, to prevent UILabel superclass from drawing into context
@@ -1584,7 +1582,6 @@ public class MarqueeLabel: UILabel {
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
-    
 }
 
 
@@ -1592,10 +1589,9 @@ public class MarqueeLabel: UILabel {
 // MARK: - Support
 //
 
-// Solution from: http://stackoverflow.com/a/24760061/580913
-private class CompletionBlock<T> {
-    let f : T
-    init (_ f: T) { self.f = f }
+// Define animation completion closure type
+private typealias MLAnimationCompletionBlock = (finished: Bool) -> ()
+
 }
 
 private class GradientAnimation: CABasicAnimation {
