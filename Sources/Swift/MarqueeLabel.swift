@@ -739,26 +739,31 @@ public class MarqueeLabel: UILabel {
         
         // Create gradient animation, if needed
         let gradientAnimation: CAKeyframeAnimation?
-        if fadeLength > 0.0 {
-            // Remove any setup animation, but apply final values
-            if let setupAnim = maskLayer?.animationForKey("setupFade") as? CABasicAnimation, finalColors = setupAnim.toValue as? [CGColorRef] {
-                maskLayer?.colors = finalColors
-            }
-            maskLayer?.removeAnimationForKey("setupFade")
-            
-            // Generate animation if needed
-            if let previousAnimation = fader {
-                gradientAnimation = previousAnimation
+        // Check for IBDesignable
+        #if !TARGET_INTERFACE_BUILDER
+            if fadeLength > 0.0 {
+                // Remove any setup animation, but apply final values
+                if let setupAnim = maskLayer?.animationForKey("setupFade") as? CABasicAnimation, finalColors = setupAnim.toValue as? [CGColorRef] {
+                    maskLayer?.colors = finalColors
+                }
+                maskLayer?.removeAnimationForKey("setupFade")
+                
+                // Generate animation if needed
+                if let previousAnimation = fader {
+                    gradientAnimation = previousAnimation
+                } else {
+                    gradientAnimation = keyFrameAnimationForGradient(fadeLength, interval: interval, delay: delay)
+                }
+                
+                // Apply scrolling animation
+                maskLayer?.addAnimation(gradientAnimation!, forKey: "gradient")
             } else {
-                gradientAnimation = keyFrameAnimationForGradient(fadeLength, interval: interval, delay: delay)
+                // No animation needed
+                gradientAnimation = nil
             }
-            
-            // Apply scrolling animation
-            maskLayer?.addAnimation(gradientAnimation!, forKey: "gradient")
-        } else {
-            // No animation needed
-            gradientAnimation = nil
-        }
+        #else
+            gradientAnimation = nil;
+        #endif
         
         scrollCompletionBlock = { [weak self] (finished: Bool) -> () in
             guard finished else {
@@ -917,6 +922,13 @@ public class MarqueeLabel: UILabel {
             adjustedColors = [opaque, opaque, opaque, (trailingFadeNeeded ? transparent : opaque)]
             break
         }
+        
+        // Check for IBDesignable
+        #if TARGET_INTERFACE_BUILDER
+            gradientMask.colors = adjustedColors
+            CATransaction.commit()
+            return
+        #endif
         
         if (animated) {
             // Finish transaction
