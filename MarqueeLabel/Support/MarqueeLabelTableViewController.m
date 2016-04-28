@@ -18,6 +18,8 @@
 @implementation MarqueeLabelTableViewController
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
+    
     self.strings = @[@"When shall we three meet again in thunder, lightning, or in rain? When the hurlyburly's done, When the battle 's lost and won.",
                      @"I have no spur to prick the sides of my intent, but only vaulting ambition, which o'erleaps itself, and falls on the other.",
                      @"Double, double toil and trouble; Fire burn, and cauldron bubble.",
