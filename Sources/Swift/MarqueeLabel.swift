@@ -644,8 +644,14 @@ public class MarqueeLabel: UILabel {
         let maximumLabelSize = CGSizeMake(CGFloat.max, CGFloat.max)
         // Calculate the expected size
         var expectedLabelSize = sublabel.sizeThatFits(maximumLabelSize)
-        // Sanitize width to 5461.0 (largest width a UILabel will draw on an iPhone 6S Plus)
-        expectedLabelSize.width = min(expectedLabelSize.width, 5461.0)
+        
+        #if os(tvOS)
+            // Sanitize width to 16384.0 (largest width a UILabel will draw on tvOS)
+            expectedLabelSize.width = min(expectedLabelSize.width, 16384.0)
+        #else
+            // Sanitize width to 5461.0 (largest width a UILabel will draw on an iPhone 6S Plus)
+            expectedLabelSize.width = min(expectedLabelSize.width, 5461.0)
+        #endif
 
         // Adjust to own height (make text baseline match normal label)
         expectedLabelSize.height = bounds.size.height
