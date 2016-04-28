@@ -44,6 +44,7 @@ typedef void(^MLAnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, assign, readwrite) BOOL isPaused;
 
 // Support
+@property (nonatomic, copy) MLAnimationCompletionBlock scrollCompletionBlock;
 @property (nonatomic, strong) NSArray *gradientColors;
 CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
@@ -545,22 +546,23 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         [self.layer.mask addAnimation:gradAnim forKey:@"gradient"];
     }
     
-    MLAnimationCompletionBlock completionBlock = ^(BOOL finished) {
-        if (!finished) {
+    __weak __typeof__(self) weakSelf = self;
+    self.scrollCompletionBlock = ^(BOOL finished) {
+        if (!finished || !weakSelf) {
             // Do not continue into the next loop
             return;
         }
         // Call returned home method
-        [self labelReturnedToHome:YES];
+        [weakSelf labelReturnedToHome:YES];
         // Check to ensure that:
         // 1) We don't double fire if an animation already exists
         // 2) The instance is still attached to a window - this completion block is called for
         //    many reasons, including if the animation is removed due to the view being removed
         //    from the UIWindow (typically when the view controller is no longer the "top" view)
-        if (self.window && ![self.subLabel.layer animationForKey:@"position"]) {
+        if (self.window && ![weakSelf.subLabel.layer animationForKey:@"position"]) {
             // Begin again, if conditions met
-            if (self.labelShouldScroll && !self.tapToScroll && !self.holdScrolling) {
-                [self scrollAwayWithInterval:interval delayAmount:delayAmount];
+            if (weakSelf.labelShouldScroll && !weakSelf.tapToScroll && !weakSelf.holdScrolling) {
+                [weakSelf scrollAwayWithInterval:interval delayAmount:delayAmount];
             }
         }
     };
@@ -580,7 +582,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
                                                               interval:interval
                                                                  delay:delayAmount];
     // Add completion block
-    [awayAnim setValue:completionBlock forKey:kMarqueeLabelAnimationCompletionBlock];
+    [awayAnim setValue:@(YES) forKey:kMarqueeLabelAnimationCompletionBlock];
     
     // Add animation
     [self.subLabel.layer addAnimation:awayAnim forKey:@"position"];
@@ -637,22 +639,23 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
                                                       delay:delayAmount];
     }
     
-    MLAnimationCompletionBlock completionBlock = ^(BOOL finished) {
-        if (!finished) {
+    __weak __typeof__(self) weakSelf = self;
+    self.scrollCompletionBlock = ^(BOOL finished) {
+        if (!finished || !weakSelf) {
             // Do not continue into the next loop
             return;
         }
         // Call returned home method
-        [self labelReturnedToHome:YES];
+        [weakSelf labelReturnedToHome:YES];
         // Check to ensure that:
         // 1) We don't double fire if an animation already exists
         // 2) The instance is still attached to a window - this completion block is called for
         //    many reasons, including if the animation is removed due to the view being removed
         //    from the UIWindow (typically when the view controller is no longer the "top" view)
-        if (self.window && ![self.subLabel.layer animationForKey:@"position"]) {
+        if (weakSelf.window && ![weakSelf.subLabel.layer animationForKey:@"position"]) {
             // Begin again, if conditions met
-            if (self.labelShouldScroll && !self.tapToScroll && !self.holdScrolling) {
-                [self scrollContinuousWithInterval:interval
+            if (weakSelf.labelShouldScroll && !weakSelf.tapToScroll && !weakSelf.holdScrolling) {
+                [weakSelf scrollContinuousWithInterval:interval
                                              after:delayAmount
                                     labelAnimation:labelAnimation
                                  gradientAnimation:gradientAnimation];
@@ -662,7 +665,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     
     // Attach completion block
-    [labelAnimation setValue:completionBlock forKey:kMarqueeLabelAnimationCompletionBlock];
+    [labelAnimation setValue:@(YES) forKey:kMarqueeLabelAnimationCompletionBlock];
     
     // Add animation
     [self.subLabel.layer addAnimation:labelAnimation forKey:@"position"];
@@ -961,9 +964,9 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
-    MLAnimationCompletionBlock completionBlock = [anim valueForKey:kMarqueeLabelAnimationCompletionBlock];
-    if (completionBlock) {
-        completionBlock(flag);
+    if (self.scrollCompletionBlock) {
+        self.scrollCompletionBlock(flag);
+        self.scrollCompletionBlock = nil;
     }
 }
 
