@@ -10,9 +10,8 @@
 		EA59ABFD1CAA274A0052AD98 /* MarqueeLabel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA59ABFC1CAA274A0052AD98 /* MarqueeLabel.storyboard */; };
 		EA59ABFF1CAA278D0052AD98 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA59ABFE1CAA278D0052AD98 /* ViewController.swift */; };
 		EA59AC011CAA28410052AD98 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA59AC001CAA28410052AD98 /* AppDelegate.swift */; };
-		EA59AC0F1CAA28FF0052AD98 /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE4ACD61CAA2520006C1ECC /* MarqueeLabel.swift */; };
 		EAAEFA021CAA2C1A00F8D857 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAAEFA011CAA2C1A00F8D857 /* Assets.xcassets */; };
-		EAE4ACD71CAA2520006C1ECC /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE4ACD61CAA2520006C1ECC /* MarqueeLabel.swift */; };
+		EADADDF41CD2C6000034838E /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADADDF31CD2C6000034838E /* MarqueeLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,9 +21,9 @@
 		EA59AC071CAA28D80052AD98 /* MarqueeLabelTV.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MarqueeLabelTV.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA59AC0B1CAA28D80052AD98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EAAEFA011CAA2C1A00F8D857 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EADADDF31CD2C6000034838E /* MarqueeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MarqueeLabel.swift; path = ../../Sources/Swift/MarqueeLabel.swift; sourceTree = "<group>"; };
 		EAE4ACB61CAA23FD006C1ECC /* MarqueeLabelTVDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarqueeLabelTVDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAE4ACC21CAA23FD006C1ECC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		EAE4ACD61CAA2520006C1ECC /* MarqueeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MarqueeLabel.swift; path = ../../Classes/Swift/MarqueeLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,7 +86,7 @@
 		EAE4ACC81CAA244F006C1ECC /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				EAE4ACD61CAA2520006C1ECC /* MarqueeLabel.swift */,
+				EADADDF31CD2C6000034838E /* MarqueeLabel.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -227,7 +226,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA59AC0F1CAA28FF0052AD98 /* MarqueeLabel.swift in Sources */,
+				EADADDF41CD2C6000034838E /* MarqueeLabel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,7 +236,6 @@
 			files = (
 				EA59AC011CAA28410052AD98 /* AppDelegate.swift in Sources */,
 				EA59ABFF1CAA278D0052AD98 /* ViewController.swift in Sources */,
-				EAE4ACD71CAA2520006C1ECC /* MarqueeLabel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
