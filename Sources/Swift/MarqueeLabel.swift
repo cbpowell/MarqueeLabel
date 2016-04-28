@@ -33,19 +33,18 @@ public class MarqueeLabel: UILabel {
     
     /**
      Defines the direction and method in which the `MarqueeLabel` instance scrolls.
-     `MarqueeLabel` supports four types of scrolling: `MLLeftRight`, `MLRightLeft`, `MLContinuous`, and `MLContinuousReverse`.
+     `MarqueeLabel` supports four types of scrolling: `LeftRight`, `RightLeft`, `Continuous`, and `ContinuousReverse`.
      
-     Given the nature of how text direction works, the options for the `marqueeType` property require specific text alignments
+     Given the nature of how text direction works, the options for the `type` property require specific text alignments
      and will set the textAlignment property accordingly.
      
-     - `MLLeftRight` type is ONLY compatible with a label text alignment of `NSTextAlignmentLeft`.
-     - `MLRightLeft` type is ONLY compatible with a label text alignment of `NSTextAlignmentRight`.
-     - `MLContinuous` does not require a text alignment (it is effectively centered).
-     - `MLContinuousReverse` does not require a text alignment (it is effectively centered).
+     - `LeftRight` type is ONLY compatible with a label text alignment of `NSTextAlignmentLeft`.
+     - `RightLeft` type is ONLY compatible with a label text alignment of `NSTextAlignmentRight`.
+     - `Continuous` does not require a text alignment (it is effectively centered).
+     - `ContinuousReverse` does not require a text alignment (it is effectively centered).
      
-     Defaults to `MLContinuous`.
+     Defaults to `Continuous`.
      
-     - SeeAlso: Type
      - SeeAlso: textAlignment
      */
     public var type: Type = .Continuous {
@@ -1066,7 +1065,7 @@ public class MarqueeLabel: UILabel {
         // Get timing function
         let timingFunction = timingFunctionForAnimationCurve(animationCurve)
         
-        // Calculate times based on marqueeType
+        // Calculate times based on marquee type
         let totalDuration: CGFloat
         switch (type) {
         case .LeftRight, .RightLeft:
