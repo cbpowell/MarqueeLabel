@@ -1164,7 +1164,6 @@ public class MarqueeLabel: UILabel {
             maskLayer?.removeAnimationForKey("setupFade")
         } else {
             scrollCompletionBlock?(finished: flag)
-            scrollCompletionBlock = nil;
         }
     }
     

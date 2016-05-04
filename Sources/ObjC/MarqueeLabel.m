@@ -971,7 +971,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
     if (self.scrollCompletionBlock) {
         self.scrollCompletionBlock(flag);
-        self.scrollCompletionBlock = nil;
     }
 }
 
