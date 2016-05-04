@@ -18,7 +18,7 @@
 		EA59ABFC1CAA274A0052AD98 /* MarqueeLabel.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MarqueeLabel.storyboard; sourceTree = SOURCE_ROOT; };
 		EA59ABFE1CAA278D0052AD98 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = SOURCE_ROOT; };
 		EA59AC001CAA28410052AD98 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = SOURCE_ROOT; };
-		EA59AC071CAA28D80052AD98 /* MarqueeLabelTV.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MarqueeLabelTV.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA59AC071CAA28D80052AD98 /* MarqueeLabel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MarqueeLabel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA59AC0B1CAA28D80052AD98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EAAEFA011CAA2C1A00F8D857 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EADADDF31CD2C6000034838E /* MarqueeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MarqueeLabel.swift; path = ../../Sources/Swift/MarqueeLabel.swift; sourceTree = "<group>"; };
@@ -66,7 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				EAE4ACB61CAA23FD006C1ECC /* MarqueeLabelTVDemo.app */,
-				EA59AC071CAA28D80052AD98 /* MarqueeLabelTV.framework */,
+				EA59AC071CAA28D80052AD98 /* MarqueeLabel.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -130,9 +130,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		EA59AC061CAA28D80052AD98 /* MarqueeLabelTV */ = {
+		EA59AC061CAA28D80052AD98 /* MarqueeLabel */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EA59AC0C1CAA28D80052AD98 /* Build configuration list for PBXNativeTarget "MarqueeLabelTV" */;
+			buildConfigurationList = EA59AC0C1CAA28D80052AD98 /* Build configuration list for PBXNativeTarget "MarqueeLabel" */;
 			buildPhases = (
 				EA59AC021CAA28D80052AD98 /* Sources */,
 				EA59AC031CAA28D80052AD98 /* Frameworks */,
@@ -143,9 +143,9 @@
 			);
 			dependencies = (
 			);
-			name = MarqueeLabelTV;
+			name = MarqueeLabel;
 			productName = MarqueeLabelTV;
-			productReference = EA59AC071CAA28D80052AD98 /* MarqueeLabelTV.framework */;
+			productReference = EA59AC071CAA28D80052AD98 /* MarqueeLabel.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		EAE4ACB51CAA23FD006C1ECC /* MarqueeLabelTVDemo */ = {
@@ -197,7 +197,7 @@
 			projectRoot = "";
 			targets = (
 				EAE4ACB51CAA23FD006C1ECC /* MarqueeLabelTVDemo */,
-				EA59AC061CAA28D80052AD98 /* MarqueeLabelTV */,
+				EA59AC061CAA28D80052AD98 /* MarqueeLabel */,
 			);
 		};
 /* End PBXProject section */
@@ -398,7 +398,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		EA59AC0C1CAA28D80052AD98 /* Build configuration list for PBXNativeTarget "MarqueeLabelTV" */ = {
+		EA59AC0C1CAA28D80052AD98 /* Build configuration list for PBXNativeTarget "MarqueeLabel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EA59AC0D1CAA28D80052AD98 /* Debug */,
