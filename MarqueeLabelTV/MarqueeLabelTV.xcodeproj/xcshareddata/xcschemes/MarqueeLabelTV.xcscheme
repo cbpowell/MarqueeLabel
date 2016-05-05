@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "EA59AC061CAA28D80052AD98"
-               BuildableName = "MarqueeLabelTV.framework"
-               BlueprintName = "MarqueeLabelTV"
+               BuildableName = "MarqueeLabel.framework"
+               BlueprintName = "MarqueeLabel"
                ReferencedContainer = "container:MarqueeLabelTV.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,8 +46,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EA59AC061CAA28D80052AD98"
-            BuildableName = "MarqueeLabelTV.framework"
-            BlueprintName = "MarqueeLabelTV"
+            BuildableName = "MarqueeLabel.framework"
+            BlueprintName = "MarqueeLabel"
             ReferencedContainer = "container:MarqueeLabelTV.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -64,8 +64,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EA59AC061CAA28D80052AD98"
-            BuildableName = "MarqueeLabelTV.framework"
-            BlueprintName = "MarqueeLabelTV"
+            BuildableName = "MarqueeLabel.framework"
+            BlueprintName = "MarqueeLabel"
             ReferencedContainer = "container:MarqueeLabelTV.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
