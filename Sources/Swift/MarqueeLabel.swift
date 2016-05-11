@@ -462,6 +462,7 @@ public class MarqueeLabel: UILabel {
         forwardPropertiesToSublabel()
     }
     
+    @available(iOS 8.0, *)
     public override func prepareForInterfaceBuilder() {
         super.prepareForInterfaceBuilder()
         forwardPropertiesToSublabel()
