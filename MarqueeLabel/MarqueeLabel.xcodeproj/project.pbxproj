@@ -18,7 +18,7 @@
 		EAE4AC2D1CA8B794006C1ECC /* MLHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAE4AC2C1CA8B794006C1ECC /* MLHeader.xib */; };
 		EAE4AC541CA8B83D006C1ECC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAE4AC521CA8B83D006C1ECC /* LaunchScreen.storyboard */; };
 		EAE4AC741CA8DCBB006C1ECC /* MarqueeLabel_Umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = EAE4AC731CA8DCBB006C1ECC /* MarqueeLabel_Umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EAE4ACD31CAA24E2006C1ECC /* MarqueeLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = EAE4ACD11CAA24E2006C1ECC /* MarqueeLabel.h */; };
+		EAE4ACD31CAA24E2006C1ECC /* MarqueeLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = EAE4ACD11CAA24E2006C1ECC /* MarqueeLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EAE4ACD41CAA24E2006C1ECC /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE4ACD21CAA24E2006C1ECC /* MarqueeLabel.m */; };
 		EAE4ACD51CAA24E2006C1ECC /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE4ACD21CAA24E2006C1ECC /* MarqueeLabel.m */; };
 /* End PBXBuildFile section */
