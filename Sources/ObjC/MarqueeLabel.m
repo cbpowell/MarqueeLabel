@@ -32,7 +32,9 @@ typedef void(^MLAnimationCompletionBlock)(BOOL finished);
 - (CGFloat)durationPercentageForPositionPercentage:(CGFloat)positionPercentage withDuration:(NSTimeInterval)duration;
 @end
 
-@interface MarqueeLabel()
+@interface MarqueeLabel() {
+    BOOL _labelShouldScroll;
+}
 
 @property (nonatomic, strong) UILabel *subLabel;
 
@@ -678,6 +680,11 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     [CATransaction commit];
 }
 
+- (void)setLabelShouldScroll:(BOOL)labelShouldScroll {
+    _labelShouldScroll = labelShouldScroll;
+    self.layer.mask = nil;
+}
+
 - (void)applyGradientMaskForFadeLength:(CGFloat)fadeLength animated:(BOOL)animated {
     // Check for zero-length fade
     if (fadeLength <= 0.0f) {
@@ -687,26 +694,55 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     CAGradientLayer *gradientMask = (CAGradientLayer *)self.layer.mask;
     
-    [gradientMask removeAllAnimations];
-    
-    if (!gradientMask) {
-        // Create CAGradientLayer if needed
-        gradientMask = [CAGradientLayer layer];
-    }
-    
     // Set up colors
     NSObject *transparent = (NSObject *)[[UIColor clearColor] CGColor];
     NSObject *opaque = (NSObject *)[[UIColor blackColor] CGColor];
     
+    if (!gradientMask) {
+        // Create CAGradientLayer if needed
+        gradientMask = [CAGradientLayer layer];
+        gradientMask.shouldRasterize = YES;
+        gradientMask.rasterizationScale = [UIScreen mainScreen].scale;
+        gradientMask.startPoint = CGPointMake(0.0f, 0.5f);
+        gradientMask.endPoint = CGPointMake(1.0f, 0.5f);
+        // Start with "no fade" colors and locations
+        gradientMask.colors = @[opaque, opaque, opaque, opaque];
+        gradientMask.locations = @[@(0.0f), @(0.0f), @(1.0f), @(1.0f)];
+        
+        // Determine colors for non-scrolling label (i.e. at home)
+        NSArray *adjustedColors;
+        BOOL trailingFadeNeeded = self.labelShouldScroll;
+        switch (self.marqueeType) {
+            case MLContinuousReverse:
+            case MLRightLeft:
+                adjustedColors = @[(trailingFadeNeeded ? transparent : opaque),
+                                   opaque,
+                                   opaque,
+                                   opaque];
+                break;
+                
+            default:
+                // MLContinuous
+                // MLLeftRight
+                adjustedColors = @[opaque,
+                                   opaque,
+                                   opaque,
+                                   (trailingFadeNeeded ? transparent : opaque)];
+                break;
+        }
+        
+        // Create animation for color change
+        CABasicAnimation *colorAnimation = [CABasicAnimation animationWithKeyPath:@"colors"];
+        colorAnimation.fromValue = gradientMask.colors;
+        colorAnimation.toValue = adjustedColors;
+        colorAnimation.duration = 0.25;
+        [gradientMask addAnimation:colorAnimation forKey:colorAnimation.keyPath];
+        
+        gradientMask.colors = adjustedColors;
+    }
+    
     gradientMask.bounds = self.layer.bounds;
     gradientMask.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-    gradientMask.shouldRasterize = YES;
-    gradientMask.rasterizationScale = [UIScreen mainScreen].scale;
-    gradientMask.startPoint = CGPointMake(0.0f, 0.5f);
-    gradientMask.endPoint = CGPointMake(1.0f, 0.5f);
-    // Start with "no fade" colors and locations
-    gradientMask.colors = @[opaque, opaque, opaque, opaque];
-    gradientMask.locations = @[@(0.0f), @(0.0f), @(1.0f), @(1.0f)];
     
     // Set mask
     self.layer.mask = gradientMask;
@@ -717,28 +753,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     // Adjust stops based on fade length
     NSArray *adjustedLocations = @[@(0.0), @(leftFadeStop), @(1.0 - rightFadeStop), @(1.0)];
     
-    // Determine colors for non-scrolling label (i.e. at home)
-    NSArray *adjustedColors;
-    BOOL trailingFadeNeeded = self.labelShouldScroll;
-    switch (self.marqueeType) {
-        case MLContinuousReverse:
-        case MLRightLeft:
-            adjustedColors = @[(trailingFadeNeeded ? transparent : opaque),
-                               opaque,
-                               opaque,
-                               opaque];
-            break;
-            
-        default:
-            // MLContinuous
-            // MLLeftRight
-            adjustedColors = @[opaque,
-                               opaque,
-                               opaque,
-                               (trailingFadeNeeded ? transparent : opaque)];
-            break;
-    }
-    
     if (animated) {
         // Create animation for location change
         CABasicAnimation *locationAnimation = [CABasicAnimation animationWithKeyPath:@"locations"];
@@ -746,24 +760,15 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         locationAnimation.toValue = adjustedLocations;
         locationAnimation.duration = 0.25;
         
-        // Create animation for color change
-        CABasicAnimation *colorAnimation = [CABasicAnimation animationWithKeyPath:@"colors"];
-        colorAnimation.fromValue = gradientMask.colors;
-        colorAnimation.toValue = adjustedColors;
-        colorAnimation.duration = 0.25;
         
-        CAAnimationGroup *group = [CAAnimationGroup animation];
-        group.duration = 0.25;
-        group.animations = @[locationAnimation, colorAnimation];
-        
-        [gradientMask addAnimation:group forKey:colorAnimation.keyPath];
+        [gradientMask addAnimation:locationAnimation forKey:locationAnimation.keyPath];
         gradientMask.locations = adjustedLocations;
-        gradientMask.colors = adjustedColors;
     } else {
+        [gradientMask removeAnimationForKey:@"locations"];
+        
         [CATransaction begin];
         [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
         gradientMask.locations = adjustedLocations;
-        gradientMask.colors = adjustedColors;
         [CATransaction commit];
     }
 }
@@ -1334,6 +1339,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     }
     
     _marqueeType = marqueeType;
+    self.layer.mask = nil;
     
     [self updateSublabel];
 }
