@@ -22,6 +22,9 @@ typedef void(^MLAnimationCompletionBlock)(BOOL finished);
 #define SYSTEM_VERSION_IS_8_0_X ([[[UIDevice currentDevice] systemVersion] hasPrefix:@"8.0"])
 
 // Helpers
+@interface GradientSetupAnimation : CABasicAnimation
+@end
+
 @interface UIView (MarqueeLabelHelpers)
 - (UIViewController *)firstAvailableViewController;
 - (id)traverseResponderChainForFirstViewController;
@@ -169,6 +172,10 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (CAReplicatorLayer *)repliLayer {
     return (CAReplicatorLayer *)self.layer;
+}
+
+- (CAGradientLayer *)maskLayer {
+    return (CAGradientLayer *)self.layer.mask;
 }
 
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx {
@@ -679,43 +686,44 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)applyGradientMaskForFadeLength:(CGFloat)fadeLength animated:(BOOL)animated {
+    
+    // Remove any in-flight animations
+    [self.layer.mask removeAllAnimations];
+    
     // Check for zero-length fade
     if (fadeLength <= 0.0f) {
         [self removeGradientMask];
         return;
     }
     
+    // Configure gradient mask without implicit animations
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    
     CAGradientLayer *gradientMask = (CAGradientLayer *)self.layer.mask;
-    
-    [gradientMask removeAllAnimations];
-    
-    if (!gradientMask) {
-        // Create CAGradientLayer if needed
-        gradientMask = [CAGradientLayer layer];
-    }
     
     // Set up colors
     NSObject *transparent = (NSObject *)[[UIColor clearColor] CGColor];
     NSObject *opaque = (NSObject *)[[UIColor blackColor] CGColor];
     
-    gradientMask.bounds = self.layer.bounds;
-    gradientMask.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-    gradientMask.shouldRasterize = YES;
-    gradientMask.rasterizationScale = [UIScreen mainScreen].scale;
-    gradientMask.startPoint = CGPointMake(0.0f, 0.5f);
-    gradientMask.endPoint = CGPointMake(1.0f, 0.5f);
-    // Start with "no fade" colors and locations
-    gradientMask.colors = @[opaque, opaque, opaque, opaque];
-    gradientMask.locations = @[@(0.0f), @(0.0f), @(1.0f), @(1.0f)];
+    if (!gradientMask) {
+        // Create CAGradientLayer if needed
+        gradientMask = [CAGradientLayer layer];
+        gradientMask.shouldRasterize = YES;
+        gradientMask.rasterizationScale = [UIScreen mainScreen].scale;
+        gradientMask.startPoint = CGPointMake(0.0f, 0.5f);
+        gradientMask.endPoint = CGPointMake(1.0f, 0.5f);
+        // Adjust stops based on fade length
+        CGFloat leftFadeStop = fadeLength/self.bounds.size.width;
+        CGFloat rightFadeStop = fadeLength/self.bounds.size.width;
+        gradientMask.locations = @[@(0.0f), @(leftFadeStop), @(1.0f - rightFadeStop), @(1.0f)];
+    }
     
     // Set mask
     self.layer.mask = gradientMask;
     
-    CGFloat leftFadeStop = fadeLength/self.bounds.size.width;
-    CGFloat rightFadeStop = fadeLength/self.bounds.size.width;
-    
-    // Adjust stops based on fade length
-    NSArray *adjustedLocations = @[@(0.0), @(leftFadeStop), @(1.0 - rightFadeStop), @(1.0)];
+    gradientMask.bounds = self.layer.bounds;
+    gradientMask.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     
     // Determine colors for non-scrolling label (i.e. at home)
     NSArray *adjustedColors;
@@ -739,30 +747,24 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
             break;
     }
     
+    // Check for IBDesignable
+#if TARGET_INTERFACE_BUILDER
+    animated = NO;
+#endif
+    
     if (animated) {
-        // Create animation for location change
-        CABasicAnimation *locationAnimation = [CABasicAnimation animationWithKeyPath:@"locations"];
-        locationAnimation.fromValue = gradientMask.locations;
-        locationAnimation.toValue = adjustedLocations;
-        locationAnimation.duration = 0.25;
+        // Finish transaction
+        [CATransaction commit];
         
         // Create animation for color change
-        CABasicAnimation *colorAnimation = [CABasicAnimation animationWithKeyPath:@"colors"];
+        GradientSetupAnimation *colorAnimation = [GradientSetupAnimation animationWithKeyPath:@"colors"];
         colorAnimation.fromValue = gradientMask.colors;
         colorAnimation.toValue = adjustedColors;
         colorAnimation.duration = 0.25;
-        
-        CAAnimationGroup *group = [CAAnimationGroup animation];
-        group.duration = 0.25;
-        group.animations = @[locationAnimation, colorAnimation];
-        
-        [gradientMask addAnimation:group forKey:colorAnimation.keyPath];
-        gradientMask.locations = adjustedLocations;
-        gradientMask.colors = adjustedColors;
+        colorAnimation.removedOnCompletion = NO;
+        colorAnimation.delegate = self;
+        [gradientMask addAnimation:colorAnimation forKey:@"setupFade"];
     } else {
-        [CATransaction begin];
-        [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
-        gradientMask.locations = adjustedLocations;
         gradientMask.colors = adjustedColors;
         [CATransaction commit];
     }
@@ -830,10 +832,14 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     }
     
     // Define gradient values
+    // Get curent layer values
+    CAGradientLayer *currentMask = [[self maskLayer] presentationLayer];
+    NSArray *currentValues = currentMask.colors;
+    
     switch (self.marqueeType) {
         case MLContinuousReverse:
             values = @[
-                       @[transp, opaque, opaque, opaque],           // Initial gradient
+                       (currentValues ? currentValues : @[transp, opaque, opaque, opaque]),           // Initial gradient
                        @[transp, opaque, opaque, opaque],           // Begin of fade in
                        @[transp, opaque, opaque, transp],           // End of fade in, just as scroll away starts
                        @[transp, opaque, opaque, transp],           // Begin of fade out, just before scroll home completes
@@ -844,7 +850,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
             
         case MLRightLeft:
             values = @[
-                       @[transp, opaque, opaque, opaque],           // 1)
+                       (currentValues ? currentValues : @[transp, opaque, opaque, opaque]),           // 1)
                        @[transp, opaque, opaque, opaque],           // 2)
                        @[transp, opaque, opaque, transp],           // 3)
                        @[transp, opaque, opaque, transp],           // 4)
@@ -858,7 +864,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
             
         case MLContinuous:
             values = @[
-                       @[opaque, opaque, opaque, transp],           // Initial gradient
+                       (currentValues ? currentValues : @[opaque, opaque, opaque, transp]),           // Initial gradient
                        @[opaque, opaque, opaque, transp],           // Begin of fade in
                        @[transp, opaque, opaque, transp],           // End of fade in, just as scroll away starts
                        @[transp, opaque, opaque, transp],           // Begin of fade out, just before scroll home completes
@@ -870,7 +876,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         case MLLeftRight:
         default:
             values = @[
-                       @[opaque, opaque, opaque, transp],           // 1)
+                       (currentValues ? currentValues : @[opaque, opaque, opaque, transp]),           // 1)
                        @[opaque, opaque, opaque, transp],           // 2)
                        @[transp, opaque, opaque, transp],           // 3)
                        @[transp, opaque, opaque, transp],           // 4)
@@ -969,8 +975,20 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
-    if (self.scrollCompletionBlock) {
-        self.scrollCompletionBlock(flag);
+    if ([anim isKindOfClass:[GradientSetupAnimation class]]) {
+        GradientSetupAnimation *setupFade = (GradientSetupAnimation *)[self.layer.mask animationForKey:@"setupFade"];
+        if (setupFade) {
+            NSArray *finalColors = setupFade.toValue;
+            if (finalColors) {
+                [(CAGradientLayer *)self.layer.mask setColors:finalColors];
+            }
+        }
+        // Remove any/all setupFade animations regardless
+        [self.layer.mask removeAnimationForKey:@"setupFade"];
+    } else {
+        if (self.scrollCompletionBlock) {
+            self.scrollCompletionBlock(flag);
+        }
     }
 }
 
@@ -1394,6 +1412,10 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset) {
     return CGPointMake(point.x + offset, point.y);
 }
+
+@implementation GradientSetupAnimation
+
+@end
 
 @implementation UIView (MarqueeLabelHelpers)
 // Thanks to Phil M
