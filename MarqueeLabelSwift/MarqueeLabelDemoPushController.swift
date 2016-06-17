@@ -14,9 +14,9 @@ class MarqueeLabelDemoPushController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        demoLabel.type = .Continuous
-        demoLabel.speed = .Duration(15)
-        demoLabel.animationCurve = .EaseInOut
+        demoLabel.type = .continuous
+        demoLabel.speed = .duration(15)
+        demoLabel.animationCurve = .easeInOut
         demoLabel.fadeLength = 10.0
         demoLabel.leadingBuffer = 30.0
         

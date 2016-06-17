@@ -48,24 +48,24 @@ class MarqueeLabelDemoViewController : UIViewController {
         
         // Continuous Type
         demoLabel1.tag = 101
-        demoLabel1.type = .Continuous
-        demoLabel1.animationCurve = .EaseInOut
+        demoLabel1.type = .continuous
+        demoLabel1.animationCurve = .easeInOut
         // Text string, fade length, leading buffer, trailing buffer, and scroll
         // duration for this label are set via Interface Builder's Attributes Inspector!
         
         
         // Reverse Continuous Type, with attributed string
         demoLabel2.tag = 201
-        demoLabel2.type = .ContinuousReverse
-        demoLabel2.textAlignment = .Right
-        demoLabel2.lineBreakMode = .ByTruncatingHead
-        demoLabel2.speed = .Duration(8.0)
+        demoLabel2.type = .continuousReverse
+        demoLabel2.textAlignment = .right
+        demoLabel2.lineBreakMode = .byTruncatingHead
+        demoLabel2.speed = .duration(8.0)
         demoLabel2.fadeLength = 15.0
         demoLabel2.leadingBuffer = 40.0
         
         let attributedString2 = NSMutableAttributedString(string:"This is a long string, that's also an attributed string, which works just as well!")
         attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "Helvetica-Bold", size: 18)!, range: NSMakeRange(0, 21))
-        attributedString2.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGrayColor(), range: NSMakeRange(0, 14))
+        attributedString2.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGray(), range: NSMakeRange(0, 14))
         attributedString2.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 0.234, green: 0.234, blue: 0.234, alpha: 1.0), range: NSMakeRange(0, attributedString2.length))
         attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 18)!, range: NSMakeRange(21, attributedString2.length - 21))
         demoLabel2.attributedText = attributedString2
@@ -73,20 +73,20 @@ class MarqueeLabelDemoViewController : UIViewController {
         
         // Left/right example, with rate usage
         demoLabel3.tag = 301
-        demoLabel3.type = .LeftRight
-        demoLabel3.speed = .Rate(60)
+        demoLabel3.type = .leftRight
+        demoLabel3.speed = .rate(60)
         demoLabel3.fadeLength = 10.0
         demoLabel3.leadingBuffer = 30.0
         demoLabel3.trailingBuffer = 20.0
-        demoLabel3.textAlignment = .Center
+        demoLabel3.textAlignment = .center
         demoLabel3.text = "This is another long label that scrolls at a specific rate, rather than scrolling its length in a defined time window!"
         
         
         // Right/left example, with tap to scroll
         demoLabel4.tag = 401
-        demoLabel4.type = .RightLeft
-        demoLabel4.textAlignment = .Right
-        demoLabel4.lineBreakMode = .ByTruncatingHead
+        demoLabel4.type = .rightLeft
+        demoLabel4.textAlignment = .right
+        demoLabel4.lineBreakMode = .byTruncatingHead
         demoLabel4.tapToScroll = true
         demoLabel4.trailingBuffer = 20.0
         demoLabel4.text = "This label will not scroll until tapped, and then it performs its scroll cycle only once. Tap me!"
@@ -94,13 +94,13 @@ class MarqueeLabelDemoViewController : UIViewController {
         
         // Continuous, with tap to pause
         demoLabel5.tag = 501
-        demoLabel5.type = .Continuous
-        demoLabel5.speed = .Duration(10)
+        demoLabel5.type = .continuous
+        demoLabel5.speed = .duration(10)
         demoLabel5.fadeLength = 10.0
         demoLabel5.trailingBuffer = 30.0
         demoLabel5.text = "This text is long, and can be paused with a tap - handled via a UIGestureRecognizer!"
         
-        demoLabel5.userInteractionEnabled = true // Don't forget this, otherwise the gesture recognizer will fail (UILabel has this as NO by default)
+        demoLabel5.isUserInteractionEnabled = true // Don't forget this, otherwise the gesture recognizer will fail (UILabel has this as NO by default)
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(pauseTap))
         tapRecognizer.numberOfTapsRequired = 1
         tapRecognizer.numberOfTouchesRequired = 1
@@ -108,8 +108,8 @@ class MarqueeLabelDemoViewController : UIViewController {
         
         // Continuous, with attributed text
         demoLabel6.tag = 601
-        demoLabel6.type = .Continuous
-        demoLabel6.speed = .Duration(15.0)
+        demoLabel6.type = .continuous
+        demoLabel6.speed = .duration(15.0)
         demoLabel6.fadeLength = 10.0
         demoLabel6.trailingBuffer = 30.0
         
@@ -121,7 +121,7 @@ class MarqueeLabelDemoViewController : UIViewController {
         demoLabel6.attributedText = attributedString6;
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // If you have trouble with MarqueeLabel instances not automatically scrolling, implement the
@@ -133,7 +133,7 @@ class MarqueeLabelDemoViewController : UIViewController {
         // Or.... (see below)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     
         // Or you could use viewDidAppear bulk method - try both to see which works best for you!
@@ -146,14 +146,14 @@ class MarqueeLabelDemoViewController : UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func changeLabelTexts(sender: AnyObject) {
+    @IBAction func changeLabelTexts(_ sender: AnyObject) {
         // Use demoLabel1 tag to store "state"
         if (demoLabel1.tag == 101) {
             demoLabel1.text = "This label is not as long."
             demoLabel3.text = "This is a short, centered label."
             
             let attributedString2 = NSMutableAttributedString(string: "This is a different longer string, but still an attributed string, with new different attributes!")
-            attributedString2.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSMakeRange(0, attributedString2.length))
+            attributedString2.addAttribute(NSForegroundColorAttributeName, value: UIColor.black(), range: NSMakeRange(0, attributedString2.length))
             attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "Helvetica-Bold", size:18.0)!, range:NSMakeRange(0, attributedString2.length))
             attributedString2.addAttribute(NSBackgroundColorAttributeName, value: UIColor(white:0.600, alpha:1.000), range:NSMakeRange(0,33))
             attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size:18.0)!, range:NSMakeRange(19, attributedString2.length - 19))
@@ -173,7 +173,7 @@ class MarqueeLabelDemoViewController : UIViewController {
             
             let attributedString2 = NSMutableAttributedString(string: "This is a long string, that's also an attributed string, which works just as well!")
             attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "Helvetica-Bold", size:18.0)!, range:NSMakeRange(0, 21))
-            attributedString2.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGrayColor(), range:NSMakeRange(10,11))
+            attributedString2.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGray(), range:NSMakeRange(10,11))
             attributedString2.addAttribute(NSForegroundColorAttributeName, value: UIColor(red:0.234, green:0.234, blue:0.234, alpha:1.000), range:NSMakeRange(0,attributedString2.length))
             attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size:18.0)!, range: NSMakeRange(21, attributedString2.length - 21))
             demoLabel2.attributedText = attributedString2
@@ -188,38 +188,38 @@ class MarqueeLabelDemoViewController : UIViewController {
         }
     }
     
-    func pauseTap(recognizer: UIGestureRecognizer) {
+    func pauseTap(_ recognizer: UIGestureRecognizer) {
         let continuousLabel2 = recognizer.view as! MarqueeLabel
-        if recognizer.state == .Ended {
+        if recognizer.state == .ended {
             continuousLabel2.isPaused ? continuousLabel2.unpauseLabel() : continuousLabel2.pauseLabel()
         }
     }
     
-    @IBAction func labelizeSwitched(sender: UISwitch) {
-        if sender.on {
+    @IBAction func labelizeSwitched(_ sender: UISwitch) {
+        if sender.isOn {
             MarqueeLabel.controllerLabelsLabelize(self)
         } else {
             MarqueeLabel.controllerLabelsAnimate(self)
         }
     }
     
-    @IBAction func holdLabelsSwitched(sender: UISwitch) {
+    @IBAction func holdLabelsSwitched(_ sender: UISwitch) {
         for pv in view.subviews as [UIView] {
             if let v = pv as? MarqueeLabel {
-                v.holdScrolling = sender.on
+                v.holdScrolling = sender.isOn
             }
         }
     }
     
-    @IBAction func togglePause(sender: UISwitch) {
+    @IBAction func togglePause(_ sender: UISwitch) {
         for pv in view.subviews as [UIView] {
             if let v = pv as? MarqueeLabel {
-                sender.on ? v.pauseLabel() : v.unpauseLabel()
+                sender.isOn ? v.pauseLabel() : v.unpauseLabel()
             }
         }
     }
     
-    @IBAction func unwindModalPopoverSegue(segue: UIStoryboardSegue) {
+    @IBAction func unwindModalPopoverSegue(_ segue: UIStoryboardSegue) {
         // Empty by design
     }
 
