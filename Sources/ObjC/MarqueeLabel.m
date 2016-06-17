@@ -32,9 +32,7 @@ typedef void(^MLAnimationCompletionBlock)(BOOL finished);
 - (CGFloat)durationPercentageForPositionPercentage:(CGFloat)positionPercentage withDuration:(NSTimeInterval)duration;
 @end
 
-@interface MarqueeLabel() {
-    BOOL _labelShouldScroll;
-}
+@interface MarqueeLabel()
 
 @property (nonatomic, strong) UILabel *subLabel;
 
@@ -678,11 +676,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     [self.subLabel.layer addAnimation:labelAnimation forKey:@"position"];
     
     [CATransaction commit];
-}
-
-- (void)setLabelShouldScroll:(BOOL)labelShouldScroll {
-    _labelShouldScroll = labelShouldScroll;
-    self.layer.mask = nil;
 }
 
 - (void)applyGradientMaskForFadeLength:(CGFloat)fadeLength animated:(BOOL)animated {
@@ -1339,7 +1332,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     }
     
     _marqueeType = marqueeType;
-    self.layer.mask = nil;
     
     [self updateSublabel];
 }
