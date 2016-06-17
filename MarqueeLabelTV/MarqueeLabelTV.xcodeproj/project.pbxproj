@@ -11,6 +11,7 @@
 		EA59ABFF1CAA278D0052AD98 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA59ABFE1CAA278D0052AD98 /* ViewController.swift */; };
 		EA59AC011CAA28410052AD98 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA59AC001CAA28410052AD98 /* AppDelegate.swift */; };
 		EAAEFA021CAA2C1A00F8D857 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAAEFA011CAA2C1A00F8D857 /* Assets.xcassets */; };
+		EABA01091D13972900E0AA15 /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADADDF31CD2C6000034838E /* MarqueeLabel.swift */; };
 		EADADDF41CD2C6000034838E /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADADDF31CD2C6000034838E /* MarqueeLabel.swift */; };
 /* End PBXBuildFile section */
 
@@ -172,14 +173,16 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Charles Powell";
 				TargetAttributes = {
 					EA59AC061CAA28D80052AD98 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 					};
 					EAE4ACB51CAA23FD006C1ECC = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -234,6 +237,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EABA01091D13972900E0AA15 /* MarqueeLabel.swift in Sources */,
 				EA59AC011CAA28410052AD98 /* AppDelegate.swift in Sources */,
 				EA59ABFF1CAA278D0052AD98 /* ViewController.swift in Sources */,
 			);
@@ -259,6 +263,7 @@
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "appletvsimulator appletvos";
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -283,6 +288,8 @@
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "appletvsimulator appletvos";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -382,6 +389,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.charlespowell.MarqueeLabelTV;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -394,6 +402,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.charlespowell.MarqueeLabelTV;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
