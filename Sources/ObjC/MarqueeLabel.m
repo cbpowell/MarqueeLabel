@@ -982,13 +982,11 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
-    if ([anim isKindOfClass:[GradientSetupAnimation class]]) {
-        GradientSetupAnimation *setupFade = (GradientSetupAnimation *)[self.layer.mask animationForKey:@"setupFade"];
-        if (setupFade) {
-            NSArray *finalColors = setupFade.toValue;
-            if (finalColors) {
-                [(CAGradientLayer *)self.layer.mask setColors:finalColors];
-            }
+    if ([anim isMemberOfClass:[GradientSetupAnimation class]]) {
+        GradientSetupAnimation *setupFade = (GradientSetupAnimation *)anim;
+        NSArray *finalColors = setupFade.toValue;
+        if (finalColors) {
+            [(CAGradientLayer *)self.layer.mask setColors:finalColors];
         }
         // Remove any/all setupFade animations regardless
         [self.layer.mask removeAnimationForKey:@"setupFade"];
