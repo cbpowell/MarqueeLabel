@@ -350,6 +350,9 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         // Set sublabel frame calculated labelFrame
         self.subLabel.frame = labelFrame;
         
+        // Remove fade, as by definition none is needed in this case
+        [self removeGradientMask];
+        
         return;
     }
     

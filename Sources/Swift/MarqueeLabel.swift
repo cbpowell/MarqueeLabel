@@ -565,8 +565,8 @@ public class MarqueeLabel: UILabel {
             // Set the sublabel frame to calculated labelFrame
             sublabel.frame = labelFrame
             
-            // Configure fade
-            applyGradientMask(fadeLength, animated: !labelize)
+            // Remove fade, as by definition none is needed in this case
+            removeGradientMask()
             
             return
         }
@@ -633,7 +633,7 @@ public class MarqueeLabel: UILabel {
         }()
         
         // Configure gradient for current condition
-        applyGradientMask(fadeLength, animated: !self.labelize)
+        applyGradientMask(fadeLength, animated: !labelize)
         
         if !tapToScroll && !holdScrolling && shouldBeginScroll {
             beginScroll()
