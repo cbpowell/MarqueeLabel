@@ -713,17 +713,21 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         gradientMask.rasterizationScale = [UIScreen mainScreen].scale;
         gradientMask.startPoint = CGPointMake(0.0f, 0.5f);
         gradientMask.endPoint = CGPointMake(1.0f, 0.5f);
+    }
+    
+    // Check if there is a mask-to-bounds size mismatch
+    if (!CGRectEqualToRect(gradientMask.bounds, self.bounds)) {
         // Adjust stops based on fade length
         CGFloat leftFadeStop = fadeLength/self.bounds.size.width;
         CGFloat rightFadeStop = fadeLength/self.bounds.size.width;
         gradientMask.locations = @[@(0.0f), @(leftFadeStop), @(1.0f - rightFadeStop), @(1.0f)];
     }
     
-    // Set mask
-    self.layer.mask = gradientMask;
-    
     gradientMask.bounds = self.layer.bounds;
     gradientMask.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    
+    // Set mask
+    self.layer.mask = gradientMask;
     
     // Determine colors for non-scrolling label (i.e. at home)
     NSArray *adjustedColors;

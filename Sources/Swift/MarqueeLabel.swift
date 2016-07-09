@@ -900,11 +900,18 @@ public class MarqueeLabel: UILabel {
             gradientMask.rasterizationScale = UIScreen.mainScreen().scale
             gradientMask.startPoint = CGPointMake(0.0, 0.5)
             gradientMask.endPoint = CGPointMake(1.0, 0.5)
+        }
+        
+        // Check if there is a mask to layer size mismatch
+        if gradientMask.bounds != self.layer.bounds {
             // Adjust stops based on fade length
             let leftFadeStop = fadeLength/self.bounds.size.width
             let rightFadeStop = fadeLength/self.bounds.size.width
             gradientMask.locations = [0.0, leftFadeStop, (1.0 - rightFadeStop), 1.0]
         }
+        
+        gradientMask.bounds = self.layer.bounds
+        gradientMask.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
         
         // Set up colors
         let transparent = UIColor.clearColor().CGColor
@@ -912,9 +919,6 @@ public class MarqueeLabel: UILabel {
         
         // Set mask
         self.layer.mask = gradientMask
-        
-        gradientMask.bounds = self.layer.bounds
-        gradientMask.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
         
         // Determine colors for non-scrolling label (i.e. at home)
         let adjustedColors: [CGColorRef]
