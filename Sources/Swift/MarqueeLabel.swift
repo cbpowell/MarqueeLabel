@@ -1161,8 +1161,8 @@ public class MarqueeLabel: UILabel {
     }
     
     override public func animationDidStop(anim: CAAnimation, finished flag: Bool) {
-        if anim is GradientSetupAnimation {
-            if let setupAnim = maskLayer?.animationForKey("setupFade") as? CABasicAnimation, finalColors = setupAnim.toValue as? [CGColorRef] {
+        if let setupAnim = anim as? GradientSetupAnimation {
+            if let finalColors = setupAnim.toValue as? [CGColorRef] {
                 maskLayer?.colors = finalColors
             }
             // Remove regardless, since we set removeOnCompletion = false
