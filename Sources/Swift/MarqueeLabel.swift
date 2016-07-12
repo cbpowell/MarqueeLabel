@@ -118,6 +118,8 @@ public class MarqueeLabel: UILabel {
         }
     }
     
+	@IBInspectable public var forceScrolling: Bool = false
+	
     /**
      A boolean property that sets whether the `MarqueeLabel` should only begin a scroll when tapped.
      
@@ -683,7 +685,7 @@ public class MarqueeLabel: UILabel {
         // Check if the label string fits
         let labelTooLarge = (sublabelSize().width + leadingBuffer) > self.bounds.size.width
         let animationHasDuration = speed.value > 0.0
-        return (!labelize && labelTooLarge && animationHasDuration)
+        return (!labelize && (forceScrolling || labelTooLarge) && animationHasDuration)
     }
     
     private func labelReadyForScroll() -> Bool {
