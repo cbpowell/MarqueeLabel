@@ -681,7 +681,7 @@ public class MarqueeLabel: UILabel {
         }
         
         // Check if the label string fits
-        let labelTooLarge = (sublabelSize().width + leadingBuffer) > self.bounds.size.width
+        let labelTooLarge = (sublabelSize().width + leadingBuffer) > self.bounds.size.width + CGFloat(FLT_EPSILON)
         let animationHasDuration = speed.value > 0.0
         return (!labelize && labelTooLarge && animationHasDuration)
     }

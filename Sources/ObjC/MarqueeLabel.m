@@ -479,7 +479,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         return NO;
     }
     
-    BOOL labelTooLarge = ([self subLabelSize].width + self.leadingBuffer > self.bounds.size.width);
+    BOOL labelTooLarge = ([self subLabelSize].width + self.leadingBuffer > self.bounds.size.width + FLT_EPSILON);
     BOOL animationHasDuration = (self.scrollDuration > 0.0f || self.rate > 0.0f);
     return (!self.labelize && labelTooLarge && animationHasDuration);
 }
