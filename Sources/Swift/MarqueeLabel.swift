@@ -10,7 +10,7 @@ import QuartzCore
 
 @IBDesignable
 
-public class MarqueeLabel: UILabel {
+public class MarqueeLabel: UILabel, CAAnimationDelegate {
     
     /**
      An enum that defines the types of `MarqueeLabel` scrolling
@@ -449,12 +449,12 @@ public class MarqueeLabel: UILabel {
         
         // Add notification observers
         // Custom class notifications
-        NotificationCenter.default().addObserver(self, selector: #selector(MarqueeLabel.restartForViewController(_:)), name: MarqueeKeys.Restart.rawValue, object: nil)
-        NotificationCenter.default().addObserver(self, selector: #selector(MarqueeLabel.labelizeForController(_:)), name: MarqueeKeys.Labelize.rawValue, object: nil)
-        NotificationCenter.default().addObserver(self, selector: #selector(MarqueeLabel.animateForController(_:)), name: MarqueeKeys.Animate.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MarqueeLabel.restartForViewController(_:)), name: NSNotification.Name(rawValue: MarqueeKeys.Restart.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MarqueeLabel.labelizeForController(_:)), name: NSNotification.Name(rawValue: MarqueeKeys.Labelize.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MarqueeLabel.animateForController(_:)), name: NSNotification.Name(rawValue: MarqueeKeys.Animate.rawValue), object: nil)
         // UIApplication state notifications
-        NotificationCenter.default().addObserver(self, selector: #selector(MarqueeLabel.restartLabel), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        NotificationCenter.default().addObserver(self, selector: #selector(MarqueeLabel.shutdownLabel), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MarqueeLabel.restartLabel), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MarqueeLabel.shutdownLabel), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
     }
     
     override public func awakeFromNib() {
@@ -486,7 +486,7 @@ public class MarqueeLabel: UILabel {
         sublabel.text = super.text
         sublabel.font = super.font
         sublabel.textColor = super.textColor
-        sublabel.backgroundColor = super.backgroundColor ?? UIColor.clear()
+        sublabel.backgroundColor = super.backgroundColor ?? UIColor.clear
         sublabel.shadowColor = super.shadowColor
         sublabel.shadowOffset = super.shadowOffset
         for prop in properties {
@@ -550,7 +550,7 @@ public class MarqueeLabel: UILabel {
             
             switch type {
             case .continuousReverse, .rightLeft:
-                bounds.divide(slice: &unusedFrame, remainder: &labelFrame, amount: leadingBuffer, edge: CGRectEdge.maxXEdge)
+                bounds.divided(slice: &unusedFrame, remainder: &labelFrame, atDistance: leadingBuffer, from: .maxXEdge)
                 labelFrame = labelFrame.integral
             default:
                 labelFrame = CGRect(x: leadingBuffer, y: 0.0, width: bounds.size.width - leadingBuffer, height: bounds.size.height).integral
@@ -700,7 +700,7 @@ public class MarqueeLabel: UILabel {
         // Check if our view controller is ready
         let viewController = firstAvailableViewController()
         if viewController != nil {
-            if !viewController!.isViewLoaded() {
+            if !viewController!.isViewLoaded {
                 return false
             }
         }
@@ -750,7 +750,7 @@ public class MarqueeLabel: UILabel {
         #if !TARGET_INTERFACE_BUILDER
             if fadeLength > 0.0 {
                 // Remove any setup animation, but apply final values
-                if let setupAnim = maskLayer?.animation(forKey: "setupFade") as? CABasicAnimation, finalColors = setupAnim.toValue as? [CGColor] {
+                if let setupAnim = maskLayer?.animation(forKey: "setupFade") as? CABasicAnimation, let finalColors = setupAnim.toValue as? [CGColor] {
                     maskLayer?.colors = finalColors
                 }
                 maskLayer?.removeAnimation(forKey: "setupFade")
@@ -897,7 +897,7 @@ public class MarqueeLabel: UILabel {
             // No mask exists, create new mask
             gradientMask = CAGradientLayer()
             gradientMask.shouldRasterize = true
-            gradientMask.rasterizationScale = UIScreen.main().scale
+            gradientMask.rasterizationScale = UIScreen.main.scale
             gradientMask.startPoint = CGPoint(x: 0.0, y: 0.5)
             gradientMask.endPoint = CGPoint(x: 1.0, y: 0.5)
             // Adjust stops based on fade length
@@ -907,8 +907,8 @@ public class MarqueeLabel: UILabel {
         }
         
         // Set up colors
-        let transparent = UIColor.clear().cgColor
-        let opaque = UIColor.black().cgColor
+        let transparent = UIColor.clear.cgColor
+        let opaque = UIColor.black.cgColor
         
         // Set mask
         self.layer.mask = gradientMask
@@ -963,8 +963,8 @@ public class MarqueeLabel: UILabel {
         // Setup
         let values: [[CGColor]]
         let keyTimes: [CGFloat]
-        let transp = UIColor.clear().cgColor
-        let opaque = UIColor.black().cgColor
+        let transp = UIColor.clear.cgColor
+        let opaque = UIColor.black.cgColor
         
         // Create new animation
         let animation = CAKeyframeAnimation(keyPath: "colors")
@@ -1156,9 +1156,9 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    override public func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+    public func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         if anim is GradientSetupAnimation {
-            if let setupAnim = maskLayer?.animation(forKey: "setupFade") as? CABasicAnimation, finalColors = setupAnim.toValue as? [CGColor] {
+            if let setupAnim = maskLayer?.animation(forKey: "setupFade") as? CABasicAnimation, let finalColors = setupAnim.toValue as? [CGColor] {
                 maskLayer?.colors = finalColors
             }
             // Remove regardless, since we set removeOnCompletion = false
@@ -1179,10 +1179,12 @@ public class MarqueeLabel: UILabel {
     private var homeLabelFrame = CGRect.zero
     private var awayOffset: CGFloat = 0.0
     
-    override public class func layerClass() -> AnyClass {
-        return CAReplicatorLayer.self
+    private var layerClass: AnyClass {
+        get {
+            return CAReplicatorLayer.self
+        }
     }
-    
+
     private weak var repliLayer: CAReplicatorLayer? {
         return self.layer as? CAReplicatorLayer
     }
@@ -1212,7 +1214,7 @@ public class MarqueeLabel: UILabel {
     }
     
     class private func notifyController(_ controller: UIViewController, message: MarqueeKeys) {
-        NotificationCenter.default().post(name: Notification.Name(rawValue: message.rawValue), object: nil, userInfo: ["controller" : controller])
+        NotificationCenter.default.post(name: Notification.Name(rawValue: message.rawValue), object: nil, userInfo: ["controller" : controller])
     }
     
     public func restartForViewController(_ notification: Notification) {
@@ -1426,7 +1428,7 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    public override var attributedText: AttributedString? {
+    public override var attributedText: NSAttributedString? {
         get {
             return sublabel.attributedText
         }
@@ -1577,12 +1579,13 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    public override func intrinsicContentSize() -> CGSize {
-        var content = sublabel.intrinsicContentSize()
-        content.width += leadingBuffer
-        return content
+    public override var intrinsicContentSize: CGSize {
+        get {
+            var content = sublabel.intrinsicContentSize
+            content.width += leadingBuffer
+            return content
+        }
     }
-    
 
     //
     // MARK: - Support
@@ -1597,7 +1600,7 @@ public class MarqueeLabel: UILabel {
     //
     
     deinit {
-        NotificationCenter.default().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -1642,7 +1645,7 @@ private extension UIResponder {
     }
     
     func traverseResponderChainForFirstViewController() -> UIViewController? {
-        if let nextResponder = self.next() {
+        if let nextResponder = self.next {
             if nextResponder is UIViewController {
                 return nextResponder as? UIViewController
             } else if nextResponder is UIView {
