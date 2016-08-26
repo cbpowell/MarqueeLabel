@@ -58,7 +58,7 @@ class MarqueeLabelTableViewController: UITableViewController {
         cell.label.labelize = true
         
         // Set background, to improve scroll performance
-        cell.backgroundColor = UIColor.white()
+        cell.backgroundColor = UIColor.white
         
         return cell
     }

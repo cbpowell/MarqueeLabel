@@ -441,7 +441,14 @@ public class MarqueeLabel: UILabel, CAAnimationDelegate {
         sublabel.layer.anchorPoint = CGPoint.zero
         
         // Add sublabel
-        addSubview(sublabel)
+        //addSubview(sublabel)
+        
+        self.repliLayer = CAReplicatorLayer()
+        if let repliLayer = self.repliLayer {
+            repliLayer.frame = self.bounds
+            repliLayer.addSublayer(self.sublabel.layer)
+            self.layer.addSublayer(repliLayer)
+        }
         
         // Configure self
         super.clipsToBounds = true
@@ -490,7 +497,7 @@ public class MarqueeLabel: UILabel, CAAnimationDelegate {
         sublabel.shadowColor = super.shadowColor
         sublabel.shadowOffset = super.shadowOffset
         for prop in properties {
-            let value: Any! = super.value(forKey: prop)
+            let value = super.value(forKey: prop)
             sublabel.setValue(value, forKeyPath: prop)
         }
     }
@@ -869,7 +876,7 @@ public class MarqueeLabel: UILabel, CAAnimationDelegate {
             let anim = self.keyFrameAnimationForProperty("position", values: values, interval: interval, delay: delay)
             
             return [(layer: layer, anim: anim)]
-            })
+        })
         
         // Scroll
         scroll(interval, delay: delay, scroller: scroller, fader: nil)
@@ -902,9 +909,9 @@ public class MarqueeLabel: UILabel, CAAnimationDelegate {
             gradientMask.startPoint = CGPoint(x: 0.0, y: 0.5)
             gradientMask.endPoint = CGPoint(x: 1.0, y: 0.5)
             // Adjust stops based on fade length
-            let leftFadeStop = fadeLength / self.bounds.size.width
-            let rightFadeStop = fadeLength / self.bounds.size.width
-            gradientMask.locations = [0.0, NSNumber(value: Float(leftFadeStop)), NSNumber(value: Float(1.0 - rightFadeStop)), 1.0]
+            let leftFadeStop = fadeLength/self.bounds.size.width
+            let rightFadeStop = fadeLength/self.bounds.size.width
+            gradientMask.locations = [0.0, leftFadeStop as NSNumber, 1.0 - rightFadeStop as NSNumber, 1.0]
         }
         
         // Set up colors
@@ -963,7 +970,7 @@ public class MarqueeLabel: UILabel, CAAnimationDelegate {
     private func keyFrameAnimationForGradient(_ fadeLength: CGFloat, interval: CGFloat, delay: CGFloat) -> CAKeyframeAnimation {
         // Setup
         let values: [[CGColor]]
-        var keyTimes: [NSNumber] = []
+        let keyTimes: [NSNumber]
         let transp = UIColor.clear.cgColor
         let opaque = UIColor.black.cgColor
         
@@ -978,15 +985,17 @@ public class MarqueeLabel: UILabel, CAAnimationDelegate {
         case .leftRight, .rightLeft:
             // Calculate total animation duration
             let totalDuration = 2.0 * (delay + interval)
-            keyTimes.append(0.0)                                                                    // 1) Initial gradient
-            keyTimes.append(NSNumber(value: Float(delay/totalDuration)))                            // 2) Begin of LE fade-in, just as scroll away starts
-            keyTimes.append(NSNumber(value: Float((delay + 0.4)/totalDuration)))                    // 3) End of LE fade in [LE fully faded]
-            keyTimes.append(NSNumber(value: Float((delay + interval - 0.4)/totalDuration)))         // 4) Begin of TE fade out, just before scroll away finishes
-            keyTimes.append(NSNumber(value: Float((delay + interval)/totalDuration)))               // 5) End of TE fade out [TE fade removed]
-            keyTimes.append(NSNumber(value: Float((delay + interval + delay)/totalDuration)))       // 6) Begin of TE fade back in, just as scroll home starts
-            keyTimes.append(NSNumber(value: Float((delay + interval + delay + 0.4)/totalDuration))) // 7) End of TE fade back in [TE fully faded]
-            keyTimes.append(NSNumber(value: Float((totalDuration - 0.4)/totalDuration)))            // 8) Begin of LE fade out, just before scroll home finishes
-            keyTimes.append(1.0)                                                                    // 9) End of LE fade out, just as scroll home finishes
+            keyTimes = [
+                0.0,                                                        // 1) Initial gradient
+                delay/totalDuration as NSNumber,                            // 2) Begin of LE fade-in, just as scroll away starts
+                (delay + 0.4)/totalDuration as NSNumber,                    // 3) End of LE fade in [LE fully faded]
+                (delay + interval - 0.4)/totalDuration as NSNumber,         // 4) Begin of TE fade out, just before scroll away finishes
+                (delay + interval)/totalDuration as NSNumber,               // 5) End of TE fade out [TE fade removed]
+                (delay + interval + delay)/totalDuration as NSNumber,       // 6) Begin of TE fade back in, just as scroll home starts
+                (delay + interval + delay + 0.4)/totalDuration as NSNumber, // 7) End of TE fade back in [TE fully faded]
+                (totalDuration - 0.4)/totalDuration as NSNumber,            // 8) Begin of LE fade out, just before scroll home finishes
+                1.0                                                         // 9) End of LE fade out, just as scroll home finishes
+            ]
             
         // .MLContinuous, .MLContinuousReverse
         default:
@@ -1000,20 +1009,15 @@ public class MarqueeLabel: UILabel, CAAnimationDelegate {
             let startFadeTimeFraction = timingFunction.durationPercentageForPositionPercentage(startFadeFraction, duration: totalDuration)
             let startFadeTime = delay + CGFloat(startFadeTimeFraction) * interval
             
-            keyTimes.append(0.0)
-            keyTimes.append(NSNumber(value: Float(delay/totalDuration)))
-            keyTimes.append(NSNumber(value: Float((delay + 0.2)/totalDuration)))
-            keyTimes.append(NSNumber(value: Float(startFadeTime/totalDuration)))
-            keyTimes.append(NSNumber(value: Float((startFadeTime + 0.1)/totalDuration)))
-            keyTimes.append(1.0)
-            /*keyTimes = [
-             0.0,                                            // Initial gradient
-             NSNumber(value: Float(delay/totalDuration)),    // Begin of fade in
-             (delay + 0.2)/totalDuration,                    // End of fade in, just as scroll away starts
-             startFadeTime/totalDuration,                    // Begin of fade out, just before scroll home completes
-             (startFadeTime + 0.1)/totalDuration,            // End of fade out, as scroll home completes
-             1.0                                             // Buffer final value (used on continuous types)
-             ]*/
+            keyTimes = [
+                0.0,                                            // Initial gradient
+                delay/totalDuration as NSNumber,                // Begin of fade in
+                (delay + 0.2)/totalDuration as NSNumber,        // End of fade in, just as scroll away starts
+                startFadeTime/totalDuration as NSNumber,        // Begin of fade out, just before scroll home completes
+                (startFadeTime + 0.1)/totalDuration as NSNumber,// End of fade out, as scroll home completes
+                1.0                                             // Buffer final value (used on continuous types)
+            ]
+            
             break
         }
         
@@ -1095,13 +1099,13 @@ public class MarqueeLabel: UILabel, CAAnimationDelegate {
             //NSAssert(values.count == 5, @"Incorrect number of values passed for MLLeftRight-type animation")
             totalDuration = 2.0 * (delay + interval)
             // Set up keyTimes
-            animation.keyTimes = []
-            animation.keyTimes?.removeAll()
-            animation.keyTimes?.append(0.0)
-            animation.keyTimes?.append(NSNumber(value: Float(delay/totalDuration)))                         // Initial location, home
-            animation.keyTimes?.append(NSNumber(value: Float((delay + interval)/totalDuration)))            // Initial location, home
-            animation.keyTimes?.append(NSNumber(value: Float((delay + interval + delay)/totalDuration)))    // Initial location, home
-            animation.keyTimes?.append(1.0)                                                                 // Initial location, home
+            animation.keyTimes = [
+                0.0,                                                    // Initial location, home
+                delay/totalDuration as NSNumber,                        // Initial delay, at home
+                (delay + interval)/totalDuration as NSNumber,           // Animation to away
+                (delay + interval + delay)/totalDuration as NSNumber,   // Delay at away
+                1.0                                                     // Animation to home
+            ]
             
             animation.timingFunctions = [
                 timingFunction,
@@ -1118,7 +1122,7 @@ public class MarqueeLabel: UILabel, CAAnimationDelegate {
             // Set up keyTimes
             animation.keyTimes = [
                 0.0,                                            // Initial location, home
-                NSNumber(value: Float(delay/totalDuration)),    // Initial delay, at home
+                delay/totalDuration as NSNumber,                // Initial delay, at home
                 1.0                                             // Animation to away
             ]
             
@@ -1188,10 +1192,8 @@ public class MarqueeLabel: UILabel, CAAnimationDelegate {
             return CAReplicatorLayer.self
         }
     }
-    
-    private weak var repliLayer: CAReplicatorLayer? {
-        return self.layer as? CAReplicatorLayer
-    }
+
+    private var repliLayer: CAReplicatorLayer?
     
     private weak var maskLayer: CAGradientLayer? {
         return self.layer.mask as! CAGradientLayer?
@@ -1604,6 +1606,7 @@ public class MarqueeLabel: UILabel, CAAnimationDelegate {
     //
     
     deinit {
+        self.repliLayer = nil
         NotificationCenter.default.removeObserver(self)
     }
 }
