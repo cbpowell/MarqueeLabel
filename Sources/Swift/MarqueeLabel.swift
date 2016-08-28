@@ -565,8 +565,8 @@ public class MarqueeLabel: UILabel {
             // Set the sublabel frame to calculated labelFrame
             sublabel.frame = labelFrame
             
-            // Configure fade
-            applyGradientMask(fadeLength, animated: !labelize)
+            // Remove fade, as by definition none is needed in this case
+            removeGradientMask()
             
             return
         }
@@ -681,7 +681,7 @@ public class MarqueeLabel: UILabel {
         }
         
         // Check if the label string fits
-        let labelTooLarge = (sublabelSize().width + leadingBuffer) > self.bounds.size.width
+        let labelTooLarge = (sublabelSize().width + leadingBuffer) > self.bounds.size.width + CGFloat(FLT_EPSILON)
         let animationHasDuration = speed.value > 0.0
         return (!labelize && labelTooLarge && animationHasDuration)
     }
@@ -897,14 +897,21 @@ public class MarqueeLabel: UILabel {
             // No mask exists, create new mask
             gradientMask = CAGradientLayer()
             gradientMask.shouldRasterize = true
-            gradientMask.rasterizationScale = UIScreen.main().scale
-            gradientMask.startPoint = CGPoint(x: 0.0, y: 0.5)
-            gradientMask.endPoint = CGPoint(x: 1.0, y: 0.5)
+            gradientMask.rasterizationScale = UIScreen.mainScreen().scale
+            gradientMask.startPoint = CGPointMake(0.0, 0.5)
+            gradientMask.endPoint = CGPointMake(1.0, 0.5)
+        }
+        
+        // Check if there is a mask to layer size mismatch
+        if gradientMask.bounds != self.layer.bounds {
             // Adjust stops based on fade length
             let leftFadeStop = fadeLength/self.bounds.size.width
             let rightFadeStop = fadeLength/self.bounds.size.width
             gradientMask.locations = [0.0, leftFadeStop, (1.0 - rightFadeStop), 1.0]
         }
+        
+        gradientMask.bounds = self.layer.bounds
+        gradientMask.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
         
         // Set up colors
         let transparent = UIColor.clear().cgColor
@@ -912,9 +919,6 @@ public class MarqueeLabel: UILabel {
         
         // Set mask
         self.layer.mask = gradientMask
-        
-        gradientMask.bounds = self.layer.bounds
-        gradientMask.position = CGPoint(x: self.bounds.midX, y: self.bounds.midY)
         
         // Determine colors for non-scrolling label (i.e. at home)
         let adjustedColors: [CGColor]
@@ -1156,9 +1160,9 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    override public func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-        if anim is GradientSetupAnimation {
-            if let setupAnim = maskLayer?.animation(forKey: "setupFade") as? CABasicAnimation, finalColors = setupAnim.toValue as? [CGColor] {
+    override public func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+        if let setupAnim = anim as? GradientSetupAnimation {
+            if let finalColors = setupAnim.toValue as? [CGColorRef] {
                 maskLayer?.colors = finalColors
             }
             // Remove regardless, since we set removeOnCompletion = false

@@ -350,6 +350,9 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         // Set sublabel frame calculated labelFrame
         self.subLabel.frame = labelFrame;
         
+        // Remove fade, as by definition none is needed in this case
+        [self removeGradientMask];
+        
         return;
     }
     
@@ -476,7 +479,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         return NO;
     }
     
-    BOOL labelTooLarge = ([self subLabelSize].width + self.leadingBuffer > self.bounds.size.width);
+    BOOL labelTooLarge = ([self subLabelSize].width + self.leadingBuffer > self.bounds.size.width + FLT_EPSILON);
     BOOL animationHasDuration = (self.scrollDuration > 0.0f || self.rate > 0.0f);
     return (!self.labelize && labelTooLarge && animationHasDuration);
 }
@@ -713,17 +716,21 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         gradientMask.rasterizationScale = [UIScreen mainScreen].scale;
         gradientMask.startPoint = CGPointMake(0.0f, 0.5f);
         gradientMask.endPoint = CGPointMake(1.0f, 0.5f);
+    }
+    
+    // Check if there is a mask-to-bounds size mismatch
+    if (!CGRectEqualToRect(gradientMask.bounds, self.bounds)) {
         // Adjust stops based on fade length
         CGFloat leftFadeStop = fadeLength/self.bounds.size.width;
         CGFloat rightFadeStop = fadeLength/self.bounds.size.width;
         gradientMask.locations = @[@(0.0f), @(leftFadeStop), @(1.0f - rightFadeStop), @(1.0f)];
     }
     
-    // Set mask
-    self.layer.mask = gradientMask;
-    
     gradientMask.bounds = self.layer.bounds;
     gradientMask.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    
+    // Set mask
+    self.layer.mask = gradientMask;
     
     // Determine colors for non-scrolling label (i.e. at home)
     NSArray *adjustedColors;
@@ -975,13 +982,11 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 }
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
-    if ([anim isKindOfClass:[GradientSetupAnimation class]]) {
-        GradientSetupAnimation *setupFade = (GradientSetupAnimation *)[self.layer.mask animationForKey:@"setupFade"];
-        if (setupFade) {
-            NSArray *finalColors = setupFade.toValue;
-            if (finalColors) {
-                [(CAGradientLayer *)self.layer.mask setColors:finalColors];
-            }
+    if ([anim isMemberOfClass:[GradientSetupAnimation class]]) {
+        GradientSetupAnimation *setupFade = (GradientSetupAnimation *)anim;
+        NSArray *finalColors = setupFade.toValue;
+        if (finalColors) {
+            [(CAGradientLayer *)self.layer.mask setColors:finalColors];
         }
         // Remove any/all setupFade animations regardless
         [self.layer.mask removeAnimationForKey:@"setupFade"];

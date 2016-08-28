@@ -1,12 +1,11 @@
 Pod::Spec.new do |s|
   s.name         = "MarqueeLabel"
-  s.version      = "2.7.3"
+  s.version      = "2.7.7"
   s.summary      = "A drop-in replacement for UILabel, which automatically adds a scrolling marquee effect when needed."
   s.homepage     = "https://github.com/cbpowell/MarqueeLabel"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = "Charles Powell"
   s.source       = { :git => "https://github.com/cbpowell/MarqueeLabel.git", :tag => s.version.to_s }
-  s.public_header_files = 'Sources/ObjC/MarqueeLabel.h'
   s.frameworks   = 'UIKit', 'QuartzCore'
   s.requires_arc = true
   s.ios.deployment_target = '6.0'
