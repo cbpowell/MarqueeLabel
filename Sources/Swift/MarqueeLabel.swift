@@ -486,11 +486,11 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         sublabel.text = super.text
         sublabel.font = super.font
         sublabel.textColor = super.textColor
-        sublabel.backgroundColor = super.backgroundColor ?? UIColor.clear()
+        sublabel.backgroundColor = super.backgroundColor ?? UIColor.clear
         sublabel.shadowColor = super.shadowColor
         sublabel.shadowOffset = super.shadowOffset
         for prop in properties {
-            let value: AnyObject! = super.value(forKey: prop)
+            let value: Any! = super.value(forKey: prop)
             sublabel.setValue(value, forKeyPath: prop)
         }
     }
@@ -700,7 +700,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         // Check if our view controller is ready
         let viewController = firstAvailableViewController()
         if viewController != nil {
-            if !viewController!.isViewLoaded() {
+            if !viewController!.isViewLoaded {
                 return false
             }
         }
@@ -750,7 +750,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         #if !TARGET_INTERFACE_BUILDER
             if fadeLength > 0.0 {
                 // Remove any setup animation, but apply final values
-                if let setupAnim = maskLayer?.animation(forKey: "setupFade") as? CABasicAnimation, finalColors = setupAnim.toValue as? [CGColor] {
+                if let setupAnim = maskLayer?.animation(forKey: "setupFade") as? CABasicAnimation, let finalColors = setupAnim.toValue as? [CGColor] {
                     maskLayer?.colors = finalColors
                 }
                 maskLayer?.removeAnimation(forKey: "setupFade")
@@ -897,25 +897,25 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             // No mask exists, create new mask
             gradientMask = CAGradientLayer()
             gradientMask.shouldRasterize = true
-            gradientMask.rasterizationScale = UIScreen.mainScreen().scale
-            gradientMask.startPoint = CGPointMake(0.0, 0.5)
-            gradientMask.endPoint = CGPointMake(1.0, 0.5)
+            gradientMask.rasterizationScale = UIScreen.main.scale
+            gradientMask.startPoint = CGPoint(x:0.0, y:0.5)
+            gradientMask.endPoint = CGPoint(x:1.0, y:0.5)
         }
         
         // Check if there is a mask to layer size mismatch
         if gradientMask.bounds != self.layer.bounds {
             // Adjust stops based on fade length
-            let leftFadeStop = fadeLength/self.bounds.size.width
-            let rightFadeStop = fadeLength/self.bounds.size.width
-            gradientMask.locations = [0.0, leftFadeStop, (1.0 - rightFadeStop), 1.0]
+            let leftFadeStop = NSNumber(value: Float(fadeLength/self.bounds.size.width))
+            let rightFadeStop = NSNumber(value: Float(1.0 - fadeLength/self.bounds.size.width))
+            gradientMask.locations = [0.0, leftFadeStop, rightFadeStop, 1.0]
         }
         
         gradientMask.bounds = self.layer.bounds
-        gradientMask.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds))
+        gradientMask.position = CGPoint(x:self.bounds.midX, y:self.bounds.midY)
         
         // Set up colors
-        let transparent = UIColor.clear().cgColor
-        let opaque = UIColor.black().cgColor
+        let transparent = UIColor.clear.cgColor
+        let opaque = UIColor.black.cgColor
         
         // Set mask
         self.layer.mask = gradientMask
@@ -967,8 +967,8 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         // Setup
         let values: [[CGColor]]
         let keyTimes: [CGFloat]
-        let transp = UIColor.clear().cgColor
-        let opaque = UIColor.black().cgColor
+        let transp = UIColor.clear.cgColor
+        let opaque = UIColor.black.cgColor
         
         // Create new animation
         let animation = CAKeyframeAnimation(keyPath: "colors")
@@ -1215,8 +1215,8 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         case CompletionClosure = "MLAnimationCompletion"
     }
     
-        NotificationCenter.default().post(name: Notification.Name(rawValue: message.rawValue), object: nil, userInfo: ["controller" : controller])
     class fileprivate func notifyController(_ controller: UIViewController, message: MarqueeKeys) {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: message.rawValue), object: nil, userInfo: ["controller" : controller])
     }
     
     public func restartForViewController(_ notification: Notification) {
@@ -1581,8 +1581,8 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
-        var content = sublabel.intrinsicContentSize()
     override open var intrinsicContentSize: CGSize {
+        var content = sublabel.intrinsicContentSize
         content.width += leadingBuffer
         return content
     }
@@ -1601,7 +1601,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     //
     
     deinit {
-        NotificationCenter.default().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -1646,7 +1646,7 @@ fileprivate extension UIResponder {
     }
     
     func traverseResponderChainForFirstViewController() -> UIViewController? {
-        if let nextResponder = self.next() {
+        if let nextResponder = self.next {
             if nextResponder is UIViewController {
                 return nextResponder as? UIViewController
             } else if nextResponder is UIView {
