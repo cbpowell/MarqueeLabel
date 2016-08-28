@@ -545,13 +545,10 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             sublabel.textAlignment = super.textAlignment
             sublabel.lineBreakMode = super.lineBreakMode
             
-            var unusedFrame = CGRect.zero
-            var labelFrame = CGRect.zero
-            
+            let labelFrame: CGRect
             switch type {
             case .continuousReverse, .rightLeft:
-                bounds.divide(slice: &unusedFrame, remainder: &labelFrame, amount: leadingBuffer, edge: CGRectEdge.maxXEdge)
-                labelFrame = labelFrame.integral
+                labelFrame = bounds.divided(atDistance: leadingBuffer, from: CGRectEdge.maxXEdge).remainder.integral
             default:
                 labelFrame = CGRect(x: leadingBuffer, y: 0.0, width: bounds.size.width - leadingBuffer, height: bounds.size.height).integral
             }
