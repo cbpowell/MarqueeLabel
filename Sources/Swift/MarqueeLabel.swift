@@ -490,7 +490,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         sublabel.shadowColor = super.shadowColor
         sublabel.shadowOffset = super.shadowOffset
         for prop in properties {
-            let value: Any! = super.value(forKey: prop)
+            let value = super.value(forKey: prop)
             sublabel.setValue(value, forKeyPath: prop)
         }
     }
