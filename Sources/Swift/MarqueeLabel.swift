@@ -210,7 +210,8 @@ public class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
-    @available(*, deprecated = 2.6, message = "Use speed property instead")
+    // Swift 2.3 compiler can't figure out what it wants for these @available attributes
+    //@available(*, deprecated : 2.6, message : "Use speed property instead")
     @IBInspectable public var scrollDuration: CGFloat {
         get {
             switch speed {
@@ -223,7 +224,8 @@ public class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
-    @available(*, deprecated = 2.6, message = "Use speed property instead")
+    // Swift 2.3 compiler can't figure out what it wants for these @available attributes
+    // @available(*, deprecated : 2.6, message : "Use speed property instead")
     @IBInspectable public var scrollRate: CGFloat {
         get {
             switch speed {
