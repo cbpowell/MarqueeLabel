@@ -10,7 +10,7 @@ import QuartzCore
 
 @IBDesignable
 
-public class MarqueeLabel: UILabel {
+public class MarqueeLabel: UILabel, CAAnimationDelegate {
     
     /**
      An enum that defines the types of `MarqueeLabel` scrolling
@@ -1160,7 +1160,7 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    override public func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+    public func animationDidStop(anim: CAAnimation, finished flag: Bool) {
         if let setupAnim = anim as? GradientSetupAnimation {
             if let finalColors = setupAnim.toValue as? [CGColorRef] {
                 maskLayer?.colors = finalColors
