@@ -1072,7 +1072,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
         
         animation.values = values
-        animation.keyTimes = keyTimes
+        animation.keyTimes = keyTimes.mapToNumbers()
         animation.timingFunctions = [timingFunction, timingFunction, timingFunction, timingFunction]
         
         return animation
@@ -1087,12 +1087,14 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         
         // Calculate times based on marquee type
         let totalDuration: CGFloat
+        let keyTimes: [CGFloat]
+        
         switch (type) {
         case .leftRight, .rightLeft:
             //NSAssert(values.count == 5, @"Incorrect number of values passed for MLLeftRight-type animation")
             totalDuration = 2.0 * (delay + interval)
             // Set up keyTimes
-            animation.keyTimes = [
+            keyTimes = [
                 0.0,                                            // Initial location, home
                 delay/totalDuration,                            // Initial delay, at home
                 (delay + interval)/totalDuration,               // Animation to away
@@ -1113,7 +1115,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             //NSAssert(values.count == 3, @"Incorrect number of values passed for MLContinous-type animation")
             totalDuration = delay + interval
             // Set up keyTimes
-            animation.keyTimes = [
+            keyTimes = [
                 0.0,                        // Initial location, home
                 delay/totalDuration,        // Initial delay, at home
                 1.0                         // Animation to away
@@ -1126,6 +1128,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
         
         // Set values
+        animation.keyTimes = keyTimes.mapToNumbers()
         animation.values = values
         
         return animation
@@ -1656,7 +1659,14 @@ fileprivate extension UIResponder {
     }
 }
 
-private extension CAMediaTimingFunction {
+fileprivate extension Sequence where Iterator.Element == CGFloat {
+    func mapToNumbers() -> [NSNumber] {
+        return self.map { NSNumber(value: Float($0)) }
+    }
+}
+
+
+fileprivate extension CAMediaTimingFunction {
     
     func durationPercentageForPositionPercentage(_ positionPercentage: CGFloat, duration: CGFloat) -> CGFloat {
         // Finds the animation duration percentage that corresponds with the given animation "position" percentage.
