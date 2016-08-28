@@ -65,7 +65,7 @@ class MarqueeLabelDemoViewController : UIViewController {
         
         let attributedString2 = NSMutableAttributedString(string:"This is a long string, that's also an attributed string, which works just as well!")
         attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "Helvetica-Bold", size: 18)!, range: NSMakeRange(0, 21))
-        attributedString2.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGray(), range: NSMakeRange(0, 14))
+        attributedString2.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGray, range: NSMakeRange(0, 14))
         attributedString2.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 0.234, green: 0.234, blue: 0.234, alpha: 1.0), range: NSMakeRange(0, attributedString2.length))
         attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size: 18)!, range: NSMakeRange(21, attributedString2.length - 21))
         demoLabel2.attributedText = attributedString2
@@ -153,7 +153,7 @@ class MarqueeLabelDemoViewController : UIViewController {
             demoLabel3.text = "This is a short, centered label."
             
             let attributedString2 = NSMutableAttributedString(string: "This is a different longer string, but still an attributed string, with new different attributes!")
-            attributedString2.addAttribute(NSForegroundColorAttributeName, value: UIColor.black(), range: NSMakeRange(0, attributedString2.length))
+            attributedString2.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSMakeRange(0, attributedString2.length))
             attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "Helvetica-Bold", size:18.0)!, range:NSMakeRange(0, attributedString2.length))
             attributedString2.addAttribute(NSBackgroundColorAttributeName, value: UIColor(white:0.600, alpha:1.000), range:NSMakeRange(0,33))
             attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size:18.0)!, range:NSMakeRange(19, attributedString2.length - 19))
@@ -173,7 +173,7 @@ class MarqueeLabelDemoViewController : UIViewController {
             
             let attributedString2 = NSMutableAttributedString(string: "This is a long string, that's also an attributed string, which works just as well!")
             attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "Helvetica-Bold", size:18.0)!, range:NSMakeRange(0, 21))
-            attributedString2.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGray(), range:NSMakeRange(10,11))
+            attributedString2.addAttribute(NSBackgroundColorAttributeName, value: UIColor.lightGray, range:NSMakeRange(10,11))
             attributedString2.addAttribute(NSForegroundColorAttributeName, value: UIColor(red:0.234, green:0.234, blue:0.234, alpha:1.000), range:NSMakeRange(0,attributedString2.length))
             attributedString2.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size:18.0)!, range: NSMakeRange(21, attributedString2.length - 21))
             demoLabel2.attributedText = attributedString2
