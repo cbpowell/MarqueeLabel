@@ -5,6 +5,8 @@ MarqueeLabel is a UILabel subclass adds a scrolling marquee effect when the text
 
 MarqueeLabel is compatible with both iOS and tvOS!
 
+__BETA__: There are in-work versions for [Swift 2.3](https://github.com/cbpowell/MarqueeLabel/tree/swift-2.3) and [Swift 3.0](https://github.com/cbpowell/MarqueeLabel/tree/swift-3.0) available.
+
 ## Check it out!
 ![GIF of MarqueeLabelDemo in action](https://raw.githubusercontent.com/cbpowell/MarqueeLabel/master/MarqueeLabelDemo.gif)
 
