@@ -902,9 +902,9 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         // Check if there is a mask to layer size mismatch
         if gradientMask.bounds != self.layer.bounds {
             // Adjust stops based on fade length
-            let leftFadeStop = NSNumber(value: Float(fadeLength/self.bounds.size.width))
-            let rightFadeStop = NSNumber(value: Float(1.0 - fadeLength/self.bounds.size.width))
-            gradientMask.locations = [0.0, leftFadeStop, rightFadeStop, 1.0]
+            let leftFadeStop = fadeLength/self.bounds.size.width
+            let rightFadeStop = 1.0 - fadeLength/self.bounds.size.width
+            gradientMask.locations = [0.0, leftFadeStop, rightFadeStop, 1.0].mapToNumbers()
         }
         
         gradientMask.bounds = self.layer.bounds
