@@ -727,6 +727,9 @@ public class MarqueeLabel: UILabel {
         
         // Remove all sublabel position animations
         sublabel.layer.removeAllAnimations()
+        
+        // Remove completion block
+        scrollCompletionBlock = nil
     }
     
     private func scroll(interval: CGFloat, delay: CGFloat = 0.0, scroller: Scroller, fader: CAKeyframeAnimation?) {

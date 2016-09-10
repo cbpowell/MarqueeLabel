@@ -35,7 +35,7 @@ typedef void(^MLAnimationCompletionBlock)(BOOL finished);
 - (CGFloat)durationPercentageForPositionPercentage:(CGFloat)positionPercentage withDuration:(NSTimeInterval)duration;
 @end
 
-@interface MarqueeLabel()
+@interface MarqueeLabel() <CAAnimationDelegate>
 
 @property (nonatomic, strong) UILabel *subLabel;
 
@@ -525,6 +525,9 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     // Remove sublabel position animations
     [self.subLabel.layer removeAllAnimations];
+    
+    // Remove compeltion blocks
+    self.scrollCompletionBlock = nil;
 }
 
 - (void)scrollAwayWithInterval:(NSTimeInterval)interval {
