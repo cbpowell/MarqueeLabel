@@ -35,7 +35,7 @@ typedef void(^MLAnimationCompletionBlock)(BOOL finished);
 - (CGFloat)durationPercentageForPositionPercentage:(CGFloat)positionPercentage withDuration:(NSTimeInterval)duration;
 @end
 
-@interface MarqueeLabel() <CAAnimationDelegate>
+@interface MarqueeLabel()
 
 @property (nonatomic, strong) UILabel *subLabel;
 
