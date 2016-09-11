@@ -1248,6 +1248,20 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     super.baselineAdjustment = baselineAdjustment;
 }
 
+- (UIColor *)tintColor {
+    return self.subLabel.tintColor;
+}
+
+- (void)setTintColor:(UIColor *)tintColor {
+    self.subLabel.tintColor = tintColor;
+    super.tintColor = tintColor;
+}
+
+- (void)tintColorDidChange {
+    [super tintColorDidChange];
+    [self.subLabel tintColorDidChange];
+}
+
 - (CGSize)intrinsicContentSize {
     CGSize contentSize = self.subLabel.intrinsicContentSize;
     contentSize.width += self.leadingBuffer;

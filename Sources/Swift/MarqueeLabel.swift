@@ -1590,6 +1590,22 @@ public class MarqueeLabel: UILabel {
         return content
     }
     
+    public override var tintColor: UIColor! {
+        get {
+            return sublabel.tintColor
+        }
+        
+        set {
+            sublabel.tintColor = newValue
+            super.tintColor = newValue
+        }
+    }
+    
+    public override func tintColorDidChange() {
+        super.tintColorDidChange()
+        sublabel.tintColorDidChange()
+    }
+    
 
     //
     // MARK: - Support
