@@ -724,6 +724,9 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         
         // Remove all sublabel position animations
         sublabel.layer.removeAllAnimations()
+        
+        // Remove completion block
+        scrollCompletionBlock = nil
     }
     
     private func scroll(_ interval: CGFloat, delay: CGFloat = 0.0, scroller: Scroller, fader: CAKeyframeAnimation?) {
@@ -1585,6 +1588,22 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         var content = sublabel.intrinsicContentSize
         content.width += leadingBuffer
         return content
+    }
+    
+    public override var tintColor: UIColor! {
+        get {
+            return sublabel.tintColor
+        }
+        
+        set {
+            sublabel.tintColor = newValue
+            super.tintColor = newValue
+        }
+    }
+    
+    public override func tintColorDidChange() {
+        super.tintColorDidChange()
+        sublabel.tintColorDidChange()
     }
     
 
