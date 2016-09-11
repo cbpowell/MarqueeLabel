@@ -525,6 +525,9 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     
     // Remove sublabel position animations
     [self.subLabel.layer removeAllAnimations];
+    
+    // Remove compeltion blocks
+    self.scrollCompletionBlock = nil;
 }
 
 - (void)scrollAwayWithInterval:(NSTimeInterval)interval {
@@ -1243,6 +1246,20 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 - (void)setBaselineAdjustment:(UIBaselineAdjustment)baselineAdjustment {
     self.subLabel.baselineAdjustment = baselineAdjustment;
     super.baselineAdjustment = baselineAdjustment;
+}
+
+- (UIColor *)tintColor {
+    return self.subLabel.tintColor;
+}
+
+- (void)setTintColor:(UIColor *)tintColor {
+    self.subLabel.tintColor = tintColor;
+    super.tintColor = tintColor;
+}
+
+- (void)tintColorDidChange {
+    [super tintColorDidChange];
+    [self.subLabel tintColorDidChange];
 }
 
 - (CGSize)intrinsicContentSize {
