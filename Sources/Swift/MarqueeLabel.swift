@@ -10,6 +10,10 @@ import QuartzCore
 
 @IBDesignable
 
+#if !swift(>=2.3)
+private protocol CAAnimationDelegate {}
+#endif
+
 public class MarqueeLabel: UILabel, CAAnimationDelegate {
     
     /**
@@ -162,9 +166,15 @@ public class MarqueeLabel: UILabel, CAAnimationDelegate {
      The "home" location is the traditional location of `UILabel` text. This property essentially reflects if a scroll animation is underway.
      */
     public var awayFromHome: Bool {
+        #if swift(>=2.3)
         if let presentationLayer = sublabel.layer.presentationLayer() {
             return !(presentationLayer.position.x == homeLabelFrame.origin.x)
         }
+        #else
+        if let presentationLayer = sublabel.layer.presentationLayer() as? CALayer {
+            return !(presentationLayer.position.x == homeLabelFrame.origin.x)
+        }
+        #endif
         
         return false
     }
@@ -1024,7 +1034,11 @@ public class MarqueeLabel: UILabel, CAAnimationDelegate {
         
         // Define values
         // Get current layer values
+        #if swift(>=2.3)
         let mask = maskLayer?.presentationLayer()
+        #else
+        let mask = maskLayer?.presentationLayer() as? CAGradientLayer
+        #endif
         let currentValues = mask?.colors as? [CGColorRef]
         
         switch (type) {
@@ -1165,7 +1179,17 @@ public class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
+    #if swift(>=2.3)
     public func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+        scrollDidStop(anim, finished: flag)
+    }
+    #else
+    override public func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+        scrollDidStop(anim, finished: flag)
+    }
+    #endif
+    
+    private func scrollDidStop(anim: CAAnimation, finished flag: Bool) {
         if let setupAnim = anim as? GradientSetupAnimation {
             if let finalColors = setupAnim.toValue as? [CGColorRef] {
                 maskLayer?.colors = finalColors
