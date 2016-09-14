@@ -1590,7 +1590,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         return content
     }
     
-    public override var tintColor: UIColor! {
+    override open var tintColor: UIColor! {
         get {
             return sublabel.tintColor
         }
@@ -1601,7 +1601,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
-    public override func tintColorDidChange() {
+    override open func tintColorDidChange() {
         super.tintColorDidChange()
         sublabel.tintColorDidChange()
     }
