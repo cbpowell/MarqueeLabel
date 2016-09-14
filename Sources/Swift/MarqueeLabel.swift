@@ -10,7 +10,7 @@ import QuartzCore
 
 @IBDesignable
 
-public class MarqueeLabel: UILabel {
+public class MarqueeLabel: UILabel, CAAnimationDelegate {
     
     /**
      An enum that defines the types of `MarqueeLabel` scrolling
@@ -162,7 +162,7 @@ public class MarqueeLabel: UILabel {
      The "home" location is the traditional location of `UILabel` text. This property essentially reflects if a scroll animation is underway.
      */
     public var awayFromHome: Bool {
-        if let presentationLayer = sublabel.layer.presentationLayer() as? CALayer {
+        if let presentationLayer = sublabel.layer.presentationLayer() {
             return !(presentationLayer.position.x == homeLabelFrame.origin.x)
         }
         
@@ -210,7 +210,8 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    @available(*, deprecated = 2.6, message = "Use speed property instead")
+    // Swift 2.3 compiler can't figure out what it wants for these @available attributes
+    //@available(*, deprecated : 2.6, message : "Use speed property instead")
     @IBInspectable public var scrollDuration: CGFloat {
         get {
             switch speed {
@@ -223,7 +224,8 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    @available(*, deprecated = 2.6, message = "Use speed property instead")
+    // Swift 2.3 compiler can't figure out what it wants for these @available attributes
+    // @available(*, deprecated : 2.6, message : "Use speed property instead")
     @IBInspectable public var scrollRate: CGFloat {
         get {
             switch speed {
@@ -1022,7 +1024,7 @@ public class MarqueeLabel: UILabel {
         
         // Define values
         // Get current layer values
-        let mask = maskLayer?.presentationLayer() as? CAGradientLayer
+        let mask = maskLayer?.presentationLayer()
         let currentValues = mask?.colors as? [CGColorRef]
         
         switch (type) {
@@ -1163,7 +1165,7 @@ public class MarqueeLabel: UILabel {
         }
     }
     
-    override public func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+    public func animationDidStop(anim: CAAnimation, finished flag: Bool) {
         if let setupAnim = anim as? GradientSetupAnimation {
             if let finalColors = setupAnim.toValue as? [CGColorRef] {
                 maskLayer?.colors = finalColors
