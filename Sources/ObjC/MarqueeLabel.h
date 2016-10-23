@@ -273,6 +273,18 @@ IB_DESIGNABLE
 @property (nonatomic, assign) IBInspectable CGFloat animationDelay;
 
 
+/** The read-only duration of the scroll animation (not including delay). 
+ 
+ The value of this property is calculated when using the `scrollRate` property to set label animation speed. The value of this property
+ is equal to the value of `scrollDuration` property when using the `scrollDuration` property to set label animation speed.
+ 
+ @see scrollDuration
+ @see scrollRate
+ */
+
+@property (nonatomic, readonly) NSTimeInterval animationDuration;
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @name Animation control
