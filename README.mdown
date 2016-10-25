@@ -57,6 +57,7 @@ There are also several optional features to help with your integration of the sc
 
 See the included demo project for several use case examples!
 
+
 ### Code
 These lines of code create a MarqueeLabel that will scroll across its content in 8.0 seconds, and adds 10.0 point long fade at the left and right boundaries.
 
@@ -90,7 +91,12 @@ Check out the [MarqueeLabel documentation](http://cocoadocs.org/docsets/MarqueeL
 - Bulk-manipulation class methods to conveniently restart, pause, and unpause all labels in a view controller
 - Scrolling direction: left->right, right->left, and continuous looping (both left and right)
 
-### Special Notes<a id="specialnotes"></a>
+## Extras
+
+Also check out [the Extras folder](/Extras), a collection of subclasses, extensions, and modifications for MarqueeLabel to implement various functionality that has been requested or suggested, but not merged into the MarqueeLabel code. 
+
+
+## Special Notes<a id="specialnotes"></a>
 
 #### Automatic Scrolling
 
