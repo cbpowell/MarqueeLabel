@@ -1,0 +1,9 @@
+Extras
+======
+
+A collection of subclasses, extensions, and modifications for MarqueeLabel to implement various
+functionality that has been requested or suggested, but not merged into the MarqueeLabel code.
+
+- **NoReturnAnimation** (Swift) - A modification to the LeftRight/RightLeft types that "cancels" the returnportion of the animation, so that the label jumps back to the home position after scrolling away (see issue #153)
+
+- **SingleShotOffscreenLabel** (Swift) - Similar to NoReturnAnimation, but the label scrolls offscreen and does not return to the home position (see issue #168)
