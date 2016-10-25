@@ -5,6 +5,9 @@
       location = "group:/Users/cbpowell/Projects/MarqueeLabel/Sources">
    </FileRef>
    <FileRef
+      location = "group:Extras">
+   </FileRef>
+   <FileRef
       location = "group:MarqueeLabel/MarqueeLabel.xcodeproj">
    </FileRef>
    <FileRef
