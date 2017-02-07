@@ -76,8 +76,7 @@ Replace:
 	var lengthyLabel = UILabel.init(frame:aFrame)
 
 With:
-
-	var lengthyLabel = MarqueeLabel.initWithFrame(frame:aFrame duration:8.0 andFadeLength:10.0)
+	var lengthyLabel = MarqueeLabel.init(frame: aFrame, duration: 8.0, fadeLength: 10.0)
 
 ### Storyboards
 If you're using Storyboards/Interface Builder you can create a MarqueeLabel instance by adding a normal UILabel view to your Storyboard, and then manually changing the view's class to `MarqueeLabel` in the "Custom Class" field of the Identity Inspector tab on the Utilities panel (the right-side panel).
