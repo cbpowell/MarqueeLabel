@@ -51,7 +51,7 @@ There are several options for the Marquee type, and the default is `Continuous` 
 
 There are also several optional features to help with your integration of the scrolling nature of MarqueeLabel:
 - An optional edge fade at the left and right edges of the view, in order to fade the label text into the background rather than simply being clipped off
-- Leading and trailing buffers to offset the label text inside it's frame, giving you better control over alignment
+- Leading and trailing buffers to offset the label text inside its frame, giving you better control over alignment
 - "Labelization" to make your MarqueeLabel _exactly_ like a UILabel.
 - Scroll animation "holding" and pausing
 
