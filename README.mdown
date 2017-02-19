@@ -76,6 +76,7 @@ Replace:
 	var lengthyLabel = UILabel.init(frame:aFrame)
 
 With:
+
 	var lengthyLabel = MarqueeLabel.init(frame: aFrame, duration: 8.0, fadeLength: 10.0)
 
 ### Storyboards
