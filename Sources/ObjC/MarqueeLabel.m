@@ -36,10 +36,6 @@ typedef void(^MLAnimationCompletionBlock)(BOOL finished);
 @end
 
 @interface MarqueeLabel()
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
-// iOS 10 SDK has CAAnimationDelegate a formal protocol
-<CAAnimationDelegate>
-#endif
 
 @property (nonatomic, strong) UILabel *subLabel;
 

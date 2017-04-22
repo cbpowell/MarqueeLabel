@@ -31,8 +31,11 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
  */
 
 IB_DESIGNABLE
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_10_0
+@interface MarqueeLabel : UILabel <CAAnimationDelegate>
+#else
 @interface MarqueeLabel : UILabel
-
+#endif
 ////////////////////////////////////////////////////////////////////////////////
 /// @name Creating MarqueeLabels
 ////////////////////////////////////////////////////////////////////////////////
