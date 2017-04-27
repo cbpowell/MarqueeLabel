@@ -98,6 +98,19 @@ Also check out [the Extras folder](/Extras), a collection of subclasses, extensi
 
 ## Special Notes<a id="specialnotes"></a>
 
+#### IBDesignables
+
+MarqueeLabel includes support for IBInspectable and IBDesignable, to allow configuration of the label inside Interface Builder/Storyboards. However, if you see these warnings when building:
+
+    IB Designables: Failed to update auto layout status: Failed to load designables from path (null)
+    IB Designables: Failed to render instance of MarqueeLabel: Failed to load designables from path (null)
+
+...then you are likely using MarqueeLabel as a static library, which does not support IBInspectable/IBDesignable. Some workarounds include:
+
+- Install MarqueeLabel as a dynamic framework using CocoaPods with use_frameworks! in your Podfile
+- Install MarqueeLabel with Carthage
+- Install MarqueeLabel by manually importing the source files into your project (may be only option if you're targeting iOS 7.0)
+
 #### Automatic Scrolling
 
 MarqueeLabel tries its best to automatically begin scrolling when appropriate, but sometimes the way your view/view controller appears onscreen can trip it up.
