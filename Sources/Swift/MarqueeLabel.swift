@@ -613,7 +613,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             sublabel.textAlignment = NSTextAlignment.right
             
         case .leftRight:
-            homeLabelFrame = CGRect(x: leadingBuffer, y: 0.0, width: expectedLabelSize.width, height: expectedLabelSize.height).integral
+            homeLabelFrame = CGRect(x: leadingBuffer, y: 0.0, width: expectedLabelSize.width, height: bounds.size.height).integral
             awayOffset = bounds.size.width - (expectedLabelSize.width + leadingBuffer + trailingBuffer)
             
             // Set frame and text
