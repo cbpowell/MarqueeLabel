@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		EA017CE81DBED75E00237CA9 /* SingleShotOffscreenLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA017CE71DBED75E00237CA9 /* SingleShotOffscreenLabel.swift */; };
 		EA017CEA1DBEDCD900237CA9 /* NoReturnAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA017CE91DBEDCD900237CA9 /* NoReturnAnimation.swift */; };
-		EAA0324A1DC69A4900B1EF62 /* MarqueeLabelSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA032491DC69A4900B1EF62 /* MarqueeLabelSwift.swift */; };
+		EAC68F021EB18DAF001893CC /* MarqueeLabelSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC68F011EB18DAF001893CC /* MarqueeLabelSwift.swift */; };
 		EAE4AC591CA8DAC0006C1ECC /* MLHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAE4AC581CA8DAC0006C1ECC /* MLHeader.xib */; };
 		EAE4AC5B1CA8DAC8006C1ECC /* MarqueeLabelSwift.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAE4AC5A1CA8DAC8006C1ECC /* MarqueeLabelSwift.storyboard */; };
 		EAE4AC5F1CA8DAFB006C1ECC /* MarqueeLabelDemoPushController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE4AC5C1CA8DAFB006C1ECC /* MarqueeLabelDemoPushController.swift */; };
@@ -27,7 +27,7 @@
 		EA017CE91DBEDCD900237CA9 /* NoReturnAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NoReturnAnimation.swift; path = ../../Extras/NoReturnAnimation.swift; sourceTree = "<group>"; };
 		EA167D021CA8B43700DBF930 /* MarqueeLabelSwiftDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarqueeLabelSwiftDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA167D111CA8B43700DBF930 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EAA032491DC69A4900B1EF62 /* MarqueeLabelSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarqueeLabelSwift.swift; sourceTree = SOURCE_ROOT; };
+		EAC68F011EB18DAF001893CC /* MarqueeLabelSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarqueeLabelSwift.swift; sourceTree = "<group>"; };
 		EAE4AC581CA8DAC0006C1ECC /* MLHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MLHeader.xib; sourceTree = SOURCE_ROOT; };
 		EAE4AC5A1CA8DAC8006C1ECC /* MarqueeLabelSwift.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MarqueeLabelSwift.storyboard; sourceTree = SOURCE_ROOT; };
 		EAE4AC5C1CA8DAFB006C1ECC /* MarqueeLabelDemoPushController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarqueeLabelDemoPushController.swift; sourceTree = SOURCE_ROOT; };
@@ -114,7 +114,7 @@
 				EAE4AC5D1CA8DAFB006C1ECC /* MarqueeLabelDemoViewController.swift */,
 				EAE4AC5C1CA8DAFB006C1ECC /* MarqueeLabelDemoPushController.swift */,
 				EAE4AC5E1CA8DAFB006C1ECC /* MarqueeLabelTableViewController.swift */,
-				EAA032491DC69A4900B1EF62 /* MarqueeLabelSwift.swift */,
+				EAC68F011EB18DAF001893CC /* MarqueeLabelSwift.swift */,
 			);
 			name = Support;
 			sourceTree = "<group>";
@@ -268,7 +268,7 @@
 				EAE4AC611CA8DAFB006C1ECC /* MarqueeLabelTableViewController.swift in Sources */,
 				EA017CE81DBED75E00237CA9 /* SingleShotOffscreenLabel.swift in Sources */,
 				EA017CEA1DBEDCD900237CA9 /* NoReturnAnimation.swift in Sources */,
-				EAA0324A1DC69A4900B1EF62 /* MarqueeLabelSwift.swift in Sources */,
+				EAC68F021EB18DAF001893CC /* MarqueeLabelSwift.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -419,6 +419,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = MarqueeLabelSwift/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.charlespowell.MarqueeLabelSwift;
@@ -442,6 +443,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = MarqueeLabelSwift/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.charlespowell.MarqueeLabelSwift;
