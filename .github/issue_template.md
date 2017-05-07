@@ -1,7 +1,7 @@
 ### Please follow the general troubleshooting steps first:
 
 - [ ] Updated to latest version of MarqueeLabel
-- [ ] Read README, in particular the [Special Notes](https://github.com/cbpowell/MarqueeLabel#special-notes)
+- [ ] Read the README, in particular the [Special Notes](https://github.com/cbpowell/MarqueeLabel#special-notes)
 - [ ] For general questions about using MarqueeLabel, post on StackOverflow with the [#MarqueeLabel tag](http://stackoverflow.com/questions/tagged/marqueelabel)
 
 ### Usage Details
