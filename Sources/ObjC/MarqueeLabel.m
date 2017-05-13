@@ -996,6 +996,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     } else {
         if (self.scrollCompletionBlock) {
             self.scrollCompletionBlock(flag);
+            self.scrollCompletionBlock = nil;
         }
     }
 }
