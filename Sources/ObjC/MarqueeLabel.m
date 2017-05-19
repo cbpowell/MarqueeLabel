@@ -658,6 +658,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     }
     
     __weak __typeof__(self) weakSelf = self;
+    __weak __typeof__(labelAnimation) weakLabelAnimation = labelAnimation;
     self.scrollCompletionBlock = ^(BOOL finished) {
         if (!finished || !weakSelf) {
             // Do not continue into the next loop
@@ -675,7 +676,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
             if (weakSelf.labelShouldScroll && !weakSelf.tapToScroll && !weakSelf.holdScrolling) {
                 [weakSelf scrollContinuousWithInterval:interval
                                              after:delayAmount
-                                    labelAnimation:labelAnimation
+                                    labelAnimation:weakLabelAnimation
                                  gradientAnimation:gradientAnimation];
             }
         }
