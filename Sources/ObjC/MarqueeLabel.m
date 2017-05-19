@@ -577,7 +577,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
         // 2) The instance is still attached to a window - this completion block is called for
         //    many reasons, including if the animation is removed due to the view being removed
         //    from the UIWindow (typically when the view controller is no longer the "top" view)
-        if (self.window && ![weakSelf.subLabel.layer animationForKey:@"position"]) {
+        if (weakSelf.window && ![weakSelf.subLabel.layer animationForKey:@"position"]) {
             // Begin again, if conditions met
             if (weakSelf.labelShouldScroll && !weakSelf.tapToScroll && !weakSelf.holdScrolling) {
                 [weakSelf scrollAwayWithInterval:interval delayAmount:delayAmount];
