@@ -57,6 +57,12 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     }
     
     /**
+     Defines custom scrolling properties.
+     
+     */
+    open var scrollSteps: Array<MarqueeStep>?
+    
+    /**
      Specifies the animation curve used in the scrolling motion of the labels.
      Allowable options:
      
@@ -112,7 +118,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         didSet {
             if holdScrolling != oldValue {
                 if oldValue == true && !(awayFromHome || labelize || tapToScroll ) && labelShouldScroll() {
-                    beginScroll()
+                    updateAndScroll(true)
                 }
             }
         }
@@ -579,8 +585,21 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         
         // Label DOES need to scroll
         
+        // Recompute the animation duration
+        animationDuration = {
+            switch self.speed {
+            case .rate(let rate):
+                return CGFloat(fabs(self.awayOffset) / rate)
+            case .duration(let duration):
+                return duration
+            }
+        }()
+        
         // Spacing between primary and second sublabel must be at least equal to leadingBuffer, and at least equal to the fadeLength
         let minTrailing = max(max(leadingBuffer, trailingBuffer), fadeLength)
+        
+        // Determine positions and generate scroll steps
+        let sequence: [MarqueeStep]
         
         switch type {
         case .continuous, .continuousReverse:
@@ -592,57 +611,60 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
                 awayOffset = (homeLabelFrame.size.width + minTrailing)
             }
             
+            sequence = scrollSteps ?? [
+                ScrollStep(timeStep: 0.0, position: .home, edgeFades: .trailing),                   // Starting point, at home, with trailing fade
+                ScrollStep(timeStep: animationDelay, position: .home, edgeFades: .trailing),        // Delay at home, maintaining fade state
+                FadeStep(timeStep: 0.2, edgeFades: [.leading, .trailing]),                          // 0.2 sec after delay ends, fade leading edge in as well
+                FadeStep(timeStep: -0.1, edgeFades: [.leading, .trailing]),                         // Maintain fade state until 0.1 sec before reaching end of scroll animation
+                ScrollStep(timeStep: animationDuration, timingFunction: animationCurve,             // Ending point (back at home), with animationCurve transition, with trailing fade
+                           position: .away, edgeFades: .trailing)
+            ]
+            
             // Set frame and text
             sublabel.frame = homeLabelFrame
             
             // Configure replication
             repliLayer?.instanceCount = 2
             repliLayer?.instanceTransform = CATransform3DMakeTranslation(-awayOffset, 0.0, 0.0)
-        
-        case .rightLeft:
-            homeLabelFrame = CGRect(x: bounds.size.width - (expectedLabelSize.width + leadingBuffer), y: 0.0, width: expectedLabelSize.width, height: bounds.size.height).integral
-            awayOffset = (expectedLabelSize.width + trailingBuffer + leadingBuffer) - bounds.size.width
             
-            // Set frame and text
-            sublabel.frame = homeLabelFrame
-            
-            // Remove any replication
-            repliLayer?.instanceCount = 1
-            
-            // Enforce text alignment for this type
-            sublabel.textAlignment = NSTextAlignment.right
-            
-        case .leftRight:
-            homeLabelFrame = CGRect(x: leadingBuffer, y: 0.0, width: expectedLabelSize.width, height: bounds.size.height).integral
-            awayOffset = bounds.size.width - (expectedLabelSize.width + leadingBuffer + trailingBuffer)
-            
-            // Set frame and text
-            sublabel.frame = homeLabelFrame
-            
-            // Remove any replication
-            repliLayer?.instanceCount = 1
-            
-            // Enforce text alignment for this type
-            sublabel.textAlignment = NSTextAlignment.left
-            
-        // Default case not required
-        }
-        
-        // Recompute the animation duration
-        animationDuration = {
-            switch self.speed {
-            case .rate(let rate):
-                return CGFloat(fabs(self.awayOffset) / rate)
-            case .duration(let duration):
-                return duration
+        case .leftRight,.rightLeft:
+            if type == .leftRight {
+                homeLabelFrame = CGRect(x: leadingBuffer, y: 0.0, width: expectedLabelSize.width, height: bounds.size.height).integral
+                awayOffset = bounds.size.width - (expectedLabelSize.width + leadingBuffer + trailingBuffer)
+                // Enforce text alignment for this type
+                sublabel.textAlignment = NSTextAlignment.left
+            } else {
+                homeLabelFrame = CGRect(x: bounds.size.width - (expectedLabelSize.width + leadingBuffer), y: 0.0, width: expectedLabelSize.width, height: bounds.size.height).integral
+                awayOffset = (expectedLabelSize.width + trailingBuffer + leadingBuffer) - bounds.size.width
+                // Enforce text alignment for this type
+                sublabel.textAlignment = NSTextAlignment.right
             }
-        }()
+            // Set frame and text
+            sublabel.frame = homeLabelFrame
+            
+            // Remove any replication
+            repliLayer?.instanceCount = 1
+            
+            sequence = scrollSteps ?? [
+                ScrollStep(timeStep: 0.0, position: .home, edgeFades: .trailing),               // Starting point, at home, with trailing fade
+                ScrollStep(timeStep: animationDelay, position: .home, edgeFades: .trailing),    // Delay at home, maintaining fade state
+                FadeStep(timeStep: 0.2, edgeFades: [.leading, .trailing]),                      // 0.2 sec after delay ends, fade leading edge in as well
+                FadeStep(timeStep: -0.2, edgeFades: [.leading, .trailing]),                     // Maintain fade state until 0.2 sec before reaching away position
+                ScrollStep(timeStep: animationDuration, timingFunction: animationCurve,         // Away position, using animationCurve transition, with only leading edge faded in
+                           position: .away, edgeFades: .leading),
+                ScrollStep(timeStep: animationDelay, position: .away, edgeFades: .leading),     // Delay at away, maintaining fade state (leading only)
+                FadeStep(timeStep: 0.2, edgeFades: [.leading, .trailing]),                      // 0.2 sec after delay ends, fade trailing edge back in as well
+                FadeStep(timeStep: -0.2, edgeFades: [.leading, .trailing]),                     // Maintain fade state until 0.2 sec before reaching home position
+                ScrollStep(timeStep: animationDuration, timingFunction: animationCurve,         // Ending point, back at home, with only trailing fade
+                           position: .home, edgeFades: .trailing)
+            ]
+        }
         
         // Configure gradient for current condition
         applyGradientMask(fadeLength, animated: !self.labelize)
         
         if !tapToScroll && !holdScrolling && shouldBeginScroll {
-            beginScroll()
+            beginScroll(sequence)
         }
     }
     
@@ -675,7 +697,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     // MARK: - Animation Handling
     //
     
-    private func labelShouldScroll() -> Bool {
+    open func labelShouldScroll() -> Bool {
         // Check for nil string
         if sublabel.text == nil {
             return false
@@ -714,17 +736,11 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         return true
     }
     
-    private func beginScroll() {
-        beginScroll(true)
-    }
-    
-    private func beginScroll(_ delay: Bool) {
-        switch self.type {
-        case .leftRight, .rightLeft:
-            scrollAway(animationDuration, delay: animationDelay)
-        default:
-            scrollContinuous(animationDuration, delay: animationDelay)
-        }
+    private func beginScroll(_ sequence: [MarqueeStep]) {
+        let scroller = generateScrollAnimation(sequence)
+        let fader = generateGradientAnimation(sequence, totalDuration: scroller.duration)
+        
+        scroll(scroller, fader: fader)
     }
     
     private func returnLabelToHome() {
@@ -738,20 +754,20 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         scrollCompletionBlock = nil
     }
     
-    private func scroll(_ interval: CGFloat, delay: CGFloat = 0.0, scroller: Scroller, fader: CAKeyframeAnimation?) {
-        var scroller = scroller
+    private func scroll(_ scroller: MLAnimation, fader: MLAnimation?) {
         // Check for conditions which would prevent scrolling
         if !labelReadyForScroll() {
             return
         }
+        // Convert fader to var
+        var fader = fader
         
         // Call pre-animation hook
         labelWillBeginScroll()
         
         // Start animation transactions
         CATransaction.begin()
-        let transDuration = transactionDurationType(type, interval: interval, delay: delay)
-        CATransaction.setAnimationDuration(transDuration)
+        CATransaction.setAnimationDuration(TimeInterval(scroller.duration))
         
         // Create gradient animation, if needed
         let gradientAnimation: CAKeyframeAnimation?
@@ -765,20 +781,20 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
                 maskLayer?.removeAnimation(forKey: "setupFade")
                 
                 // Generate animation if needed
-                if let previousAnimation = fader {
+                if let previousAnimation = fader?.anim {
                     gradientAnimation = previousAnimation
                 } else {
-                    gradientAnimation = keyFrameAnimationForGradient(fadeLength, interval: interval, delay: delay)
+                    gradientAnimation = nil
                 }
                 
-                // Apply scrolling animation
+                // Apply fade animation
                 maskLayer?.add(gradientAnimation!, forKey: "gradient")
             } else {
                 // No animation needed
-                gradientAnimation = nil
+                fader = nil
             }
         #else
-            gradientAnimation = nil;
+            fader = nil;
         #endif
         
         scrollCompletionBlock = { [weak self] (finished: Bool) -> () in
@@ -810,80 +826,143 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             // Begin again, if conditions met
             if (self!.labelShouldScroll() && !self!.tapToScroll && !self!.holdScrolling) {
                 // Perform completion callback
-                self!.scroll(interval, delay: delay, scroller: scroller, fader: gradientAnimation)
+                self!.scroll(scroller, fader: fader)
             }
         }
         
-        // Call scroller
-        let scrolls = scroller.generate(interval, delay: delay)
-        
-        // Perform all animations in scrolls
-        for (index, scroll) in scrolls.enumerated() {
-            let layer = scroll.layer
-            let anim = scroll.anim
-            
-            // Add callback to single animation
-            if index == 0 {
-                anim.setValue(true, forKey: MarqueeKeys.CompletionClosure.rawValue)
-                anim.delegate = self
-            }
-            
-            // Add animation
-            layer.add(anim, forKey: "position")
-        }
+        // Perform scroll animation
+        scroller.anim.setValue(true, forKey: MarqueeKeys.CompletionClosure.rawValue)
+        scroller.anim.delegate = self
+        sublabel.layer.add(scroller.anim, forKey: "position")
         
         CATransaction.commit()
     }
     
-    private func scrollAway(_ interval: CGFloat, delay: CGFloat = 0.0) {
+    private func generateScrollAnimation(_ sequence: [MarqueeStep]) -> MLAnimation {
         // Create scroller, which defines the animation to perform
         let homeOrigin = homeLabelFrame.origin
         let awayOrigin = offsetCGPoint(homeLabelFrame.origin, offset: awayOffset)
-        let scroller = Scroller(generator: { [unowned self] (interval: CGFloat, delay: CGFloat) -> [(layer: CALayer, anim: CAKeyframeAnimation)] in
-            // Create animation for position
-            let values: [NSValue] = [
-                NSValue(cgPoint: homeOrigin), // Start at home
-                NSValue(cgPoint: homeOrigin), // Stay at home for delay
-                NSValue(cgPoint: awayOrigin), // Move to away
-                NSValue(cgPoint: awayOrigin), // Stay at away for delay
-                NSValue(cgPoint: homeOrigin)  // Move back to home
-            ]
-            
-            let layer = self.sublabel.layer
-            let anim = self.keyFrameAnimationForProperty("position", values: values, interval: interval, delay: delay)
-            
-            return [(layer: layer, anim: anim)]
-        })
         
-        // Scroll
-        scroll(interval, delay: delay, scroller: scroller, fader: nil)
+        let scrollSteps = sequence.filter({ $0 is ScrollStep }) as! [ScrollStep]
+        let totalDuration = scrollSteps.reduce(0.0) { $0 + $1.timeStep }
+        
+        // Build scroll data
+        var totalTime: CGFloat = 0.0
+        var scrollKeyTimes = [NSNumber]()
+        var scrollKeyValues = [NSValue]()
+        var scrollTimingFunctions = [CAMediaTimingFunction]()
+        
+        for (offset, step) in scrollSteps.enumerated() {
+            // Scroll Times
+            totalTime += step.timeStep
+            scrollKeyTimes.append(NSNumber(value:Float(totalTime/totalDuration)))
+            
+            // Scroll Values
+            let scrollPosition: CGPoint
+            switch step.position {
+            case .home:
+                scrollPosition = homeOrigin
+            case .away:
+                scrollPosition = awayOrigin
+            case .partial(let frac):
+                scrollPosition = offsetCGPoint(homeOrigin, offset: awayOffset*frac)
+            }
+            scrollKeyValues.append(NSValue(cgPoint:scrollPosition))
+            
+            // Scroll Timing Functions
+            // Only need n-1 timing functions, so discard the first value as it's unused
+            if offset == 0 { continue }
+            scrollTimingFunctions.append(timingFunctionForAnimationCurve(step.timingFunction))
+        }
+        
+        // Create animation
+        let animation = CAKeyframeAnimation(keyPath: "position")
+        // Set values
+        animation.keyTimes = scrollKeyTimes
+        animation.values = scrollKeyValues
+        animation.timingFunctions = scrollTimingFunctions
+        
+        return (anim: animation, duration: totalDuration)
     }
+    
+    private func generateGradientAnimation(_ sequence: [MarqueeStep], totalDuration: CGFloat) -> MLAnimation {
+        // Setup
+        var totalTime: CGFloat = 0.0
+        var fadeKeyValues = [[CGColor]]()
+        var fadeKeyTimes = [NSNumber]()
+        var fadeTimingFunctions = [CAMediaTimingFunction]()
+        let transp = UIColor.clear.cgColor
+        let opaque = UIColor.black.cgColor
+        
+        // Get scroll steps and precedant/subsequent fade steps
+        let fadeSteps = sequence.enumerated().filter { (offset: Int, element: MarqueeStep) -> Bool in
+            // Include all Scroll Steps
+            if element is ScrollStep { return true }
+            // Include all Fade Steps that have a directly preceding or subsequent Scroll Step
+            
+            // Exception: Fade Step cannot be first step
+            if offset == 0 { return false }
+            
+            let precedent = (sequence[max(0, offset - 1)] is ScrollStep)
+            let subsequent = (sequence[min(sequence.count - 1, offset + 1)] is ScrollStep)
+            
+            return (precedent || subsequent)
+        }
+        
+        for (offset, step) in fadeSteps {
+            // Fade times
+            if step.timeStep >= 0 {
+                // Subsequent
+                totalTime += step.timeStep
+            } else {
+                // Precedent, grab next step
+                totalTime = fadeSteps[offset + 1].element.timeStep + step.timeStep
+            }
+            fadeKeyTimes.append(NSNumber(value:Float(totalTime/totalDuration)))
+            
+            // Fade Values
+            let values: [CGColor]
+            let leading = step.edgeFades.contains(.leading) ? transp : opaque
+            let trailing = step.edgeFades.contains(.trailing) ? transp : opaque
+            switch type {
+            case .leftRight, .continuous:
+                values = [leading, opaque, opaque, trailing]
+            case .rightLeft, .continuousReverse:
+                values = [trailing, opaque, opaque, leading]
+            }
+            fadeKeyValues.append(values)
+            
+            // Fade Timing Function
+            // Only need n-1 timing functions, so discard the first value as it's unused
+            if offset == 0 { continue }
+            fadeTimingFunctions.append(timingFunctionForAnimationCurve(step.timingFunction))
+        }
 
-    
-    private func scrollContinuous(_ interval: CGFloat, delay: CGFloat) {
-        // Create scroller, which defines the animation to perform
-        let homeOrigin = homeLabelFrame.origin
-        let awayOrigin = offsetCGPoint(homeLabelFrame.origin, offset: awayOffset)
-        let scroller = Scroller(generator: { [unowned self] (interval: CGFloat, delay: CGFloat) -> [(layer: CALayer, anim: CAKeyframeAnimation)] in
-            // Create animation for position
-            let values: [NSValue] = [
-                NSValue(cgPoint: homeOrigin), // Start at home
-                NSValue(cgPoint: homeOrigin), // Stay at home for delay
-                NSValue(cgPoint: awayOrigin)  // Move to away
-            ]
-            
-            // Generate animation
-            let layer = self.sublabel.layer
-            let anim = self.keyFrameAnimationForProperty("position", values: values, interval: interval, delay: delay)
-            
-            return [(layer: layer, anim: anim)]
-        })
         
-        // Scroll
-        scroll(interval, delay: delay, scroller: scroller, fader: nil)
+        // Create new animation
+        let animation = CAKeyframeAnimation(keyPath: "colors")
+        
+        // Find when the lead label will be totally offscreen
+        // TODO
+//        let offsetDistance = awayOffset
+//        let startFadeFraction = fabs((sublabel.bounds.size.width + leadingBuffer) / offsetDistance)
+//        // Find when the animation will hit that point
+//        let startFadeTimeFraction = timingFunction.durationPercentageForPositionPercentage(startFadeFraction, duration: totalDuration)
+//        let startFadeTime = delay + CGFloat(startFadeTimeFraction) * interval
+        
+        // Define values
+        // Get current layer values
+        //let mask = maskLayer?.presentation()
+        //let currentValues = mask?.colors as? [CGColor]
+        
+        animation.values = fadeKeyValues
+        animation.keyTimes = fadeKeyTimes
+        animation.timingFunctions = fadeTimingFunctions
+        
+        return (anim: animation, duration: max(totalTime,totalDuration))
     }
     
-    private func applyGradientMask(_ fadeLength: CGFloat, animated: Bool) {
+    private func applyGradientMask(_ fadeLength: CGFloat, animated: Bool, firstStep: MarqueeStep? = nil) {
         // Remove any in-flight animations
         maskLayer?.removeAllAnimations()
         
@@ -916,7 +995,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             // Adjust stops based on fade length
             let leftFadeStop = fadeLength/self.bounds.size.width
             let rightFadeStop = 1.0 - fadeLength/self.bounds.size.width
-            gradientMask.locations = [0.0, leftFadeStop, rightFadeStop, 1.0].mapToNumbers()
+            gradientMask.locations = [0.0, leftFadeStop, rightFadeStop, 1.0].map { NSNumber(value: Float($0)) }
         }
         
         gradientMask.bounds = self.layer.bounds
@@ -940,7 +1019,6 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         // .Continuous, .LeftRight
         default:
             adjustedColors = [opaque, opaque, opaque, (trailingFadeNeeded ? transparent : opaque)]
-            break
         }
         
         // Check for IBDesignable
@@ -970,180 +1048,6 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     
     private func removeGradientMask() {
         self.layer.mask = nil
-    }
-    
-    private func keyFrameAnimationForGradient(_ fadeLength: CGFloat, interval: CGFloat, delay: CGFloat) -> CAKeyframeAnimation {
-        // Setup
-        let values: [[CGColor]]
-        let keyTimes: [CGFloat]
-        let transp = UIColor.clear.cgColor
-        let opaque = UIColor.black.cgColor
-        
-        // Create new animation
-        let animation = CAKeyframeAnimation(keyPath: "colors")
-        
-        // Get timing function
-        let timingFunction = timingFunctionForAnimationCurve(animationCurve)
-        
-        // Define keyTimes
-        switch (type) {
-        case .leftRight, .rightLeft:
-            // Calculate total animation duration
-            let totalDuration = 2.0 * (delay + interval)
-            keyTimes =
-            [
-                0.0,                                                // 1) Initial gradient
-                delay/totalDuration,                                // 2) Begin of LE fade-in, just as scroll away starts
-                (delay + 0.4)/totalDuration,                        // 3) End of LE fade in [LE fully faded]
-                (delay + interval - 0.4)/totalDuration,             // 4) Begin of TE fade out, just before scroll away finishes
-                (delay + interval)/totalDuration,                   // 5) End of TE fade out [TE fade removed]
-                (delay + interval + delay)/totalDuration,           // 6) Begin of TE fade back in, just as scroll home starts
-                (delay + interval + delay + 0.4)/totalDuration,     // 7) End of TE fade back in [TE fully faded]
-                (totalDuration - 0.4)/totalDuration,                // 8) Begin of LE fade out, just before scroll home finishes
-                1.0                                                 // 9) End of LE fade out, just as scroll home finishes
-            ]
-            
-        // .MLContinuous, .MLContinuousReverse
-        default:
-            // Calculate total animation duration
-            let totalDuration = delay + interval
-            
-            // Find when the lead label will be totally offscreen
-            let offsetDistance = awayOffset
-            let startFadeFraction = fabs((sublabel.bounds.size.width + leadingBuffer) / offsetDistance)
-            // Find when the animation will hit that point
-            let startFadeTimeFraction = timingFunction.durationPercentageForPositionPercentage(startFadeFraction, duration: totalDuration)
-            let startFadeTime = delay + CGFloat(startFadeTimeFraction) * interval
-            
-            keyTimes = [
-                0.0,                                        // Initial gradient
-                delay/totalDuration,                        // Begin of fade in
-                (delay + 0.2)/totalDuration,                // End of fade in, just as scroll away starts
-                startFadeTime/totalDuration,                // Begin of fade out, just before scroll home completes
-                (startFadeTime + 0.1)/totalDuration,        // End of fade out, as scroll home completes
-                1.0                                         // Buffer final value (used on continuous types)
-            ]
-            break
-        }
-        
-        // Define values
-        // Get current layer values
-        let mask = maskLayer?.presentation()
-        let currentValues = mask?.colors as? [CGColor]
-        
-        switch (type) {
-        case .continuousReverse:
-            values = [
-                currentValues ?? [transp, opaque, opaque, opaque],           // Initial gradient
-                [transp, opaque, opaque, opaque],           // Begin of fade in
-                [transp, opaque, opaque, transp],           // End of fade in, just as scroll away starts
-                [transp, opaque, opaque, transp],           // Begin of fade out, just before scroll home completes
-                [transp, opaque, opaque, opaque],           // End of fade out, as scroll home completes
-                [transp, opaque, opaque, opaque]            // Final "home" value
-            ]
-            break
-        
-        case .rightLeft:
-            values = [
-                currentValues ?? [transp, opaque, opaque, opaque],           // 1)
-                [transp, opaque, opaque, opaque],           // 2)
-                [transp, opaque, opaque, transp],           // 3)
-                [transp, opaque, opaque, transp],           // 4)
-                [opaque, opaque, opaque, transp],           // 5)
-                [opaque, opaque, opaque, transp],           // 6)
-                [transp, opaque, opaque, transp],           // 7)
-                [transp, opaque, opaque, transp],           // 8)
-                [transp, opaque, opaque, opaque]            // 9)
-            ]
-            break
-            
-        case .continuous:
-            values = [
-                currentValues ?? [opaque, opaque, opaque, transp],           // Initial gradient
-                [opaque, opaque, opaque, transp],           // Begin of fade in
-                [transp, opaque, opaque, transp],           // End of fade in, just as scroll away starts
-                [transp, opaque, opaque, transp],           // Begin of fade out, just before scroll home completes
-                [opaque, opaque, opaque, transp],           // End of fade out, as scroll home completes
-                [opaque, opaque, opaque, transp]            // Final "home" value
-            ]
-            break
-            
-        case .leftRight:
-            values = [
-                currentValues ?? [opaque, opaque, opaque, transp],           // 1)
-                [opaque, opaque, opaque, transp],           // 2)
-                [transp, opaque, opaque, transp],           // 3)
-                [transp, opaque, opaque, transp],           // 4)
-                [transp, opaque, opaque, opaque],           // 5)
-                [transp, opaque, opaque, opaque],           // 6)
-                [transp, opaque, opaque, transp],           // 7)
-                [transp, opaque, opaque, transp],           // 8)
-                [opaque, opaque, opaque, transp]            // 9)
-            ]
-            break
-        }
-        
-        animation.values = values
-        animation.keyTimes = keyTimes.mapToNumbers()
-        animation.timingFunctions = [timingFunction, timingFunction, timingFunction, timingFunction]
-        
-        return animation
-    }
-    
-    private func keyFrameAnimationForProperty(_ property: String, values: [NSValue], interval: CGFloat, delay: CGFloat) -> CAKeyframeAnimation {
-        // Create new animation
-        let animation = CAKeyframeAnimation(keyPath: property)
-        
-        // Get timing function
-        let timingFunction = timingFunctionForAnimationCurve(animationCurve)
-        
-        // Calculate times based on marquee type
-        let totalDuration: CGFloat
-        let keyTimes: [CGFloat]
-        
-        switch (type) {
-        case .leftRight, .rightLeft:
-            //NSAssert(values.count == 5, @"Incorrect number of values passed for MLLeftRight-type animation")
-            totalDuration = 2.0 * (delay + interval)
-            // Set up keyTimes
-            keyTimes = [
-                0.0,                                            // Initial location, home
-                delay/totalDuration,                            // Initial delay, at home
-                (delay + interval)/totalDuration,               // Animation to away
-                (delay + interval + delay)/totalDuration,       // Delay at away
-                1.0                                             // Animation to home
-            ]
-            
-            animation.timingFunctions = [
-                timingFunction,
-                timingFunction,
-                timingFunction,
-                timingFunction
-            ]
-            
-            // .Continuous
-            // .ContinuousReverse
-        default:
-            //NSAssert(values.count == 3, @"Incorrect number of values passed for MLContinous-type animation")
-            totalDuration = delay + interval
-            // Set up keyTimes
-            keyTimes = [
-                0.0,                        // Initial location, home
-                delay/totalDuration,        // Initial delay, at home
-                1.0                         // Animation to away
-            ]
-            
-            animation.timingFunctions = [
-                timingFunction,
-                timingFunction
-            ]
-        }
-        
-        // Set values
-        animation.keyTimes = keyTimes.mapToNumbers()
-        animation.values = values
-        
-        return animation
     }
     
     private func timingFunctionForAnimationCurve(_ curve: UIViewAnimationCurve) -> CAMediaTimingFunction {
@@ -1275,7 +1179,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     */
     public func triggerScrollStart() {
         if labelShouldScroll() && !awayFromHome {
-            beginScroll()
+            updateAndScroll()
         }
     }
     
@@ -1290,7 +1194,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         shutdownLabel()
         // Restart scrolling if appropriate
         if labelShouldScroll() && !tapToScroll && !holdScrolling {
-            beginScroll()
+            updateAndScroll()
         }
     }
     
@@ -1379,7 +1283,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     
     public func labelWasTapped(_ recognizer: UIGestureRecognizer) {
         if labelShouldScroll() && !awayFromHome {
-            beginScroll(true)
+            updateAndScroll()
         }
     }
     
@@ -1630,37 +1534,66 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+    
 }
 
 
 //
 // MARK: - Support
 //
-
-// Define animation completion closure type
-fileprivate typealias MLAnimationCompletionBlock = (_ finished: Bool) -> ()
-
-fileprivate class GradientSetupAnimation: CABasicAnimation {
+public protocol MarqueeStep {
+    var timeStep: CGFloat { get }
+    var timingFunction: UIViewAnimationCurve { get }
+    var edgeFades: EdgeFade { get }
 }
 
-fileprivate struct Scroller {
-    typealias Scroll = (layer: CALayer, anim: CAKeyframeAnimation)
-    
-    init(generator gen: @escaping (_ interval: CGFloat, _ delay: CGFloat) -> [Scroll]) {
-        self.generator = gen
+public struct ScrollStep: MarqueeStep {
+    public enum Position {
+        case home
+        case away
+        case partial(CGFloat)
     }
     
-    let generator: (_ interval: CGFloat, _ delay: CGFloat) -> [Scroll]
-    var scrolls: [Scroll]? = nil
+    public let timeStep: CGFloat
+    public let timingFunction: UIViewAnimationCurve
+    public let position: Position
+    public let edgeFades: EdgeFade
     
-    mutating func generate(_ interval: CGFloat, delay: CGFloat) -> [Scroll] {
-        if let existing = scrolls {
-            return existing
-        } else {
-            scrolls = generator(interval, delay)
-            return scrolls!
-        }
+    init(timeStep: CGFloat, timingFunction: UIViewAnimationCurve = .linear, position: Position, edgeFades: EdgeFade) {
+        self.timeStep = timeStep
+        self.position = position
+        self.edgeFades = edgeFades
+        self.timingFunction = timingFunction
     }
+}
+
+public struct FadeStep: MarqueeStep {
+    public let timeStep: CGFloat
+    public let timingFunction: UIViewAnimationCurve
+    public let edgeFades: EdgeFade
+    
+    init(timeStep: CGFloat, timingFunction: UIViewAnimationCurve = .linear, edgeFades: EdgeFade) {
+        self.timeStep = timeStep
+        self.timingFunction = timingFunction
+        self.edgeFades = edgeFades
+    }
+}
+
+public struct EdgeFade : OptionSet {
+    public let rawValue: Int
+    public static let leading  = EdgeFade(rawValue: 1 << 0)
+    public static let trailing = EdgeFade(rawValue: 1 << 1)
+    
+    public init(rawValue: Int) {
+        self.rawValue = rawValue;
+    }
+}
+
+// Define helpful typealiases
+fileprivate typealias MLAnimationCompletionBlock = (_ finished: Bool) -> ()
+fileprivate typealias MLAnimation = (anim: CAKeyframeAnimation, duration: CGFloat)
+
+fileprivate class GradientSetupAnimation: CABasicAnimation {
 }
 
 fileprivate extension UIResponder {
@@ -1685,13 +1618,6 @@ fileprivate extension UIResponder {
         return nil
     }
 }
-
-fileprivate extension Sequence where Iterator.Element == CGFloat {
-    func mapToNumbers() -> [NSNumber] {
-        return self.map { NSNumber(value: Float($0)) }
-    }
-}
-
 
 fileprivate extension CAMediaTimingFunction {
     
