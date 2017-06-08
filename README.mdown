@@ -138,7 +138,7 @@ To make sure the scrolling animation _does_ begin as the cell scrolls onscreen, 
 #### Important Animation Note<a id="importantanimationnote"></a>
 MarqueeLabel is based on Core Animation, which does cause some problems when views appear and disappear and the repeating animation is stopped by iOS and does not automatically restart.
 
-To address this, MarqueeLabel provides a few class methods that allow easy "restarting" of all MarqueeLabels associated with a UIViewController. Specifically, the class method `restartLabelsOfController:` should be called by your view controller (which passes in `self` for the `controller` parameter`) when it is revealed or about to be revealed. Keep in mind that presenting a modal view controller can pause repeating UIView animations in the controller that is being covered! 
+To address this, MarqueeLabel provides a few class methods that allow easy "restarting" of all MarqueeLabels associated with a UIViewController. Specifically, the class method `restartLabelsOfController:` should be called by your view controller (which passes in `self` for the `controller` parameter) when it is revealed or about to be revealed. Keep in mind that presenting a modal view controller can pause repeating UIView animations in the controller that is being covered! 
 
 `controllerLabelsShouldLabelize:` and `controllerLabelsShouldAnimate:` are for convenience, allowing labelizing and re-animating all labels of a UIViewController. Labelizing can be useful for performance, such as labelizing all MarqueeLabels when a UITableView/UIScrollView starts scrolling.
 
@@ -148,8 +148,10 @@ If you're developing your own Swift framework that uses MarqueeLabel as a depend
 
 When building the Swift subspec with Cocoapods, MarqueeLabel is imported with `import MarqueeLabel`. However, because Carthage requires distinct names for each target, when building with Carthage the import statement for the Swift target is `import MarqueeLabelSwift`.
 
-A suggested workaround is to use a [conditional compilation block](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Statements.html#//apple_ref/doc/uid/TP40014097-CH33-ID538)(aka preprocessor macro) to switch between the two import statements based on whether or not the target is intended for use with Carthage. To specify the target, you can add an "Other Swift Flag" in the Swift Compiler - Custom Flags section of your Carthage target (i.e. the framework) build settings:
-![Carthage Build Settings](https://raw.githubusercontent.com/cbpowell/MarqueeLabel/master/Metadata/carthage_config.png)
+A suggested workaround is to use a [conditional compilation block](https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Statements.html#//apple_ref/doc/uid/TP40014097-CH33-ID538) (aka preprocessor macro) to switch between the two import statements based on whether or not the target is intended for use with Carthage. To specify the target, you can add an "Other Swift Flag" in the Swift Compiler - Custom Flags section of your Carthage target (i.e. the framework) build settings:
+
+<img src="https://raw.githubusercontent.com/cbpowell/MarqueeLabel/master/Metadata/carthage_config.png" width="600">
+
 And then include the following conditional compilation statement to use the appropriate framework name:
 ```swift
 #if CARTHAGE_CONFIG
