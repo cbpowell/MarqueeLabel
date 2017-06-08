@@ -38,6 +38,7 @@ class MarqueeLabelDemoViewController : UIViewController {
     @IBOutlet weak var demoLabel4: MarqueeLabel!
     @IBOutlet weak var demoLabel5: MarqueeLabel!
     @IBOutlet weak var demoLabel6: MarqueeLabel!
+    @IBOutlet weak var demoLabel7: MarqueeLabel!
     
     @IBOutlet weak var labelizeSwitch: UISwitch!
     @IBOutlet weak var holdLabelsSwitch: UISwitch!
@@ -119,6 +120,18 @@ class MarqueeLabelDemoViewController : UIViewController {
         attributedString6.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size:18.0)!, range: NSMakeRange(0, 16))
         attributedString6.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Light", size:18.0)!, range: NSMakeRange(33, attributedString6.length - 33))
         demoLabel6.attributedText = attributedString6;
+        
+        // Left, with attributed text
+        demoLabel7.tag = 701
+        demoLabel7.type = .left
+        demoLabel7.speed = .duration(7.5)
+        demoLabel7.fadeLength = 10.0
+        demoLabel7.trailingBuffer = 30.0
+        
+        let attributedString7 = NSMutableAttributedString(string:"This is a long, attributed string, that's set up to scroll left-to-right and not auto-reverse at the end!")
+        attributedString7.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 0.123, green: 0.331, blue: 0.657, alpha: 1.000), range: NSMakeRange(0,34))
+        demoLabel7.attributedText = attributedString7;
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
