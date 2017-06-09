@@ -21,7 +21,9 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
      - ContinuousReverse: Continuously scrolls right (with a pause at the original position if animationDelay is set).
      */
     public enum MarqueeType {
+        case left
         case leftRight
+        case right
         case rightLeft
         case continuous
         case continuousReverse
@@ -627,8 +629,8 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             repliLayer?.instanceCount = 2
             repliLayer?.instanceTransform = CATransform3DMakeTranslation(-awayOffset, 0.0, 0.0)
             
-        case .leftRight,.rightLeft:
-            if type == .leftRight {
+        case .leftRight, .left, .rightLeft, .right:
+            if (type == .leftRight || type == .left) {
                 homeLabelFrame = CGRect(x: leadingBuffer, y: 0.0, width: expectedLabelSize.width, height: bounds.size.height).integral
                 awayOffset = bounds.size.width - (expectedLabelSize.width + leadingBuffer + trailingBuffer)
                 // Enforce text alignment for this type
@@ -645,20 +647,35 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             // Remove any replication
             repliLayer?.instanceCount = 1
             
-            sequence = scrollSteps ?? [
-                ScrollStep(timeStep: 0.0, position: .home, edgeFades: .trailing),               // Starting point, at home, with trailing fade
-                ScrollStep(timeStep: animationDelay, position: .home, edgeFades: .trailing),    // Delay at home, maintaining fade state
-                FadeStep(timeStep: 0.2, edgeFades: [.leading, .trailing]),                      // 0.2 sec after delay ends, fade leading edge in as well
-                FadeStep(timeStep: -0.2, edgeFades: [.leading, .trailing]),                     // Maintain fade state until 0.2 sec before reaching away position
-                ScrollStep(timeStep: animationDuration, timingFunction: animationCurve,         // Away position, using animationCurve transition, with only leading edge faded in
-                           position: .away, edgeFades: .leading),
-                ScrollStep(timeStep: animationDelay, position: .away, edgeFades: .leading),     // Delay at away, maintaining fade state (leading only)
-                FadeStep(timeStep: 0.2, edgeFades: [.leading, .trailing]),                      // 0.2 sec after delay ends, fade trailing edge back in as well
-                FadeStep(timeStep: -0.2, edgeFades: [.leading, .trailing]),                     // Maintain fade state until 0.2 sec before reaching home position
-                ScrollStep(timeStep: animationDuration, timingFunction: animationCurve,         // Ending point, back at home, with only trailing fade
-                           position: .home, edgeFades: .trailing)
-            ]
+            if (type == .leftRight || type == .rightLeft) {
+                sequence = scrollSteps ?? [
+                    ScrollStep(timeStep: 0.0, position: .home, edgeFades: .trailing),               // Starting point, at home, with trailing fade
+                    ScrollStep(timeStep: animationDelay, position: .home, edgeFades: .trailing),    // Delay at home, maintaining fade state
+                    FadeStep(timeStep: 0.2, edgeFades: [.leading, .trailing]),                      // 0.2 sec after delay ends, fade leading edge in as well
+                    FadeStep(timeStep: -0.2, edgeFades: [.leading, .trailing]),                     // Maintain fade state until 0.2 sec before reaching away position
+                    ScrollStep(timeStep: animationDuration, timingFunction: animationCurve,         // Away position, using animationCurve transition, with only leading edge faded in
+                        position: .away, edgeFades: .leading),
+                    ScrollStep(timeStep: animationDelay, position: .away, edgeFades: .leading),     // Delay at away, maintaining fade state (leading only)
+                    FadeStep(timeStep: 0.2, edgeFades: [.leading, .trailing]),                      // 0.2 sec after delay ends, fade trailing edge back in as well
+                    FadeStep(timeStep: -0.2, edgeFades: [.leading, .trailing]),                     // Maintain fade state until 0.2 sec before reaching home position
+                    ScrollStep(timeStep: animationDuration, timingFunction: animationCurve,         // Ending point, back at home, with only trailing fade
+                        position: .home, edgeFades: .trailing)
+                ]
+            } else { // .left or .right
+                sequence = scrollSteps ?? [
+                    ScrollStep(timeStep: 0.0, position: .home, edgeFades: .trailing),               // Starting point, at home, with trailing fade
+                    ScrollStep(timeStep: animationDelay, position: .home, edgeFades: .trailing),    // Delay at home, maintaining fade state
+                    FadeStep(timeStep: 0.2, edgeFades: [.leading, .trailing]),                      // 0.2 sec after delay ends, fade leading edge in as well
+                    FadeStep(timeStep: -0.2, edgeFades: [.leading, .trailing]),                     // Maintain fade state until 0.2 sec before reaching away position
+                    ScrollStep(timeStep: animationDuration, timingFunction: animationCurve,         // Away position, using animationCurve transition, with only leading edge faded in
+                        position: .away, edgeFades: .leading),
+                    ScrollStep(timeStep: CGFloat.greatestFiniteMagnitude,                           // "Delay" at away, for huge time to effectie stay at away permanently
+                               position: .away, edgeFades: .leading),
+                ]
+            }
         }
+        
+        
         
         // Configure gradient for current condition
         applyGradientMask(fadeLength, animated: !self.labelize)
@@ -925,9 +942,9 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             let leading = step.edgeFades.contains(.leading) ? transp : opaque
             let trailing = step.edgeFades.contains(.trailing) ? transp : opaque
             switch type {
-            case .leftRight, .continuous:
+            case .leftRight, .left, .continuous:
                 values = [leading, opaque, opaque, trailing]
-            case .rightLeft, .continuousReverse:
+            case .rightLeft, .right, .continuousReverse:
                 values = [trailing, opaque, opaque, leading]
             }
             fadeKeyValues.append(values)
