@@ -613,11 +613,20 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
                 awayOffset = (homeLabelFrame.size.width + minTrailing)
             }
             
+            // Find when the lead label will be totally offscreen
+            let offsetDistance = awayOffset
+            let offscreenAmount = homeLabelFrame.size.width
+            let startFadeFraction = fabs(offscreenAmount / offsetDistance)
+            // Find when the animation will hit that point
+            let startFadeTimeFraction = timingFunctionForAnimationCurve(animationCurve).durationPercentageForPositionPercentage(startFadeFraction, duration: (animationDelay + animationDuration))
+            let startFadeTime = startFadeTimeFraction * animationDuration
+            
             sequence = scrollSteps ?? [
                 ScrollStep(timeStep: 0.0, position: .home, edgeFades: .trailing),                   // Starting point, at home, with trailing fade
                 ScrollStep(timeStep: animationDelay, position: .home, edgeFades: .trailing),        // Delay at home, maintaining fade state
-                FadeStep(timeStep: 0.2, edgeFades: [.leading, .trailing]),                          // 0.2 sec after delay ends, fade leading edge in as well
-                FadeStep(timeStep: -0.1, edgeFades: [.leading, .trailing]),                         // Maintain fade state until 0.1 sec before reaching end of scroll animation
+                FadeStep(timeStep: 0.2, edgeFades: [.leading, .trailing]),                          // 0.2 sec after scroll start, fade leading edge in as well
+                FadeStep(timeStep: (startFadeTime - animationDuration),                             // Maintain fade state until just before reaching end of scroll animation
+                         edgeFades: [.leading, .trailing]),
                 ScrollStep(timeStep: animationDuration, timingFunction: animationCurve,             // Ending point (back at home), with animationCurve transition, with trailing fade
                            position: .away, edgeFades: .trailing)
             ]
@@ -958,19 +967,6 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         
         // Create new animation
         let animation = CAKeyframeAnimation(keyPath: "colors")
-        
-        // Find when the lead label will be totally offscreen
-        // TODO
-//        let offsetDistance = awayOffset
-//        let startFadeFraction = fabs((sublabel.bounds.size.width + leadingBuffer) / offsetDistance)
-//        // Find when the animation will hit that point
-//        let startFadeTimeFraction = timingFunction.durationPercentageForPositionPercentage(startFadeFraction, duration: totalDuration)
-//        let startFadeTime = delay + CGFloat(startFadeTimeFraction) * interval
-        
-        // Define values
-        // Get current layer values
-        //let mask = maskLayer?.presentation()
-        //let currentValues = mask?.colors as? [CGColor]
         
         animation.values = fadeKeyValues
         animation.keyTimes = fadeKeyTimes
