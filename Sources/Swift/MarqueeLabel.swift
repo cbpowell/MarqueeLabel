@@ -15,7 +15,9 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     /**
      An enum that defines the types of `MarqueeLabel` scrolling
      
+     - Left: Scrolls left after the specified delay, and does not return to the original position.
      - LeftRight: Scrolls left first, then back right to the original position.
+     - Right: Scrolls right after the specified delay, and does not return to the original position.
      - RightLeft: Scrolls right first, then back left to the original position.
      - Continuous: Continuously scrolls left (with a pause at the original position if animationDelay is set).
      - ContinuousReverse: Continuously scrolls right (with a pause at the original position if animationDelay is set).
@@ -35,13 +37,13 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     
     /**
      Defines the direction and method in which the `MarqueeLabel` instance scrolls.
-     `MarqueeLabel` supports four types of scrolling: `LeftRight`, `RightLeft`, `Continuous`, and `ContinuousReverse`.
+     `MarqueeLabel` supports six default types of scrolling: `Left`, `LeftRight`, `Right`, `RightLeft`, `Continuous`, and `ContinuousReverse`.
      
      Given the nature of how text direction works, the options for the `type` property require specific text alignments
      and will set the textAlignment property accordingly.
      
-     - `LeftRight` type is ONLY compatible with a label text alignment of `NSTextAlignmentLeft`.
-     - `RightLeft` type is ONLY compatible with a label text alignment of `NSTextAlignmentRight`.
+     - `LeftRight` and `Left` types are ONLY compatible with a label text alignment of `NSTextAlignmentLeft`.
+     - `RightLeft` and `Right` types are ONLY compatible with a label text alignment of `NSTextAlignmentRight`.
      - `Continuous` does not require a text alignment (it is effectively centered).
      - `ContinuousReverse` does not require a text alignment (it is effectively centered).
      
@@ -108,8 +110,8 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
      
      - SeeAlso: holdScrolling
      - SeeAlso: lineBreakMode
-     @warning The label will not automatically scroll when this property is set to `true`.
-     @warning The UILabel default setting for the `lineBreakMode` property is `NSLineBreakByTruncatingTail`, which truncates
+     - Note: The label will not automatically scroll when this property is set to `true`.
+     - Warning: The UILabel default setting for the `lineBreakMode` property is `NSLineBreakByTruncatingTail`, which truncates
      the text adds an ellipsis glyph (...). Set the `lineBreakMode` property to `NSLineBreakByClipping` in order to avoid the
      ellipsis, especially if using an edge transparency fade.
      */
@@ -131,8 +133,8 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
      
      Defaults to `false`.
      
+     - Note: The label will not automatically scroll when this property is set to `true`.
      - SeeAlso: labelize
-     @warning The label will not automatically scroll when this property is set to `true`.
      */
     @IBInspectable open var holdScrolling: Bool = false {
         didSet {
@@ -152,7 +154,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
      
      Defaults to `false`.
      
-     @warning The label will not automatically scroll when this property is set to `false`.
+     - Note: The label will not automatically scroll when this property is set to `false`.
      - SeeAlso: holdScrolling
      */
     @IBInspectable open var tapToScroll: Bool = false {
