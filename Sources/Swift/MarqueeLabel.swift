@@ -914,6 +914,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     private func generateGradientAnimation(_ sequence: [MarqueeStep], totalDuration: CGFloat) -> MLAnimation {
         // Setup
         var totalTime: CGFloat = 0.0
+        var stepTime: CGFloat = 0.0
         var fadeKeyValues = [[CGColor]]()
         var fadeKeyTimes = [NSNumber]()
         var fadeTimingFunctions = [CAMediaTimingFunction]()
@@ -941,14 +942,19 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         
         for (offset, step) in fadeSteps {
             // Fade times
-            if step.timeStep >= 0 {
-                // Subsequent
+            if (step is ScrollStep) {
                 totalTime += step.timeStep
+                stepTime = totalTime
             } else {
-                // Precedent, grab next step
-                totalTime = fadeSteps[offset + 1].element.timeStep + step.timeStep
+                if step.timeStep >= 0 {
+                    // Is a Subsequent
+                    stepTime = totalTime + step.timeStep
+                } else {
+                    // Is a Precedent, grab next step
+                    stepTime = totalTime + fadeSteps[offset + 1].element.timeStep + step.timeStep
+                }
             }
-            fadeKeyTimes.append(NSNumber(value:Float(totalTime/totalDuration)))
+            fadeKeyTimes.append(NSNumber(value:Float(stepTime/totalDuration)))
             
             // Fade Values
             let values: [CGColor]
@@ -967,7 +973,6 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             if offset == 0 { continue }
             fadeTimingFunctions.append(timingFunctionForAnimationCurve(step.timingFunction))
         }
-
         
         // Create new animation
         let animation = CAKeyframeAnimation(keyPath: "colors")
