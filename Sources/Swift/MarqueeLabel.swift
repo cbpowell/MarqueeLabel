@@ -59,8 +59,26 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     }
     
     /**
-     Defines custom scrolling properties.
+     An optional custom scroll "sequence", defined by an array of `ScrollStep` or `FadeStep` instances. A sequence
+     defines a single scroll/animation loop, which will continue to be automatically repeated like the default types.
      
+     A `type` value is still required when using a custom sequence. The `type` value defines the `home` and `away`
+     values used in the `ScrollStep` instances, and the `type` value determines which way the label will scroll.
+     
+     When a custom sequence is not supplied, the default sequences are used per the defined `type`.
+     
+     `ScrollStep` steps are the primary step types, and define the position of the label at a given time in the sequence.
+     `FadeStep` steps are secondary steps that define the edge fade state (leading, trailing, or both) around the `ScrollStep`
+     steps.
+     
+     Defaults to nil.
+     
+     - Attention: Use of the `scrollSequence` property requires understanding of how MarqueeLabel works for effective
+     use. As a reference, it is suggested to review the methodology used to build the sequences for the default types.
+     
+     - SeeAlso: type
+     - SeeAlso: ScrollStep
+     - SeeAlso: FadeStep
      */
     open var scrollSequence: Array<MarqueeStep>?
     
@@ -1569,16 +1587,55 @@ public protocol MarqueeStep {
     var edgeFades: EdgeFade { get }
 }
 
+
+/**
+ `ScrollStep` types define the label position at a specified time delta since the last `ScrollStep` step, as well as
+ the animation curve to that position and edge fade state at the position
+ */
 public struct ScrollStep: MarqueeStep {
+    /**
+     An enum that provides the possible positions defined by a ScrollStep
+     - `home`: The starting, default position of the label
+     - `away`: The calculated position that results in the entirety of the label scrolling past.
+     - `partial(CGFloat)`: A fractional value, specified by the associated CGFloat value, between the `home` and `away` positions (must be between 0.0 and 1.0).
+     
+     The `away` position depends on the MarqueeLabel `type` value.
+     - For `left`, `leftRight`, `right`, and `rightLeft` types, the `away` position means the trailing edge of the label
+        is visible. For `leftRight` and `rightLeft` default types, the scroll animation reverses direction after reaching
+        this point and returns to the `home` position.
+     - For `continuous` and `continuousReverse` types, the `away` position is the location such that if the scroll is completed
+        at this point (i.e. the animation is removed), there will be no visible change in the label appearance.
+     */
     public enum Position {
         case home
         case away
         case partial(CGFloat)
     }
     
+    /**
+     The desired time between this step and the previous `ScrollStep` in a sequence.
+    */
     public let timeStep: CGFloat
+    
+    /**
+     The animation curve to utilize between the previous `ScrollStep` in a sequence and this step.
+     
+     - Note: The animation curve value for the first `ScrollStep` in a sequence has no effect.
+     */
     public let timingFunction: UIViewAnimationCurve
+    
+    /**
+     The position of the label for this scroll step.
+     - SeeAlso: Position
+     */
     public let position: Position
+    
+    /**
+     The option set defining the edge fade state for this scroll step.
+     
+     Possible options include `.leading` and `.trailing`, corresponding to the leading edge of the label scrolling (i.e. 
+     the direction of scroll) and trailing edge of the label.
+    */
     public let edgeFades: EdgeFade
     
     init(timeStep: CGFloat, timingFunction: UIViewAnimationCurve = .linear, position: Position, edgeFades: EdgeFade) {
@@ -1589,9 +1646,42 @@ public struct ScrollStep: MarqueeStep {
     }
 }
 
+
+/**
+ `FadeStep` types allow additional edge fade state definitions, around the states defined by the `ScrollStep` steps of
+ a sequence. `FadeStep` steps are defined by the time delta to the preceding or subsequent `ScrollStep` step and the timing
+ function to their edge fade state.
+ 
+ - Note: A `FadeStep` cannot be the first step in a sequence. A `FadeStep` defined as such will be ignored.
+ */
 public struct FadeStep: MarqueeStep {
+    /**
+     The desired time between this `FadeStep` and the preceding or subsequent `ScrollStep` in a sequence.
+     
+     `FadeSteps` with a negative `timeStep` value will be associated _only_ with an immediately-subsequent `ScrollStep` step
+     in the sequence.
+     
+     `FadeSteps` with a positive `timeStep` value will be associated _only_ with an immediately-prior `ScrollStep` step in the
+     sequence.
+     
+     - Note: A `FadeStep` with a `timeStep` value of 0.0 will have no effect, and is the same as defining the fade state with
+     a `ScrollStep`.
+     */
     public let timeStep: CGFloat
+    
+    /**
+     The animation curve to utilize between the previous fade state in a sequence and this step.
+     */
     public let timingFunction: UIViewAnimationCurve
+    
+    /**
+     The option set defining the edge fade state for this fade step.
+     
+     Possible options include `.leading` and `.trailing`, corresponding to the leading edge of the label scrolling (i.e.
+     the direction of scroll) and trailing edge of the label.
+     
+     As an Option Set type, both edge fade states may be defined using an array literal: `[.leading, .trailing]`.
+     */
     public let edgeFades: EdgeFade
     
     init(timeStep: CGFloat, timingFunction: UIViewAnimationCurve = .linear, edgeFades: EdgeFade) {
