@@ -762,13 +762,6 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         return true
     }
     
-    private func beginScroll(_ sequence: [MarqueeStep]) {
-        let scroller = generateScrollAnimation(sequence)
-        let fader = generateGradientAnimation(sequence, totalDuration: scroller.duration)
-        
-        scroll(scroller, fader: fader)
-    }
-    
     private func returnLabelToHome() {
         // Remove any gradient animation
         maskLayer?.removeAllAnimations()
@@ -778,6 +771,13 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         
         // Remove completion block
         scrollCompletionBlock = nil
+    }
+    
+    private func beginScroll(_ sequence: [MarqueeStep]) {
+        let scroller = generateScrollAnimation(sequence)
+        let fader = generateGradientAnimation(sequence, totalDuration: scroller.duration)
+        
+        scroll(scroller, fader: fader)
     }
     
     private func scroll(_ scroller: MLAnimation, fader: MLAnimation?) {
