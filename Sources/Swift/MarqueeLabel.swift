@@ -1156,7 +1156,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         NotificationCenter.default.post(name: Notification.Name(rawValue: message.rawValue), object: nil, userInfo: ["controller" : controller])
     }
     
-    public func restartForViewController(_ notification: Notification) {
+    @objc public func restartForViewController(_ notification: Notification) {
         if let controller = (notification as NSNotification).userInfo?["controller"] as? UIViewController {
             if controller === self.firstAvailableViewController() {
                 self.restartLabel()
@@ -1164,7 +1164,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
-    public func labelizeForController(_ notification: Notification) {
+    @objc public func labelizeForController(_ notification: Notification) {
         if let controller = (notification as NSNotification).userInfo?["controller"] as? UIViewController {
             if controller === self.firstAvailableViewController() {
                 self.labelize = true
@@ -1172,7 +1172,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
-    public func animateForController(_ notification: Notification) {
+    @objc public func animateForController(_ notification: Notification) {
         if let controller = (notification as NSNotification).userInfo?["controller"] as? UIViewController {
             if controller === self.firstAvailableViewController() {
                 self.labelize = false
@@ -1211,7 +1211,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
      - SeeAlso: resetLabel
      - SeeAlso: triggerScrollStart
      */
-    public func restartLabel() {
+    @objc public func restartLabel() {
         // Shutdown the label
         shutdownLabel()
         // Restart scrolling if appropriate
@@ -1245,7 +1245,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
      - SeeAlso: restartLabel
      - SeeAlso: triggerScrollStart
      */
-    public func shutdownLabel() {
+    @objc public func shutdownLabel() {
         // Bring label to home location
         returnLabelToHome()
         // Apply gradient mask for home location
@@ -1303,7 +1303,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         maskLayer?.beginTime = maskLayer!.convertTime(CACurrentMediaTime(), from:nil) - gradientPauseTime!
     }
     
-    public func labelWasTapped(_ recognizer: UIGestureRecognizer) {
+    @objc public func labelWasTapped(_ recognizer: UIGestureRecognizer) {
         if labelShouldScroll() && !awayFromHome {
             updateAndScroll()
         }
