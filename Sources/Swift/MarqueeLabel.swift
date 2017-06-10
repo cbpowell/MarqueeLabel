@@ -920,17 +920,21 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         let transp = UIColor.clear.cgColor
         let opaque = UIColor.black.cgColor
         
-        // Get scroll steps and precedant/subsequent fade steps
-        let fadeSteps = sequence.enumerated().filter { (offset: Int, element: MarqueeStep) -> Bool in
+        // Filter to get only scroll steps and valid precedent/subsequent fade steps
+        let fadeSteps = sequence.enumerated().filter { (arg: (offset: Int, element: MarqueeStep)) -> Bool in
+            let (offset, element) = arg
+            
             // Include all Scroll Steps
             if element is ScrollStep { return true }
-            // Include all Fade Steps that have a directly preceding or subsequent Scroll Step
             
+            // Include all Fade Steps that have a directly preceding or subsequent Scroll Step
             // Exception: Fade Step cannot be first step
             if offset == 0 { return false }
             
-            let precedent = (sequence[max(0, offset - 1)] is ScrollStep)
-            let subsequent = (sequence[min(sequence.count - 1, offset + 1)] is ScrollStep)
+            // Subsequent step if 1) positive/zero time step and 2) follows a Scroll Step
+            let subsequent = element.timeStep >= 0 && (sequence[max(0, offset - 1)] is ScrollStep)
+            // Precedent step if 1) negative time step and 2) precedes a Scroll Step
+            let precedent = element.timeStep < 0 && (sequence[min(sequence.count - 1, offset + 1)] is ScrollStep)
             
             return (precedent || subsequent)
         }
