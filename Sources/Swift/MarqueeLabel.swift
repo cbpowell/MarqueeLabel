@@ -698,7 +698,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
                     FadeStep(timeStep: -0.2, edgeFades: [.leading, .trailing]),                     // Maintain fade state until 0.2 sec before reaching away position
                     ScrollStep(timeStep: animationDuration, timingFunction: animationCurve,         // Away position, using animationCurve transition, with only leading edge faded in
                         position: .away, edgeFades: .leading),
-                    ScrollStep(timeStep: CGFloat.greatestFiniteMagnitude,                           // "Delay" at away, for huge time to effectie stay at away permanently
+                    ScrollStep(timeStep: 60*60*24*365.0,                                            // "Delay" at away, for huge time to effectie stay at away permanently
                                position: .away, edgeFades: .leading),
                 ]
             }
