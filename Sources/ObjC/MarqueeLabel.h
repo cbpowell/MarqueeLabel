@@ -17,7 +17,11 @@ typedef NS_ENUM(NSUInteger, MarqueeType) {
     /** Continuously scrolls left (with a pause at the original position if animationDelay is set). See the `trailingBuffer` property to define a spacing between the repeating strings.*/
     MLContinuous = 2,
     /** Continuously scrolls right (with a pause at the original position if animationDelay is set). See the `trailingBuffer` property to define a spacing between the repeating strings.*/
-    MLContinuousReverse = 3
+    MLContinuousReverse = 3,
+    /** Scrolls left first, then does not return to the original position. */
+    MLLeft = 4,
+    /** Scrolls right first, then does not return to the original position. */
+    MLRight = 5
 };
 
 
