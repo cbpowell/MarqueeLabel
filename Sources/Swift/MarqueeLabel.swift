@@ -1651,7 +1651,7 @@ public struct ScrollStep: MarqueeStep {
     */
     public let edgeFades: EdgeFade
     
-    init(timeStep: CGFloat, timingFunction: UIViewAnimationCurve = .linear, position: Position, edgeFades: EdgeFade) {
+    public init(timeStep: CGFloat, timingFunction: UIViewAnimationCurve = .linear, position: Position, edgeFades: EdgeFade) {
         self.timeStep = timeStep
         self.position = position
         self.edgeFades = edgeFades
@@ -1697,7 +1697,7 @@ public struct FadeStep: MarqueeStep {
      */
     public let edgeFades: EdgeFade
     
-    init(timeStep: CGFloat, timingFunction: UIViewAnimationCurve = .linear, edgeFades: EdgeFade) {
+    public init(timeStep: CGFloat, timingFunction: UIViewAnimationCurve = .linear, edgeFades: EdgeFade) {
         self.timeStep = timeStep
         self.timingFunction = timingFunction
         self.edgeFades = edgeFades
