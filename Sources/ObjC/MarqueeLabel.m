@@ -202,7 +202,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     NSArray *properties = @[@"baselineAdjustment", @"enabled", @"highlighted", @"highlightedTextColor",
                             @"minimumFontSize", @"textAlignment",
                             @"userInteractionEnabled", @"adjustsFontSizeToFitWidth",
-                            @"lineBreakMode", @"numberOfLines"];
+                            @"lineBreakMode", @"numberOfLines", "contentMode"];
     
     // Iterate through properties
     self.subLabel.text = super.text;
@@ -1348,6 +1348,15 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 - (void)setMinimumScaleFactor:(CGFloat)minimumScaleFactor {
     [super setMinimumScaleFactor:0.0f];
+}
+
+- (UIViewContentMode)contentMode {
+    return self.subLabel.contentMode;
+}
+
+- (void)setContentMode:(UIViewContentMode)contentMode {
+    super.contentMode = contentMode;
+    self.subLabel.contentMode = contentMode;
 }
 
 

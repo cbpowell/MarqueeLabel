@@ -517,7 +517,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         let properties = ["baselineAdjustment", "enabled", "highlighted", "highlightedTextColor",
                           "minimumFontSize", "shadowOffset", "textAlignment",
                           "userInteractionEnabled", "adjustsFontSizeToFitWidth",
-                          "lineBreakMode", "numberOfLines"]
+                          "lineBreakMode", "numberOfLines", "contentMode"]
         
         // Iterate through properties
         sublabel.text = super.text
@@ -1558,6 +1558,17 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     override open func tintColorDidChange() {
         super.tintColorDidChange()
         sublabel.tintColorDidChange()
+    }
+    
+    override open var contentMode: UIViewContentMode {
+        get {
+            return sublabel.contentMode
+        }
+        
+        set {
+            super.contentMode = contentMode
+            sublabel.contentMode = newValue
+        }
     }
     
 
