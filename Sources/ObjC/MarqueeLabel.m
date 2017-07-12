@@ -202,7 +202,7 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     NSArray *properties = @[@"baselineAdjustment", @"enabled", @"highlighted", @"highlightedTextColor",
                             @"minimumFontSize", @"textAlignment",
                             @"userInteractionEnabled", @"adjustsFontSizeToFitWidth",
-                            @"lineBreakMode", @"numberOfLines", "contentMode"];
+                            @"lineBreakMode", @"numberOfLines", @"contentMode"];
     
     // Iterate through properties
     self.subLabel.text = super.text;
