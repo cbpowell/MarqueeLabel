@@ -363,7 +363,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
      - SeeAlso: controllerViewDidAppear:
      - SeeAlso: controllerViewWillAppear:
      */
-    class func restartLabelsOfController(_ controller: UIViewController) {
+    open class func restartLabelsOfController(_ controller: UIViewController) {
         MarqueeLabel.notifyController(controller, message: .Restart)
     }
     
@@ -376,7 +376,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
      - SeeAlso: restartLabel
      - SeeAlso: controllerViewDidAppear
      */
-    class func controllerViewWillAppear(_ controller: UIViewController) {
+    open class func controllerViewWillAppear(_ controller: UIViewController) {
         MarqueeLabel.restartLabelsOfController(controller)
     }
     
@@ -389,7 +389,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
      - SeeAlso: restartLabel
      - SeeAlso: controllerViewWillAppear
      */
-    class func controllerViewDidAppear(_ controller: UIViewController) {
+    open class func controllerViewDidAppear(_ controller: UIViewController) {
         MarqueeLabel.restartLabelsOfController(controller)
     }
     
@@ -401,7 +401,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
      - Parameter controller: The view controller for which all `MarqueeLabel` instances should be labelized.
      - SeeAlso: labelize
      */
-    class func controllerLabelsLabelize(_ controller: UIViewController) {
+    open class func controllerLabelsLabelize(_ controller: UIViewController) {
         MarqueeLabel.notifyController(controller, message: .Labelize)
     }
     
@@ -413,7 +413,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
      - Parameter controller: The view controller for which all `MarqueeLabel` instances should be de-labelized.
      - SeeAlso: labelize
      */
-    class func controllerLabelsAnimate(_ controller: UIViewController) {
+    open class func controllerLabelsAnimate(_ controller: UIViewController) {
         MarqueeLabel.notifyController(controller, message: .Animate)
     }
 
