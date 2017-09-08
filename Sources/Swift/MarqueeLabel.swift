@@ -337,12 +337,19 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     @IBInspectable open var animationDelay: CGFloat = 1.0
     
     
-    /** The read-only duration of the scroll animation (not including delay).
+    /** The read-only/computed duration of the scroll animation (not including delay).
      
-     The value of this property is calculated from the value set to the `speed` property. If a .duration value is
-     used to set the label animation speed, this value will be equivalent.
+     The value of this property is calculated from the value set to the `speed` property. If a duration-type speed is
+     used to set the label animation speed, `animationDuration` will be equivalent to that value.
      */
-    private(set) public var animationDuration: CGFloat = 0.0
+    public var animationDuration: CGFloat {
+        switch self.speed {
+        case .rate(let rate):
+            return CGFloat(fabs(self.awayOffset) / rate)
+        case .duration(let duration):
+            return duration
+        }
+    }
     
     //
     // MARK: - Class Functions and Helpers
@@ -606,16 +613,6 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
         
         // Label DOES need to scroll
-        
-        // Recompute the animation duration
-        animationDuration = {
-            switch self.speed {
-            case .rate(let rate):
-                return CGFloat(fabs(self.awayOffset) / rate)
-            case .duration(let duration):
-                return duration
-            }
-        }()
         
         // Spacing between primary and second sublabel must be at least equal to leadingBuffer, and at least equal to the fadeLength
         let minTrailing = max(max(leadingBuffer, trailingBuffer), fadeLength)
