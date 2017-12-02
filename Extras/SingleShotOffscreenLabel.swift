@@ -27,7 +27,7 @@ open class SingleShotOffscreenLabel: MarqueeLabel {
         }
     }
     
-    public func pauseAndClear() {
+    @objc public func pauseAndClear() {
         // Pause label offscreen
         pauseLabel()
         // Change text to nil

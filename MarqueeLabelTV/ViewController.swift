@@ -84,7 +84,7 @@ class MarqueeCell: UITableViewCell {
 }
 
 extension UITableViewCell: TextCell {
-    var cellText: String? {
+    @objc var cellText: String? {
         get {
             return textLabel?.text
         }
