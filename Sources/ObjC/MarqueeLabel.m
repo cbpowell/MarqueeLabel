@@ -1359,6 +1359,10 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     self.subLabel.contentMode = contentMode;
 }
 
+- (void)setIsAccessibilityElement:(BOOL)isAccessibilityElement {
+    [super setIsAccessibilityElement:isAccessibilityElement];
+    self.subLabel.isAccessibilityElement = isAccessibilityElement;
+}
 
 #pragma mark - Custom Getters and Setters
 

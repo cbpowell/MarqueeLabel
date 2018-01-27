@@ -1572,6 +1572,11 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
+    open override var isAccessibilityElement: Bool {
+        didSet {
+            sublabel.isAccessibilityElement = self.isAccessibilityElement
+        }
+    }
 
     //
     // MARK: - Support
