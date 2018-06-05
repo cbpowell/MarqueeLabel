@@ -1,9 +1,11 @@
-### Please follow the general troubleshooting steps first:
+<!-- Please follow the general troubleshooting steps first:
 
-- [ ] Updated to latest version of MarqueeLabel
-- [ ] Read the README, in particular the [Special Notes](https://github.com/cbpowell/MarqueeLabel#special-notes)
-- [ ] For general questions about using MarqueeLabel, post on StackOverflow with the [#MarqueeLabel tag](http://stackoverflow.com/questions/tagged/marqueelabel)
+- Updated to latest version of MarqueeLabel
+- Read the README, in particular the Special Notes: https://github.com/cbpowell/MarqueeLabel#special-notes
+- For general questions about using MarqueeLabel with iOS, post on StackOverflow with the #MarqueeLabel tag (http://stackoverflow.com/questions/tagged/marqueelabel)
+-->
 
+<!-- Please include details about how you're using MarqueeLabel - this section is REQUIRED! -->
 ### Usage Details
   - Language: <!-- Swift or Objective-C -->
   - Platform: <!-- iPhone/iPad or Apple TV -->
