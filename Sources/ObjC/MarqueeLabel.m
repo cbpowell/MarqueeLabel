@@ -1308,10 +1308,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     [super setAdjustsFontSizeToFitWidth:NO];
 }
 
-- (void)setMinimumFontSize:(CGFloat)minimumFontSize {
-    [super setMinimumFontSize:0.0];
-}
-
 - (UIBaselineAdjustment)baselineAdjustment {
     return self.subLabel.baselineAdjustment;
 }
@@ -1339,11 +1335,6 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     CGSize contentSize = self.subLabel.intrinsicContentSize;
     contentSize.width += self.leadingBuffer;
     return contentSize;
-}
-
-- (void)setAdjustsLetterSpacingToFitWidth:(BOOL)adjustsLetterSpacingToFitWidth {
-    // By the nature of MarqueeLabel, this is NO
-    [super setAdjustsLetterSpacingToFitWidth:NO];
 }
 
 - (void)setMinimumScaleFactor:(CGFloat)minimumScaleFactor {
