@@ -195,10 +195,9 @@
 - (IBAction)unwindModalPopoverSegue:(UIStoryboardSegue *)segue {
     // Empty
 }
-     
-// For Autoresizing test
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    return YES;
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskAll;
 }
 
 - (void)didReceiveMemoryWarning {
