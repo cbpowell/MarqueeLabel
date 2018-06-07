@@ -1181,10 +1181,12 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
 
 #pragma mark - Modified UILabel Methods/Getters/Setters
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < 100000
 - (UIView *)viewForBaselineLayout {
     // Use subLabel view for handling baseline layouts
     return self.subLabel;
 }
+#endif
 
 - (UIView *)viewForLastBaselineLayout {
     // Use subLabel view for handling baseline layouts
@@ -1308,9 +1310,11 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     [super setAdjustsFontSizeToFitWidth:NO];
 }
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < 70000
 - (void)setMinimumFontSize:(CGFloat)minimumFontSize {
     [super setMinimumFontSize:0.0];
 }
+#endif
 
 - (UIBaselineAdjustment)baselineAdjustment {
     return self.subLabel.baselineAdjustment;
@@ -1341,10 +1345,12 @@ CGPoint MLOffsetCGPoint(CGPoint point, CGFloat offset);
     return contentSize;
 }
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < 70000
 - (void)setAdjustsLetterSpacingToFitWidth:(BOOL)adjustsLetterSpacingToFitWidth {
     // By the nature of MarqueeLabel, this is NO
     [super setAdjustsLetterSpacingToFitWidth:NO];
 }
+#endif
 
 - (void)setMinimumScaleFactor:(CGFloat)minimumScaleFactor {
     [super setMinimumScaleFactor:0.0f];
