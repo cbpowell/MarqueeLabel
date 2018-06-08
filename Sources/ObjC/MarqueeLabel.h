@@ -257,7 +257,7 @@ IB_DESIGNABLE
  @deprecated Use `trailingBuffer` instead. Values set to this property are simply forwarded to `trailingBuffer`.
  */
  
-@property (nonatomic, assign) CGFloat continuousMarqueeExtraBuffer DEPRECATED_ATTRIBUTE;
+@property (nonatomic, assign) CGFloat continuousMarqueeExtraBuffer __deprecated_msg("Use trailingBuffer instead.");
 
 
 /** The length of transparency fade at the left and right edges of the `MarqueeLabel` instance's frame.
@@ -468,7 +468,7 @@ IB_DESIGNABLE
  @deprecated Use `controllerViewDidAppear:` instead.
  */
 
-+ (void)controllerViewAppearing:(UIViewController *)controller DEPRECATED_ATTRIBUTE;
++ (void)controllerViewAppearing:(UIViewController *)controller __deprecated_msg("Use controllerViewDidAppear: instead.");
 
 
 /** Labelizes all `MarqueeLabel` instances that have the specified view controller in their next responder chain.
