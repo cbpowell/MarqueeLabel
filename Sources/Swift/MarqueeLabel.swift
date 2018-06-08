@@ -1250,6 +1250,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
      
      - SeeAlso: restartLabel
      */
+    @available(*, deprecated : 3.1.6, message : "Use the shutdownLabel function instead")
     public func resetLabel() {
         returnLabelToHome()
         homeLabelFrame = CGRect.null

@@ -296,7 +296,6 @@ IB_DESIGNABLE
 
 /** Immediately resets the label to the home position, cancelling any in-flight scroll animation, and restarts the scroll animation if the appropriate conditions are met.
  
- @see resetLabel
  @see triggerScrollStart
  */
 
@@ -317,16 +316,11 @@ IB_DESIGNABLE
 - (void)shutdownLabel;
 
 
-/** Resets the label text, recalculating the scroll animation.
- 
- The text is immediately returned to the home position, and the scroll animation positions are cleared. Scrolling will not resume automatically after
- a call to this method. To re-initiate scrolling, use either a call to `restartLabel` or make a change to a UILabel property such as text, bounds/frame,
- font, font size, etc.
- 
- @see restartLabel
+/**
+ @deprecated Use `resetLabel:` instead.
  */
 
-- (void)resetLabel;
+- (void)resetLabel __deprecated_msg("Use resetLabel instead");
 
 
 /** Pauses the text scrolling animation, at any point during an in-progress animation.
