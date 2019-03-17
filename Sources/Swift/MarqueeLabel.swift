@@ -139,8 +139,8 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     @IBInspectable open var holdScrolling: Bool = false {
         didSet {
             if holdScrolling != oldValue {
-                if oldValue == true && !(awayFromHome || labelize || tapToScroll ) && labelShouldScroll() {
-                    updateAndScroll(true)
+                if oldValue == true && !(awayFromHome || labelize ) && labelShouldScroll() {
+                    updateAndScroll()
                 }
             }
         }
@@ -546,7 +546,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     override open func layoutSubviews() {
         super.layoutSubviews()
         
-        updateAndScroll(true)
+        updateAndScroll()
     }
 
     override open func willMove(toWindow newWindow: UIWindow?) {
@@ -564,10 +564,11 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     }
     
     private func updateAndScroll() {
-        updateAndScroll(true)
+        // Do not automatically begin scroll if tapToScroll is true
+        updateAndScroll(overrideHold: false)
     }
     
-    private func updateAndScroll(_ shouldBeginScroll: Bool) {
+    private func updateAndScroll(overrideHold: Bool) {
         // Check if scrolling can occur
         if !labelReadyForScroll() {
             return
@@ -705,7 +706,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         // Configure gradient for current condition
         applyGradientMask(fadeLength, animated: !self.labelize)
         
-        if !tapToScroll && !holdScrolling && shouldBeginScroll {
+        if overrideHold || (!holdScrolling && !overrideHold) {
             beginScroll(sequence)
         }
     }
@@ -1332,7 +1333,8 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     
     @objc public func labelWasTapped(_ recognizer: UIGestureRecognizer) {
         if labelShouldScroll() && !awayFromHome {
-            updateAndScroll()
+            // Set shouldBeginScroll to true to begin single scroll due to tap
+            updateAndScroll(overrideHold: true)
         }
     }
     
