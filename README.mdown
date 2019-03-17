@@ -88,6 +88,8 @@ With:
 If you're using Storyboards/Interface Builder you can create a MarqueeLabel instance by adding a normal UILabel view to your Storyboard, and then manually changing the view's class to `MarqueeLabel` in the "Custom Class" field of the Identity Inspector tab on the Utilities panel (the right-side panel).
 _Note:_ If you forget to change the Custom Class field to `MarqueeLabel` and then try to access/set MarqueeLabel-specific properties in your code, you will get crashes!
 
+<img src="Metadata/Storyboards_config.png" width="300">
+
 You can then configure the normal UILabel properties, as well as most of the MarqueeLabel configuration properties, via the Attributes tab of the Utility panel!
 
 ### Even More
