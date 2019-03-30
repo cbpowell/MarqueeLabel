@@ -3,7 +3,7 @@ Overview
 
 MarqueeLabel is a UILabel subclass adds a scrolling marquee effect when the text of the label outgrows the available width. The label scrolling direction and speed/rate can be specified as well. All standard UILabel properties (where it makes sense) are available in MarqueeLabel, with the intent of MarqueeLabel behaving just like a UILabel.
 
-MarqueeLabel is compatible with both iOS and tvOS, and currently works with Swift 3.0 and the iOS 10.0 SDK! (But if you're looking for Swift 2.x compatibility, [you can use release 2.8](https://github.com/cbpowell/MarqueeLabel/releases/tag/2.8.0))
+MarqueeLabel is compatible with both iOS and tvOS, and currently works with Swift 5.0 and the iOS 12.2 SDK! (But if you're looking for Swift 2.x compatibility, [you can use release 2.8](https://github.com/cbpowell/MarqueeLabel/releases/tag/2.8.0))
 
 ## Check it out!
 ![GIF of MarqueeLabelDemo in action](https://raw.githubusercontent.com/cbpowell/MarqueeLabel/master/Metadata/MarqueeLabelDemo.gif)
@@ -100,7 +100,7 @@ Check out the [MarqueeLabel documentation](http://cocoadocs.org/docsets/MarqueeL
 
 ## Extras
 
-Also check out [the Extras folder](/Extras), a collection of subclasses, extensions, and modifications for MarqueeLabel to implement various functionality that has been requested or suggested, but not merged into the MarqueeLabel code. 
+Also check out [the Extras folder](/Extras), a collection of subclasses, extensions, and modifications for MarqueeLabel to implement various functionality that has been requested or suggested, but not merged into the MarqueeLabel code.
 
 
 ## Special Notes<a id="specialnotes"></a>
@@ -140,7 +140,7 @@ To make sure the scrolling animation _does_ begin as the cell scrolls onscreen, 
 #### Important Animation Note<a id="importantanimationnote"></a>
 MarqueeLabel is based on Core Animation, which does cause some problems when views appear and disappear and the repeating animation is stopped by iOS and does not automatically restart.
 
-To address this, MarqueeLabel provides a few class methods that allow easy "restarting" of all MarqueeLabels associated with a UIViewController. Specifically, the class method `restartLabelsOfController:` should be called by your view controller (which passes in `self` for the `controller` parameter) when it is revealed or about to be revealed. Keep in mind that presenting a modal view controller can pause repeating UIView animations in the controller that is being covered! 
+To address this, MarqueeLabel provides a few class methods that allow easy "restarting" of all MarqueeLabels associated with a UIViewController. Specifically, the class method `restartLabelsOfController:` should be called by your view controller (which passes in `self` for the `controller` parameter) when it is revealed or about to be revealed. Keep in mind that presenting a modal view controller can pause repeating UIView animations in the controller that is being covered!
 
 `controllerLabelsShouldLabelize:` and `controllerLabelsShouldAnimate:` are for convenience, allowing labelizing and re-animating all labels of a UIViewController. Labelizing can be useful for performance, such as labelizing all MarqueeLabels when a UITableView/UIScrollView starts scrolling.
 
