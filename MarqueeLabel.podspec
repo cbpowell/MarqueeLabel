@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.tvos.deployment_target = '9.0'
   
   s.default_subspec = 'ObjC'
-  s.swift_version = '4.2'
+  s.swift_version = '5.0'
   
   s.subspec 'ObjC' do |ss|
     ss.ios.deployment_target = '6.0'
