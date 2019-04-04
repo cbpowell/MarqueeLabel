@@ -22,7 +22,7 @@
 		EA59AC071CAA28D80052AD98 /* MarqueeLabel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MarqueeLabel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA59AC0B1CAA28D80052AD98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EAAEFA011CAA2C1A00F8D857 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		EADADDF31CD2C6000034838E /* MarqueeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MarqueeLabel.swift; path = ../../Sources/Swift/MarqueeLabel.swift; sourceTree = "<group>"; };
+		EADADDF31CD2C6000034838E /* MarqueeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MarqueeLabel.swift; path = ../../Sources/MarqueeLabel.swift; sourceTree = "<group>"; };
 		EAE4ACB61CAA23FD006C1ECC /* MarqueeLabelTVDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarqueeLabelTVDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAE4ACC21CAA23FD006C1ECC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
