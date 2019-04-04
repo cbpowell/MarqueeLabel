@@ -245,6 +245,33 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
+    @available(*, deprecated, message: "Use speed property instead")
+    @IBInspectable open var scrollDuration: CGFloat {
+        get {
+            switch speed {
+            case .duration(let duration): return duration
+            case .rate(_): return 0.0
+            }
+        }
+        set {
+            speed = .duration(newValue)
+        }
+    }
+    
+    @available(*, deprecated, message : "Use speed property instead")
+    @IBInspectable open var scrollRate: CGFloat {
+        get {
+            switch speed {
+            case .duration(_): return 0.0
+            case .rate(let rate): return rate
+            }
+        }
+        set {
+            speed = .rate(newValue)
+        }
+    }
+
+    
     /**
      A buffer (offset) between the leading edge of the label text and the label frame.
      
