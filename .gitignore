@@ -15,6 +15,9 @@ profile
 *.moved-aside
 *.xcuserstate
 
+# Exclude Swift Package Manager build
+.build
+
 # Exclude OS X folder attributes
 .DS_Store
 
