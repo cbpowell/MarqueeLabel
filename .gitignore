@@ -20,3 +20,6 @@ profile
 
 # Excluse Carthage build artifacts
 Carthage
+
+# SPM
+.build/
