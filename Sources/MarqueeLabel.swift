@@ -1082,25 +1082,24 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         #if TARGET_INTERFACE_BUILDER
             gradientMask.colors = adjustedColors
             CATransaction.commit()
-            return
+        #else
+            if (animated) {
+                // Finish transaction
+                CATransaction.commit()
+                
+                // Create animation for color change
+                let colorAnimation = GradientSetupAnimation(keyPath: "colors")
+                colorAnimation.fromValue = gradientMask.colors
+                colorAnimation.toValue = adjustedColors
+                colorAnimation.fillMode = .forwards
+                colorAnimation.isRemovedOnCompletion = false
+                colorAnimation.delegate = self
+                gradientMask.add(colorAnimation, forKey: "setupFade")
+            } else {
+                gradientMask.colors = adjustedColors
+                CATransaction.commit()
+            }
         #endif
-        
-        if (animated) {
-            // Finish transaction
-            CATransaction.commit()
-            
-            // Create animation for color change
-            let colorAnimation = GradientSetupAnimation(keyPath: "colors")
-            colorAnimation.fromValue = gradientMask.colors
-            colorAnimation.toValue = adjustedColors
-            colorAnimation.fillMode = .forwards
-            colorAnimation.isRemovedOnCompletion = false
-            colorAnimation.delegate = self
-            gradientMask.add(colorAnimation, forKey: "setupFade")
-        } else {
-            gradientMask.colors = adjustedColors
-            CATransaction.commit()
-        }
     }
     
     private func removeGradientMask() {
