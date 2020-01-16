@@ -854,7 +854,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             }
             
             // Call returned home function
-            self!.labelReturnedToHome(true)
+            self!.labelReturnedToHome(finished)
             
             // Check to ensure that:
             
