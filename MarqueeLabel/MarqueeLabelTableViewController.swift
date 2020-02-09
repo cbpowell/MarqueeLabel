@@ -76,12 +76,6 @@ class MarqueeLabelTableViewController: UITableViewController {
         for cell in tableView.visibleCells as! [MLCell] {
             cell.label.labelize = true
         }
-        
-        // Animate border
-        let header = tableView.headerView(forSection: 0) as! MLHeader
-        UIView.animate(withDuration: 0.2) { 
-            header.border.alpha = (scrollView.contentOffset.y > 1.0 ? 1.0 : 0.0)
-        }
     }
 }
 
