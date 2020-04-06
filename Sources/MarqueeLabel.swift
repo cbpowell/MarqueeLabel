@@ -684,7 +684,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         sublabel.minimumScaleFactor = 0.0
         
         // Spacing between primary and second sublabel must be at least equal to leadingBuffer, and at least equal to the fadeLength
-        let minTrailing = max(max(leadingBuffer, trailingBuffer), fadeLength)
+        let minTrailing = minimumTrailingDistance
         
         // Determine positions and generate scroll steps
         let sequence: [MarqueeStep]
@@ -786,6 +786,11 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         var fitSize = sublabel.sizeThatFits(size)
         fitSize.width += leadingBuffer
         return fitSize
+    }
+    
+    private var minimumTrailingDistance: CGFloat {
+        // Spacing between primary and second sublabel must be at least equal to leadingBuffer, and at least equal to the fadeLengt
+        return max(max(leadingBuffer, trailingBuffer), fadeLength)
     }
     
     //
