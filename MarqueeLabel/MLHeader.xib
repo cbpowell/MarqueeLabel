@@ -25,7 +25,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="600" id="Ons-nq-GwC"/>
                             </constraints>
-                            <blurEffect style="systemThinMaterial"/>
+                            <blurEffect style="regular"/>
                         </visualEffectView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xk6-CO-BR2">
                             <rect key="frame" x="0.0" y="83" width="600" height="1"/>
