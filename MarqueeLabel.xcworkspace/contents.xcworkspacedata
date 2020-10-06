@@ -4,16 +4,6 @@
    <FileRef
       location = "group:/Users/cbpowell/Projects/MarqueeLabel/Sources">
    </FileRef>
-   <Group
-      location = "group:"
-      name = "Package Management">
-      <FileRef
-         location = "group:MarqueeLabel.podspec">
-      </FileRef>
-      <FileRef
-         location = "group:Package.swift">
-      </FileRef>
-   </Group>
    <FileRef
       location = "group:Extras">
    </FileRef>
