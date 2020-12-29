@@ -130,7 +130,17 @@ MarqueeLabel is based on Core Animation, which does cause some problems when vie
 
 To address this, MarqueeLabel provides a few class methods that allow easy "restarting" of all MarqueeLabels associated with a UIViewController. Specifically, the class method `restartLabelsOfController:` should be called by your view controller (which passes in `self` for the `controller` parameter) when it is revealed or about to be revealed. Keep in mind that presenting a modal view controller can pause repeating UIView animations in the controller that is being covered!
 
-`controllerLabelsShouldLabelize:` and `controllerLabelsShouldAnimate:` are for convenience, allowing labelizing and re-animating all labels of a UIViewController. Labelizing can be useful for performance, such as labelizing all MarqueeLabels when a UITableView/UIScrollView starts scrolling.
+`controllerLabelsLabelize:` and `controllerLabelsAnimate:` are for convenience, allowing labelizing and re-animating all labels of a UIViewController. Labelizing can be useful for performance, such as labelizing all MarqueeLabels when a UITableView/UIScrollView starts scrolling.
+
+```swift
+    override  func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        MarqueeLabel.controllerViewDidAppear(self)
+    }
+```    
+
+
+
 
 
 ## Todo
