@@ -597,6 +597,8 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             // Set text alignment and break mode to act like a normal label
             sublabel.textAlignment = super.textAlignment
             sublabel.lineBreakMode = super.lineBreakMode
+            sublabel.adjustsFontSizeToFitWidth = super.adjustsFontSizeToFitWidth
+            sublabel.minimumScaleFactor = super.minimumScaleFactor
             
             let labelFrame: CGRect
             switch type {
@@ -759,8 +761,23 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             return false
         }
         
-        // Check if the label string fits
-        let labelTooLarge = (sublabelSize().width + leadingBuffer) > self.bounds.size.width + CGFloat.ulpOfOne
+        var labelTooLarge = false
+        if !super.adjustsFontSizeToFitWidth {
+            // Usual logic to check if the label string fits
+            labelTooLarge = (sublabelSize().width + leadingBuffer) > self.bounds.size.width + CGFloat.ulpOfOne
+        } else {
+            // Logic with auto-scale support
+            // The font will shrink at least until the following point size
+            let expectedMinimumFontSize = super.font.pointSize * super.minimumScaleFactor
+            // Thus the text will be at least the following pixel size
+            let expectedMinimumTextSize = (sublabel.text! as NSString)
+                                            .size(withAttributes: [
+                                                NSAttributedString.Key.font: super.font.withSize(expectedMinimumFontSize)
+                                            ])
+            // If even after shrinking it's too wide, consider the label too large and in need of scrolling
+            labelTooLarge = self.bounds.size.width < expectedMinimumTextSize.width + CGFloat.ulpOfOne
+        }
+
         let animationHasDuration = speed.value > 0.0
         return (!labelize && labelTooLarge && animationHasDuration)
     }
@@ -1519,27 +1536,6 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         set {
             // By the nature of MarqueeLabel, this is 1
             super.numberOfLines = 1
-        }
-    }
-    
-    override open var adjustsFontSizeToFitWidth: Bool {
-        get {
-            return super.adjustsFontSizeToFitWidth
-        }
-        
-        set {
-            // By the nature of MarqueeLabel, this is false
-            super.adjustsFontSizeToFitWidth = false
-        }
-    }
-    
-    override open var minimumScaleFactor: CGFloat {
-        get {
-            return super.minimumScaleFactor
-        }
-        
-        set {
-            super.minimumScaleFactor = 0.0
         }
     }
     
