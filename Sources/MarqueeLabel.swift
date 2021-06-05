@@ -531,7 +531,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         // We don't care about these values, we just want to forward them on to our sublabel.
         let properties = ["baselineAdjustment", "enabled", "highlighted", "highlightedTextColor",
                           "minimumFontSize", "shadowOffset", "textAlignment",
-                          "userInteractionEnabled", "adjustsFontSizeToFitWidth",
+                          "userInteractionEnabled", "adjustsFontSizeToFitWidth", "minimumScaleFactor",
                           "lineBreakMode", "numberOfLines", "contentMode"]
         
         // Iterate through properties
@@ -745,18 +745,34 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         var labelTooLarge = false
         if !super.adjustsFontSizeToFitWidth {
             // Usual logic to check if the label string fits
-            labelTooLarge = (sublabelSize().width + leadingBuffer) > self.bounds.size.width + CGFloat.ulpOfOne
+            labelTooLarge = (sublabel.desiredSize().width + leadingBuffer) > self.bounds.size.width + CGFloat.ulpOfOne
         } else {
             // Logic with auto-scale support
-            // The font will shrink at least until the following point size
-            let expectedMinimumFontSize = super.font.pointSize * super.minimumScaleFactor
-            // Thus the text will be at least the following pixel size
-            let expectedMinimumTextSize = (sublabel.text! as NSString)
-                                            .size(withAttributes: [
-                                                NSAttributedString.Key.font: super.font.withSize(expectedMinimumFontSize)
-                                            ])
+            // Create mutable attributed string to modify font sizes in-situ
+            let resizedString = NSMutableAttributedString.init(attributedString: sublabel.attributedText!)
+            resizedString.beginEditing()
+            // Enumerate all font attributes of attributed string
+            resizedString.enumerateAttribute(.font, in: NSRange(0..<sublabel.attributedText!.length)) { val, rng, stop in
+                if let originalFont = val as? UIFont {
+                    // Calculate minimum-factor font size
+                    let resizedFontSize = originalFont.pointSize * super.minimumScaleFactor
+                    // Create and apply new font attribute to string
+                    if let resizedFont = UIFont.init(name: originalFont.fontName, size: resizedFontSize) {
+                        resizedString.addAttribute(.font, value: resizedFont, range: rng)
+                    }
+                }
+            }
+            resizedString.endEditing()
+            
+            // Get new expected minimum size
+            let expectedMinimumTextSize = resizedString.size()
+            
             // If even after shrinking it's too wide, consider the label too large and in need of scrolling
             labelTooLarge = self.bounds.size.width < expectedMinimumTextSize.width + CGFloat.ulpOfOne
+            
+            // Set scale factor on sublabel dependent on result, back to 1.0 if too big to prevent
+            // sublabel from shrinking AND scrolling
+            sublabel.minimumScaleFactor = labelTooLarge ? 1.0 : super.minimumScaleFactor
         }
 
         let animationHasDuration = speed.value > 0.0
