@@ -768,7 +768,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             let expectedMinimumTextSize = resizedString.size()
             
             // If even after shrinking it's too wide, consider the label too large and in need of scrolling
-            labelTooLarge = self.bounds.size.width < expectedMinimumTextSize.width + CGFloat.ulpOfOne
+            labelTooLarge = self.bounds.size.width < ceil(expectedMinimumTextSize.width) + CGFloat.ulpOfOne
             
             // Set scale factor on sublabel dependent on result, back to 1.0 if too big to prevent
             // sublabel from shrinking AND scrolling
