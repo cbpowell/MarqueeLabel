@@ -531,7 +531,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         // We don't care about these values, we just want to forward them on to our sublabel.
         let properties = ["baselineAdjustment", "enabled", "highlighted", "highlightedTextColor",
                           "minimumFontSize", "shadowOffset", "textAlignment",
-                          "userInteractionEnabled", "adjustsFontSizeToFitWidth",
+                          "userInteractionEnabled", "adjustsFontSizeToFitWidth", "minimumScaleFactor",
                           "lineBreakMode", "numberOfLines", "contentMode"]
         
         // Iterate through properties
@@ -583,7 +583,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
         
         // Calculate expected size
-        let expectedLabelSize = sublabelSize()
+        let expectedLabelSize = sublabel.desiredSize()
         
         // Invalidate intrinsic size
         invalidateIntrinsicContentSize()
@@ -597,6 +597,8 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             // Set text alignment and break mode to act like a normal label
             sublabel.textAlignment = super.textAlignment
             sublabel.lineBreakMode = super.lineBreakMode
+            sublabel.adjustsFontSizeToFitWidth = super.adjustsFontSizeToFitWidth
+            sublabel.minimumScaleFactor = super.minimumScaleFactor
             
             let labelFrame: CGRect
             switch type {
@@ -719,25 +721,6 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
-    private func sublabelSize() -> CGSize {
-        // Bound the expected size
-        let maximumLabelSize = CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
-        // Calculate the expected size
-        var expectedLabelSize = sublabel.sizeThatFits(maximumLabelSize)
-        
-        #if os(tvOS)
-            // Sanitize width to 16384.0 (largest width a UILabel will draw on tvOS)
-            expectedLabelSize.width = min(expectedLabelSize.width, 16384.0)
-        #else
-            // Sanitize width to 5461.0 (largest width a UILabel will draw on an iPhone 6S Plus)
-            expectedLabelSize.width = min(expectedLabelSize.width, 5461.0)
-        #endif
-
-        // Adjust to own height (make text baseline match normal label)
-        expectedLabelSize.height = bounds.size.height
-        return expectedLabelSize
-    }
-    
     override open func sizeThatFits(_ size: CGSize) -> CGSize {
         var fitSize = sublabel.sizeThatFits(size)
         fitSize.width += leadingBuffer
@@ -750,17 +733,48 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     
     open func labelShouldScroll() -> Bool {
         // Check for nil string
-        if sublabel.text == nil {
+        guard sublabel.text != nil else {
             return false
         }
         
         // Check for empty string
-        if sublabel.text!.isEmpty {
+        guard !sublabel.text!.isEmpty else {
             return false
         }
         
-        // Check if the label string fits
-        let labelTooLarge = (sublabelSize().width + leadingBuffer) > self.bounds.size.width + CGFloat.ulpOfOne
+        var labelTooLarge = false
+        if !super.adjustsFontSizeToFitWidth {
+            // Usual logic to check if the label string fits
+            labelTooLarge = (sublabel.desiredSize().width + leadingBuffer) > self.bounds.size.width + CGFloat.ulpOfOne
+        } else {
+            // Logic with auto-scale support
+            // Create mutable attributed string to modify font sizes in-situ
+            let resizedString = NSMutableAttributedString.init(attributedString: sublabel.attributedText!)
+            resizedString.beginEditing()
+            // Enumerate all font attributes of attributed string
+            resizedString.enumerateAttribute(.font, in: NSRange(0..<sublabel.attributedText!.length)) { val, rng, stop in
+                if let originalFont = val as? UIFont {
+                    // Calculate minimum-factor font size
+                    let resizedFontSize = originalFont.pointSize * super.minimumScaleFactor
+                    // Create and apply new font attribute to string
+                    if let resizedFont = UIFont.init(name: originalFont.fontName, size: resizedFontSize) {
+                        resizedString.addAttribute(.font, value: resizedFont, range: rng)
+                    }
+                }
+            }
+            resizedString.endEditing()
+            
+            // Get new expected minimum size
+            let expectedMinimumTextSize = resizedString.size()
+            
+            // If even after shrinking it's too wide, consider the label too large and in need of scrolling
+            labelTooLarge = self.bounds.size.width < ceil(expectedMinimumTextSize.width) + CGFloat.ulpOfOne
+            
+            // Set scale factor on sublabel dependent on result, back to 1.0 if too big to prevent
+            // sublabel from shrinking AND scrolling
+            sublabel.minimumScaleFactor = labelTooLarge ? 1.0 : super.minimumScaleFactor
+        }
+
         let animationHasDuration = speed.value > 0.0
         return (!labelize && labelTooLarge && animationHasDuration)
     }
@@ -1522,27 +1536,6 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
-    override open var adjustsFontSizeToFitWidth: Bool {
-        get {
-            return super.adjustsFontSizeToFitWidth
-        }
-        
-        set {
-            // By the nature of MarqueeLabel, this is false
-            super.adjustsFontSizeToFitWidth = false
-        }
-    }
-    
-    override open var minimumScaleFactor: CGFloat {
-        get {
-            return super.minimumScaleFactor
-        }
-        
-        set {
-            super.minimumScaleFactor = 0.0
-        }
-    }
-    
     override open var baselineAdjustment: UIBaselineAdjustment {
         get {
             return sublabel.baselineAdjustment
@@ -1740,6 +1733,27 @@ fileprivate typealias MLAnimationCompletionBlock = (_ finished: Bool) -> Void
 fileprivate typealias MLAnimation = (anim: CAKeyframeAnimation, duration: CGFloat)
 
 fileprivate class GradientSetupAnimation: CABasicAnimation {
+}
+
+fileprivate extension UILabel {
+    func desiredSize() -> CGSize {
+        // Bound the expected size
+        let maximumLabelSize = CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
+        // Calculate the expected size
+        var expectedLabelSize = self.sizeThatFits(maximumLabelSize)
+        
+        #if os(tvOS)
+            // Sanitize width to 16384.0 (largest width a UILabel will draw on tvOS)
+            expectedLabelSize.width = min(expectedLabelSize.width, 16384.0)
+        #else
+            // Sanitize width to 5461.0 (largest width a UILabel will draw on an iPhone 6S Plus)
+            expectedLabelSize.width = min(expectedLabelSize.width, 5461.0)
+        #endif
+
+        // Adjust to own height (make text baseline match normal label)
+        expectedLabelSize.height = bounds.size.height
+        return expectedLabelSize
+    }
 }
 
 fileprivate extension UIResponder {
