@@ -625,6 +625,10 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         
         // Label DOES need to scroll
         
+        // Reset font scaling to off for scrolling
+        sublabel.adjustsFontSizeToFitWidth = false
+        sublabel.minimumScaleFactor = 0.0
+        
         // Spacing between primary and second sublabel must be at least equal to leadingBuffer, and at least equal to the fadeLength
         let minTrailing = max(max(leadingBuffer, trailingBuffer), fadeLength)
         
