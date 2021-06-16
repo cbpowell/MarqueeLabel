@@ -93,6 +93,16 @@ Also check out [the Extras folder](/Extras), a collection of subclasses, extensi
 
 ## Special Notes<a id="specialnotes"></a>
 
+#### Automatic Font Size Adjustment
+
+Starting with release 4.1, MarqueeLabel allows setting the [`adjustsFontSizeToWidth`](https://developer.apple.com/documentation/uikit/uilabel/1620546-adjustsfontsizetofitwidth) to `true`. When configured this way, MarqueeLabel will check to see if the text string
+ (non-attributed or attributed) will fit within the frame when adjusted to the specified minimum scale factor, and:
+ 
+ - if the text will fit at the adjusted scale without requiring truncation, the label will **not scroll**. Instead, the label text will be allowed to adjust to that size and will remain static.
+ - if the text will not fit, the label will scroll and retain the unscaled font size (i.e., like all releases prior to 4.1)
+ 
+ Previously MarqueeLabel would override any attempts to set `adjustsFontSizetoWidth` and `minimumScaleFactor` to the default settings used by UILabel (`false`, and `0.0`, respectively). As such the default behavior remains the same: the label will not adjust it's font size to 'avoid' scrolling.
+ 
 #### IBDesignables
 
 MarqueeLabel includes support for IBInspectable and IBDesignable, to allow configuration of the label inside Interface Builder/Storyboards. However, if you see these warnings when building:
