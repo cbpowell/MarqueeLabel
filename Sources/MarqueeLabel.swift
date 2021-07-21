@@ -669,7 +669,10 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             sublabel.frame = homeLabelFrame
             
             // Configure replication
-            repliLayer?.instanceCount = 2
+            // Determine replication count required
+            let fitFactor: CGFloat = bounds.size.width/(expectedLabelSize.width + leadingBuffer)
+            let repliCount = 1 + Int(ceil(fitFactor))
+            repliLayer?.instanceCount = repliCount
             repliLayer?.instanceTransform = CATransform3DMakeTranslation(-awayOffset, 0.0, 0.0)
             
         case .leftRight, .left, .rightLeft, .right:
