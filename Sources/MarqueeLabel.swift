@@ -153,7 +153,6 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
-	@IBInspectable public var forceScrolling: Bool = false
     /**
      A boolean property that sets whether the `MarqueeLabel` should scroll, even if the specificed test string
      can be fully contained within the label frame.
@@ -169,6 +168,15 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
      - SeeAlso: holdScrolling
      - SeeAlso: tapToScroll
      */
+    @IBInspectable public var forceScrolling: Bool = false {
+        didSet {
+            if forceScrolling != oldValue {
+                if !(awayFromHome || holdScrolling || tapToScroll ) && labelShouldScroll() {
+                    updateAndScroll()
+                }
+            }
+        }
+    }
 	
     /**
      A boolean property that sets whether the `MarqueeLabel` should only begin a scroll when tapped.
