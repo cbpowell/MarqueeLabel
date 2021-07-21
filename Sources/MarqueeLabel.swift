@@ -613,7 +613,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             homeLabelFrame = labelFrame
             awayOffset = 0.0
             
-            // Remove an additional sublabels (for continuous types)
+            // Remove any additional sublabels (for continuous types)
             repliLayer?.instanceCount = 1
 
             // Set the sublabel frame to calculated labelFrame
