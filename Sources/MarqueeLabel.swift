@@ -154,6 +154,21 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     }
     
 	@IBInspectable public var forceScrolling: Bool = false
+    /**
+     A boolean property that sets whether the `MarqueeLabel` should scroll, even if the specificed test string
+     can be fully contained within the label frame.
+     
+     If this property is set to `true`, the `MarqueeLabel` will automatically scroll regardless of text string
+     length, although this can still be overridden by the `tapToScroll` and `holdScrolling` properties.
+     
+     Defaults to `false`.
+     
+     - Warning: Forced scrolling may have unexpected edge cases or have unusual characteristics compared to the
+     'normal' scrolling feature.
+     
+     - SeeAlso: holdScrolling
+     - SeeAlso: tapToScroll
+     */
 	
     /**
      A boolean property that sets whether the `MarqueeLabel` should only begin a scroll when tapped.
