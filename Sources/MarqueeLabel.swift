@@ -806,11 +806,20 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     }
     
     private func returnLabelToHome() {
+        // Store if label is away from home at time of call
+        let away = awayFromHome
+        
         // Remove any gradient animation
         maskLayer?.removeAllAnimations()
         
         // Remove all sublabel position animations
         sublabel.layer.removeAllAnimations()
+        
+        // Fire completion block if appropriate
+        if away {
+            // If label was away when this was called, animation did NOT finish
+            scrollCompletionBlock?(!away)
+        }
         
         // Remove completion block
         scrollCompletionBlock = nil
