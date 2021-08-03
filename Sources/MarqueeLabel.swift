@@ -895,7 +895,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             guard self!.sublabel.layer.animation(forKey: "position") == nil else {
                 return
             }
-            // 3) We don't not start automatically if the animation was unexpectedly interrupted
+            // 3) We don't start automatically if the animation was unexpectedly interrupted
             guard finished else {
                 // Do not continue into the next loop
                 return
