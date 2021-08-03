@@ -230,6 +230,35 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     }
     
     /**
+     An optional CGFloat computed value that provides the current scroll animation position, as a value between
+     0.0 and 1.0. A value of 0.0 indicates the label is "at home" (`awayFromHome` will be false). A value
+     of 1.0 indicates the label is at the "away" position (and `awayFromHome` will be true).
+     
+     Will return nil when the label presentation layer is nil.
+     
+     - Note: For `leftRight` and `rightLeft` type labels this value will increase and reach 1.0 when the label animation reaches the
+     maximum displacement, as the left or right edge of the label (respectively) is shown. As the scroll reverses,
+     the value will decrease back to 0.0.
+     
+     - Note: For `continuous` and`continuousReverse` type labels, this value will increase from 0.0 and reach 1.0 just as the
+     label loops around and comes to a stop at the original home position. When that position is reached, the value will
+     jump from 1.0 directly to 0.0 and begin to increase from 0.0 again.
+     */
+    open var animationPosition: CGFloat? {
+        guard let presentationLayer = sublabel.layer.presentation() else {
+            return nil
+        }
+        
+        // No dividing by zero!
+        if awayOffset == 0.0 {
+            return 0.0
+        }
+        
+        let progressFraction = abs((presentationLayer.position.x - homeLabelFrame.origin.x) / awayOffset)
+        return progressFraction
+    }
+    
+    /**
      The `MarqueeLabel` scrolling speed may be defined by one of two ways:
      - Rate(CGFloat): The speed is defined by a rate of motion, in units of points per second.
      - Duration(CGFloat): The speed is defined by the time to complete a scrolling animation cycle, in units of seconds.
