@@ -1434,6 +1434,35 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
+    open func textCoordinateForFramePoint(_ point:CGPoint) -> CGPoint? {
+        // Check for presentation layer, if none return input point
+        guard let presentationLayer = sublabel.layer.presentation() else { return point }
+        // Convert point from MarqueeLabel main layer to sublabel's presentationLayer
+        let presentationPoint = presentationLayer.convert(point, from: self.layer)
+        // Check if point overlaps into 2nd instance of a continuous type label
+        let textPoint: CGPoint?
+        let presentationX = presentationPoint.x
+        let labelWidth = sublabel.frame.size.width
+        
+        switch type {
+        case .continuous, .left, .leftRight:
+            let firstLabel = homeLabelFrame.minX ..< sublabel.frame.size.width
+            let minTrailing = firstLabel.rangeForExtension(minimumTrailingDistance)
+            let secondLabel = minTrailing.rangeForExtension(labelWidth)
+            
+            guard let container = [firstLabel, secondLabel].filter({ (rng) -> Bool in
+                return rng.contains(presentationX)
+            }).first else { return nil }
+            
+            textPoint = CGPoint(x: (presentationX - container.lowerBound), y: presentationPoint.y)
+        //case .continuousReverse, .right, .rightLeft:
+            
+        default:
+            return presentationPoint
+        }
+        return presentationPoint
+    }
+    
     /**
      Called when the label animation is about to begin.
      
@@ -1828,6 +1857,12 @@ fileprivate extension UILabel {
         // Adjust to own height (make text baseline match normal label)
         expectedLabelSize.height = bounds.size.height
         return expectedLabelSize
+    }
+}
+
+fileprivate extension Range where Bound == CGFloat {
+    func rangeForExtension(_ ext: CGFloat) -> Range {
+        return self.upperBound..<(self.upperBound + ext)
     }
 }
 

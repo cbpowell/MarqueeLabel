@@ -94,9 +94,10 @@ class MarqueeLabelDemoViewController : UIViewController {
         
         // Continuous, with tap to pause
         demoLabel5.tag = 501
-        demoLabel5.type = .continuous
+        demoLabel5.type = .continuousReverse
         demoLabel5.speed = .duration(10)
         demoLabel5.fadeLength = 10.0
+        demoLabel5.leadingBuffer = 40.0
         demoLabel5.trailingBuffer = 30.0
         demoLabel5.text = "This text is long, and can be paused with a tap - handled via a UIGestureRecognizer!"
         
@@ -193,6 +194,12 @@ class MarqueeLabelDemoViewController : UIViewController {
         if recognizer.state == .ended {
             continuousLabel2.isPaused ? continuousLabel2.unpauseLabel() : continuousLabel2.pauseLabel()
         }
+        // Convert tap points
+        let tapPoint = recognizer.location(in: continuousLabel2)
+        guard let animationPoint = continuousLabel2.textCoordinateForFramePoint(tapPoint) else {
+            return
+        }
+        print("Tapped label at X coordinate of: \(animationPoint.x)")
     }
     
     @IBAction func labelizeSwitched(_ sender: UISwitch) {
