@@ -791,6 +791,11 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     private var minimumTrailingDistance: CGFloat {
         // Spacing between primary and second sublabel must be at least equal to leadingBuffer, and at least equal to the fadeLengt
         return max(max(leadingBuffer, trailingBuffer), fadeLength)
+    /**
+     Returns the unconstrained size of the specified label text (for a single line).
+    */
+    open func textLayoutSize() -> CGSize {
+        return sublabel.desiredSize()
     }
     
     //
