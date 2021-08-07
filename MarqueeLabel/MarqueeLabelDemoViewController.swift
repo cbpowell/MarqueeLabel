@@ -194,12 +194,6 @@ class MarqueeLabelDemoViewController : UIViewController {
         if recognizer.state == .ended {
             continuousLabel2.isPaused ? continuousLabel2.unpauseLabel() : continuousLabel2.pauseLabel()
         }
-        // Convert tap points
-        let tapPoint = recognizer.location(in: continuousLabel2)
-        guard let animationPoint = continuousLabel2.textCoordinateForFramePoint(tapPoint) else {
-            return
-        }
-        print("Tapped label at X coordinate of: \(animationPoint.x)")
     }
     
     @IBAction func labelizeSwitched(_ sender: UISwitch) {

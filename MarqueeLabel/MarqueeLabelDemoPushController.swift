@@ -28,5 +28,51 @@ class MarqueeLabelDemoPushController: UIViewController {
                        "Be a yardstick of quality. Some people aren't used to an environment where excellence is expected."]
         
         demoLabel.text = strings[Int(arc4random_uniform(UInt32(strings.count)))]
+        
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didTap(_:)))
+        tapRecognizer.numberOfTapsRequired = 1
+        tapRecognizer.numberOfTouchesRequired = 1
+        demoLabel.addGestureRecognizer(tapRecognizer)
+        demoLabel.isUserInteractionEnabled = true
     }
+    
+    @objc func didTap(_ recognizer: UIGestureRecognizer) {
+        let label = recognizer.view as! MarqueeLabel
+        if recognizer.state == .ended {
+            label.isPaused ? label.unpauseLabel() : label.pauseLabel()
+            // Convert tap points
+            let tapPoint = recognizer.location(in: label)
+            print("Frame coord: \(tapPoint)")
+            guard let textPoint = label.textCoordinateForFramePoint(tapPoint) else {
+                return
+            }
+            print(" Text coord: \(textPoint)")
+            
+            // Thanks to Toomas Vahter for the basis of the below
+            // https://augmentedcode.io/2020/12/20/opening-hyperlinks-in-uilabel-on-ios/
+            // Create layout manager
+            let layoutManager = NSLayoutManager()
+            let textContainer = NSTextContainer(size: label.textLayoutSize())
+            textContainer.lineFragmentPadding = 0
+            // Create text storage
+            guard let text = label.text else { return }
+            let textStorage = NSTextStorage(string: "")
+            textStorage.setAttributedString(label.attributedText!)
+            layoutManager.addTextContainer(textContainer)
+            textStorage.addLayoutManager(layoutManager)
+            textContainer.lineBreakMode = label.lineBreakMode
+            textContainer.size = label.textRect(forBounds: CGRect(origin: .zero, size:label.textLayoutSize()), limitedToNumberOfLines: label.numberOfLines).size
+            
+            let characterIndex = layoutManager.characterIndex(for: textPoint, in: textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+            guard characterIndex >= 0, characterIndex != NSNotFound else {
+                print("No character at point found!")
+                return
+            }
+            
+            let stringIndex = text.index(text.startIndex, offsetBy: characterIndex)
+            // Print character under touch point
+            print("Character under touch point: \(text[stringIndex])")
+        }
+    }
+    
 }
