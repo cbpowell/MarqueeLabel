@@ -22,7 +22,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
      - Continuous: Continuously scrolls left (with a pause at the original position if animationDelay is set).
      - ContinuousReverse: Continuously scrolls right (with a pause at the original position if animationDelay is set).
      */
-    public enum MarqueeType {
+    public enum MarqueeType: CaseIterable {
         case left
         case leftRight
         case right
