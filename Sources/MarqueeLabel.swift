@@ -783,8 +783,14 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     }
     
     override open func sizeThatFits(_ size: CGSize) -> CGSize {
+        return sizeThatFits(size, withBuffers: true)
+    }
+    
+    open func sizeThatFits(_ size: CGSize, withBuffers: Bool) -> CGSize {
         var fitSize = sublabel.sizeThatFits(size)
-        fitSize.width += leadingBuffer
+        if withBuffers {
+            fitSize.width += leadingBuffer
+        }
         return fitSize
     }
     
