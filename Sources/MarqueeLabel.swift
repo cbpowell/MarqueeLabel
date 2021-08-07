@@ -1444,23 +1444,37 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         let presentationX = presentationPoint.x
         let labelWidth = sublabel.frame.size.width
         
+        var containers: [Range<CGFloat>] = []
         switch type {
-        case .continuous, .left, .leftRight:
-            let firstLabel = homeLabelFrame.minX ..< sublabel.frame.size.width
+        case .continuous:
+            // First label frame range
+            let firstLabel = 0.0 ..< sublabel.frame.size.width
+            // Range from end of first label to the minimum trailining distance (i.e. the separator)
             let minTrailing = firstLabel.rangeForExtension(minimumTrailingDistance)
+            // Range of second label instance, from end of separator to length
             let secondLabel = minTrailing.rangeForExtension(labelWidth)
-            
-            guard let container = [firstLabel, secondLabel].filter({ (rng) -> Bool in
-                return rng.contains(presentationX)
-            }).first else { return nil }
-            
-            textPoint = CGPoint(x: (presentationX - container.lowerBound), y: presentationPoint.y)
-        //case .continuousReverse, .right, .rightLeft:
-            
-        default:
-            return presentationPoint
+            // Add valid ranges to array to check
+            containers += [firstLabel, secondLabel]
+        case .continuousReverse:
+            // First label frame range
+            let firstLabel = 0.0 ..< sublabel.frame.size.width
+            // Range of second label instance, from end of separator to length
+            let secondLabel = -sublabel.frame.size.width ..< -minimumTrailingDistance
+            // Add valid ranges to array to check
+            containers += [firstLabel, secondLabel]
+        case .left, .leftRight, .right, .rightLeft:
+            // Only label frame range
+            let firstLabel = 0.0 ..< sublabel.frame.size.width
+            containers.append(firstLabel)
         }
-        return presentationPoint
+        
+        // Determine which range contains the point, or return nil if in a buffer/margin area
+        guard let container = containers.filter({ (rng) -> Bool in
+            return rng.contains(presentationX)
+        }).first else { return nil }
+            
+        textPoint = CGPoint(x: (presentationX - container.lowerBound), y: presentationPoint.y)
+        return textPoint
     }
     
     /**
