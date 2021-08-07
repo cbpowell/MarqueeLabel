@@ -788,9 +788,6 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         return fitSize
     }
     
-    private var minimumTrailingDistance: CGFloat {
-        // Spacing between primary and second sublabel must be at least equal to leadingBuffer, and at least equal to the fadeLengt
-        return max(max(leadingBuffer, trailingBuffer), fadeLength)
     /**
      Returns the unconstrained size of the specified label text (for a single line).
     */
@@ -1271,6 +1268,11 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             ctx.setFillColor(bgColor.cgColor)
             ctx.fill(layer.bounds)
         }
+    }
+    
+    private var minimumTrailingDistance: CGFloat {
+        // Spacing between primary and second sublabel must be at least equal to leadingBuffer, and at least equal to the fadeLengt
+        return max(max(leadingBuffer, trailingBuffer), fadeLength)
     }
     
     fileprivate enum MarqueeKeys: String {
