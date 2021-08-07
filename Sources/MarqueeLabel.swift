@@ -22,7 +22,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
      - Continuous: Continuously scrolls left (with a pause at the original position if animationDelay is set).
      - ContinuousReverse: Continuously scrolls right (with a pause at the original position if animationDelay is set).
      */
-    public enum MarqueeType {
+    public enum MarqueeType: CaseIterable {
         case left
         case leftRight
         case right
@@ -684,7 +684,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         sublabel.minimumScaleFactor = 0.0
         
         // Spacing between primary and second sublabel must be at least equal to leadingBuffer, and at least equal to the fadeLength
-        let minTrailing = max(max(leadingBuffer, trailingBuffer), fadeLength)
+        let minTrailing = minimumTrailingDistance
         
         // Determine positions and generate scroll steps
         let sequence: [MarqueeStep]
@@ -783,9 +783,22 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     }
     
     override open func sizeThatFits(_ size: CGSize) -> CGSize {
+        return sizeThatFits(size, withBuffers: true)
+    }
+    
+    open func sizeThatFits(_ size: CGSize, withBuffers: Bool) -> CGSize {
         var fitSize = sublabel.sizeThatFits(size)
-        fitSize.width += leadingBuffer
+        if withBuffers {
+            fitSize.width += leadingBuffer
+        }
         return fitSize
+    }
+    
+    /**
+     Returns the unconstrained size of the specified label text (for a single line).
+    */
+    open func textLayoutSize() -> CGSize {
+        return sublabel.desiredSize()
     }
     
     //
@@ -1263,6 +1276,11 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
+    private var minimumTrailingDistance: CGFloat {
+        // Spacing between primary and second sublabel must be at least equal to leadingBuffer, and at least equal to the fadeLengt
+        return max(max(leadingBuffer, trailingBuffer), fadeLength)
+    }
+    
     fileprivate enum MarqueeKeys: String {
         case Restart = "MLViewControllerRestart"
         case Labelize = "MLShouldLabelize"
@@ -1427,6 +1445,49 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             // Set shouldBeginScroll to true to begin single scroll due to tap
             updateAndScroll(overrideHold: true)
         }
+    }
+    
+    open func textCoordinateForFramePoint(_ point:CGPoint) -> CGPoint? {
+        // Check for presentation layer, if none return input point
+        guard let presentationLayer = sublabel.layer.presentation() else { return point }
+        // Convert point from MarqueeLabel main layer to sublabel's presentationLayer
+        let presentationPoint = presentationLayer.convert(point, from: self.layer)
+        // Check if point overlaps into 2nd instance of a continuous type label
+        let textPoint: CGPoint?
+        let presentationX = presentationPoint.x
+        let labelWidth = sublabel.frame.size.width
+        
+        var containers: [Range<CGFloat>] = []
+        switch type {
+        case .continuous:
+            // First label frame range
+            let firstLabel = 0.0 ..< sublabel.frame.size.width
+            // Range from end of first label to the minimum trailining distance (i.e. the separator)
+            let minTrailing = firstLabel.rangeForExtension(minimumTrailingDistance)
+            // Range of second label instance, from end of separator to length
+            let secondLabel = minTrailing.rangeForExtension(labelWidth)
+            // Add valid ranges to array to check
+            containers += [firstLabel, secondLabel]
+        case .continuousReverse:
+            // First label frame range
+            let firstLabel = 0.0 ..< sublabel.frame.size.width
+            // Range of second label instance, from end of separator to length
+            let secondLabel = -sublabel.frame.size.width ..< -minimumTrailingDistance
+            // Add valid ranges to array to check
+            containers += [firstLabel, secondLabel]
+        case .left, .leftRight, .right, .rightLeft:
+            // Only label frame range
+            let firstLabel = 0.0 ..< sublabel.frame.size.width
+            containers.append(firstLabel)
+        }
+        
+        // Determine which range contains the point, or return nil if in a buffer/margin area
+        guard let container = containers.filter({ (rng) -> Bool in
+            return rng.contains(presentationX)
+        }).first else { return nil }
+            
+        textPoint = CGPoint(x: (presentationX - container.lowerBound), y: presentationPoint.y)
+        return textPoint
     }
     
     /**
@@ -1823,6 +1884,12 @@ fileprivate extension UILabel {
         // Adjust to own height (make text baseline match normal label)
         expectedLabelSize.height = bounds.size.height
         return expectedLabelSize
+    }
+}
+
+fileprivate extension Range where Bound == CGFloat {
+    func rangeForExtension(_ ext: CGFloat) -> Range {
+        return self.upperBound..<(self.upperBound + ext)
     }
 }
 

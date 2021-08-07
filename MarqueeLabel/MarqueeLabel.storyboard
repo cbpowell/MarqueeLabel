@@ -461,6 +461,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="demoLabel" destination="CG3-Ca-wbs" id="PH8-47-4Gk"/>
+                        <outlet property="labelLabel" destination="SrV-q0-UjC" id="BOg-sx-yye"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fr6-R5-Jcq" userLabel="First Responder" sceneMemberID="firstResponder"/>
