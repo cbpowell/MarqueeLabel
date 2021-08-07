@@ -10,11 +10,30 @@ import UIKit
 
 class MarqueeLabelDemoPushController: UIViewController {
     @IBOutlet weak var demoLabel: MarqueeLabel!
+    @IBOutlet weak var labelLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        demoLabel.type = .continuous
+        demoLabel.type = MarqueeLabel.MarqueeType.allCases.randomElement() ?? .continuous
+        // Set label label text
+        labelLabel.text = { () -> String in
+            switch demoLabel.type {
+            case .continuous:
+                return "Continuous scrolling"
+            case .continuousReverse:
+                return "Continuous Reverse scrolling"
+            case .left:
+                return "Left-Only scrolling"
+            case .leftRight:
+                return "Left-Right scrolling"
+            case .right:
+                return "Right-Only scrolling"
+            case .rightLeft:
+                return "Right-Left scrolling"
+            }
+        }()
+        
         demoLabel.speed = .duration(15)
         demoLabel.animationCurve = .easeInOut
         demoLabel.fadeLength = 10.0
