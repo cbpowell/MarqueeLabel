@@ -1447,6 +1447,15 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
+    /**
+     Function to convert a point from the label view frame coordinates to "text" coordinates, i.e. the equivalent
+     position in the (possibly) scrolling label. For example, it can be used to convert the coordinates
+     of a tap point on the MarqueeLabel view into that of the scrolling label, in order to determine the
+     word or character under the tap point.
+     
+     If the specified point does not fall inside the bounds of the scrolling label, such as if on a leading
+     or trailing buffer area, the function will return nil.
+     */
     open func textCoordinateForFramePoint(_ point:CGPoint) -> CGPoint? {
         // Check for presentation layer, if none return input point
         guard let presentationLayer = sublabel.layer.presentation() else { return point }
