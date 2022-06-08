@@ -657,7 +657,10 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             let labelFrame: CGRect
             switch type {
             case .continuousReverse, .rightLeft:
-                labelFrame = bounds.divided(atDistance: leadingBuffer, from: CGRectEdge.maxXEdge).remainder.integral
+                // symbol of this CoreGraphics func is not found in libswiftCoreGraphics.dylib when compiled with Xcode 14b1
+//                labelFrame = bounds.divided(atDistance: leadingBuffer, from: CGRectEdge.maxXEdge).remainder.integral
+                let integralWidth = max(0, min(bounds.width, bounds.width - leadingBuffer))
+                labelFrame = CGRect(origin: bounds.origin, size: .init(width: integralWidth, height: bounds.height))
             default:
                 labelFrame = CGRect(x: leadingBuffer, y: 0.0, width: bounds.size.width - leadingBuffer, height: bounds.size.height).integral
             }
