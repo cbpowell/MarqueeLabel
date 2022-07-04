@@ -15,7 +15,7 @@ MarqueeLabel is compatible with both iOS and tvOS, and currently works with Swif
 ## How To Get Started
 
 1. Clone MarqueeLabel from GitHub, and check out the demo project.
-2. Read the [MarqueeLabel CocoaDocs documentation](http://cocoadocs.org/docsets/MarqueeLabel/).
+2. Read through the documentation embedded in the [`MarqueeLabel.swift` source](https://github.com/cbpowell/MarqueeLabel/blob/master/Sources/MarqueeLabel.swift).
 3. Take a look at the [special notes](https://github.com/cbpowell/MarqueeLabel/blob/master/README.mdown#special-notes) section to be aware of any gotchas.
 4. Drop in MarqueeLabel as a replacement to your lengthy UILabels!
 5. Help out with bug fixes and new features.
