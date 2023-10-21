@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vUf-jv-yo6">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vUf-jv-yo6">
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,13 +21,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MarqueeLabel" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xyi-Hz-Wpw">
-                                <rect key="frame" x="232" y="50" width="135" height="26"/>
+                                <rect key="frame" x="232" y="54" width="135" height="26"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="22"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Continuous scrolling" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ANf-ic-jGg">
-                                <rect key="frame" x="20" y="94" width="560" height="16"/>
+                                <rect key="frame" x="20" y="98" width="560" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="pTl-px-F42"/>
                                 </constraints>
@@ -35,7 +36,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is a test of MarqueeLabel, with a somewhat long string." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6NK-iy-G1b" customClass="MarqueeLabel" customModule="MarqueeLabelDemo" customModuleProvider="target">
-                                <rect key="frame" x="20" y="110" width="560" height="21"/>
+                                <rect key="frame" x="20" y="114" width="560" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="9yL-Xa-Dot"/>
                                 </constraints>
@@ -58,7 +59,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Right-to-left continuous scrolling" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jUJ-R7-Zaq">
-                                <rect key="frame" x="20" y="143" width="560" height="16"/>
+                                <rect key="frame" x="20" y="147" width="560" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="QY3-s6-p9b"/>
                                 </constraints>
@@ -67,7 +68,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MLContinuousReverse" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Y7-BD-j5i" customClass="MarqueeLabel" customModule="MarqueeLabelDemo" customModuleProvider="target">
-                                <rect key="frame" x="20" y="159" width="560" height="21"/>
+                                <rect key="frame" x="20" y="163" width="560" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="Vqi-7d-k3S"/>
                                 </constraints>
@@ -76,7 +77,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Left-to-right auto-reversing scrolling, with IB-set text styling" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EWF-s2-CJI">
-                                <rect key="frame" x="20" y="192" width="560" height="16"/>
+                                <rect key="frame" x="20" y="196" width="560" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="UyQ-bm-JZd"/>
                                 </constraints>
@@ -85,7 +86,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MLLeftToRight" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dkc-QT-Fyf" customClass="MarqueeLabel" customModule="MarqueeLabelDemo" customModuleProvider="target">
-                                <rect key="frame" x="20" y="208" width="560" height="21"/>
+                                <rect key="frame" x="20" y="212" width="560" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="2M0-W3-QRc"/>
                                 </constraints>
@@ -94,7 +95,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Right-to-left auto-reversing scrolling, with tap to scroll" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2z6-q4-Cbn">
-                                <rect key="frame" x="20" y="241" width="560" height="16"/>
+                                <rect key="frame" x="20" y="245" width="560" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="jE6-g3-0ge"/>
                                 </constraints>
@@ -103,7 +104,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MLRightToLeft" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PJ1-ao-mBM" customClass="MarqueeLabel" customModule="MarqueeLabelDemo" customModuleProvider="target">
-                                <rect key="frame" x="20" y="257" width="560" height="21"/>
+                                <rect key="frame" x="20" y="261" width="560" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="tM8-bU-ejD"/>
                                 </constraints>
@@ -112,7 +113,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Continuous scrolling, with pause/unpause (via tap)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FAD-WX-7fw">
-                                <rect key="frame" x="20" y="290" width="560" height="16"/>
+                                <rect key="frame" x="20" y="294" width="560" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="wcK-wd-yq9"/>
                                 </constraints>
@@ -121,7 +122,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MLContinuous, with tap" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FNY-Yp-i3E" customClass="MarqueeLabel" customModule="MarqueeLabelDemo" customModuleProvider="target">
-                                <rect key="frame" x="20" y="306" width="280" height="21"/>
+                                <rect key="frame" x="20" y="310" width="280" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="280" id="O6j-NK-XR4"/>
                                     <constraint firstAttribute="height" constant="21" id="dL3-CY-UCI"/>
@@ -131,31 +132,31 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="MFZ-eI-lOI" userLabel="Labelize Switch">
-                                <rect key="frame" x="20" y="399" width="51" height="31"/>
+                                <rect key="frame" x="20" y="403" width="51" height="31"/>
                                 <connections>
                                     <action selector="labelizeSwitched:" destination="4MI-rG-Qz8" eventType="valueChanged" id="Yjd-v7-bip"/>
                                 </connections>
                             </switch>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="5Hk-N1-s7W" userLabel="Hold Switch">
-                                <rect key="frame" x="20" y="438" width="51" height="31"/>
+                                <rect key="frame" x="20" y="442" width="51" height="31"/>
                                 <connections>
                                     <action selector="holdLabelsSwitched:" destination="4MI-rG-Qz8" eventType="valueChanged" id="9TU-2M-R1g"/>
                                 </connections>
                             </switch>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hold scrolling" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CjG-zz-dFM">
-                                <rect key="frame" x="77" y="443" width="99" height="20.5"/>
+                                <rect key="frame" x="77" y="447" width="99" height="20.5"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pause scrolling" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ktf-8o-rs7">
-                                <rect key="frame" x="77" y="482" width="110" height="20.5"/>
+                                <rect key="frame" x="77" y="486" width="110" height="20.5"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q5E-kb-AFb">
-                                <rect key="frame" x="20" y="528" width="83" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q5E-kb-AFb">
+                                <rect key="frame" x="20" y="532" width="83" height="30"/>
                                 <state key="normal" title="Change text">
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -164,19 +165,19 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Labelize" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H8W-VM-YX4">
-                                <rect key="frame" x="77" y="404" width="60" height="20.5"/>
+                                <rect key="frame" x="77" y="408" width="60" height="20.5"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="tmC-FS-iei" userLabel="Pause Switch">
-                                <rect key="frame" x="20" y="477" width="51" height="31"/>
+                                <rect key="frame" x="20" y="481" width="51" height="31"/>
                                 <connections>
                                     <action selector="togglePause:" destination="4MI-rG-Qz8" eventType="valueChanged" id="e7c-3T-Xak"/>
                                 </connections>
                             </switch>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lgd-Aj-hPA">
-                                <rect key="frame" x="187" y="528" width="111" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lgd-Aj-hPA">
+                                <rect key="frame" x="187" y="532" width="111" height="30"/>
                                 <state key="normal" title="Display popover">
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -185,7 +186,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Auto Layout" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SzN-MY-AgP">
-                                <rect key="frame" x="309.5" y="72" width="57.5" height="16"/>
+                                <rect key="frame" x="309.5" y="76" width="57.5" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="bHy-Aq-zIY"/>
                                 </constraints>
@@ -194,7 +195,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Continuous scrolling, with attributed text" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V7a-Ah-SP6">
-                                <rect key="frame" x="20" y="339" width="540" height="16"/>
+                                <rect key="frame" x="20" y="343" width="540" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="Xjk-IP-6qA"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="wct-GJ-BsL"/>
@@ -209,7 +210,7 @@
                                 </variation>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MLContinuous, with attributed text" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PYo-It-Lhw" customClass="MarqueeLabel" customModule="MarqueeLabelDemo" customModuleProvider="target">
-                                <rect key="frame" x="20" y="355" width="560" height="21"/>
+                                <rect key="frame" x="20" y="359" width="560" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="7aT-r5-WtF"/>
                                     <constraint firstAttribute="width" constant="280" id="s3r-Ra-tZo"/>
@@ -224,7 +225,7 @@
                                 </variation>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="xyi-Hz-Wpw" secondAttribute="centerX" constant="0.5" id="0Nz-1k-6lD"/>
                             <constraint firstItem="V7a-Ah-SP6" firstAttribute="leading" secondItem="0j2-Mv-s6q" secondAttribute="leading" constant="20" id="2YH-Ac-VIQ"/>
@@ -310,7 +311,7 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MLCell" id="M3R-NS-1Q1" customClass="MLCell" customModule="MarqueeLabelDemo" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="600" height="52"/>
+                                <rect key="frame" x="0.0" y="50" width="600" height="52"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="M3R-NS-1Q1" id="UvS-6a-1i3">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="52"/>
@@ -356,7 +357,7 @@
                             <outlet property="delegate" destination="4fz-Lg-9r1" id="XJf-vE-J0D"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Table View" image="table" catalog="system" id="a5f-OS-S7w"/>
+                    <tabBarItem key="tabBarItem" title="Table View" image="tablecells" catalog="system" id="a5f-OS-S7w"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PeJ-pj-1dl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -368,7 +369,7 @@
                 <navigationController id="WhA-Ms-jmb" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Navigation" image="chevron.right" catalog="system" id="wjf-nS-0rx"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="LVv-Ou-Vxz">
-                        <rect key="frame" x="0.0" y="44" width="600" height="44"/>
+                        <rect key="frame" x="0.0" y="48" width="600" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -392,7 +393,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Continuous scrolling" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SrV-q0-UjC">
-                                <rect key="frame" x="20" y="104" width="560" height="16"/>
+                                <rect key="frame" x="20" y="108" width="560" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="8i2-Gy-l3I"/>
                                 </constraints>
@@ -401,7 +402,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is a test of MarqueeLabel, with a somewhat long string." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CG3-Ca-wbs" customClass="MarqueeLabel" customModule="MarqueeLabelDemo" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="120" width="600" height="21"/>
+                                <rect key="frame" x="0.0" y="124" width="600" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="iyt-fd-b51"/>
                                 </constraints>
@@ -427,7 +428,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="CG3-Ca-wbs" firstAttribute="top" secondItem="SrV-q0-UjC" secondAttribute="bottom" id="0Cn-ve-jTD"/>
                             <constraint firstAttribute="leadingMargin" secondItem="SrV-q0-UjC" secondAttribute="leading" id="CuU-r2-7SQ"/>
@@ -446,7 +447,7 @@
                     <navigationItem key="navigationItem" title="MarqueeLabel" id="RC6-aB-onQ">
                         <barButtonItem key="backBarButtonItem" title="Back" id="acJ-YT-Hb3"/>
                         <barButtonItem key="rightBarButtonItem" id="00A-KX-Wre">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="I03-oH-Gks">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="I03-oH-Gks">
                                 <rect key="frame" x="500" y="7" width="80" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
@@ -497,11 +498,11 @@
                         <viewControllerLayoutGuide type="bottom" id="FEq-Nv-YJ9"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="me2-i9-d6o">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="546"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="590"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mCO-go-CZE">
-                                <rect key="frame" x="243.5" y="258" width="114" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mCO-go-CZE">
+                                <rect key="frame" x="243.5" y="280" width="114" height="30"/>
                                 <state key="normal" title="Dismiss popover">
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -510,7 +511,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="centerY" secondItem="mCO-go-CZE" secondAttribute="centerY" id="GCn-nW-EnX"/>
                             <constraint firstAttribute="centerX" secondItem="mCO-go-CZE" secondAttribute="centerX" constant="-0.5" id="SEh-Zu-xwp"/>
@@ -523,9 +524,38 @@
             <point key="canvasLocation" x="1873" y="1073"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="0Y7-BD-j5i">
+            <size key="intrinsicContentSize" width="171" height="20.5"/>
+        </designable>
+        <designable name="6NK-iy-G1b">
+            <size key="intrinsicContentSize" width="455" height="20.5"/>
+        </designable>
+        <designable name="BXW-4n-8c7">
+            <size key="intrinsicContentSize" width="41.5" height="20.5"/>
+        </designable>
+        <designable name="CG3-Ca-wbs">
+            <size key="intrinsicContentSize" width="455" height="20.5"/>
+        </designable>
+        <designable name="FNY-Yp-i3E">
+            <size key="intrinsicContentSize" width="180" height="20.5"/>
+        </designable>
+        <designable name="PJ1-ao-mBM">
+            <size key="intrinsicContentSize" width="111" height="20.5"/>
+        </designable>
+        <designable name="PYo-It-Lhw">
+            <size key="intrinsicContentSize" width="263" height="20.5"/>
+        </designable>
+        <designable name="dkc-QT-Fyf">
+            <size key="intrinsicContentSize" width="100.5" height="20.5"/>
+        </designable>
+    </designables>
     <resources>
-        <image name="arrow.left.and.right" catalog="system" width="64" height="42"/>
-        <image name="chevron.right" catalog="system" width="48" height="64"/>
-        <image name="table" catalog="system" width="64" height="46"/>
+        <image name="arrow.left.and.right" catalog="system" width="128" height="76"/>
+        <image name="chevron.right" catalog="system" width="97" height="128"/>
+        <image name="tablecells" catalog="system" width="128" height="93"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
