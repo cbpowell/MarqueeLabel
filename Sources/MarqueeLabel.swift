@@ -1529,18 +1529,6 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     //
     // MARK: - Modified UILabel Functions/Getters/Setters
     //
-    
-    #if os(iOS)
-    override open func forBaselineLayout() -> UIView {
-        // Use subLabel view for handling baseline layouts
-        return sublabel
-    }
-    
-    override open var forLastBaselineLayout: UIView {
-        // Use subLabel view for handling baseline layouts
-        return sublabel
-    }
-    #endif
 
     override open var text: String? {
         get {
@@ -1725,6 +1713,20 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             sublabel.isAccessibilityElement = self.isAccessibilityElement
         }
     }
+    //
+    // MARK: - Version Specific Properties
+    //
+    #if os(iOS)
+    override open func forBaselineLayout() -> UIView {
+        // Use subLabel view for handling baseline layouts
+        return sublabel
+    }
+
+    override open var forLastBaselineLayout: UIView {
+        // Use subLabel view for handling baseline layouts
+        return sublabel
+    }
+    #endif
 
     //
     // MARK: - Support
