@@ -1139,7 +1139,11 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             // No mask exists, create new mask
             gradientMask = CAGradientLayer()
             gradientMask.shouldRasterize = true
+          #if os(visionOS)
+            gradientMask.rasterizationScale = UITraitCollection.current.displayScale
+          #else
             gradientMask.rasterizationScale = UIScreen.main.scale
+          #endif
             gradientMask.startPoint = CGPoint(x:0.0, y:0.5)
             gradientMask.endPoint = CGPoint(x:1.0, y:0.5)
         }
