@@ -563,6 +563,8 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(MarqueeLabel.shutdownLabel), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
     
+    // Interface Builder features deprecated in visionOS
+    #if !os(visionOS)
     override open func awakeFromNib() {
         super.awakeFromNib()
         forwardPropertiesToSublabel()
@@ -573,6 +575,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         super.prepareForInterfaceBuilder()
         forwardPropertiesToSublabel()
     }
+    #endif
     
     private func forwardPropertiesToSublabel() {
         /*
