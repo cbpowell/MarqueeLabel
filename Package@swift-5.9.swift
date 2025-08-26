@@ -6,8 +6,8 @@ import PackageDescription
 let package = Package(
     name: "MarqueeLabel",
     platforms: [
-        .iOS(.v11),
-        .tvOS(.v11),
+        .iOS(.v12),
+        .tvOS(.v12),
         .visionOS(.v1)
     ],
     products: [
