@@ -544,7 +544,6 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         // Create sublabel
         sublabel = UILabel(frame: self.bounds)
         sublabel.tag = 700
-        sublabel.layer.anchorPoint = CGPoint.zero
 
         // Add sublabel
         addSubview(sublabel)
@@ -1001,8 +1000,8 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     
     private func generateScrollAnimation(_ sequence: [MarqueeStep]) -> MLAnimation {
         // Create scroller, which defines the animation to perform
-        let homeOrigin = homeLabelFrame.origin
-        let awayOrigin = offsetCGPoint(homeLabelFrame.origin, offset: awayOffset)
+        let homeOrigin = CGPoint(x: homeLabelFrame.midX, y: homeLabelFrame.midY)
+        let awayOrigin = CGPoint(x: homeLabelFrame.midX + awayOffset, y: homeLabelFrame.midY)
         
         let scrollSteps = sequence.filter({ $0 is ScrollStep }) as! [ScrollStep]
         let totalDuration = scrollSteps.reduce(0.0) { $0 + $1.timeStep }
