@@ -7,6 +7,39 @@
 
 import UIKit
 import QuartzCore
+import ObjectiveC
+
+fileprivate
+let fixSublabelClassIfNeeded: () = {
+	guard #available(iOS 26.0, *) else {
+		return
+	}
+	
+	//mt_setContentEffects:
+	guard let decodedData = Data(base64Encoded: "bXRfc2V0Q29udGVudEVmZmVjdHM6"),
+		  let decodedName = String(data: decodedData, encoding: .utf8) else {
+		return
+	}
+	let name = Selector(decodedName)
+	//This method is only used for its type encoding
+	let someOtherMethod = class_getInstanceMethod(UILabel.self, #selector(setter: UILabel.font))!
+	//Empty impl that will ignore content effects
+	let blockImp: @convention(block) (NSObject, AnyObject) -> Void = { _,_ in }
+	//Add the method to the sublabel subclass
+	class_addMethod(MarqueeSublabel.self, name, imp_implementationWithBlock(blockImp), method_getTypeEncoding(someOtherMethod))
+}()
+
+fileprivate class MarqueeSublabel: UILabel {
+	override init(frame: CGRect) {
+		super.init(frame: frame)
+		
+		fixSublabelClassIfNeeded
+	}
+	
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+}
 
 @IBDesignable
 
@@ -542,7 +575,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     
     private func setup() {
         // Create sublabel
-        sublabel = UILabel(frame: self.bounds)
+        sublabel = MarqueeSublabel(frame: self.bounds)
         sublabel.tag = 700
         sublabel.layer.anchorPoint = CGPoint.zero
 
@@ -1252,8 +1285,8 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     //
     // MARK: - Private details
     //
-    
-    private var sublabel = UILabel()
+	
+    private var sublabel = MarqueeSublabel()
     
     fileprivate var homeLabelFrame = CGRect.zero
     fileprivate var awayOffset: CGFloat = 0.0
