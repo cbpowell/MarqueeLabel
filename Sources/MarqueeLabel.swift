@@ -540,13 +540,27 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         self.init(frame: frame, duration:7.0, fadeLength:0.0)
     }
     
+    #if DEBUG
+    private var leadingView = UIView()
+    private var trailingView = UIView()
+    #endif
+    
     private func setup() {
         // Create sublabel
         sublabel = UILabel(frame: self.bounds)
         sublabel.tag = 700
-
-        // Add sublabel
+        
+        // View Structure
         addSubview(sublabel)
+        
+        #if DEBUG
+        leadingView.alpha = 0.3
+        leadingView.backgroundColor = .blue
+        trailingView.alpha = 0.3
+        trailingView.backgroundColor = .blue
+        addSubview(leadingView)
+        addSubview(trailingView)
+        #endif
         
         // Configure self
         super.clipsToBounds = true
@@ -660,8 +674,16 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             switch type {
             case .continuousReverse, .rightLeft:
                 labelFrame = bounds.divided(atDistance: leadingBuffer, from: CGRectEdge.maxXEdge).remainder.integral
+                #if DEBUG
+                leadingView.frame = bounds.divided(atDistance: leadingBuffer, from: CGRectEdge.maxXEdge).slice.integral
+                trailingView.frame = bounds.divided(atDistance: trailingBuffer, from: CGRectEdge.minXEdge).slice.integral
+                #endif
             default:
                 labelFrame = CGRect(x: leadingBuffer, y: 0.0, width: bounds.size.width - leadingBuffer, height: bounds.size.height).integral
+                #if DEBUG
+                leadingView.frame = CGRect(x: 0.0, y: 0.0, width: leadingBuffer, height: bounds.size.height).integral
+                trailingView.frame = bounds.divided(atDistance: trailingBuffer, from: CGRectEdge.maxXEdge).slice.integral
+                #endif
             }
             
             homeLabelFrame = labelFrame
@@ -696,9 +718,17 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             if type == .continuous {
                 homeLabelFrame = CGRect(x: leadingBuffer, y: 0.0, width: expectedLabelSize.width, height: bounds.size.height).integral
                 awayOffset = -(homeLabelFrame.size.width + minTrailing)
+                #if DEBUG
+                leadingView.frame = CGRect(x: 0.0, y: 0.0, width: leadingBuffer, height: bounds.size.height)
+                trailingView.frame = bounds.divided(atDistance: trailingBuffer, from: CGRectEdge.maxXEdge).slice.integral
+                #endif
             } else { // .ContinuousReverse
                 homeLabelFrame = CGRect(x: bounds.size.width - (expectedLabelSize.width + leadingBuffer), y: 0.0, width: expectedLabelSize.width, height: bounds.size.height).integral
                 awayOffset = (homeLabelFrame.size.width + minTrailing)
+                #if DEBUG
+                leadingView.frame = bounds.divided(atDistance: leadingBuffer, from: CGRectEdge.maxXEdge).slice.integral
+                trailingView.frame = CGRect(x: 0.0, y: 0.0, width: trailingBuffer, height: bounds.height)
+                #endif
             }
             
             // Find when the lead label will be totally offscreen
@@ -735,11 +765,19 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
                 awayOffset = bounds.size.width - (expectedLabelSize.width + leadingBuffer + trailingBuffer)
                 // Enforce text alignment for this type
                 sublabel.textAlignment = NSTextAlignment.left
-            } else {
+                #if DEBUG
+                leadingView.frame = CGRect(x: 0.0, y: 0.0, width: leadingBuffer, height: bounds.size.height)
+                trailingView.frame = bounds.divided(atDistance: trailingBuffer, from: CGRectEdge.maxXEdge).slice.integral
+                #endif
+            } else { // .right, rightLeft
                 homeLabelFrame = CGRect(x: bounds.size.width - (expectedLabelSize.width + leadingBuffer), y: 0.0, width: expectedLabelSize.width, height: bounds.size.height).integral
                 awayOffset = (expectedLabelSize.width + trailingBuffer + leadingBuffer) - bounds.size.width
                 // Enforce text alignment for this type
                 sublabel.textAlignment = NSTextAlignment.right
+                #if DEBUG
+                leadingView.frame = bounds.divided(atDistance: leadingBuffer, from: CGRectEdge.maxXEdge).slice.integral
+                trailingView.frame = CGRect(x: 0.0, y: 0.0, width: trailingBuffer, height: bounds.height)
+                #endif
             }
             // Set frame and text
             sublabel.frame = homeLabelFrame
