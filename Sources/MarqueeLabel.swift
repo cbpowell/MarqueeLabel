@@ -554,10 +554,26 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         addSubview(sublabel)
         
         #if DEBUG
+        
+        let labelMask = UIView()
+        labelMask.translatesAutoresizingMaskIntoConstraints = false
+        sublabel.addSubview(labelMask)
+
+        NSLayoutConstraint.activate([
+            labelMask.leadingAnchor.constraint(equalTo: sublabel.leadingAnchor),
+            labelMask.trailingAnchor.constraint(equalTo: sublabel.trailingAnchor),
+            labelMask.topAnchor.constraint(equalTo: sublabel.topAnchor),
+            labelMask.bottomAnchor.constraint(equalTo: sublabel.bottomAnchor)
+        ])
+        labelMask.alpha = 0.2
+        labelMask.backgroundColor = .orange
+        
         leadingView.alpha = 0.3
         leadingView.backgroundColor = .blue
+        leadingView.tag = 710
         trailingView.alpha = 0.3
-        trailingView.backgroundColor = .blue
+        trailingView.backgroundColor = .red
+        trailingView.tag = 720
         addSubview(leadingView)
         addSubview(trailingView)
         #endif
