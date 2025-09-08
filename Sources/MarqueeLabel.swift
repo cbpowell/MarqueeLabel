@@ -1000,8 +1000,8 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     
     private func generateScrollAnimation(_ sequence: [MarqueeStep]) -> MLAnimation {
         // Create scroller, which defines the animation to perform
-        let homeOrigin = CGPoint(x: homeLabelFrame.midX, y: homeLabelFrame.midY)
-        let awayOrigin = CGPoint(x: homeLabelFrame.midX + awayOffset, y: homeLabelFrame.midY)
+        let homeOrigin = sublabel.layer.position
+        let awayOrigin = CGPoint(x: homeOrigin.x + awayOffset, y: homeOrigin.y)
         
         let scrollSteps = sequence.filter({ $0 is ScrollStep }) as! [ScrollStep]
         let totalDuration = scrollSteps.reduce(0.0) { $0 + $1.timeStep }
