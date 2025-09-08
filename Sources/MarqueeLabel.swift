@@ -551,7 +551,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         sublabel.tag = 700
         
         // View Structure
-        addSubview(sublabel)
+        self.addSubview(sublabel)
         
         #if DEBUG
         
@@ -574,8 +574,8 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         trailingView.alpha = 0.3
         trailingView.backgroundColor = .red
         trailingView.tag = 720
-        addSubview(leadingView)
-        addSubview(trailingView)
+        self.addSubview(leadingView)
+        self.addSubview(trailingView)
         #endif
         
         // Configure self
@@ -686,6 +686,11 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             sublabel.adjustsFontSizeToFitWidth = super.adjustsFontSizeToFitWidth
             sublabel.minimumScaleFactor = super.minimumScaleFactor
             
+            #if DEBUG
+            trailingView.removeFromSuperview()
+            self.addSubview(trailingView)
+            #endif
+            
             let labelFrame: CGRect
             switch type {
             case .continuousReverse, .rightLeft:
@@ -731,19 +736,23 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         
         switch type {
         case .continuous, .continuousReverse:
+            #if DEBUG
+            trailingView.removeFromSuperview()
+            sublabel.addSubview(trailingView)
+            #endif
             if type == .continuous {
                 homeLabelFrame = CGRect(x: leadingBuffer, y: 0.0, width: expectedLabelSize.width, height: bounds.size.height).integral
                 awayOffset = -(homeLabelFrame.size.width + minTrailing)
                 #if DEBUG
                 leadingView.frame = CGRect(x: 0.0, y: 0.0, width: leadingBuffer, height: bounds.size.height)
-                trailingView.frame = bounds.divided(atDistance: trailingBuffer, from: CGRectEdge.maxXEdge).slice.integral
+                trailingView.frame = CGRect(x: -awayOffset - minTrailing, y: 0.0, width: trailingBuffer, height: bounds.size.height)
                 #endif
             } else { // .ContinuousReverse
                 homeLabelFrame = CGRect(x: bounds.size.width - (expectedLabelSize.width + leadingBuffer), y: 0.0, width: expectedLabelSize.width, height: bounds.size.height).integral
                 awayOffset = (homeLabelFrame.size.width + minTrailing)
                 #if DEBUG
                 leadingView.frame = bounds.divided(atDistance: leadingBuffer, from: CGRectEdge.maxXEdge).slice.integral
-                trailingView.frame = CGRect(x: 0.0, y: 0.0, width: trailingBuffer, height: bounds.height)
+                trailingView.frame = CGRect(x: -trailingBuffer, y: 0.0, width: trailingBuffer, height: bounds.size.height)
                 #endif
             }
             
@@ -776,6 +785,10 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             repliLayer?.instanceTransform = CATransform3DMakeTranslation(-awayOffset, 0.0, 0.0)
             
         case .leftRight, .left, .rightLeft, .right:
+            #if DEBUG
+            trailingView.removeFromSuperview()
+            self.addSubview(trailingView)
+            #endif
             if type == .leftRight || type == .left {
                 homeLabelFrame = CGRect(x: leadingBuffer, y: 0.0, width: expectedLabelSize.width, height: bounds.size.height).integral
                 awayOffset = bounds.size.width - (expectedLabelSize.width + leadingBuffer + trailingBuffer)
